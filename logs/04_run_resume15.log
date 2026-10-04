@@ -1,0 +1,300 @@
+[NbConvertApp] Converting notebook notebooks/04_run_experiments.ipynb to notebook
+C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+  self._get_loop()
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\sklearn\svm\_base.py:236: FutureWarning: The `probability` parameter was deprecated in 1.9 and will be removed in version 1.11. Use `CalibratedClassifierCV(SVC(), ensemble=False)` instead of `SVC(probability=True)`
+  warnings.warn(
+C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\sklearn\svm\_base.py:236: FutureWarning: The `probability` parameter was deprecated in 1.9 and will be removed in version 1.11. Use `CalibratedClassifierCV(SVC(), ensemble=False)` instead of `SVC(probability=True)`
+  warnings.warn(
+Windows fatal exception: access violation
+
+Current thread 0x00000e90 (most recent call first):
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\sklearn\svm\_base.py", line 368 in _dense_fit
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\sklearn\svm\_base.py", line 290 in fit
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\sklearn\base.py", line 1403 in wrapper
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\imblearn\pipeline.py", line 522 in fit
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\sklearn\base.py", line 1403 in wrapper
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\src\optimization.py", line 540 in _evaluate
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\joblib\parallel.py", line 607 in __call__
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\joblib\externals\loky\process_executor.py", line 291 in __call__
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\joblib\externals\loky\process_executor.py", line 490 in _process_worker
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 108 in run
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\multiprocessing\process.py", line 313 in _bootstrap
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\joblib\externals\loky\backend\popen_loky_win32.py", line 172 in main
+  File "<string>", line 1 in <module>
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_42728_a5361b9a3f5749f2b26c469d28b62d7b_0efb900224d34420845801d03269e387'[0m
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Scripts\jupyter-nbconvert.exe\__main__.py", line 5, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\jupyter_core\application.py", line 284, in launch_instance
+    super().launch_instance(argv=argv, **kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\traitlets\config\application.py", line 1080, in launch_instance
+    app.start()
+    ~~~~~~~~~^^
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\nbconvert\nbconvertapp.py", line 420, in start
+    self.convert_notebooks()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\nbconvert\nbconvertapp.py", line 597, in convert_notebooks
+    self.convert_single_notebook(notebook_filename)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\nbconvert\nbconvertapp.py", line 563, in convert_single_notebook
+    output, resources = self.export_single_notebook(
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        notebook_filename, resources, input_buffer=input_buffer
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\nbconvert\nbconvertapp.py", line 487, in export_single_notebook
+    output, resources = self.exporter.from_filename(
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        notebook_filename, resources=resources
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\nbconvert\exporters\exporter.py", line 201, in from_filename
+    return self.from_file(f, resources=resources, **kw)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\nbconvert\exporters\exporter.py", line 220, in from_file
+    return self.from_notebook_node(
+           ~~~~~~~~~~~~~~~~~~~~~~~^
+        nbformat.read(file_stream, as_version=4), resources=resources, **kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\nbconvert\exporters\notebook.py", line 36, in from_notebook_node
+    nb_copy, resources = super().from_notebook_node(nb, resources, **kw)
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\nbconvert\exporters\exporter.py", line 154, in from_notebook_node
+    nb_copy, resources = self._preprocess(nb_copy, resources)
+                         ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\nbconvert\exporters\exporter.py", line 353, in _preprocess
+    nbc, resc = preprocessor(nbc, resc)
+                ~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\nbconvert\preprocessors\base.py", line 48, in __call__
+    return self.preprocess(nb, resources)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\nbconvert\preprocessors\execute.py", line 103, in preprocess
+    self.preprocess_cell(cell, resources, index)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\nbconvert\preprocessors\execute.py", line 124, in preprocess_cell
+    cell = self.execute_cell(cell, index, store_history=True)
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\jupyter_core\utils\__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+table, results = run_experiments(
+    X,
+    y,
+    models=models,
+    techniques=techniques,
+    methods=methods,
+    n_outer_folds=n_outer_folds,
+    n_inner_folds=n_inner_folds,
+    optimizer_kwargs_by_method=optimizer_kwargs_by_method,
+    checkpoint_path=config.EXPERIMENTS_MASTER_PATH,
+    resume=True,
+    n_jobs=n_jobs,
+    timeout_seconds=timeout_seconds,
+)
+
+print(f"\n{len(results)} combinaciones nuevas corridas en esta sesion.")
+print(f"{len(table)} filas totales en la tabla maestra ({config.EXPERIMENTS_MASTER_PATH}).")
+------------------
+
+----- stdout -----
+[experiment_runner] 99 combinaciones ya en C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\results\experiments_master.csv o C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\results\skipped_timeout_log.csv, se omiten (resume=True).
+[experiment_runner] 13 combinaciones a ejecutar.
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mTerminatedWorkerError[39m                     Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[4][39m[32m, line 1[39m
+[32m----> [39m[32m1[39m table, results = run_experiments(
+[32m      2[39m     X,
+[32m      3[39m     y,
+[32m      4[39m     models=models,
+
+[36mFile [39m[32m~\OneDrive\Desktop\Credit_Card_Project\src\experiment_runner.py:435[39m, in [36mrun_experiments[39m[34m(X, y, models, techniques, methods, n_outer_folds, n_inner_folds, scoring, random_state, categorical_columns, optimizer_kwargs_by_method, n_jobs, backend, checkpoint_path, resume, timeout_seconds, skip_log_path)[39m
+[32m    431[39m     [38;5;28;01mreturn[39;00m spec.name, technique, method, result
+[32m    433[39m parallel = Parallel(n_jobs=n_jobs, backend=backend, return_as=[33m"[39m[33mgenerator[39m[33m"[39m)
+[32m--> [39m[32m435[39m [30;43m[39;49m[30;43;01mfor[39;49;00m[30;43m [39;49m[30;43mmodel_name[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mtechnique[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mmethod[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mresult[39;49m[30;43m [39;49m[30;43;01min[39;49;00m[30;43m [39;49m[30;43mparallel[39;49m[30;43m([39;49m
+[32m    436[39m [30;43m    [39;49m[30;43mdelayed[39;49m[30;43m([39;49m[30;43m_run_one[39;49m[30;43m)[39;49m[30;43m([39;49m[30;43mspec[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mtechnique[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mmethod[39;49m[30;43m)[39;49m[30;43m [39;49m[30;43;01mfor[39;49;00m[30;43m [39;49m[30;43mspec[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mtechnique[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mmethod[39;49m[30;43m [39;49m[30;43;01min[39;49;00m[30;43m [39;49m[30;43mpending[39;49m
+[32m    437[39m [30;43m[39;49m[30;43m)[39;49m[30;43m:[39;49m
+[32m    438[39m [30;43m    [39;49m[30;43mrow[39;49m[30;43m [39;49m[30;43m=[39;49m[30;43m [39;49m[30;43m_build_row[39;49m[30;43m([39;49m[30;43mresult[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mrandom_state[39;49m[30;43m=[39;49m[30;43mrandom_state[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mn_inner_folds[39;49m[30;43m=[39;49m[30;43mn_inner_folds[39;49m[30;43m)[39;49m
+[32m    439[39m [30;43m    [39;49m[30;43m_append_row_to_csv[39;49m[30;43m([39;49m[30;43mrow[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mcheckpoint_path[39;49m[30;43m)[39;49m
+
+[36mFile [39m[32m~\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\joblib\parallel.py:1940[39m, in [36mParallel._get_sequential_output[39m[34m(self, iterable)[39m
+[32m   1938[39m [38;5;28mself[39m.n_dispatched_batches += [32m1[39m
+[32m   1939[39m [38;5;28mself[39m.n_dispatched_tasks += [32m1[39m
+[32m-> [39m[32m1940[39m res = [30;43mfunc[39;49m[30;43m([39;49m[30;43m*[39;49m[30;43margs[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43m*[39;49m[30;43m*[39;49m[30;43mkwargs[39;49m[30;43m)[39;49m
+[32m   1941[39m [38;5;28mself[39m.n_completed_tasks += [32m1[39m
+[32m   1942[39m [38;5;28mself[39m.print_progress()
+
+[36mFile [39m[32m~\OneDrive\Desktop\Credit_Card_Project\src\experiment_runner.py:418[39m, in [36mrun_experiments.<locals>._run_one[39m[34m(spec, technique, method)[39m
+[32m    416[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34m_run_one[39m(spec: ModelSpec, technique: [38;5;28mstr[39m, method: [38;5;28mstr[39m):
+[32m    417[39m     opt_kwargs = (optimizer_kwargs_by_method [38;5;129;01mor[39;00m {}).get(method, {})
+[32m--> [39m[32m418[39m     result = [30;43mrun_single_experiment[39;49m[30;43m([39;49m
+[32m    419[39m [30;43m        [39;49m[30;43mspec[39;49m[30;43m,[39;49m
+[32m    420[39m [30;43m        [39;49m[30;43mtechnique[39;49m[30;43m,[39;49m
+[32m    421[39m [30;43m        [39;49m[30;43mmethod[39;49m[30;43m,[39;49m
+[32m    422[39m [30;43m        [39;49m[30;43mX[39;49m[30;43m,[39;49m
+[32m    423[39m [30;43m        [39;49m[30;43my[39;49m[30;43m,[39;49m
+[32m    424[39m [30;43m        [39;49m[30;43mn_outer_folds[39;49m[30;43m=[39;49m[30;43mn_outer_folds[39;49m[30;43m,[39;49m
+[32m    425[39m [30;43m        [39;49m[30;43mn_inner_folds[39;49m[30;43m=[39;49m[30;43mn_inner_folds[39;49m[30;43m,[39;49m
+[32m    426[39m [30;43m        [39;49m[30;43mscoring[39;49m[30;43m=[39;49m[30;43mscoring[39;49m[30;43m,[39;49m
+[32m    427[39m [30;43m        [39;49m[30;43mrandom_state[39;49m[30;43m=[39;49m[30;43mrandom_state[39;49m[30;43m,[39;49m
+[32m    428[39m [30;43m        [39;49m[30;43mcategorical_columns[39;49m[30;43m=[39;49m[30;43mcategorical_columns[39;49m[30;43m,[39;49m
+[32m    429[39m [30;43m        [39;49m[30;43moptimizer_kwargs[39;49m[30;43m=[39;49m[30;43mopt_kwargs[39;49m[30;43m,[39;49m
+[32m    430[39m [30;43m    [39;49m[30;43m)[39;49m
+[32m    431[39m     [38;5;28;01mreturn[39;00m spec.name, technique, method, result
+
+[36mFile [39m[32m~\OneDrive\Desktop\Credit_Card_Project\src\experiment_runner.py:186[39m, in [36mrun_single_experiment[39m[34m(spec, technique, method, X, y, n_outer_folds, n_inner_folds, scoring, random_state, categorical_columns, optimizer_kwargs)[39m
+[32m    167[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mrun_single_experiment[39m(
+[32m    168[39m     spec: ModelSpec,
+[32m    169[39m     technique: [38;5;28mstr[39m,
+[32m   (...)[39m[32m    178[39m     optimizer_kwargs: [38;5;28mdict[39m[[38;5;28mstr[39m, Any] | [38;5;28;01mNone[39;00m = [38;5;28;01mNone[39;00m,
+[32m    179[39m ) -> NestedCVResult:
+[32m    180[39m [38;5;250m    [39m[33;03m"""Corre UNA combinación (modelo, técnica, método) de punta a punta.[39;00m
+[32m    181[39m 
+[32m    182[39m [33;03m    Delgado wrapper sobre ``nested_cv.run_nested_cv`` — expuesto acá para[39;00m
+[32m    183[39m [33;03m    poder probar/depurar una sola combinación sin pasar por el batch[39;00m
+[32m    184[39m [33;03m    completo de ``run_experiments``.[39;00m
+[32m    185[39m [33;03m    """[39;00m
+[32m--> [39m[32m186[39m     [38;5;28;01mreturn[39;00m [30;43mrun_nested_cv[39;49m[30;43m([39;49m
+[32m    187[39m [30;43m        [39;49m[30;43mspec[39;49m[30;43m,[39;49m
+[32m    188[39m [30;43m        [39;49m[30;43mtechnique[39;49m[30;43m,[39;49m
+[32m    189[39m [30;43m        [39;49m[30;43mmethod[39;49m[30;43m,[39;49m
+[32m    190[39m [30;43m        [39;49m[30;43mX[39;49m[30;43m,[39;49m
+[32m    191[39m [30;43m        [39;49m[30;43my[39;49m[30;43m,[39;49m
+[32m    192[39m [30;43m        [39;49m[30;43mn_outer_folds[39;49m[30;43m=[39;49m[30;43mn_outer_folds[39;49m[30;43m,[39;49m
+[32m    193[39m [30;43m        [39;49m[30;43mn_inner_folds[39;49m[30;43m=[39;49m[30;43mn_inner_folds[39;49m[30;43m,[39;49m
+[32m    194[39m [30;43m        [39;49m[30;43mscoring[39;49m[30;43m=[39;49m[30;43mscoring[39;49m[30;43m,[39;49m
+[32m    195[39m [30;43m        [39;49m[30;43mrandom_state[39;49m[30;43m=[39;49m[30;43mrandom_state[39;49m[30;43m,[39;49m
+[32m    196[39m [30;43m        [39;49m[30;43mcategorical_columns[39;49m[30;43m=[39;49m[30;43mcategorical_columns[39;49m[30;43m,[39;49m
+[32m    197[39m [30;43m        [39;49m[30;43moptimizer_kwargs[39;49m[30;43m=[39;49m[30;43moptimizer_kwargs[39;49m[30;43m,[39;49m
+[32m    198[39m [30;43m    [39;49m[30;43m)[39;49m
+
+[36mFile [39m[32m~\OneDrive\Desktop\Credit_Card_Project\src\nested_cv.py:255[39m, in [36mrun_nested_cv[39m[34m(spec, technique, method, X, y, n_outer_folds, n_inner_folds, scoring, random_state, categorical_columns, optimizer_kwargs)[39m
+[32m    252[39m y_train_outer, y_test_outer = y.iloc[train_idx], y.iloc[test_idx]
+[32m    254[39m t0 = time.time()
+[32m--> [39m[32m255[39m opt_result: OptimizationResult = [30;43mrun_optimization[39;49m[30;43m([39;49m
+[32m    256[39m [30;43m    [39;49m[30;43mmethod[39;49m[30;43m,[39;49m
+[32m    257[39m [30;43m    [39;49m[30;43mspec[39;49m[30;43m,[39;49m
+[32m    258[39m [30;43m    [39;49m[30;43mtechnique[39;49m[30;43m,[39;49m
+[32m    259[39m [30;43m    [39;49m[30;43mX_train_outer[39;49m[30;43m,[39;49m
+[32m    260[39m [30;43m    [39;49m[30;43my_train_outer[39;49m[30;43m,[39;49m
+[32m    261[39m [30;43m    [39;49m[30;43minner_cv[39;49m[30;43m,[39;49m
+[32m    262[39m [30;43m    [39;49m[30;43mscoring[39;49m[30;43m=[39;49m[30;43mscoring[39;49m[30;43m,[39;49m
+[32m    263[39m [30;43m    [39;49m[30;43mrandom_state[39;49m[30;43m=[39;49m[30;43mrandom_state[39;49m[30;43m,[39;49m
+[32m    264[39m [30;43m    [39;49m[30;43mpreprocessing_steps[39;49m[30;43m=[39;49m[30;43mpreprocessing_steps[39;49m[30;43m,[39;49m
+[32m    265[39m [30;43m    [39;49m[30;43m*[39;49m[30;43m*[39;49m[30;43m([39;49m[30;43moptimizer_kwargs[39;49m[30;43m [39;49m[30;43;01mor[39;49;00m[30;43m [39;49m[30;43m{[39;49m[30;43m}[39;49m[30;43m)[39;49m[30;43m,[39;49m
+[32m    266[39m [30;43m[39;49m[30;43m)[39;49m
+[32m    267[39m fit_time_seconds = time.time() - t0
+[32m    269[39m [38;5;66;03m# best_pipeline ya viene reajustado sobre TODO X_train_outer[39;00m
+[32m    270[39m [38;5;66;03m# (contrato de optimization.OptimizationResult) — se evalúa aquí[39;00m
+[32m    271[39m [38;5;66;03m# sobre X_test_outer, nunca visto durante la optimización.[39;00m
+
+[36mFile [39m[32m~\OneDrive\Desktop\Credit_Card_Project\src\optimization.py:678[39m, in [36mrun_optimization[39m[34m(method, spec, technique, X, y, cv, scoring, random_state, preprocessing_steps, **kwargs)[39m
+[32m    676[39m [38;5;28;01mif[39;00m method [38;5;129;01mnot[39;00m [38;5;129;01min[39;00m _DISPATCH:
+[32m    677[39m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([33mf[39m[33m"[39m[33mMétodo de optimización desconocido: [39m[33m'[39m[38;5;132;01m{[39;00mmethod[38;5;132;01m}[39;00m[33m'[39m[33m. Opciones: [39m[38;5;132;01m{[39;00mOPTIMIZATION_METHODS[38;5;132;01m}[39;00m[33m"[39m)
+[32m--> [39m[32m678[39m [38;5;28;01mreturn[39;00m [30;43m_DISPATCH[39;49m[30;43m[[39;49m[30;43mmethod[39;49m[30;43m][39;49m[30;43m([39;49m
+[32m    679[39m [30;43m    [39;49m[30;43mspec[39;49m[30;43m,[39;49m
+[32m    680[39m [30;43m    [39;49m[30;43mtechnique[39;49m[30;43m,[39;49m
+[32m    681[39m [30;43m    [39;49m[30;43mX[39;49m[30;43m,[39;49m
+[32m    682[39m [30;43m    [39;49m[30;43my[39;49m[30;43m,[39;49m
+[32m    683[39m [30;43m    [39;49m[30;43mcv[39;49m[30;43m,[39;49m
+[32m    684[39m [30;43m    [39;49m[30;43mscoring[39;49m[30;43m=[39;49m[30;43mscoring[39;49m[30;43m,[39;49m
+[32m    685[39m [30;43m    [39;49m[30;43mrandom_state[39;49m[30;43m=[39;49m[30;43mrandom_state[39;49m[30;43m,[39;49m
+[32m    686[39m [30;43m    [39;49m[30;43mpreprocessing_steps[39;49m[30;43m=[39;49m[30;43mpreprocessing_steps[39;49m[30;43m,[39;49m
+[32m    687[39m [30;43m    [39;49m[30;43m*[39;49m[30;43m*[39;49m[30;43mkwargs[39;49m[30;43m,[39;49m
+[32m    688[39m [30;43m[39;49m[30;43m)[39;49m
+
+[36mFile [39m[32m~\OneDrive\Desktop\Credit_Card_Project\src\optimization.py:564[39m, in [36mrun_genetic_search[39m[34m(spec, technique, X, y, cv, scoring, population_size, n_generations, cx_prob, mut_prob, mut_indpb, tournament_size, elite_size, random_state, preprocessing_steps, n_jobs)[39m
+[32m    559[39m     [38;5;28;01mreturn[39;00m Parallel(n_jobs=n_jobs, backend=[33m"[39m[33mloky[39m[33m"[39m)(
+[32m    560[39m         delayed(toolbox.evaluate)(ind) [38;5;28;01mfor[39;00m ind [38;5;129;01min[39;00m individuals
+[32m    561[39m     )
+[32m    563[39m population = toolbox.population(n=population_size)
+[32m--> [39m[32m564[39m [38;5;28;01mfor[39;00m ind, fit [38;5;129;01min[39;00m [38;5;28mzip[39m(population, [30;43m_map_evaluate[39;49m[30;43m([39;49m[30;43mpopulation[39;49m[30;43m)[39;49m):
+[32m    565[39m     ind.fitness.values = fit
+[32m    566[39m n_evaluations = [38;5;28mlen[39m(population)
+
+[36mFile [39m[32m~\OneDrive\Desktop\Credit_Card_Project\src\optimization.py:559[39m, in [36mrun_genetic_search.<locals>._map_evaluate[39m[34m(individuals)[39m
+[32m    557[39m [38;5;28;01mif[39;00m n_jobs == [32m1[39m [38;5;129;01mor[39;00m [38;5;28mlen[39m(individuals) <= [32m1[39m:
+[32m    558[39m     [38;5;28;01mreturn[39;00m [38;5;28mlist[39m([38;5;28mmap[39m(toolbox.evaluate, individuals))
+[32m--> [39m[32m559[39m [38;5;28;01mreturn[39;00m [30;43mParallel[39;49m[30;43m([39;49m[30;43mn_jobs[39;49m[30;43m=[39;49m[30;43mn_jobs[39;49m[30;43m,[39;49m[30;43m [39;49m[30;43mbackend[39;49m[30;43m=[39;49m[30;43m"[39;49m[30;43mloky[39;49m[30;43m"[39;49m[30;43m)[39;49m[30;43m([39;49m
+[32m    560[39m [30;43m    [39;49m[30;43mdelayed[39;49m[30;43m([39;49m[30;43mtoolbox[39;49m[30;43m.[39;49m[30;43mevaluate[39;49m[30;43m)[39;49m[30;43m([39;49m[30;43mind[39;49m[30;43m)[39;49m[30;43m [39;49m[30;43;01mfor[39;49;00m[30;43m [39;49m[30;43mind[39;49m[30;43m [39;49m[30;43;01min[39;49;00m[30;43m [39;49m[30;43mindividuals[39;49m
+[32m    561[39m [30;43m[39;49m[30;43m)[39;49m
+
+[36mFile [39m[32m~\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\joblib\parallel.py:2098[39m, in [36mParallel.__call__[39m[34m(self, iterable)[39m
+[32m   2092[39m [38;5;66;03m# The first item from the output is blank, but it makes the interpreter[39;00m
+[32m   2093[39m [38;5;66;03m# progress until it enters the Try/Except block of the generator and[39;00m
+[32m   2094[39m [38;5;66;03m# reaches the first `yield` statement. This starts the asynchronous[39;00m
+[32m   2095[39m [38;5;66;03m# dispatch of the tasks to the workers.[39;00m
+[32m   2096[39m [38;5;28mnext[39m(output)
+[32m-> [39m[32m2098[39m [38;5;28;01mreturn[39;00m output [38;5;28;01mif[39;00m [38;5;28mself[39m.return_generator [38;5;28;01melse[39;00m [30;43mlist[39;49m[30;43m([39;49m[30;43moutput[39;49m[30;43m)[39;49m
+
+[36mFile [39m[32m~\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\joblib\parallel.py:1704[39m, in [36mParallel._get_outputs[39m[34m(self, iterator, pre_dispatch)[39m
+[32m   1701[39m     [38;5;28;01myield[39;00m
+[32m   1703[39m     [38;5;28;01mwith[39;00m [38;5;28mself[39m._backend.retrieval_context():
+[32m-> [39m[32m1704[39m         [38;5;28;01myield from[39;00m [38;5;28mself[39m._retrieve()
+[32m   1706[39m [38;5;28;01mexcept[39;00m [38;5;167;01mGeneratorExit[39;00m:
+[32m   1707[39m     [38;5;66;03m# The generator has been garbage collected before being fully[39;00m
+[32m   1708[39m     [38;5;66;03m# consumed. This aborts the remaining tasks if possible and warn[39;00m
+[32m   1709[39m     [38;5;66;03m# the user if necessary.[39;00m
+[32m   1710[39m     [38;5;28mself[39m._exception = [38;5;28;01mTrue[39;00m
+
+[36mFile [39m[32m~\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\joblib\parallel.py:1806[39m, in [36mParallel._retrieve[39m[34m(self)[39m
+[32m   1800[39m [38;5;28;01mwhile[39;00m [38;5;28mself[39m._wait_retrieval():
+[32m   1801[39m     [38;5;66;03m# If the callback thread of a worker has signaled that its task[39;00m
+[32m   1802[39m     [38;5;66;03m# triggered an exception, or if the retrieval loop has raised an[39;00m
+[32m   1803[39m     [38;5;66;03m# exception (e.g. `GeneratorExit`), exit the loop and surface the[39;00m
+[32m   1804[39m     [38;5;66;03m# worker traceback.[39;00m
+[32m   1805[39m     [38;5;28;01mif[39;00m [38;5;28mself[39m._aborting:
+[32m-> [39m[32m1806[39m         [30;43mself[39;49m[30;43m.[39;49m[30;43m_raise_error_fast[39;49m[30;43m([39;49m[30;43m)[39;49m
+[32m   1807[39m         [38;5;28;01mbreak[39;00m
+[32m   1809[39m     nb_jobs = [38;5;28mlen[39m([38;5;28mself[39m._jobs)
+
+[36mFile [39m[32m~\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\joblib\parallel.py:1885[39m, in [36mParallel._raise_error_fast[39m[34m(self)[39m
+[32m   1881[39m [38;5;66;03m# If this error job exists, immediately raise the error by[39;00m
+[32m   1882[39m [38;5;66;03m# calling get_result. This job might not exists if abort has been[39;00m
+[32m   1883[39m [38;5;66;03m# called directly or if the generator is gc'ed.[39;00m
+[32m   1884[39m [38;5;28;01mif[39;00m error_job [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[32m-> [39m[32m1885[39m     [30;43merror_job[39;49m[30;43m.[39;49m[30;43mget_result[39;49m[30;43m([39;49m[30;43mself[39;49m[30;43m.[39;49m[30;43mtimeout[39;49m[30;43m)[39;49m
+
+[36mFile [39m[32m~\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\joblib\parallel.py:780[39m, in [36mBatchCompletionCallBack.get_result[39m[34m(self, timeout)[39m
+[32m    774[39m backend = [38;5;28mself[39m.parallel._backend
+[32m    776[39m [38;5;28;01mif[39;00m backend.supports_retrieve_callback:
+[32m    777[39m     [38;5;66;03m# We assume that the result has already been retrieved by the[39;00m
+[32m    778[39m     [38;5;66;03m# callback thread, and is stored internally. It's just waiting to[39;00m
+[32m    779[39m     [38;5;66;03m# be returned.[39;00m
+[32m--> [39m[32m780[39m     [38;5;28;01mreturn[39;00m [30;43mself[39;49m[30;43m.[39;49m[30;43m_return_or_raise[39;49m[30;43m([39;49m[30;43m)[39;49m
+[32m    782[39m [38;5;66;03m# For other backends, the main thread needs to run the retrieval step.[39;00m
+[32m    783[39m [38;5;28;01mtry[39;00m:
+
+[36mFile [39m[32m~\OneDrive\Desktop\Credit_Card_Project\.venv\Lib\site-packages\joblib\parallel.py:795[39m, in [36mBatchCompletionCallBack._return_or_raise[39m[34m(self)[39m
+[32m    793[39m [38;5;28;01mtry[39;00m:
+[32m    794[39m     [38;5;28;01mif[39;00m [38;5;28mself[39m.status == TASK_ERROR:
+[32m--> [39m[32m795[39m         [38;5;28;01mraise[39;00m [38;5;28mself[39m._result
+[32m    796[39m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m._result
+[32m    797[39m [38;5;28;01mfinally[39;00m:
+
+[31mTerminatedWorkerError[39m: A worker process managed by the executor was unexpectedly terminated. This could be caused by a segmentation fault while calling the function or by an excessive memory usage causing the Operating System to kill the worker.
+
+Detailed tracebacks of the workers should have been printed to stderr in the executor process if faulthandler was not disabled.
+

@@ -1,0 +1,600 @@
+[NbConvertApp] Converting notebook 04_run_experiments.ipynb to notebook
+C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+  self._get_loop()
+[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_02caa7d801184678bbaa51375171227c_3f5911f4d2df4e47b34f698154fbd899'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_69aed979758a4035b8b63e53852e439b'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_d96a516991cc495c948986242751125d_d77730459d3a488aae820ae6f9599d80'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_6b0b1a93418544698651d75b7ab3bcc6'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_294a4884c6bd482b9f19516c7845c741_34e7d76112f84326956dd9c4fa890567'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_eda73ff60f444df7b49a33cabe7566b0'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_ecc0581501f1421fba62d11a6ccefd21_ffd6e10f7d6942539d8a22fd313aa5d9'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_833e0747c8bc46609fa271f44fe2cec0'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_494d38d5a02b4b1595072f32c4ab4539_5fdff568983c4beaba334a9b03d2c0d2'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_aa325ccaf102465f88850f345dd8df92'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_f9552950b775495ab6eda64308348f6e_794af924a8d241f0b87dfe10cea29236'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_02bb9a38f1984a2badd77aafc2725999'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_cfe0ce0131f6474e808f3be9d9a9480d_bff4850b87834665b227d891cebfa86a'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_e5643d351c314b25aa504a4186e2fc94'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_061fb9b556334380b92333d824090685_ea62765ece164c7db897815ec1d1f4a4'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_92a8ded07e6b470da4aba7ff43b02552'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_610dd0a48b594b69bcaa4575b3ad786e_206acade809a4d8aaa5202190f295906'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_778007ab02d34944bf00cbd3716fb7e3'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_d1b9faf479804d44a65a8958b124a45d_9c852de6e75544f4a1ad03b95e9083e9'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_8545e1038cd945ec89e6f83395b199b9'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_9dc8323790fc4a289f375d20699ad7d8_403240693e4e435fa21cdc5c6dce563c'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_cd4f5af64aa749fb8f7af91d830cf43e'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_4ed3f0787dc74bcaa98c2ea36bf2abac_e7f1bf88cd7244f6b181b2e12fa8644e'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_73a4597169984f98b6e13dd83b4190d6'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_cdd7bc70e71c417a94325c2f650f36f4_ef7b88b816d54d0b90310251e0a96b70'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_b572e63704834641a1b608c783c2775e'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_00022e6ad73843f78532ff99ab06dd0a_f54fb901ebff43829646c7c0b1c65216'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_197399bd65bb47e18a96357f536c3067'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_0eeb70ce1708450e98f5dc2d6e450dcb_8b1574e9eafe4a91a123d4dbf4350e00'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_6ebc89b5c4d240f3a8fa32faac62e3a5'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_df9346d2ad29464f800d3936c772aba9_184540e50a6a4b6696fe804f1bd13948'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_188bb73822454d4db548a6418e1e1edc'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_72346355f8864bb3aed9a6574395fd0d_c0a9a10cb4204acf943e0c51d1fae880'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_ff0a8a7dfc8b4559893c505ae85c9f92'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_1e006490b9c74af7ae2eb3feb0110396_954344792f064b2ebbc04447eb8347e5'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_65ebccaed29e4061a42bd6d9c072690a'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_831cb7ee0205488081d75f79842929d9_99d1f778737b41358a1f6add2998bc8c'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_23dd61be426f428ebe1ca17404861cb3'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_47e18f46d30646ee88f4772f418695d3_2ba909569cd6479189755a41d46b29b7'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_a6becf061e2840b2bfebb5c0d82148a7'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_45f7bb0bc4ca49de866fc8069d8744f8_6ae93627bb944ade9e58010334d54a06'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_2c5d3677cc70407da2e0d502fc003f02'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_a209e96aa492435e9f3ae0382e85b42e_205498a711214df6ac2959d2c3099ec7'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_53a80cacb4aa4da59bcabd204ca1cbae'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_6f2e82f24f45403b8894d183f7025fe2_68a03786edc94437a38047a08111f490'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_22db5a85952b4084a51e1d799418b9d4'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_d2509ce3dcff4f06a934f7479da1054c_f87563ecaecf41a487dbc2b7e3729eb0'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_8d5101ca44784bf4aa896531795bf02d'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e5d6fd79381f416ab9ad641a3effdf19_f932822c604d40bb944ec692ff715051'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_04db0096b915441ab946bde8adfd279b'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_626c08a2efaa4d498b7ad2355de1f508_1e1a419d62054277826ad2a3030a7b28'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_49e02f74558c4020ae8df4a422bfd281'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_f6834e5a0f304134979f3d03dd7f3db6_115dfceff5ca467e961f22692543715c'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_e10703ce1a384475ad5e921d0e6cc5dc'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_0d52d693cd78464fb0b3d99b311c9684_88da7f42020d4011989a3c4440b89d73'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_316e99f0e4004de7a3459b731b624786'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_fe938b9faa0843b69f620d547e3aee0f_8c3e3105586b4917b46c88dfaa98fc3b'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_d97c0e86afc04f71bfd248ac50e44a13'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_ed688688851843d898bc17fa1e8b210c_6daf58b65ca94bc38f1ac7ef15afac24'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_da726e1818544e43a68bd3569daea454'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_b5077936f37c4c58ae37c9bb7924f868_8e9e68bb84e9429fad7820e50292b596'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_fd4ec118d2444ae9a06b5520770c250f'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_c93408dd810d4e7bb06bc8ec756280d0_8906617334d140c1823cafb0762924cc'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_5bb502f4f0a74517b7b2fc656f6b4eb3'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_756c8338632c469893c96d693b1cfd19_f909b7d05065464092db0c114a278152'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_8c097456ab5c43a094944948de5b8c1f'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_35394b9eaf404cd6b7b47f371d4dd209_22029582647b4686b74405e3294ddcb5'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_e671181fb93b4bdc93586fd813a91973'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_93f617e71a9542ccb1f4046f0342e7b8_e652783985544824b4324d76587cc008'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_a5fccaad94d24d1181122b43befe3a0e'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_7821ed40df15408184ad0f3227ae80e1_6b137e29aeb842c5a86a17da27c1eba1'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_6581e26800534f85b949cd727cf2941c'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_7db4c837dc4941b6b3f21067a87fe5aa_c6dbca89f86446fc8a9e658087596d10'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_f9322ba231f045e39655415f0d2b1f99'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_4b3b4cbca062406a8740d4da08c8fa53_ecda2e32e79744849e5ec61cbb40e798'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_026c154e46eb407ebc697503beece6be'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_43122c4beebb4cfd91b1def2bb40f1f4_2cd819d05fc24d6789b4f9427759c122'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_642ba8d381274a7eafd4ff64b5e6ebfa'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_24f94c2722114b308dc34fc7bcec0969_e68dc06889474f41af345251dbf47a48'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_547afa94891044179abd3ca568ba3b60'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_ac21ff569634442c8ab67ca6ed134317_7814058059ca4dc4ac10b72ab78ac6b4'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_25efa9e75ffa4dea935f68d4cc29f842'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_80187f7f9ad84386b3b7b2c537d06e6c_accfea352ad642a288157b668e6362c5'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_bfb4976957344353b96c0c00bef08b9a'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e4d93a90655648738644c7a0b306b65d_8b7a1134f20241e5886a81d7ac6a64c2'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_872059bc061f44cf8cb4a3b32fc0a2f5'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_5352c086819c42af9153118dc5b66cfd_7fd5752a2c32480d8cdbaf3666b8a441'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_95370da25d004dec97360cdf2d4f438e'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_279c2faa26cb417c85b4ecd52a7887cc_eebe32a362644f43a9b1b9d5fad8e794'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_ecc134c531614d6784aa7cffa432439b'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_b47f5a8fc26141d79298b2a36810918b_5e11d10a50da43928737a2a9574c974a'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_9b8c4b693e4c44c6b799ad272ca57034'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_2e26a096cf354e388853f54bba18ecef_89f27683cc094c2ab68a8ea893467c59'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_854f9de6e89c4a138ce5d95aca1240b3'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_8398fd435df44107b791a859a0ac5c8e_20565939fcc043c6a890074d9cb31100'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_3da60ac1a86c4ff480fcf42ff84e5a37'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_b774f8f565b9433ea2907a88165ca74f_10137a62425748d0b6ca71baa548b210'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_c0329ecd1f95483baec16a3dd8756cea'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_1a16c5fbb1ad4b848a175b28936ecb80_bc04a850d55e499488864f5822c59754'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_3c423b8d0b014651bc58d6f698a394ad'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_aab51700438c403c949f15657ef2c6fb_366db96c183c4140a0f0338d63ee3f66'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_74146f77d5254e1e8a09d5829620fb0f'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_14978ecf1c254da283cce9d764b30819_188f1668096149a08ef38ea09692e58f'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_d24fee2bc5314794b7816d828a35dcda'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_c07cac128d74474595a84c8bcea91b3f_fb700a2f0e0f43919a6fffebb68bb31d'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_836fc18baa834be18bbc5db92260fea6'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e89993f038c94d98a82928cd795ec4a8_f10593c01ee24ff3936e208442bf9ff9'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_530eddff10074a72bbd581ae7a631c6b'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_7668649dbfa54393ba095fffcc231abc_44ecef993e5947958f50830ff2d8482d'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_b800ee4419af4e63a98675b9b4fe6773'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_a39256ba74db4c40b39a4eb2a221ce7b_b6b04647f79d40968b7533e003b1bb60'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_91a50db9db1c449cb4085a76ea3d6e21'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_eb635710b9f344189796e573a00e3219_b51d4c8c7c63412f8a8d5e3b54ab0b86'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_63023e25fc8e4bdf8fa7123f8d275dcd'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_aa8f0289788c46009563ddbc98548c4b_70c5036ba4c24cb68f08390f48229cc3'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_e12ad434d83742ba8a92be3f93c153c1'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_3e990e1d30f447bf999c8ab970d724b7_fc73dcde619442b28350daa785a4d69d'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_347edb4451454a3aa54ef3182f4a0365'[0m
+Traceback (most recent call last):
+  File [35m"C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\joblib\externals\loky\backend\resource_tracker.py"[0m, line [35m386[0m, in [35mmain[0m
+    del [31mcache[rtype][0m[1;31m[name][0m
+        [31m~~~~~~~~~~~~[0m[1;31m^^^^^^[0m
+[1;35mKeyError[0m: [35m'C:\\Users\\valef\\AppData\\Local\\Temp\\joblib_memmapping_folder_45204_e975c3cd0ec14fb987696c2a39e40c86_276f84b884314a8283d2bff636b0efc9'[0m
+[NbConvertApp] Writing 28087 bytes to 04_run_experiments.ipynb

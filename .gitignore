@@ -1,0 +1,27 @@
+# Datos reales sensibles — nunca versionar
+data/processed/*.csv
+data/processed/*.parquet
+data/raw/
+
+# Resultados de experimentos y modelos serializados (pesados, regenerables)
+results/experiments_master.csv
+results/dev_pipeline_check.csv
+results/figures/*
+!results/figures/.gitkeep
+results/models/*.pkl
+
+# Entorno
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Jupyter Book (build output regenerable via `jupyter-book build .`)
+_build/
+
+# OS
+.DS_Store
+Thumbs.db

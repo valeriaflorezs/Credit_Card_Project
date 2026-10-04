@@ -1,0 +1,10 @@
+format: jb-book
+root: README
+chapters:
+  - file: notebooks/00_eda
+  - file: notebooks/01_baseline_logistic
+  - file: notebooks/02_setup_check
+  - file: notebooks/03_pipeline_dev
+  - file: notebooks/04_run_experiments
+  - file: notebooks/05_results_analysis
+  - file: notebooks/06_interpretability

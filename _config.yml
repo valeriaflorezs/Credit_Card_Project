@@ -1,0 +1,30 @@
+title: "Default of Credit Card Clients — Pipeline de Clasificación"
+author: "Equipo del proyecto"
+logo: ""
+
+# Los notebooks ya se ejecutan y versionan con sus salidas (ver README) —
+# el book solo los renderiza, no los vuelve a correr.
+execute:
+  execute_notebooks: "off"
+
+# Cada celda de código queda colapsada con un botón "Click to show" gracias
+# al tag "hide-input" agregado en cada notebook (sphinx-togglebutton viene
+# incluido por defecto en Jupyter Book).
+html:
+  use_repository_button: false
+  use_issues_button: false
+
+parse:
+  myst_enable_extensions:
+    - dollarmath
+    - colon_fence
+
+# El book solo debe compilar notebooks/ y README.md — sin esto, Sphinx
+# también intenta procesar el .venv, data/, results/ y src/.
+exclude_patterns:
+  - .venv/**
+  - data/**
+  - results/**
+  - src/**
+  - "**.ipynb_checkpoints"
+  - PROJECT_BRIEF.md

@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="refresh" content="20">
+<title>Progreso de la corrida</title>
+<style>
+:root { color-scheme: light; --bg:#fcfcfb; --card:#ffffff; --ink:#0b0b0b; --ink2:#52514e; --line:#dcdbd5; --pend:#f0efec; --ok:#0ca30c; --run:#fab219; --bad:#d03b3b; --bar:#2a78d6; --bar-done:#0ca30c; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; --bg:#1a1a19; --card:#232322; --ink:#ffffff; --ink2:#c3c2b7; --line:#3a3a37; --pend:#2c2c2a; --bar:#3987e5; } }
+* { box-sizing:border-box; }
+body { margin:0; padding:20px 16px 40px; background:var(--bg); color:var(--ink); font:14px/1.45 system-ui,"Segoe UI",Arial,sans-serif; }
+main { max-width:1180px; margin:0 auto; }
+h1 { font-size:20px; margin:0 0 4px; } h2 { font-size:15px; margin:26px 0 10px; } h3 { font-size:14px; margin:0 0 6px; }
+.top { display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; justify-content:space-between; }
+.estado { display:inline-flex; gap:6px; align-items:center; padding:4px 12px; border-radius:16px; font-weight:600; border:1.5px solid; }
+.estado.run { border-color:var(--run); } .estado.ok { border-color:var(--ok); } .estado.bad { border-color:var(--bad); }
+.stamp { color:var(--ink2); font-size:12px; }
+.kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:10px; margin-top:14px; }
+.kpi { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:10px 12px; }
+.kpi-t { color:var(--ink2); font-size:12px; } .kpi-v { font-size:22px; font-weight:700; margin:2px 0; } .kpi-n { color:var(--ink2); font-size:11px; }
+.bar-row { display:grid; grid-template-columns:170px 1fr 190px; gap:10px; align-items:center; margin:6px 0; }
+.bar { background:var(--pend); border-radius:4px; height:14px; overflow:hidden; border:1px solid var(--line); }
+.bar-fill { background:var(--bar); height:100%; border-radius:0 4px 4px 0; } .bar-fill.done { background:var(--bar-done); }
+.bar.colab { background:repeating-linear-gradient(135deg,var(--pend) 0 6px,transparent 6px 12px); font-size:11px; color:var(--ink2); line-height:12px; padding-left:8px; }
+.bar-c { color:var(--ink2); font-size:12px; text-align:right; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(420px,1fr)); gap:14px; }
+.modelo { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:10px 12px; }
+.sub { color:var(--ink2); font-weight:400; font-size:12px; margin-left:6px; }
+table { border-collapse:separate; border-spacing:2px; width:100%; table-layout:fixed; }
+th { font-weight:600; font-size:11px; color:var(--ink2); text-align:center; padding:2px; } th[scope=row] { text-align:left; width:92px; }
+td { text-align:center; padding:6px 2px; border-radius:4px; vertical-align:middle; } td b { display:block; font-size:13px; } td small { display:block; font-size:10px; opacity:.85; }
+td.pend { background:var(--pend); color:var(--ink2); font-size:11px; } td.colab { background:repeating-linear-gradient(135deg,var(--pend) 0 6px,transparent 6px 12px); color:var(--ink2); font-size:11px; }
+td.curso { background:var(--run); color:#0b0b0b; animation:latido 1.6s ease-in-out infinite; }
+@keyframes latido { 50% { opacity:.65; } } @media (prefers-reduced-motion: reduce) { td.curso { animation:none; } }
+table.ult th { text-align:left; } table.ult td { text-align:left; background:none; padding:3px 4px; border-bottom:1px solid var(--line); border-radius:0; } table.ult td.num { text-align:right; }
+.escala { display:flex; align-items:center; gap:8px; font-size:11px; color:var(--ink2); margin:8px 0 0; max-width:360px; } .grad { flex:1; height:8px; border-radius:4px; }
+.nota { color:var(--ink2); font-size:12px; margin-top:18px; }
+@media (max-width:640px) { .bar-row { grid-template-columns:110px 1fr; } .bar-c { grid-column:1 / -1; text-align:left; } .grid { grid-template-columns:1fr; } }
+</style></head>
+<body><main>
+<div class="top"><div><h1>Progreso de la corrida de experimentos</h1><div class="stamp">Actualizado 22:32:40 · se refresca solo cada 20 s · datos: results/experiments_master.csv</div></div>
+<div class="estado ok"><span aria-hidden="true">✓</span> Corrida completa</div></div>
+<div class="kpis"><div class="kpi"><div class="kpi-t">Combinaciones listas</div><div class="kpi-v">96 / 96</div><div class="kpi-n">100% de los 6 modelos locales</div></div><div class="kpi"><div class="kpi-t">Tiempo transcurrido</div><div class="kpi-v">14 h 13 min</div><div class="kpi-n">intento 4 de 6</div></div><div class="kpi"><div class="kpi-t">Última fila guardada</div><div class="kpi-v">hace 31 min 29 s</div><div class="kpi-n">una combinación larga puede tardar más de 30 min</div></div><div class="kpi"><div class="kpi-t">Tiempo restante (estimado)</div><div class="kpi-v">—</div><div class="kpi-n">aproximado; se afina con cada modelo</div></div><div class="kpi"><div class="kpi-t">SVM (Colab, GPU)</div><div class="kpi-v">16 / 16</div><div class="kpi-n">3 h 27 min de GPU en total</div></div><div class="kpi"><div class="kpi-t">RAM libre</div><div class="kpi-v">0.8 GB</div><div class="kpi-n">menos de 1.5 GB es riesgo de caída</div></div></div>
+<h2>Avance por modelo</h2><div class="bar-row"><div class="bar-n">Naive Bayes</div><div class="bar"><div class="bar-fill done" style="width:100.0%"></div></div><div class="bar-c">16 / 16 · 4 min 27 s</div></div><div class="bar-row"><div class="bar-n">Regresión logística</div><div class="bar"><div class="bar-fill done" style="width:100.0%"></div></div><div class="bar-c">16 / 16 · 29 min 39 s</div></div><div class="bar-row"><div class="bar-n">Árbol de decisión</div><div class="bar"><div class="bar-fill done" style="width:100.0%"></div></div><div class="bar-c">16 / 16 · 7 min 14 s</div></div><div class="bar-row"><div class="bar-n">XGBoost</div><div class="bar"><div class="bar-fill done" style="width:100.0%"></div></div><div class="bar-c">16 / 16 · 1 h 07 min</div></div><div class="bar-row"><div class="bar-n">Random Forest</div><div class="bar"><div class="bar-fill done" style="width:100.0%"></div></div><div class="bar-c">16 / 16 · 3 h 16 min</div></div><div class="bar-row"><div class="bar-n">KNN</div><div class="bar"><div class="bar-fill done" style="width:100.0%"></div></div><div class="bar-c">16 / 16 · 8 h 35 min</div></div><div class="bar-row"><div class="bar-n">SVM · Colab</div><div class="bar"><div class="bar-fill done" style="width:100.0%"></div></div><div class="bar-c">16 / 16 · 3 h 27 min</div></div>
+<h2>Cada combinación <small style="font-weight:400;color:var(--ink2)">(técnica de balanceo × método de optimización; color = F1, pasa el cursor para ver todas las métricas)</small></h2>
+<div class="escala"><span>F1 0.38</span><div class="grad" style="background:linear-gradient(90deg,#cde2fb,#b7d3f6,#9ec5f4,#86b6ef,#6da7ec,#5598e7,#3987e5,#2a78d6,#256abf,#1c5cab,#184f95,#104281,#0d366b)"></div><span>0.55</span></div>
+<div class="grid" style="margin-top:10px"><section class="modelo"><h3>Naive Bayes <span class="sub">16 / 16</span></h3><table><tr><th></th><th>Grid</th><th>Random</th><th>Bayesiana</th><th>Genética</th></tr><tr><th scope="row">Sin balanceo</th><td class="hecha" style="background:#256abf;color:#ffffff" title="Naive Bayes / Sin balanceo / Grid
+F1 0.4935 ± 0.0048
+AUC 0.7469
+Recall 0.5415
+Precisión 0.4534
+Accuracy 0.7541
+Tiempo 6 s"><b>✓ 0.494</b><small>6 s</small></td><td class="hecha" style="background:#256abf;color:#ffffff" title="Naive Bayes / Sin balanceo / Random
+F1 0.4936 ± 0.0049
+AUC 0.7469
+Recall 0.5416
+Precisión 0.4534
+Accuracy 0.7541
+Tiempo 3 s"><b>✓ 0.494</b><small>3 s</small></td><td class="hecha" style="background:#256abf;color:#ffffff" title="Naive Bayes / Sin balanceo / Bayesiana
+F1 0.4936 ± 0.0049
+AUC 0.7469
+Recall 0.5416
+Precisión 0.4534
+Accuracy 0.7541
+Tiempo 10 s"><b>✓ 0.494</b><small>10 s</small></td><td class="hecha" style="background:#256abf;color:#ffffff" title="Naive Bayes / Sin balanceo / Genética
+F1 0.4936 ± 0.0049
+AUC 0.7469
+Recall 0.5416
+Precisión 0.4534
+Accuracy 0.7541
+Tiempo 43 s"><b>✓ 0.494</b><small>43 s</small></td></tr><tr><th scope="row">SMOTE</th><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Naive Bayes / SMOTE / Grid
+F1 0.4993 ± 0.0039
+AUC 0.7450
+Recall 0.6267
+Precisión 0.4150
+Accuracy 0.7219
+Tiempo 2 s"><b>✓ 0.499</b><small>2 s</small></td><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Naive Bayes / SMOTE / Random
+F1 0.4992 ± 0.0038
+AUC 0.7450
+Recall 0.6267
+Precisión 0.4148
+Accuracy 0.7217
+Tiempo 3 s"><b>✓ 0.499</b><small>3 s</small></td><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Naive Bayes / SMOTE / Bayesiana
+F1 0.4993 ± 0.0039
+AUC 0.7450
+Recall 0.6265
+Precisión 0.4150
+Accuracy 0.7219
+Tiempo 10 s"><b>✓ 0.499</b><small>10 s</small></td><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Naive Bayes / SMOTE / Genética
+F1 0.4993 ± 0.0039
+AUC 0.7450
+Recall 0.6267
+Precisión 0.4150
+Accuracy 0.7219
+Tiempo 52 s"><b>✓ 0.499</b><small>52 s</small></td></tr><tr><th scope="row">ADASYN</th><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Naive Bayes / ADASYN / Grid
+F1 0.4983 ± 0.0058
+AUC 0.7485
+Recall 0.6653
+Precisión 0.3983
+Accuracy 0.7036
+Tiempo 3 s"><b>✓ 0.498</b><small>3 s</small></td><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Naive Bayes / ADASYN / Random
+F1 0.4981 ± 0.0058
+AUC 0.7485
+Recall 0.6653
+Precisión 0.3981
+Accuracy 0.7033
+Tiempo 3 s"><b>✓ 0.498</b><small>3 s</small></td><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Naive Bayes / ADASYN / Bayesiana
+F1 0.4982 ± 0.0059
+AUC 0.7485
+Recall 0.6653
+Precisión 0.3983
+Accuracy 0.7035
+Tiempo 13 s"><b>✓ 0.498</b><small>13 s</small></td><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Naive Bayes / ADASYN / Genética
+F1 0.4983 ± 0.0058
+AUC 0.7485
+Recall 0.6653
+Precisión 0.3983
+Accuracy 0.7036
+Tiempo 51 s"><b>✓ 0.498</b><small>51 s</small></td></tr><tr><th scope="row">Pesos de clase</th><td class="hecha" style="background:#256abf;color:#ffffff" title="Naive Bayes / Pesos de clase / Grid
+F1 0.4951 ± 0.0040
+AUC 0.7469
+Recall 0.6163
+Precisión 0.4138
+Accuracy 0.7219
+Tiempo 1 s"><b>✓ 0.495</b><small>1 s</small></td><td class="hecha" style="background:#256abf;color:#ffffff" title="Naive Bayes / Pesos de clase / Random
+F1 0.4953 ± 0.0040
+AUC 0.7469
+Recall 0.6167
+Precisión 0.4138
+Accuracy 0.7218
+Tiempo 3 s"><b>✓ 0.495</b><small>3 s</small></td><td class="hecha" style="background:#256abf;color:#ffffff" title="Naive Bayes / Pesos de clase / Bayesiana
+F1 0.4953 ± 0.0040
+AUC 0.7469
+Recall 0.6167
+Precisión 0.4138
+Accuracy 0.7218
+Tiempo 8 s"><b>✓ 0.495</b><small>8 s</small></td><td class="hecha" style="background:#256abf;color:#ffffff" title="Naive Bayes / Pesos de clase / Genética
+F1 0.4952 ± 0.0041
+AUC 0.7469
+Recall 0.6166
+Precisión 0.4138
+Accuracy 0.7218
+Tiempo 49 s"><b>✓ 0.495</b><small>49 s</small></td></tr></table></section><section class="modelo"><h3>Regresión logística <span class="sub">16 / 16</span></h3><table><tr><th></th><th>Grid</th><th>Random</th><th>Bayesiana</th><th>Genética</th></tr><tr><th scope="row">Sin balanceo</th><td class="hecha" style="background:#cde2fb;color:#0b0b0b" title="Regresión logística / Sin balanceo / Grid
+F1 0.3778 ± 0.0037
+AUC 0.7500
+Recall 0.2647
+Precisión 0.6597
+Accuracy 0.8071
+Tiempo 41 s"><b>✓ 0.378</b><small>41 s</small></td><td class="hecha" style="background:#cde2fb;color:#0b0b0b" title="Regresión logística / Sin balanceo / Random
+F1 0.3778 ± 0.0037
+AUC 0.7500
+Recall 0.2647
+Precisión 0.6597
+Accuracy 0.8071
+Tiempo 1 min 19 s"><b>✓ 0.378</b><small>1 min 19 s</small></td><td class="hecha" style="background:#cde2fb;color:#0b0b0b" title="Regresión logística / Sin balanceo / Bayesiana
+F1 0.3778 ± 0.0037
+AUC 0.7500
+Recall 0.2647
+Precisión 0.6597
+Accuracy 0.8071
+Tiempo 2 min 18 s"><b>✓ 0.378</b><small>2 min 18 s</small></td><td class="hecha" style="background:#cde2fb;color:#0b0b0b" title="Regresión logística / Sin balanceo / Genética
+F1 0.3778 ± 0.0037
+AUC 0.7500
+Recall 0.2647
+Precisión 0.6599
+Accuracy 0.8071
+Tiempo 14 min 42 s"><b>✓ 0.378</b><small>14 min 42 s</small></td></tr><tr><th scope="row">SMOTE</th><td class="hecha" style="background:#184f95;color:#ffffff" title="Regresión logística / SMOTE / Grid
+F1 0.5154 ± 0.0100
+AUC 0.7498
+Recall 0.6223
+Precisión 0.4399
+Accuracy 0.7411
+Tiempo 24 s"><b>✓ 0.515</b><small>24 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="Regresión logística / SMOTE / Random
+F1 0.5147 ± 0.0099
+AUC 0.7490
+Recall 0.6193
+Precisión 0.4403
+Accuracy 0.7416
+Tiempo 25 s"><b>✓ 0.515</b><small>25 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="Regresión logística / SMOTE / Bayesiana
+F1 0.5149 ± 0.0107
+AUC 0.7479
+Recall 0.6184
+Precisión 0.4412
+Accuracy 0.7422
+Tiempo 1 min 19 s"><b>✓ 0.515</b><small>1 min 19 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="Regresión logística / SMOTE / Genética
+F1 0.5167 ± 0.0111
+AUC 0.7467
+Recall 0.6190
+Precisión 0.4435
+Accuracy 0.7437
+Tiempo 1 min 55 s"><b>✓ 0.517</b><small>1 min 55 s</small></td></tr><tr><th scope="row">ADASYN</th><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Regresión logística / ADASYN / Grid
+F1 0.5059 ± 0.0099
+AUC 0.7511
+Recall 0.6537
+Precisión 0.4126
+Accuracy 0.7175
+Tiempo 16 s"><b>✓ 0.506</b><small>16 s</small></td><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Regresión logística / ADASYN / Random
+F1 0.5057 ± 0.0085
+AUC 0.7510
+Recall 0.6505
+Precisión 0.4136
+Accuracy 0.7186
+Tiempo 25 s"><b>✓ 0.506</b><small>25 s</small></td><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Regresión logística / ADASYN / Bayesiana
+F1 0.5038 ± 0.0055
+AUC 0.7230
+Recall 0.5661
+Precisión 0.4613
+Accuracy 0.7532
+Tiempo 46 s"><b>✓ 0.504</b><small>46 s</small></td><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Regresión logística / ADASYN / Genética
+F1 0.5036 ± 0.0056
+AUC 0.7190
+Recall 0.5658
+Precisión 0.4610
+Accuracy 0.7530
+Tiempo 1 min 41 s"><b>✓ 0.504</b><small>1 min 41 s</small></td></tr><tr><th scope="row">Pesos de clase</th><td class="hecha" style="background:#184f95;color:#ffffff" title="Regresión logística / Pesos de clase / Grid
+F1 0.5145 ± 0.0081
+AUC 0.7501
+Recall 0.6205
+Precisión 0.4394
+Accuracy 0.7409
+Tiempo 9 s"><b>✓ 0.514</b><small>9 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="Regresión logística / Pesos de clase / Random
+F1 0.5146 ± 0.0091
+AUC 0.7492
+Recall 0.6192
+Precisión 0.4403
+Accuracy 0.7416
+Tiempo 16 s"><b>✓ 0.515</b><small>16 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="Regresión logística / Pesos de clase / Bayesiana
+F1 0.5151 ± 0.0084
+AUC 0.7484
+Recall 0.6176
+Precisión 0.4418
+Accuracy 0.7427
+Tiempo 54 s"><b>✓ 0.515</b><small>54 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="Regresión logística / Pesos de clase / Genética
+F1 0.5146 ± 0.0086
+AUC 0.7481
+Recall 0.6172
+Precisión 0.4413
+Accuracy 0.7424
+Tiempo 2 min 00 s"><b>✓ 0.515</b><small>2 min 00 s</small></td></tr></table></section><section class="modelo"><h3>Árbol de decisión <span class="sub">16 / 16</span></h3><table><tr><th></th><th>Grid</th><th>Random</th><th>Bayesiana</th><th>Genética</th></tr><tr><th scope="row">Sin balanceo</th><td class="hecha" style="background:#3987e5;color:#ffffff" title="Árbol de decisión / Sin balanceo / Grid
+F1 0.4605 ± 0.0114
+AUC 0.7395
+Recall 0.3719
+Precisión 0.6047
+Accuracy 0.8072
+Tiempo 26 s"><b>✓ 0.460</b><small>26 s</small></td><td class="hecha" style="background:#2a78d6;color:#ffffff" title="Árbol de decisión / Sin balanceo / Random
+F1 0.4733 ± 0.0019
+AUC 0.7571
+Recall 0.3689
+Precisión 0.6611
+Accuracy 0.8183
+Tiempo 6 s"><b>✓ 0.473</b><small>6 s</small></td><td class="hecha" style="background:#2a78d6;color:#ffffff" title="Árbol de decisión / Sin balanceo / Bayesiana
+F1 0.4750 ± 0.0074
+AUC 0.7466
+Recall 0.3679
+Precisión 0.6704
+Accuracy 0.8201
+Tiempo 12 s"><b>✓ 0.475</b><small>12 s</small></td><td class="hecha" style="background:#2a78d6;color:#ffffff" title="Árbol de decisión / Sin balanceo / Genética
+F1 0.4738 ± 0.0071
+AUC 0.7555
+Recall 0.3682
+Precisión 0.6646
+Accuracy 0.8191
+Tiempo 49 s"><b>✓ 0.474</b><small>49 s</small></td></tr><tr><th scope="row">SMOTE</th><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Árbol de decisión / SMOTE / Grid
+F1 0.5100 ± 0.0081
+AUC 0.7073
+Recall 0.5164
+Precisión 0.5039
+Accuracy 0.7805
+Tiempo 36 s"><b>✓ 0.510</b><small>36 s</small></td><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Árbol de decisión / SMOTE / Random
+F1 0.5096 ± 0.0052
+AUC 0.7329
+Recall 0.4881
+Precisión 0.5375
+Accuracy 0.7923
+Tiempo 9 s"><b>✓ 0.510</b><small>9 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="Árbol de decisión / SMOTE / Bayesiana
+F1 0.5179 ± 0.0025
+AUC 0.7400
+Recall 0.4896
+Precisión 0.5498
+Accuracy 0.7983
+Tiempo 16 s"><b>✓ 0.518</b><small>16 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="Árbol de decisión / SMOTE / Genética
+F1 0.5171 ± 0.0049
+AUC 0.7321
+Recall 0.5000
+Precisión 0.5363
+Accuracy 0.7934
+Tiempo 1 min 02 s"><b>✓ 0.517</b><small>1 min 02 s</small></td></tr><tr><th scope="row">ADASYN</th><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Árbol de decisión / ADASYN / Grid
+F1 0.5100 ± 0.0081
+AUC 0.7014
+Recall 0.5164
+Precisión 0.5039
+Accuracy 0.7805
+Tiempo 37 s"><b>✓ 0.510</b><small>37 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="Árbol de decisión / ADASYN / Random
+F1 0.5178 ± 0.0049
+AUC 0.7395
+Recall 0.4830
+Precisión 0.5583
+Accuracy 0.8010
+Tiempo 8 s"><b>✓ 0.518</b><small>8 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="Árbol de decisión / ADASYN / Bayesiana
+F1 0.5178 ± 0.0049
+AUC 0.7395
+Recall 0.4830
+Precisión 0.5583
+Accuracy 0.8010
+Tiempo 15 s"><b>✓ 0.518</b><small>15 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="Árbol de decisión / ADASYN / Genética
+F1 0.5178 ± 0.0049
+AUC 0.7395
+Recall 0.4830
+Precisión 0.5583
+Accuracy 0.8010
+Tiempo 1 min 01 s"><b>✓ 0.518</b><small>1 min 01 s</small></td></tr><tr><th scope="row">Pesos de clase</th><td class="hecha" style="background:#1c5cab;color:#ffffff" title="Árbol de decisión / Pesos de clase / Grid
+F1 0.5100 ± 0.0081
+AUC 0.7319
+Recall 0.5164
+Precisión 0.5039
+Accuracy 0.7805
+Tiempo 26 s"><b>✓ 0.510</b><small>26 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="Árbol de decisión / Pesos de clase / Random
+F1 0.5152 ± 0.0089
+AUC 0.7536
+Recall 0.6139
+Precisión 0.4447
+Accuracy 0.7444
+Tiempo 6 s"><b>✓ 0.515</b><small>6 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="Árbol de decisión / Pesos de clase / Bayesiana
+F1 0.5170 ± 0.0065
+AUC 0.7530
+Recall 0.6222
+Precisión 0.4427
+Accuracy 0.7426
+Tiempo 12 s"><b>✓ 0.517</b><small>12 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="Árbol de decisión / Pesos de clase / Genética
+F1 0.5190 ± 0.0064
+AUC 0.7528
+Recall 0.6222
+Precisión 0.4456
+Accuracy 0.7448
+Tiempo 46 s"><b>✓ 0.519</b><small>46 s</small></td></tr></table></section><section class="modelo"><h3>XGBoost <span class="sub">16 / 16</span></h3><table><tr><th></th><th>Grid</th><th>Random</th><th>Bayesiana</th><th>Genética</th></tr><tr><th scope="row">Sin balanceo</th><td class="hecha" style="background:#2a78d6;color:#ffffff" title="XGBoost / Sin balanceo / Grid
+F1 0.4740 ± 0.0077
+AUC 0.7799
+Recall 0.3679
+Precisión 0.6667
+Accuracy 0.8194
+Tiempo 3 min 02 s"><b>✓ 0.474</b><small>3 min 02 s</small></td><td class="hecha" style="background:#2a78d6;color:#ffffff" title="XGBoost / Sin balanceo / Random
+F1 0.4788 ± 0.0051
+AUC 0.7806
+Recall 0.3738
+Precisión 0.6662
+Accuracy 0.8200
+Tiempo 1 min 06 s"><b>✓ 0.479</b><small>1 min 06 s</small></td><td class="hecha" style="background:#2a78d6;color:#ffffff" title="XGBoost / Sin balanceo / Bayesiana
+F1 0.4751 ± 0.0057
+AUC 0.7807
+Recall 0.3700
+Precisión 0.6639
+Accuracy 0.8191
+Tiempo 1 min 16 s"><b>✓ 0.475</b><small>1 min 16 s</small></td><td class="hecha" style="background:#2a78d6;color:#ffffff" title="XGBoost / Sin balanceo / Genética
+F1 0.4787 ± 0.0038
+AUC 0.7821
+Recall 0.3713
+Precisión 0.6737
+Accuracy 0.8211
+Tiempo 5 min 08 s"><b>✓ 0.479</b><small>5 min 08 s</small></td></tr><tr><th scope="row">SMOTE</th><td class="hecha" style="background:#104281;color:#ffffff" title="XGBoost / SMOTE / Grid
+F1 0.5344 ± 0.0053
+AUC 0.7744
+Recall 0.5084
+Precisión 0.5635
+Accuracy 0.8039
+Tiempo 8 min 38 s"><b>✓ 0.534</b><small>8 min 38 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="XGBoost / SMOTE / Random
+F1 0.5267 ± 0.0060
+AUC 0.7760
+Recall 0.4830
+Precisión 0.5793
+Accuracy 0.8079
+Tiempo 2 min 50 s"><b>✓ 0.527</b><small>2 min 50 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="XGBoost / SMOTE / Bayesiana
+F1 0.5194 ± 0.0123
+AUC 0.7773
+Recall 0.4653
+Precisión 0.5896
+Accuracy 0.8098
+Tiempo 2 min 57 s"><b>✓ 0.519</b><small>2 min 57 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="XGBoost / SMOTE / Genética
+F1 0.5274 ± 0.0044
+AUC 0.7735
+Recall 0.4956
+Precisión 0.5635
+Accuracy 0.8034
+Tiempo 10 min 49 s"><b>✓ 0.527</b><small>10 min 49 s</small></td></tr><tr><th scope="row">ADASYN</th><td class="hecha" style="background:#104281;color:#ffffff" title="XGBoost / ADASYN / Grid
+F1 0.5366 ± 0.0091
+AUC 0.7725
+Recall 0.5228
+Precisión 0.5519
+Accuracy 0.8004
+Tiempo 7 min 39 s"><b>✓ 0.537</b><small>7 min 39 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="XGBoost / ADASYN / Random
+F1 0.5255 ± 0.0043
+AUC 0.7739
+Recall 0.4792
+Precisión 0.5820
+Accuracy 0.8085
+Tiempo 2 min 14 s"><b>✓ 0.526</b><small>2 min 14 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="XGBoost / ADASYN / Bayesiana
+F1 0.5222 ± 0.0092
+AUC 0.7648
+Recall 0.4821
+Precisión 0.5699
+Accuracy 0.8049
+Tiempo 2 min 16 s"><b>✓ 0.522</b><small>2 min 16 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="XGBoost / ADASYN / Genética
+F1 0.5206 ± 0.0087
+AUC 0.7597
+Recall 0.4787
+Precisión 0.5706
+Accuracy 0.8048
+Tiempo 6 min 54 s"><b>✓ 0.521</b><small>6 min 54 s</small></td></tr><tr><th scope="row">Pesos de clase</th><td class="hecha" style="background:#0d366b;color:#ffffff" title="XGBoost / Pesos de clase / Grid
+F1 0.5444 ± 0.0052
+AUC 0.7800
+Recall 0.6042
+Precisión 0.4972
+Accuracy 0.7761
+Tiempo 4 min 10 s"><b>✓ 0.544</b><small>4 min 10 s</small></td><td class="hecha" style="background:#0d366b;color:#ffffff" title="XGBoost / Pesos de clase / Random
+F1 0.5438 ± 0.0093
+AUC 0.7802
+Recall 0.6017
+Precisión 0.4964
+Accuracy 0.7765
+Tiempo 1 min 26 s"><b>✓ 0.544</b><small>1 min 26 s</small></td><td class="hecha" style="background:#0d366b;color:#ffffff" title="XGBoost / Pesos de clase / Bayesiana
+F1 0.5451 ± 0.0099
+AUC 0.7817
+Recall 0.6154
+Precisión 0.4896
+Accuracy 0.7726
+Tiempo 1 min 34 s"><b>✓ 0.545</b><small>1 min 34 s</small></td><td class="hecha" style="background:#0d366b;color:#ffffff" title="XGBoost / Pesos de clase / Genética
+F1 0.5440 ± 0.0104
+AUC 0.7807
+Recall 0.6048
+Precisión 0.4946
+Accuracy 0.7754
+Tiempo 5 min 35 s"><b>✓ 0.544</b><small>5 min 35 s</small></td></tr></table></section><section class="modelo"><h3>Random Forest <span class="sub">16 / 16</span></h3><table><tr><th></th><th>Grid</th><th>Random</th><th>Bayesiana</th><th>Genética</th></tr><tr><th scope="row">Sin balanceo</th><td class="hecha" style="background:#2a78d6;color:#ffffff" title="Random Forest / Sin balanceo / Grid
+F1 0.4735 ± 0.0035
+AUC 0.7776
+Recall 0.3686
+Precisión 0.6629
+Accuracy 0.8187
+Tiempo 3 min 28 s"><b>✓ 0.473</b><small>3 min 28 s</small></td><td class="hecha" style="background:#2a78d6;color:#ffffff" title="Random Forest / Sin balanceo / Random
+F1 0.4750 ± 0.0031
+AUC 0.7809
+Recall 0.3677
+Precisión 0.6712
+Accuracy 0.8202
+Tiempo 3 min 14 s"><b>✓ 0.475</b><small>3 min 14 s</small></td><td class="hecha" style="background:#2a78d6;color:#ffffff" title="Random Forest / Sin balanceo / Bayesiana
+F1 0.4759 ± 0.0048
+AUC 0.7811
+Recall 0.3688
+Precisión 0.6711
+Accuracy 0.8203
+Tiempo 6 min 46 s"><b>✓ 0.476</b><small>6 min 46 s</small></td><td class="hecha" style="background:#2a78d6;color:#ffffff" title="Random Forest / Sin balanceo / Genética
+F1 0.4790 ± 0.0039
+AUC 0.7774
+Recall 0.3742
+Precisión 0.6655
+Accuracy 0.8199
+Tiempo 34 min 04 s"><b>✓ 0.479</b><small>34 min 04 s</small></td></tr><tr><th scope="row">SMOTE</th><td class="hecha" style="background:#104281;color:#ffffff" title="Random Forest / SMOTE / Grid
+F1 0.5298 ± 0.0050
+AUC 0.7774
+Recall 0.4884
+Precisión 0.5789
+Accuracy 0.8081
+Tiempo 5 min 08 s"><b>✓ 0.530</b><small>5 min 08 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="Random Forest / SMOTE / Random
+F1 0.5280 ± 0.0047
+AUC 0.7701
+Recall 0.5035
+Precisión 0.5569
+Accuracy 0.8009
+Tiempo 4 min 26 s"><b>✓ 0.528</b><small>4 min 26 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="Random Forest / SMOTE / Bayesiana
+F1 0.5301 ± 0.0028
+AUC 0.7724
+Recall 0.4968
+Precisión 0.5687
+Accuracy 0.8052
+Tiempo 6 min 40 s"><b>✓ 0.530</b><small>6 min 40 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="Random Forest / SMOTE / Genética
+F1 0.5321 ± 0.0013
+AUC 0.7727
+Recall 0.5012
+Precisión 0.5674
+Accuracy 0.8050
+Tiempo 31 min 17 s"><b>✓ 0.532</b><small>31 min 17 s</small></td></tr><tr><th scope="row">ADASYN</th><td class="hecha" style="background:#104281;color:#ffffff" title="Random Forest / ADASYN / Grid
+F1 0.5259 ± 0.0051
+AUC 0.7703
+Recall 0.4967
+Precisión 0.5632
+Accuracy 0.8020
+Tiempo 5 min 13 s"><b>✓ 0.526</b><small>5 min 13 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="Random Forest / ADASYN / Random
+F1 0.5303 ± 0.0046
+AUC 0.7644
+Recall 0.5175
+Precisión 0.5440
+Accuracy 0.7971
+Tiempo 4 min 58 s"><b>✓ 0.530</b><small>4 min 58 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="Random Forest / ADASYN / Bayesiana
+F1 0.5305 ± 0.0043
+AUC 0.7683
+Recall 0.5053
+Precisión 0.5589
+Accuracy 0.8021
+Tiempo 9 min 10 s"><b>✓ 0.531</b><small>9 min 10 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="Random Forest / ADASYN / Genética
+F1 0.5289 ± 0.0019
+AUC 0.7677
+Recall 0.5041
+Precisión 0.5575
+Accuracy 0.8013
+Tiempo 30 min 19 s"><b>✓ 0.529</b><small>30 min 19 s</small></td></tr><tr><th scope="row">Pesos de clase</th><td class="hecha" style="background:#0d366b;color:#ffffff" title="Random Forest / Pesos de clase / Grid
+F1 0.5448 ± 0.0074
+AUC 0.7833
+Recall 0.6103
+Precisión 0.4920
+Accuracy 0.7743
+Tiempo 2 min 58 s"><b>✓ 0.545</b><small>2 min 58 s</small></td><td class="hecha" style="background:#0d366b;color:#ffffff" title="Random Forest / Pesos de clase / Random
+F1 0.5453 ± 0.0088
+AUC 0.7820
+Recall 0.6071
+Precisión 0.4951
+Accuracy 0.7759
+Tiempo 2 min 43 s"><b>✓ 0.545</b><small>2 min 43 s</small></td><td class="hecha" style="background:#0d366b;color:#ffffff" title="Random Forest / Pesos de clase / Bayesiana
+F1 0.5444 ± 0.0079
+AUC 0.7804
+Recall 0.5980
+Precisión 0.4998
+Accuracy 0.7785
+Tiempo 5 min 44 s"><b>✓ 0.544</b><small>5 min 44 s</small></td><td class="hecha" style="background:#0d366b;color:#ffffff" title="Random Forest / Pesos de clase / Genética
+F1 0.5460 ± 0.0088
+AUC 0.7813
+Recall 0.6042
+Precisión 0.4980
+Accuracy 0.7776
+Tiempo 40 min 32 s"><b>✓ 0.546</b><small>40 min 32 s</small></td></tr></table></section><section class="modelo"><h3>KNN <span class="sub">16 / 16</span></h3><table><tr><th></th><th>Grid</th><th>Random</th><th>Bayesiana</th><th>Genética</th></tr><tr><th scope="row">Sin balanceo</th><td class="hecha" style="background:#5598e7;color:#0b0b0b" title="KNN / Sin balanceo / Grid
+F1 0.4421 ± 0.0024
+AUC 0.7473
+Recall 0.3433
+Precisión 0.6213
+Accuracy 0.8083
+Tiempo 34 s"><b>✓ 0.442</b><small>34 s</small></td><td class="hecha" style="background:#5598e7;color:#0b0b0b" title="KNN / Sin balanceo / Random
+F1 0.4415 ± 0.0039
+AUC 0.7377
+Recall 0.3457
+Precisión 0.6111
+Accuracy 0.8065
+Tiempo 44 s"><b>✓ 0.442</b><small>44 s</small></td><td class="hecha" style="background:#6da7ec;color:#0b0b0b" title="KNN / Sin balanceo / Bayesiana
+F1 0.4334 ± 0.0038
+AUC 0.7318
+Recall 0.3418
+Precisión 0.5924
+Accuracy 0.8023
+Tiempo 22 min 15 s"><b>✓ 0.433</b><small>22 min 15 s</small></td><td class="hecha" style="background:#5598e7;color:#0b0b0b" title="KNN / Sin balanceo / Genética
+F1 0.4422 ± 0.0035
+AUC 0.7381
+Recall 0.3471
+Precisión 0.6096
+Accuracy 0.8062
+Tiempo 3 h 01 min"><b>✓ 0.442</b><small>3 h 01 min</small></td></tr><tr><th scope="row">SMOTE</th><td class="hecha" style="background:#1c5cab;color:#ffffff" title="KNN / SMOTE / Grid
+F1 0.5076 ± 0.0008
+AUC 0.7553
+Recall 0.6507
+Precisión 0.4161
+Accuracy 0.7207
+Tiempo 39 s"><b>✓ 0.508</b><small>39 s</small></td><td class="hecha" style="background:#1c5cab;color:#ffffff" title="KNN / SMOTE / Random
+F1 0.5046 ± 0.0021
+AUC 0.7509
+Recall 0.6415
+Precisión 0.4158
+Accuracy 0.7212
+Tiempo 53 s"><b>✓ 0.505</b><small>53 s</small></td><td class="hecha" style="background:#1c5cab;color:#ffffff" title="KNN / SMOTE / Bayesiana
+F1 0.5082 ± 0.0010
+AUC 0.7539
+Recall 0.6410
+Precisión 0.4210
+Accuracy 0.7255
+Tiempo 1 h 10 min"><b>✓ 0.508</b><small>1 h 10 min</small></td><td class="hecha" style="background:#1c5cab;color:#ffffff" title="KNN / SMOTE / Genética
+F1 0.5080 ± 0.0010
+AUC 0.7552
+Recall 0.6427
+Precisión 0.4200
+Accuracy 0.7246
+Tiempo 32 min 00 s"><b>✓ 0.508</b><small>32 min 00 s</small></td></tr><tr><th scope="row">ADASYN</th><td class="hecha" style="background:#256abf;color:#ffffff" title="KNN / ADASYN / Grid
+F1 0.4880 ± 0.0027
+AUC 0.7465
+Recall 0.6872
+Precisión 0.3785
+Accuracy 0.6810
+Tiempo 41 s"><b>✓ 0.488</b><small>41 s</small></td><td class="hecha" style="background:#256abf;color:#ffffff" title="KNN / ADASYN / Random
+F1 0.4860 ± 0.0026
+AUC 0.7437
+Recall 0.6778
+Precisión 0.3789
+Accuracy 0.6828
+Tiempo 55 s"><b>✓ 0.486</b><small>55 s</small></td><td class="hecha" style="background:#256abf;color:#ffffff" title="KNN / ADASYN / Bayesiana
+F1 0.4879 ± 0.0028
+AUC 0.7457
+Recall 0.6748
+Precisión 0.3820
+Accuracy 0.6865
+Tiempo 1 h 13 min"><b>✓ 0.488</b><small>1 h 13 min</small></td><td class="hecha" style="background:#256abf;color:#ffffff" title="KNN / ADASYN / Genética
+F1 0.4891 ± 0.0046
+AUC 0.7474
+Recall 0.6744
+Precisión 0.3838
+Accuracy 0.6883
+Tiempo 33 min 17 s"><b>✓ 0.489</b><small>33 min 17 s</small></td></tr><tr><th scope="row">Pesos de clase</th><td class="hecha" style="background:#104281;color:#ffffff" title="KNN / Pesos de clase / Grid
+F1 0.5260 ± 0.0058
+AUC 0.7632
+Recall 0.6187
+Precisión 0.4575
+Accuracy 0.7532
+Tiempo 26 s"><b>✓ 0.526</b><small>26 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="KNN / Pesos de clase / Random
+F1 0.5265 ± 0.0050
+AUC 0.7609
+Recall 0.6228
+Precisión 0.4561
+Accuracy 0.7522
+Tiempo 33 s"><b>✓ 0.527</b><small>33 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="KNN / Pesos de clase / Bayesiana
+F1 0.5266 ± 0.0051
+AUC 0.7622
+Recall 0.6170
+Precisión 0.4593
+Accuracy 0.7545
+Tiempo 30 min 13 s"><b>✓ 0.527</b><small>30 min 13 s</small></td><td class="hecha" style="background:#184f95;color:#ffffff" title="KNN / Pesos de clase / Genética
+F1 0.5238 ± 0.0039
+AUC 0.7623
+Recall 0.6151
+Precisión 0.4562
+Accuracy 0.7525
+Tiempo 1 h 06 min"><b>✓ 0.524</b><small>1 h 06 min</small></td></tr></table></section><section class="modelo"><h3>SVM <span class="sub">16 / 16 · Colab (GPU)</span></h3><table><tr><th></th><th>Grid</th><th>Random</th><th>Bayesiana</th><th>Genética</th></tr><tr><th scope="row">Sin balanceo</th><td class="hecha" style="background:#6da7ec;color:#0b0b0b" title="SVM / Sin balanceo / Grid
+F1 0.4395 ± 0.0012
+AUC 0.7199
+Recall 0.3220
+Precisión 0.6924
+Accuracy 0.8183
+Tiempo 4 min 00 s
+Corrido en Colab (GPU)"><b>✓ 0.440</b><small>4 min 00 s</small></td><td class="hecha" style="background:#6da7ec;color:#0b0b0b" title="SVM / Sin balanceo / Random
+F1 0.4365 ± 0.0081
+AUC 0.7214
+Recall 0.3199
+Precisión 0.6872
+Accuracy 0.8173
+Tiempo 4 min 24 s
+Corrido en Colab (GPU)"><b>✓ 0.436</b><small>4 min 24 s</small></td><td class="hecha" style="background:#6da7ec;color:#0b0b0b" title="SVM / Sin balanceo / Bayesiana
+F1 0.4378 ± 0.0016
+AUC 0.7198
+Recall 0.3204
+Precisión 0.6917
+Accuracy 0.8180
+Tiempo 8 min 23 s
+Corrido en Colab (GPU)"><b>✓ 0.438</b><small>8 min 23 s</small></td><td class="hecha" style="background:#6da7ec;color:#0b0b0b" title="SVM / Sin balanceo / Genética
+F1 0.4390 ± 0.0051
+AUC 0.7207
+Recall 0.3207
+Precisión 0.6959
+Accuracy 0.8187
+Tiempo 37 min 15 s
+Corrido en Colab (GPU)"><b>✓ 0.439</b><small>37 min 15 s</small></td></tr><tr><th scope="row">SMOTE</th><td class="hecha" style="background:#104281;color:#ffffff" title="SVM / SMOTE / Grid
+F1 0.5379 ± 0.0058
+AUC 0.7620
+Recall 0.6202
+Precisión 0.4756
+Accuracy 0.7642
+Tiempo 4 min 39 s
+Corrido en Colab (GPU)"><b>✓ 0.538</b><small>4 min 39 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="SVM / SMOTE / Random
+F1 0.5368 ± 0.0056
+AUC 0.7662
+Recall 0.6256
+Precisión 0.4706
+Accuracy 0.7611
+Tiempo 4 min 39 s
+Corrido en Colab (GPU)"><b>✓ 0.537</b><small>4 min 39 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="SVM / SMOTE / Bayesiana
+F1 0.5383 ± 0.0053
+AUC 0.7623
+Recall 0.6172
+Precisión 0.4775
+Accuracy 0.7657
+Tiempo 8 min 31 s
+Corrido en Colab (GPU)"><b>✓ 0.538</b><small>8 min 31 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="SVM / SMOTE / Genética
+F1 0.5374 ± 0.0049
+AUC 0.7632
+Recall 0.6172
+Precisión 0.4763
+Accuracy 0.7648
+Tiempo 37 min 03 s
+Corrido en Colab (GPU)"><b>✓ 0.537</b><small>37 min 03 s</small></td></tr><tr><th scope="row">ADASYN</th><td class="hecha" style="background:#104281;color:#ffffff" title="SVM / ADASYN / Grid
+F1 0.5290 ± 0.0058
+AUC 0.7633
+Recall 0.6558
+Precisión 0.4437
+Accuracy 0.7416
+Tiempo 4 min 46 s
+Corrido en Colab (GPU)"><b>✓ 0.529</b><small>4 min 46 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="SVM / ADASYN / Random
+F1 0.5295 ± 0.0058
+AUC 0.7642
+Recall 0.6526
+Precisión 0.4455
+Accuracy 0.7433
+Tiempo 4 min 50 s
+Corrido en Colab (GPU)"><b>✓ 0.530</b><small>4 min 50 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="SVM / ADASYN / Bayesiana
+F1 0.5298 ± 0.0066
+AUC 0.7626
+Recall 0.6465
+Precisión 0.4489
+Accuracy 0.7461
+Tiempo 8 min 12 s
+Corrido en Colab (GPU)"><b>✓ 0.530</b><small>8 min 12 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="SVM / ADASYN / Genética
+F1 0.5295 ± 0.0074
+AUC 0.7659
+Recall 0.6599
+Precisión 0.4426
+Accuracy 0.7404
+Tiempo 33 min 31 s
+Corrido en Colab (GPU)"><b>✓ 0.529</b><small>33 min 31 s</small></td></tr><tr><th scope="row">Pesos de clase</th><td class="hecha" style="background:#104281;color:#ffffff" title="SVM / Pesos de clase / Grid
+F1 0.5383 ± 0.0047
+AUC 0.7640
+Recall 0.6228
+Precisión 0.4745
+Accuracy 0.7637
+Tiempo 3 min 40 s
+Corrido en Colab (GPU)"><b>✓ 0.538</b><small>3 min 40 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="SVM / Pesos de clase / Random
+F1 0.5372 ± 0.0043
+AUC 0.7638
+Recall 0.6173
+Precisión 0.4757
+Accuracy 0.7647
+Tiempo 3 min 59 s
+Corrido en Colab (GPU)"><b>✓ 0.537</b><small>3 min 59 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="SVM / Pesos de clase / Bayesiana
+F1 0.5384 ± 0.0059
+AUC 0.7639
+Recall 0.6228
+Precisión 0.4745
+Accuracy 0.7638
+Tiempo 6 min 53 s
+Corrido en Colab (GPU)"><b>✓ 0.538</b><small>6 min 53 s</small></td><td class="hecha" style="background:#104281;color:#ffffff" title="SVM / Pesos de clase / Genética
+F1 0.5385 ± 0.0052
+AUC 0.7635
+Recall 0.6214
+Precisión 0.4753
+Accuracy 0.7644
+Tiempo 32 min 24 s
+Corrido en Colab (GPU)"><b>✓ 0.539</b><small>32 min 24 s</small></td></tr></table></section></div>
+<h2>Últimas terminadas</h2><table class='ult'><tr><th>Modelo</th><th>Técnica</th><th>Método</th><th>F1</th><th>AUC</th><th>Tiempo</th></tr><tr><td>KNN</td><td>Pesos de clase</td><td>Genética</td><td class='num'>0.524</td><td class='num'>0.762</td><td class='num'>1 h 06 min</td></tr><tr><td>KNN</td><td>Pesos de clase</td><td>Bayesiana</td><td class='num'>0.527</td><td class='num'>0.762</td><td class='num'>30 min 13 s</td></tr><tr><td>KNN</td><td>Pesos de clase</td><td>Random</td><td class='num'>0.527</td><td class='num'>0.761</td><td class='num'>33 s</td></tr><tr><td>KNN</td><td>Pesos de clase</td><td>Grid</td><td class='num'>0.526</td><td class='num'>0.763</td><td class='num'>26 s</td></tr><tr><td>KNN</td><td>ADASYN</td><td>Genética</td><td class='num'>0.489</td><td class='num'>0.747</td><td class='num'>33 min 17 s</td></tr><tr><td>KNN</td><td>ADASYN</td><td>Bayesiana</td><td class='num'>0.488</td><td class='num'>0.746</td><td class='num'>1 h 13 min</td></tr><tr><td>KNN</td><td>ADASYN</td><td>Random</td><td class='num'>0.486</td><td class='num'>0.744</td><td class='num'>55 s</td></tr><tr><td>KNN</td><td>ADASYN</td><td>Grid</td><td class='num'>0.488</td><td class='num'>0.746</td><td class='num'>41 s</td></tr></table>
+<p class="nota">La combinación «en curso» se deduce como la primera pendiente en el orden de ejecución. El tiempo restante es una estimación basada en la corrida anterior escalada por la velocidad observada; los modelos de árboles y XGBoost suelen aprovechar mejor el paralelismo, así que puede cambiar mucho al llegar a ellos. SVM se corrió aparte en Colab con GPU (sus tiempos no son comparables con los locales); la estimación de tiempo restante solo cuenta los modelos locales.</p>
+</main></body></html>
