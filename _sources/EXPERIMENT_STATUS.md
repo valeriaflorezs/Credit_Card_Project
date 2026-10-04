@@ -4,7 +4,9 @@
 
 > **Nota (2026-10-03): el dataset cambió.** Todo lo que sigue se corrió con la versión anterior de `data/processed/dataset_final.csv` (respaldada en `data/processed/dataset_final_v1_antes_de_resolver_eda.csv`: con las seis `BILL_AMT` por separado y sin transformaciones log; los duplicados se quitaban al cargar, en el notebook). La versión actual resuelve todos los hallazgos del EDA (ver Parte 5 de `notebooks/00_eda.ipynb` y el README): 29,965 filas × 21 columnas, `BILL_AMT1-6` resumidas en 3 variables, `LIMIT_BAL`/`PAY_AMT*` en log. Las 99 filas de `results/experiments_master.csv` son, por tanto, de otro dataset y no son comparables con una corrida nueva.
 
-## 1. Progreso: 100/112 combinaciones guardadas — `svm/none/genetic_deap` terminó OK (2026-09-23 ~17:07) con el fix de threading, 15645.8s (~4h21min)
+> **Corrida v2 (2026-10-03, ~08:19):** se archivó la tabla anterior en `results/experiments_master_v1_dataset_anterior.csv` y se relanzó `04_run_experiments.ipynb` sobre el dataset nuevo con **6 modelos (todos menos SVM) × 4 técnicas × 4 métodos = 96 combinaciones**, empezando `results/experiments_master.csv` desde cero. El lanzador `logs/run_04_v2.sh` reintenta si el proceso muere (hasta 6 veces; `resume=True` salta lo ya guardado) y escribe `logs/04_v2_lanzador.log` y `logs/04_v2_intentoN.log`. SVM (16 combinaciones) va aparte en Colab con GPU (`notebooks/07_svm_gpu_colab.ipynb`, ya ajustado al dataset nuevo). Cambio de entorno: `deap==1.4.3` (la 1.4.4 depende de `moocore`, cuyo archivo compilado bloquea Windows); mismos operadores genéticos.
+
+## 1. Progreso (corrida anterior, dataset v1): 100/112 combinaciones guardadas — `svm/none/genetic_deap` terminó OK (2026-09-23 ~17:07) con el fix de threading, 15645.8s (~4h21min)
 
 Archivo de resultados: `results/experiments_master.csv` (checkpoint incremental, una fila por combinación terminada).
 

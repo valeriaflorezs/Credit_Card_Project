@@ -1,12 +1,13 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>05. Análisis de resultados &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
   
@@ -16,82 +17,86 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
-  <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../_static/copybutton.js?v=f281be69"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js?v=f930bc37"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/05_results_analysis';</script>
-    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="06. Interpretabilidad (SHAP y LIME)" href="06_interpretability.html" />
     <link rel="prev" title="04. Ejecutar experimentos" href="04_run_experiments.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
-  
-    
-    <script src="../_static/searchtools.js"></script>
-    <script src="../_static/language_data.js"></script>
-    <script src="../searchindex.js"></script>
-  
   </head>
-  <body data-default-mode="">
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
-
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
   
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  
-  <dialog id="pst-search-dialog">
-    
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -99,6 +104,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -106,59 +112,15 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
-<div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
-    <span class="fa-solid fa-bars"></span>
-  </button>
-  
-  
-  <div class="col-lg-9 navbar-header-items">
-    
-    
-    <div class="navbar-header-items__end">
-      
-        <div class="navbar-item navbar-persistent--container">
-          
-
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button>
-        </div>
-      
-      
-    </div>
-    
-  </div>
-  
-  
-    <div class="navbar-persistent--mobile">
-
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button>
-    </div>
-  
-
-  
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
-      <span class="fa-solid fa-outdent"></span>
-    </button>
-  
-</div>
-
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
     </header>
   
 
@@ -167,8 +129,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -196,14 +157,7 @@
     <p class="title logo__title">Default of Credit Card Clients — Pipeline de Clasificación</p>
   
 </a></div>
-        <div class="sidebar-primary-item">
-
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -229,14 +183,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -255,9 +204,9 @@
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</button></div>
+</label></div>
       
     </div>
   
@@ -319,7 +268,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  class="btn btn-sm btn-fullscreen-button"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -333,19 +282,27 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</button>
+</label>
 </div></div>
       
     </div>
@@ -365,7 +322,7 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="pst-show_toc_level nav section-nav flex-column">
+                <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos-y-tabla-maestra">Cargar datos y tabla maestra</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-metricas-media-desviacion-estandar-outer-loop">Tabla de métricas (media ± desviación estándar, outer loop)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cobertura-de-la-grilla-112-combinaciones-teoricas">Cobertura de la grilla: 112 combinaciones teóricas</a></li>
@@ -385,14 +342,14 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="analisis-de-resultados">
-<h1>05. Análisis de resultados<a class="headerlink" href="#analisis-de-resultados" title="Link to this heading">#</a></h1>
+<h1>05. Análisis de resultados<a class="headerlink" href="#analisis-de-resultados" title="Permalink to this heading">#</a></h1>
 <p>Trabaja <strong>directamente desde <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code></strong>, pensado para correrse en una sesión nueva, después de que <code class="docutils literal notranslate"><span class="pre">04_run_experiments.ipynb</span></code> ya guardó y cerró (o incluso en otra máquina). Nada de esto depende de tener los objetos <code class="docutils literal notranslate"><span class="pre">NestedCVResult</span></code> en memoria: las columnas <code class="docutils literal notranslate"><span class="pre">&quot;{metrica}_per_fold&quot;</span></code> y <code class="docutils literal notranslate"><span class="pre">&quot;best_params_per_fold&quot;</span></code> que <code class="docutils literal notranslate"><span class="pre">nested_cv.py</span></code> persiste alcanzan para reconstruir todo lo necesario.</p>
 <p>Contenido: tabla de métricas, comparación estadística jerárquica (Friedman → Nemenyi → CD diagram → DeLong → Cliff’s Delta), matriz de confusión/curva ROC del mejor modelo, calibración (+ recalibración si corresponde), y complejidad computacional (estándar vs. optimizado).</p>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -432,13 +389,13 @@
 </details>
 </div>
 <section id="cargar-datos-y-tabla-maestra">
-<h2>Cargar datos y tabla maestra<a class="headerlink" href="#cargar-datos-y-tabla-maestra" title="Link to this heading">#</a></h2>
+<h2>Cargar datos y tabla maestra<a class="headerlink" href="#cargar-datos-y-tabla-maestra" title="Permalink to this heading">#</a></h2>
 <p><strong>Importante:</strong> debe ser el MISMO dataset (mismas filas, mismo orden) usado en <code class="docutils literal notranslate"><span class="pre">04_run_experiments.ipynb</span></code>; se necesita para reconstruir los folds exactos (<code class="docutils literal notranslate"><span class="pre">complexity_analysis.recover_outer_fold</span></code>) al regenerar predicciones para DeLong/matriz de confusión/calibración/complejidad.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
@@ -450,8 +407,8 @@
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">load_master_table</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">EXPERIMENTS_MASTER_PATH</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"La tabla maestra está vacía. Correr primero 04_run_experiments.ipynb."</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones en la tabla maestra."</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;La tabla maestra está vacía. Correr primero 04_run_experiments.ipynb.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones en la tabla maestra.&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -464,16 +421,16 @@
 </div>
 </section>
 <section id="tabla-de-metricas-media-desviacion-estandar-outer-loop">
-<h2>Tabla de métricas (media ± desviación estándar, outer loop)<a class="headerlink" href="#tabla-de-metricas-media-desviacion-estandar-outer-loop" title="Link to this heading">#</a></h2>
+<h2>Tabla de métricas (media ± desviación estándar, outer loop)<a class="headerlink" href="#tabla-de-metricas-media-desviacion-estandar-outer-loop" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metric_for_ranking</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_SCORING</span>
-<span class="n">table_sorted</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">table_sorted</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">format_metrics_table</span><span class="p">(</span><span class="n">table_sorted</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -570,13 +527,13 @@
 </div>
 </section>
 <section id="cobertura-de-la-grilla-112-combinaciones-teoricas">
-<h2>Cobertura de la grilla: 112 combinaciones teóricas<a class="headerlink" href="#cobertura-de-la-grilla-112-combinaciones-teoricas" title="Link to this heading">#</a></h2>
+<h2>Cobertura de la grilla: 112 combinaciones teóricas<a class="headerlink" href="#cobertura-de-la-grilla-112-combinaciones-teoricas" title="Permalink to this heading">#</a></h2>
 <p>7 modelos × 4 técnicas de balanceo × 4 métodos de optimización = 112 combinaciones teóricas. De esas, 8 no son aplicables porque KNN y Naive Bayes no aceptan <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> en scikit-learn (<code class="docutils literal notranslate"><span class="pre">KNeighborsClassifier</span></code> y <code class="docutils literal notranslate"><span class="pre">GaussianNB</span></code> no tienen ese parámetro; ver <code class="docutils literal notranslate"><span class="pre">src/models.py</span></code> y <code class="docutils literal notranslate"><span class="pre">src/balancing.py</span></code>). Quedan 104 combinaciones corridas realmente. La tabla siguiente muestra las 112 filas para que la cobertura quede documentada explícitamente, en vez de simplemente omitir las 8 no aplicables.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -589,20 +546,20 @@
     <span class="k">for</span> <span class="n">technique</span> <span class="ow">in</span> <span class="n">BALANCING_TECHNIQUES</span>
     <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">OPTIMIZATION_METHODS</span>
 <span class="p">]</span>
-<span class="n">reporte_112</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">filas_teoricas</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"model"</span><span class="p">,</span> <span class="s2">"technique"</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">,</span> <span class="s2">"compatible"</span><span class="p">])</span>
+<span class="n">reporte_112</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">filas_teoricas</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;technique&quot;</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="s2">&quot;compatible&quot;</span><span class="p">])</span>
 <span class="n">reporte_112</span> <span class="o">=</span> <span class="n">reporte_112</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
-    <span class="n">table</span><span class="p">[[</span><span class="s2">"model"</span><span class="p">,</span> <span class="s2">"technique"</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean"</span><span class="p">]],</span>
-    <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">"model"</span><span class="p">,</span> <span class="s2">"technique"</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span>
+    <span class="n">table</span><span class="p">[[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;technique&quot;</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean&quot;</span><span class="p">]],</span>
+    <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;technique&quot;</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">reporte_112</span><span class="p">[</span><span class="s2">"estado"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
-    <span class="o">~</span><span class="n">reporte_112</span><span class="p">[</span><span class="s2">"compatible"</span><span class="p">],</span>
-    <span class="s2">"No aplica (sklearn no admite class_weight para este modelo)"</span><span class="p">,</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">reporte_112</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean"</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">(),</span> <span class="s2">"Corrida"</span><span class="p">,</span> <span class="s2">"Pendiente"</span><span class="p">),</span>
+<span class="n">reporte_112</span><span class="p">[</span><span class="s2">&quot;estado&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+    <span class="o">~</span><span class="n">reporte_112</span><span class="p">[</span><span class="s2">&quot;compatible&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;No aplica (sklearn no admite class_weight para este modelo)&quot;</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">reporte_112</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">(),</span> <span class="s2">&quot;Corrida&quot;</span><span class="p">,</span> <span class="s2">&quot;Pendiente&quot;</span><span class="p">),</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total de combinaciones teóricas: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">reporte_112</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">reporte_112</span><span class="p">[</span><span class="s2">"estado"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
-<span class="n">reporte_112</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">"compatible"</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">"estado"</span><span class="p">,</span> <span class="s2">"model"</span><span class="p">,</span> <span class="s2">"technique"</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total de combinaciones teóricas: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">reporte_112</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reporte_112</span><span class="p">[</span><span class="s2">&quot;estado&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
+<span class="n">reporte_112</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;compatible&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">&quot;estado&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;technique&quot;</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -610,26 +567,26 @@
 </div>
 </section>
 <section id="comparacion-estadistica-jerarquica">
-<h2>Comparación estadística jerárquica<a class="headerlink" href="#comparacion-estadistica-jerarquica" title="Link to this heading">#</a></h2>
+<h2>Comparación estadística jerárquica<a class="headerlink" href="#comparacion-estadistica-jerarquica" title="Permalink to this heading">#</a></h2>
 <p>Friedman (ómnibus) → solo si es significativo: Nemenyi + CD diagram + DeLong (top 2-3, con corrección Holm) + Cliff’s Delta. Ver <code class="docutils literal notranslate"><span class="pre">stats_comparison.py</span></code> para la justificación completa de por qué es jerárquico y la limitación honesta de potencia estadística con pocos folds externos.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">comparison</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">run_hierarchical_comparison_from_table</span><span class="p">(</span>
     <span class="n">table</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">metric_for_ranking</span><span class="p">,</span> <span class="n">top_k_for_delong</span><span class="o">=</span><span class="mi">3</span>
 <span class="p">)</span>
 
-<span class="n">friedman</span> <span class="o">=</span> <span class="n">comparison</span><span class="p">[</span><span class="s2">"friedman"</span><span class="p">]</span>
+<span class="n">friedman</span> <span class="o">=</span> <span class="n">comparison</span><span class="p">[</span><span class="s2">&quot;friedman&quot;</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span>
-    <span class="sa">f</span><span class="s2">"Friedman: estadístico=</span><span class="si">{</span><span class="n">friedman</span><span class="p">[</span><span class="s1">'statistic'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, p=</span><span class="si">{</span><span class="n">friedman</span><span class="p">[</span><span class="s1">'p_value'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, "</span>
-    <span class="sa">f</span><span class="s2">"significativo=</span><span class="si">{</span><span class="n">friedman</span><span class="p">[</span><span class="s1">'significant'</span><span class="p">]</span><span class="si">}</span><span class="s2"> (alpha=</span><span class="si">{</span><span class="n">friedman</span><span class="p">[</span><span class="s1">'alpha'</span><span class="p">]</span><span class="si">}</span><span class="s2">, "</span>
-    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">friedman</span><span class="p">[</span><span class="s1">'n_blocks'</span><span class="p">]</span><span class="si">}</span><span class="s2"> folds, </span><span class="si">{</span><span class="n">friedman</span><span class="p">[</span><span class="s1">'k_combinations'</span><span class="p">]</span><span class="si">}</span><span class="s2"> combinaciones)"</span>
+    <span class="sa">f</span><span class="s2">&quot;Friedman: estadístico=</span><span class="si">{</span><span class="n">friedman</span><span class="p">[</span><span class="s1">&#39;statistic&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, p=</span><span class="si">{</span><span class="n">friedman</span><span class="p">[</span><span class="s1">&#39;p_value&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;significativo=</span><span class="si">{</span><span class="n">friedman</span><span class="p">[</span><span class="s1">&#39;significant&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (alpha=</span><span class="si">{</span><span class="n">friedman</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">friedman</span><span class="p">[</span><span class="s1">&#39;n_blocks&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> folds, </span><span class="si">{</span><span class="n">friedman</span><span class="p">[</span><span class="s1">&#39;k_combinations&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> combinaciones)&quot;</span>
 <span class="p">)</span>
-<span class="n">friedman</span><span class="p">[</span><span class="s2">"avg_ranks"</span><span class="p">]</span>
+<span class="n">friedman</span><span class="p">[</span><span class="s2">&quot;avg_ranks&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -649,27 +606,27 @@ dtype: float64
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">comparison</span><span class="p">[</span><span class="s2">"friedman"</span><span class="p">][</span><span class="s2">"significant"</span><span class="p">]:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">comparison</span><span class="p">[</span><span class="s2">&quot;friedman&quot;</span><span class="p">][</span><span class="s2">&quot;significant&quot;</span><span class="p">]:</span>
     <span class="n">sc</span><span class="o">.</span><span class="n">plot_cd_diagram</span><span class="p">(</span>
-        <span class="n">comparison</span><span class="p">[</span><span class="s2">"friedman"</span><span class="p">][</span><span class="s2">"avg_ranks"</span><span class="p">],</span>
-        <span class="n">comparison</span><span class="p">[</span><span class="s2">"nemenyi_p_matrix"</span><span class="p">],</span>
-        <span class="n">cd</span><span class="o">=</span><span class="n">comparison</span><span class="p">[</span><span class="s2">"critical_difference"</span><span class="p">],</span>
-        <span class="n">save_path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">FIGURES_DIR</span> <span class="o">/</span> <span class="s2">"cd_diagram.png"</span><span class="p">),</span>
+        <span class="n">comparison</span><span class="p">[</span><span class="s2">&quot;friedman&quot;</span><span class="p">][</span><span class="s2">&quot;avg_ranks&quot;</span><span class="p">],</span>
+        <span class="n">comparison</span><span class="p">[</span><span class="s2">&quot;nemenyi_p_matrix&quot;</span><span class="p">],</span>
+        <span class="n">cd</span><span class="o">=</span><span class="n">comparison</span><span class="p">[</span><span class="s2">&quot;critical_difference&quot;</span><span class="p">],</span>
+        <span class="n">save_path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">FIGURES_DIR</span> <span class="o">/</span> <span class="s2">&quot;cd_diagram.png&quot;</span><span class="p">),</span>
     <span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Diferencia Crítica (CD): </span><span class="si">{</span><span class="n">comparison</span><span class="p">[</span><span class="s1">'critical_difference'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Top-</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">comparison</span><span class="p">[</span><span class="s1">'top_combos'</span><span class="p">])</span><span class="si">}</span><span class="s2"> para DeLong: </span><span class="si">{</span><span class="n">comparison</span><span class="p">[</span><span class="s1">'top_combos'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">DeLong (pares dentro del top, corrección Holm):"</span><span class="p">)</span>
-    <span class="n">display</span><span class="p">(</span><span class="n">comparison</span><span class="p">[</span><span class="s2">"delong_comparisons"</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Cliff's Delta (tamaño del efecto, ver limitación de N_OUTER_FOLDS pequeño en el docstring):"</span><span class="p">)</span>
-    <span class="n">display</span><span class="p">(</span><span class="n">comparison</span><span class="p">[</span><span class="s2">"cliffs_delta"</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Diferencia Crítica (CD): </span><span class="si">{</span><span class="n">comparison</span><span class="p">[</span><span class="s1">&#39;critical_difference&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Top-</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">comparison</span><span class="p">[</span><span class="s1">&#39;top_combos&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> para DeLong: </span><span class="si">{</span><span class="n">comparison</span><span class="p">[</span><span class="s1">&#39;top_combos&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">DeLong (pares dentro del top, corrección Holm):&quot;</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">comparison</span><span class="p">[</span><span class="s2">&quot;delong_comparisons&quot;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Cliff&#39;s Delta (tamaño del efecto, ver limitación de N_OUTER_FOLDS pequeño en el docstring):&quot;</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">comparison</span><span class="p">[</span><span class="s2">&quot;cliffs_delta&quot;</span><span class="p">])</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">comparison</span><span class="p">[</span><span class="s2">"stage_2_note"</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">comparison</span><span class="p">[</span><span class="s2">&quot;stage_2_note&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -682,21 +639,21 @@ dtype: float64
 </div>
 </section>
 <section id="mejor-combinacion-matriz-de-confusion-y-curva-roc">
-<h2>Mejor combinación: matriz de confusión y curva ROC<a class="headerlink" href="#mejor-combinacion-matriz-de-confusion-y-curva-roc" title="Link to this heading">#</a></h2>
+<h2>Mejor combinación: matriz de confusión y curva ROC<a class="headerlink" href="#mejor-combinacion-matriz-de-confusion-y-curva-roc" title="Permalink to this heading">#</a></h2>
 <p>Predicciones out-of-fold <strong>regeneradas</strong> desde <code class="docutils literal notranslate"><span class="pre">best_params_per_fold</span></code> (ya conocidos, un <code class="docutils literal notranslate"><span class="pre">fit</span></code> por fold, no una búsqueda de hiperparámetros nueva) vía <code class="docutils literal notranslate"><span class="pre">evaluation.regenerate_outof_fold_predictions</span></code>.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">best_model</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">"model"</span><span class="p">]</span>
-<span class="n">best_technique</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">"technique"</span><span class="p">]</span>
-<span class="n">best_method</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">"method"</span><span class="p">]</span>
-<span class="n">best_params_per_fold</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">"best_params_per_fold"</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mejor combinación según </span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">best_technique</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">best_method</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">best_model</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span>
+<span class="n">best_technique</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;technique&quot;</span><span class="p">]</span>
+<span class="n">best_method</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span>
+<span class="n">best_params_per_fold</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;best_params_per_fold&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mejor combinación según </span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">best_technique</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">best_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">y_true_best</span><span class="p">,</span> <span class="n">y_pred_best</span><span class="p">,</span> <span class="n">y_proba_best</span> <span class="o">=</span> <span class="n">regenerate_outof_fold_predictions</span><span class="p">(</span>
     <span class="n">MODEL_REGISTRY</span><span class="p">[</span><span class="n">best_model</span><span class="p">],</span>
@@ -704,8 +661,8 @@ dtype: float64
     <span class="n">best_params_per_fold</span><span class="p">,</span>
     <span class="n">X</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
-    <span class="n">n_outer_folds</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">"n_outer_folds"</span><span class="p">]),</span>
-    <span class="n">random_state</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">"random_state"</span><span class="p">]),</span>
+    <span class="n">n_outer_folds</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;n_outer_folds&quot;</span><span class="p">]),</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;random_state&quot;</span><span class="p">]),</span>
 <span class="p">)</span>
 
 <span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true_best</span><span class="p">,</span> <span class="n">y_pred_best</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
@@ -713,19 +670,19 @@ dtype: float64
 <span class="n">auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_true_best</span><span class="p">,</span> <span class="n">y_proba_best</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"Blues"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndenumerate</span><span class="p">(</span><span class="n">cm</span><span class="p">):</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">ha</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">"center"</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s2">"Pred 0"</span><span class="p">,</span> <span class="s2">"Pred 1"</span><span class="p">]);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="s2">"Real 0"</span><span class="p">,</span> <span class="s2">"Real 1"</span><span class="p">])</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Matriz de confusión (out-of-fold)"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s2">&quot;Pred 0&quot;</span><span class="p">,</span> <span class="s2">&quot;Pred 1&quot;</span><span class="p">]);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="s2">&quot;Real 0&quot;</span><span class="p">,</span> <span class="s2">&quot;Real 1&quot;</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Matriz de confusión (out-of-fold)&quot;</span><span class="p">)</span>
 
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"AUC=</span><span class="si">{</span><span class="n">auc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"FPR"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"TPR"</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Curva ROC"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;AUC=</span><span class="si">{</span><span class="n">auc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;FPR&quot;</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;TPR&quot;</span><span class="p">);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Curva ROC&quot;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">FIGURES_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"confusion_roc_</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">FIGURES_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;confusion_roc_</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -740,32 +697,32 @@ dtype: float64
 </div>
 </section>
 <section id="calibracion-brier-ece-reliability-diagram-recalibracion-si-corresponde">
-<h2>Calibración: Brier, ECE, reliability diagram (+ recalibración si corresponde)<a class="headerlink" href="#calibracion-brier-ece-reliability-diagram-recalibracion-si-corresponde" title="Link to this heading">#</a></h2>
+<h2>Calibración: Brier, ECE, reliability diagram (+ recalibración si corresponde)<a class="headerlink" href="#calibracion-brier-ece-reliability-diagram-recalibracion-si-corresponde" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calib</span> <span class="o">=</span> <span class="n">evaluate_calibration</span><span class="p">(</span><span class="n">y_true_best</span><span class="p">,</span> <span class="n">y_proba_best</span><span class="p">,</span> <span class="n">n_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span>
-    <span class="sa">f</span><span class="s2">"Brier: </span><span class="si">{</span><span class="n">calib</span><span class="p">[</span><span class="s1">'brier_score'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  ECE: </span><span class="si">{</span><span class="n">calib</span><span class="p">[</span><span class="s1">'ece'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  "</span>
-    <span class="sa">f</span><span class="s2">"(calibración deficiente: </span><span class="si">{</span><span class="n">is_calibration_poor</span><span class="p">(</span><span class="n">calib</span><span class="p">[</span><span class="s1">'ece'</span><span class="p">])</span><span class="si">}</span><span class="s2">)"</span>
+    <span class="sa">f</span><span class="s2">&quot;Brier: </span><span class="si">{</span><span class="n">calib</span><span class="p">[</span><span class="s1">&#39;brier_score&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  ECE: </span><span class="si">{</span><span class="n">calib</span><span class="p">[</span><span class="s1">&#39;ece&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;(calibración deficiente: </span><span class="si">{</span><span class="n">is_calibration_poor</span><span class="p">(</span><span class="n">calib</span><span class="p">[</span><span class="s1">&#39;ece&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">)&quot;</span>
 <span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">calib</span><span class="p">[</span><span class="s2">"reliability_curve"</span><span class="p">][</span><span class="s2">"prob_pred"</span><span class="p">],</span> <span class="n">calib</span><span class="p">[</span><span class="s2">"reliability_curve"</span><span class="p">][</span><span class="s2">"prob_true"</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Modelo"</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"gray"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Calibración perfecta"</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Probabilidad predicha"</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Frecuencia observada"</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Reliability diagram: </span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">FIGURES_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"reliability_</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">calib</span><span class="p">[</span><span class="s2">&quot;reliability_curve&quot;</span><span class="p">][</span><span class="s2">&quot;prob_pred&quot;</span><span class="p">],</span> <span class="n">calib</span><span class="p">[</span><span class="s2">&quot;reliability_curve&quot;</span><span class="p">][</span><span class="s2">&quot;prob_true&quot;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Modelo&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Calibración perfecta&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Probabilidad predicha&quot;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frecuencia observada&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reliability diagram: </span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">FIGURES_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;reliability_</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-<span class="n">per_fold_metric</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_per_fold"</span><span class="p">])</span>
+<span class="n">per_fold_metric</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_per_fold&quot;</span><span class="p">])</span>
 <span class="n">best_fold_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">per_fold_metric</span><span class="p">))</span>
 
-<span class="k">if</span> <span class="n">is_calibration_poor</span><span class="p">(</span><span class="n">calib</span><span class="p">[</span><span class="s2">"ece"</span><span class="p">]):</span>
+<span class="k">if</span> <span class="n">is_calibration_poor</span><span class="p">(</span><span class="n">calib</span><span class="p">[</span><span class="s2">&quot;ece&quot;</span><span class="p">]):</span>
     <span class="n">recal</span> <span class="o">=</span> <span class="n">assess_and_recalibrate</span><span class="p">(</span>
         <span class="n">MODEL_REGISTRY</span><span class="p">[</span><span class="n">best_model</span><span class="p">],</span>
         <span class="n">best_technique</span><span class="p">,</span>
@@ -773,16 +730,16 @@ dtype: float64
         <span class="n">X</span><span class="p">,</span>
         <span class="n">y</span><span class="p">,</span>
         <span class="n">best_fold_idx</span><span class="p">,</span>
-        <span class="n">method</span><span class="o">=</span><span class="s2">"isotonic"</span><span class="p">,</span>
-        <span class="n">n_outer_folds</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">"n_outer_folds"</span><span class="p">]),</span>
+        <span class="n">method</span><span class="o">=</span><span class="s2">&quot;isotonic&quot;</span><span class="p">,</span>
+        <span class="n">n_outer_folds</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;n_outer_folds&quot;</span><span class="p">]),</span>
     <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">"Recalibración (isotonic, fold </span><span class="si">{</span><span class="n">best_fold_idx</span><span class="si">}</span><span class="s2">): "</span>
-        <span class="sa">f</span><span class="s2">"ECE </span><span class="si">{</span><span class="n">recal</span><span class="p">[</span><span class="s1">'before'</span><span class="p">][</span><span class="s1">'ece'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">recal</span><span class="p">[</span><span class="s1">'after'</span><span class="p">][</span><span class="s1">'ece'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> "</span>
-        <span class="sa">f</span><span class="s2">"(mejora Brier: </span><span class="si">{</span><span class="n">recal</span><span class="p">[</span><span class="s1">'brier_improvement'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)"</span>
+        <span class="sa">f</span><span class="s2">&quot;Recalibración (isotonic, fold </span><span class="si">{</span><span class="n">best_fold_idx</span><span class="si">}</span><span class="s2">): &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;ECE </span><span class="si">{</span><span class="n">recal</span><span class="p">[</span><span class="s1">&#39;before&#39;</span><span class="p">][</span><span class="s1">&#39;ece&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">recal</span><span class="p">[</span><span class="s1">&#39;after&#39;</span><span class="p">][</span><span class="s1">&#39;ece&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;(mejora Brier: </span><span class="si">{</span><span class="n">recal</span><span class="p">[</span><span class="s1">&#39;brier_improvement&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)&quot;</span>
     <span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Calibración adecuada, no se aplica recalibración."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calibración adecuada, no se aplica recalibración.&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -799,12 +756,12 @@ dtype: float64
 </div>
 </section>
 <section id="complejidad-computacional-estandar-vs-optimizado">
-<h2>Complejidad computacional: estándar vs. optimizado<a class="headerlink" href="#complejidad-computacional-estandar-vs-optimizado" title="Link to this heading">#</a></h2>
+<h2>Complejidad computacional: estándar vs. optimizado<a class="headerlink" href="#complejidad-computacional-estandar-vs-optimizado" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">complexity_row</span> <span class="o">=</span> <span class="n">compare_standard_vs_optimized</span><span class="p">(</span>
@@ -814,25 +771,25 @@ dtype: float64
     <span class="n">X</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
     <span class="n">best_fold_idx</span><span class="p">,</span>
-    <span class="n">n_outer_folds</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">"n_outer_folds"</span><span class="p">]),</span>
+    <span class="n">n_outer_folds</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;n_outer_folds&quot;</span><span class="p">]),</span>
     <span class="n">scoring</span><span class="o">=</span><span class="n">metric_for_ranking</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Complejidad teórica (</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">):"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Train:      </span><span class="si">{</span><span class="n">TRAIN_INFERENCE_COMPLEXITY</span><span class="p">[</span><span class="n">best_model</span><span class="p">][</span><span class="s1">'train'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Inferencia: </span><span class="si">{</span><span class="n">TRAIN_INFERENCE_COMPLEXITY</span><span class="p">[</span><span class="n">best_model</span><span class="p">][</span><span class="s1">'inference'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Complejidad teórica (</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Train:      </span><span class="si">{</span><span class="n">TRAIN_INFERENCE_COMPLEXITY</span><span class="p">[</span><span class="n">best_model</span><span class="p">][</span><span class="s1">&#39;train&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Inferencia: </span><span class="si">{</span><span class="n">TRAIN_INFERENCE_COMPLEXITY</span><span class="p">[</span><span class="n">best_model</span><span class="p">][</span><span class="s1">&#39;inference&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">complexity_row</span><span class="p">])[</span>
     <span class="p">[</span>
-        <span class="s2">"standard_fit_time_seconds"</span><span class="p">,</span>
-        <span class="s2">"optimized_fit_time_seconds"</span><span class="p">,</span>
-        <span class="s2">"standard_fit_peak_memory_mb"</span><span class="p">,</span>
-        <span class="s2">"optimized_fit_peak_memory_mb"</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">"standard_</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">"optimized_</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
-        <span class="s2">"performance_change"</span><span class="p">,</span>
+        <span class="s2">&quot;standard_fit_time_seconds&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;optimized_fit_time_seconds&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;standard_fit_peak_memory_mb&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;optimized_fit_peak_memory_mb&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;standard_</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;optimized_</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;performance_change&quot;</span><span class="p">,</span>
     <span class="p">]</span>
 <span class="p">]</span>
 </pre></div>
@@ -946,17 +903,15 @@ dtype: float64
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item"><div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="pst-show_toc_level nav section-nav flex-column">
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos-y-tabla-maestra">Cargar datos y tabla maestra</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-metricas-media-desviacion-estandar-outer-loop">Tabla de métricas (media ± desviación estándar, outer loop)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cobertura-de-la-grilla-112-combinaciones-teoricas">Cobertura de la grilla: 112 combinaciones teóricas</a></li>
@@ -988,7 +943,7 @@ By Equipo del proyecto
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2022.
       <br/>
     
   </p>
@@ -1012,8 +967,8 @@ By Equipo del proyecto
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

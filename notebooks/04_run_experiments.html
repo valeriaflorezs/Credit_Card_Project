@@ -1,12 +1,13 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>04. Ejecutar experimentos &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
   
@@ -16,82 +17,86 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <!-- So that users can add custom icons -->
-  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
-  <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../_static/copybutton.js?v=f281be69"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js?v=f930bc37"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/04_run_experiments';</script>
-    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="05. Análisis de resultados" href="05_results_analysis.html" />
     <link rel="prev" title="03. Desarrollo y prueba del pipeline completo" href="03_pipeline_dev.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
-  
-    
-    <script src="../_static/searchtools.js"></script>
-    <script src="../_static/language_data.js"></script>
-    <script src="../searchindex.js"></script>
-  
   </head>
-  <body data-default-mode="">
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
-
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
   
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  
-  <dialog id="pst-search-dialog">
-    
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -99,6 +104,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -106,59 +112,15 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
-<div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
-    <span class="fa-solid fa-bars"></span>
-  </button>
-  
-  
-  <div class="col-lg-9 navbar-header-items">
-    
-    
-    <div class="navbar-header-items__end">
-      
-        <div class="navbar-item navbar-persistent--container">
-          
-
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button>
-        </div>
-      
-      
-    </div>
-    
-  </div>
-  
-  
-    <div class="navbar-persistent--mobile">
-
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button>
-    </div>
-  
-
-  
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
-      <span class="fa-solid fa-outdent"></span>
-    </button>
-  
-</div>
-
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
     </header>
   
 
@@ -167,8 +129,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -196,14 +157,7 @@
     <p class="title logo__title">Default of Credit Card Clients — Pipeline de Clasificación</p>
   
 </a></div>
-        <div class="sidebar-primary-item">
-
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
-        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -229,14 +183,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -255,9 +204,9 @@
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</button></div>
+</label></div>
       
     </div>
   
@@ -319,7 +268,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  class="btn btn-sm btn-fullscreen-button"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -333,19 +282,27 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</button>
+</label>
 </div></div>
       
     </div>
@@ -365,7 +322,7 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="pst-show_toc_level nav section-nav flex-column">
+                <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos">Cargar datos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-de-la-corrida">Configuración de la corrida</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecutar-incremental-reanudable">Ejecutar (incremental, reanudable)</a></li>
@@ -382,14 +339,14 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="ejecutar-experimentos">
-<h1>04. Ejecutar experimentos<a class="headerlink" href="#ejecutar-experimentos" title="Link to this heading">#</a></h1>
+<h1>04. Ejecutar experimentos<a class="headerlink" href="#ejecutar-experimentos" title="Permalink to this heading">#</a></h1>
 <p>Corre el batch de combinaciones (modelo x tecnica de balanceo x metodo de optimizacion) via <code class="docutils literal notranslate"><span class="pre">experiment_runner.run_experiments()</span></code>, con registro <strong>incremental</strong> en <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>: cada combinacion se guarda apenas termina, y una corrida posterior con <code class="docutils literal notranslate"><span class="pre">resume=True</span></code> (default) omite las que ya estan en el CSV. Se puede interrumpir y continuar despues, o correr un subconjunto ahora (ej. modelos baratos en local) y el resto despues (ej. SVM/KNN en Colab).</p>
 <p><strong>Datos:</strong> el dataset real ya viene preprocesado desde el EDA (<code class="docutils literal notranslate"><span class="pre">00_eda.ipynb</span></code>, Parte 5): sin duplicados, con las categorias no oficiales reagrupadas, variables monetarias en log y el bloque <code class="docutils literal notranslate"><span class="pre">BILL_AMT</span></code> resumido. <code class="docutils literal notranslate"><span class="pre">TARGET_COLUMN</span></code>/<code class="docutils literal notranslate"><span class="pre">CATEGORICAL_COLUMNS</span></code> en <code class="docutils literal notranslate"><span class="pre">config.py</span></code> ya estan confirmados. La celda de carga igual vuelve a verificar duplicados (deberian ser 0) como red de seguridad.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -414,121 +371,123 @@
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\tqdm\auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div>
+</div>
+</div>
 </div>
 <section id="cargar-datos">
-<h2>Cargar datos<a class="headerlink" href="#cargar-datos" title="Link to this heading">#</a></h2>
+<h2>Cargar datos<a class="headerlink" href="#cargar-datos" title="Permalink to this heading">#</a></h2>
 <p>Usa el dataset real preprocesado en <code class="docutils literal notranslate"><span class="pre">data/processed/</span></code> (ver <code class="docutils literal notranslate"><span class="pre">config.PROCESSED_DATA_PATH</span></code>); si por alguna razon no existe, cae a datos sinteticos con la misma forma (util para probar el pipeline).</p>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">load_processed_dataset</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dataset real cargado: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset real cargado: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Dataset real aun no disponible, usando datos sinteticos para desarrollo/pruebas:"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dataset real aun no disponible, usando datos sinteticos para desarrollo/pruebas:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">generate_synthetic_dataset</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dataset sintetico generado: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset sintetico generado: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">df</span><span class="p">,</span> <span class="n">n_removed</span> <span class="o">=</span> <span class="n">remove_duplicate_rows</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Filas duplicadas eliminadas: </span><span class="si">{</span><span class="n">n_removed</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Filas duplicadas eliminadas: </span><span class="si">{</span><span class="n">n_removed</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">n_conflicts</span> <span class="o">=</span> <span class="n">check_label_conflicts</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">n_conflicts</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">"AVISO: </span><span class="si">{</span><span class="n">n_conflicts</span><span class="si">}</span><span class="s2"> grupos de filas con features identicas pero target distinto "</span>
-        <span class="s2">"(ruido irreducible del dataset, no se resuelve automaticamente)."</span>
+        <span class="sa">f</span><span class="s2">&quot;AVISO: </span><span class="si">{</span><span class="n">n_conflicts</span><span class="si">}</span><span class="s2"> grupos de filas con features identicas pero target distinto &quot;</span>
+        <span class="s2">&quot;(ruido irreducible del dataset, no se resuelve automaticamente).&quot;</span>
     <span class="p">)</span>
 
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">split_features_target</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"X: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, balance del target: </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;X: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, balance del target: </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset real aun no disponible, usando datos sinteticos para desarrollo/pruebas:
-  No se encontró el dataset procesado en C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\data\processed\dataset_final.csv. Usa src.synthetic_data.generate_synthetic_dataset() mientras llega el dataset final, o ajusta config.PROCESSED_DATA_PATH.
-Dataset sintetico generado: (5000, 21)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset real cargado: (29965, 21)
 Filas duplicadas eliminadas: 0
-X: (5000, 20), balance del target: {0: 0.7754, 1: 0.2246}
+AVISO: 21 grupos de filas con features identicas pero target distinto (ruido irreducible del dataset, no se resuelve automaticamente).
+X: (29965, 20), balance del target: {0: 0.7787, 1: 0.2213}
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="configuracion-de-la-corrida">
-<h2>Configuración de la corrida<a class="headerlink" href="#configuracion-de-la-corrida" title="Link to this heading">#</a></h2>
-<p>Corre la grilla completa: 7 modelos base × 4 técnicas de balanceo × 4 métodos de optimización, con los presupuestos reales definidos en <code class="docutils literal notranslate"><span class="pre">config.py</span></code> (<code class="docutils literal notranslate"><span class="pre">N_OUTER_FOLDS</span></code>, <code class="docutils literal notranslate"><span class="pre">N_INNER_FOLDS</span></code>, <code class="docutils literal notranslate"><span class="pre">RANDOM_SEARCH_ITER</span></code>, <code class="docutils literal notranslate"><span class="pre">OPTUNA_N_TRIALS</span></code>, <code class="docutils literal notranslate"><span class="pre">GA_POPULATION_SIZE</span></code>/<code class="docutils literal notranslate"><span class="pre">GA_N_GENERATIONS</span></code>). <code class="docutils literal notranslate"><span class="pre">get_all_combinations</span></code> filtra automáticamente las combinaciones (modelo, técnica) incompatibles: KNN y Naive Bayes no aceptan <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> en scikit-learn (<code class="docutils literal notranslate"><span class="pre">KNeighborsClassifier</span></code> y <code class="docutils literal notranslate"><span class="pre">GaussianNB</span></code> no tienen ese parámetro), así que de las 112 combinaciones teóricas quedan <strong>104 válidas</strong>; las 8 restantes (KNN/Naive Bayes × class_weight) se documentan como no aplicables en <code class="docutils literal notranslate"><span class="pre">05_results_analysis.ipynb</span></code> en vez de forzarse con una alternativa no equivalente. Ver <code class="docutils literal notranslate"><span class="pre">experiment_runner.MODEL_COST_ORDER</span></code> para el orden de ejecución (baratos primero).</p>
+<h2>Configuración de la corrida<a class="headerlink" href="#configuracion-de-la-corrida" title="Permalink to this heading">#</a></h2>
+<p>Corre <strong>6 de los 7 modelos base</strong> (todos menos SVM) × 4 técnicas de balanceo × 4 métodos de optimización, con los presupuestos reales definidos en <code class="docutils literal notranslate"><span class="pre">config.py</span></code> (<code class="docutils literal notranslate"><span class="pre">N_OUTER_FOLDS</span></code>, <code class="docutils literal notranslate"><span class="pre">N_INNER_FOLDS</span></code>, <code class="docutils literal notranslate"><span class="pre">RANDOM_SEARCH_ITER</span></code>, <code class="docutils literal notranslate"><span class="pre">OPTUNA_N_TRIALS</span></code>, <code class="docutils literal notranslate"><span class="pre">GA_POPULATION_SIZE</span></code>/<code class="docutils literal notranslate"><span class="pre">GA_N_GENERATIONS</span></code>). <strong>SVM se corre aparte, en Colab con GPU</strong> (<code class="docutils literal notranslate"><span class="pre">07_svm_gpu_colab.ipynb</span></code>), por su costo computacional (~90% del tiempo total de la corrida anterior); sus filas se agregan después a <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code> con el mismo esquema de columnas. Para correrlo localmente de todas formas, basta con quitar el filtro de <code class="docutils literal notranslate"><span class="pre">models</span></code> en la celda siguiente.</p>
+<p>KNN y Naive Bayes aceptan <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> mediante los wrappers <code class="docutils literal notranslate"><span class="pre">BalancedKNeighborsClassifier</span></code> y <code class="docutils literal notranslate"><span class="pre">BalancedGaussianNB</span></code> (ver <code class="docutils literal notranslate"><span class="pre">src/models.py</span></code>), así que las 4 técnicas aplican a los 7 modelos: 6 modelos × 16 = <strong>96 combinaciones</strong> en este notebook y 16 más de SVM en Colab (112 en total). <code class="docutils literal notranslate"><span class="pre">get_all_combinations</span></code> sigue filtrando automáticamente cualquier combinación (modelo, técnica) incompatible. Ver <code class="docutils literal notranslate"><span class="pre">experiment_runner.MODEL_COST_ORDER</span></code> para el orden de ejecución (baratos primero).</p>
+<p><strong>Dataset:</strong> <code class="docutils literal notranslate"><span class="pre">data/processed/dataset_final.csv</span></code> preprocesado en el EDA (versión del 2026-10-03). Los resultados de la versión anterior del dataset quedaron archivados en <code class="docutils literal notranslate"><span class="pre">results/experiments_master_v1_dataset_anterior.csv</span></code>.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">models</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># los 7 modelos base (los otros 6 ya estan 100% completos, resume=True los salta)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Todos los modelos menos SVM (se corre en Colab con GPU, ver 07_svm_gpu_colab.ipynb).</span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">spec</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">MODEL_REGISTRY</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;svm&quot;</span><span class="p">]</span>
 
-<span class="c1"># Reordenado (2026-09-23, ~presupuesto de 6h para las 12 combinaciones de</span>
-<span class="c1"># svm que faltan): class_weight primero (mas barato, no agranda el dataset</span>
-<span class="c1"># como smote/adasyn -- costo similar a la tecnica "none" ya medida:</span>
-<span class="c1"># grid=57min, random=64min, bayesian=65min), despues smote, despues adasyn.</span>
-<span class="c1"># methods excluye genetic_deap por ahora: es el metodo mas caro por lejos</span>
-<span class="c1"># (svm/none/genetic_deap tardo 4h21min el solo) -- se corre aparte despues,</span>
-<span class="c1"># si sobra tiempo, para no arriesgar que consuma todo el presupuesto y deje</span>
-<span class="c1"># 0 combinaciones nuevas completas. Ver EXPERIMENT_STATUS.md seccion 8q.</span>
-<span class="n">techniques</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"class_weight"</span><span class="p">,</span> <span class="s2">"smote"</span><span class="p">,</span> <span class="s2">"adasyn"</span><span class="p">]</span>
-<span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"grid_search"</span><span class="p">,</span> <span class="s2">"random_search"</span><span class="p">,</span> <span class="s2">"bayesian_optuna"</span><span class="p">]</span>
+<span class="c1"># Las 4 técnicas de balanceo y los 4 métodos de optimización (None = todos).</span>
+<span class="n">techniques</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">methods</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">n_outer_folds</span><span class="p">,</span> <span class="n">n_inner_folds</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">N_OUTER_FOLDS</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">N_INNER_FOLDS</span>
 
-<span class="c1"># n_jobs por metodo (ver config.OPTIMIZATION_N_JOBS): paraleliza el eje de</span>
-<span class="c1"># evaluaciones independientes de CADA metodo (candidatos de grid/random</span>
-<span class="c1"># search, trials de Optuna, individuos de la poblacion en genetic_deap).</span>
-<span class="c1"># No cambia folds/rangos/tamanio de poblacion/iteraciones, solo el tiempo de</span>
-<span class="c1"># pared -- ver EXPERIMENT_STATUS.md seccion "Paralelismo (2026-09-22)".</span>
+<span class="c1"># n_jobs por método (ver config.OPTIMIZATION_N_JOBS): paraleliza el eje de</span>
+<span class="c1"># evaluaciones independientes de CADA método (candidatos de grid/random</span>
+<span class="c1"># search, trials de Optuna, individuos de la población en genetic_deap).</span>
+<span class="c1"># No cambia folds/rangos/tamaño de población/iteraciones, solo el tiempo de</span>
+<span class="c1"># pared -- ver EXPERIMENT_STATUS.md sección &quot;Paralelismo (2026-09-22)&quot;.</span>
 <span class="n">optimizer_kwargs_by_method</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"grid_search"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"n_jobs"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">},</span>
-    <span class="s2">"random_search"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"n_iter"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">RANDOM_SEARCH_ITER</span><span class="p">,</span> <span class="s2">"n_jobs"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">},</span>
-    <span class="s2">"bayesian_optuna"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"n_trials"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTUNA_N_TRIALS</span><span class="p">,</span> <span class="s2">"n_jobs"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">},</span>
-    <span class="s2">"genetic_deap"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">"population_size"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">GA_POPULATION_SIZE</span><span class="p">,</span>
-        <span class="s2">"n_generations"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">GA_N_GENERATIONS</span><span class="p">,</span>
-        <span class="s2">"n_jobs"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">,</span>
+    <span class="s2">&quot;grid_search&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;n_jobs&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">},</span>
+    <span class="s2">&quot;random_search&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;n_iter&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">RANDOM_SEARCH_ITER</span><span class="p">,</span> <span class="s2">&quot;n_jobs&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">},</span>
+    <span class="s2">&quot;bayesian_optuna&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;n_trials&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTUNA_N_TRIALS</span><span class="p">,</span> <span class="s2">&quot;n_jobs&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">},</span>
+    <span class="s2">&quot;genetic_deap&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;population_size&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">GA_POPULATION_SIZE</span><span class="p">,</span>
+        <span class="s2">&quot;n_generations&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">GA_N_GENERATIONS</span><span class="p">,</span>
+        <span class="s2">&quot;n_jobs&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">}</span>
-<span class="c1"># n_jobs=1 aqui (bucle EXTERNO sobre combinaciones, secuencial): el</span>
-<span class="c1"># paralelismo real ahora vive dentro de cada metodo (ver arriba), para no</span>
-<span class="c1"># anidar paralelismo (evita sobre-suscribir los nucleos disponibles).</span>
+<span class="c1"># n_jobs=1 aquí (bucle EXTERNO sobre combinaciones, secuencial): el</span>
+<span class="c1"># paralelismo real vive dentro de cada método, para no anidar paralelismo.</span>
 <span class="n">n_jobs</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="c1"># timeout_seconds=None: DESACTIVADO (ver EXPERIMENT_STATUS.md seccion 8d).</span>
-<span class="c1"># El wrapper de multiprocessing.Process para el tope de tiempo anida</span>
-<span class="c1"># paralelismo de procesos con el n_jobs de arriba y se colgo en la corrida</span>
-<span class="c1"># real. El backstop para combinaciones atipicamente lentas se maneja por</span>
-<span class="c1"># fuera (monitor externo), no aqui.</span>
+<span class="c1"># timeout_seconds=None: desactivado (ver EXPERIMENT_STATUS.md sección 8d).</span>
 <span class="n">timeout_seconds</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="n">combos</span> <span class="o">=</span> <span class="n">get_all_combinations</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">techniques</span><span class="p">,</span> <span class="n">methods</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">combos</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones a considerar."</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Orden por costo computacional: </span><span class="si">{</span><span class="n">MODEL_COST_ORDER</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">combos</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones a considerar.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Orden por costo computacional: </span><span class="si">{</span><span class="n">MODEL_COST_ORDER</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>96 combinaciones a considerar.
+Orden por costo computacional: (&#39;naive_bayes&#39;, &#39;logistic_regression&#39;, &#39;decision_tree&#39;, &#39;xgboost&#39;, &#39;random_forest&#39;, &#39;knn&#39;, &#39;svm&#39;)
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="ejecutar-incremental-reanudable">
-<h2>Ejecutar (incremental, reanudable)<a class="headerlink" href="#ejecutar-incremental-reanudable" title="Link to this heading">#</a></h2>
+<h2>Ejecutar (incremental, reanudable)<a class="headerlink" href="#ejecutar-incremental-reanudable" title="Permalink to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">resume=True</span></code> (default) salta las combinaciones que ya esten en <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>; se puede volver a correr esta celda tantas veces como haga falta (ej. tras agregar mas modelos a la lista de arriba) sin repetir trabajo ya hecho.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">run_experiments</span><span class="p">(</span>
@@ -546,26 +505,159 @@ X: (5000, 20), balance del target: {0: 0.7754, 1: 0.2246}
     <span class="n">timeout_seconds</span><span class="o">=</span><span class="n">timeout_seconds</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones nuevas corridas en esta sesion."</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="si">}</span><span class="s2"> filas totales en la tabla maestra (</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">EXPERIMENTS_MASTER_PATH</span><span class="si">}</span><span class="s2">)."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones nuevas corridas en esta sesion.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="si">}</span><span class="s2"> filas totales en la tabla maestra (</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">EXPERIMENTS_MASTER_PATH</span><span class="si">}</span><span class="s2">).&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] 56 combinaciones ya en C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\results\experiments_master.csv o C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\results\skipped_timeout_log.csv, se omiten (resume=True).
+[experiment_runner] 40 combinaciones a ejecutar.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/grid_search — f1=0.5366±0.0091 (459.6s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/random_search — f1=0.5255±0.0043 (134.8s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/bayesian_optuna — f1=0.5222±0.0092 (136.4s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/genetic_deap — f1=0.5206±0.0087 (414.4s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/grid_search — f1=0.5444±0.0052 (250.6s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/random_search — f1=0.5438±0.0093 (86.8s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/bayesian_optuna — f1=0.5451±0.0099 (94.4s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/genetic_deap — f1=0.5440±0.0104 (335.5s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/grid_search — f1=0.4735±0.0035 (208.9s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/random_search — f1=0.4750±0.0031 (194.9s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/bayesian_optuna — f1=0.4759±0.0048 (406.0s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/genetic_deap — f1=0.4790±0.0039 (2044.7s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/grid_search — f1=0.5298±0.0050 (308.5s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/random_search — f1=0.5280±0.0047 (266.3s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/bayesian_optuna — f1=0.5301±0.0028 (400.3s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/genetic_deap — f1=0.5321±0.0013 (1877.1s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/grid_search — f1=0.5259±0.0051 (313.3s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/random_search — f1=0.5303±0.0046 (298.1s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/bayesian_optuna — f1=0.5305±0.0043 (550.0s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/genetic_deap — f1=0.5289±0.0019 (1819.4s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/grid_search — f1=0.5448±0.0074 (178.3s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/random_search — f1=0.5453±0.0088 (163.6s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/bayesian_optuna — f1=0.5444±0.0079 (344.0s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/genetic_deap — f1=0.5460±0.0088 (2432.4s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/grid_search — f1=0.4421±0.0024 (34.9s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/random_search — f1=0.4415±0.0039 (44.0s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/bayesian_optuna — f1=0.4334±0.0038 (1335.4s)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+  warnings.warn(
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/genetic_deap — f1=0.4422±0.0035 (10880.4s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/grid_search — f1=0.5076±0.0008 (40.0s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/random_search — f1=0.5046±0.0021 (53.3s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/bayesian_optuna — f1=0.5082±0.0010 (4246.3s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/genetic_deap — f1=0.5080±0.0010 (1920.7s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/grid_search — f1=0.4880±0.0027 (41.2s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/random_search — f1=0.4860±0.0026 (55.7s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/bayesian_optuna — f1=0.4879±0.0028 (4413.4s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/genetic_deap — f1=0.4891±0.0046 (1997.1s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/grid_search — f1=0.5260±0.0058 (27.0s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/random_search — f1=0.5265±0.0050 (33.6s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/bayesian_optuna — f1=0.5266±0.0051 (1813.6s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/genetic_deap — f1=0.5238±0.0039 (3995.8s)
+
+40 combinaciones nuevas corridas en esta sesion.
+96 filas totales en la tabla maestra (C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\results\experiments_master.csv).
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="resultado">
-<h2>Resultado<a class="headerlink" href="#resultado" title="Link to this heading">#</a></h2>
+<h2>Resultado<a class="headerlink" href="#resultado" title="Permalink to this heading">#</a></h2>
 <p>Tabla de métricas (media ± desviación estándar del outer loop, nunca un valor puntual), ordenada por la métrica principal de validación (ver <code class="docutils literal notranslate"><span class="pre">config.DEFAULT_SCORING</span></code> y la justificación en <code class="docutils literal notranslate"><span class="pre">evaluation.py</span></code>).</p>
 <div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
+<details class="hide above-input">
 <summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metric_for_ranking</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_SCORING</span>
-<span class="n">table_sorted</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">table_sorted</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">format_metrics_table</span><span class="p">(</span><span class="n">table_sorted</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -602,62 +694,129 @@ X: (5000, 20), balance del target: {0: 0.7754, 1: 0.2246}
   </thead>
   <tbody>
     <tr>
-      <th>3</th>
-      <td>decision_tree</td>
-      <td>none</td>
-      <td>random_search</td>
-      <td>0.8552 ± 0.0121</td>
-      <td>0.6894 ± 0.0213</td>
-      <td>0.6447 ± 0.0444</td>
-      <td>0.6661 ± 0.0335</td>
-      <td>0.8513 ± 0.0117</td>
+      <th>79</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>genetic_deap</td>
+      <td>0.7776 ± 0.0053</td>
+      <td>0.498 ± 0.0098</td>
+      <td>0.6042 ± 0.0092</td>
+      <td>0.546 ± 0.0088</td>
+      <td>0.7813 ± 0.0056</td>
     </tr>
     <tr>
-      <th>4</th>
-      <td>decision_tree</td>
+      <th>77</th>
+      <td>random_forest</td>
       <td>class_weight</td>
       <td>random_search</td>
-      <td>0.8194 ± 0.0063</td>
-      <td>0.5706 ± 0.0098</td>
-      <td>0.7916 ± 0.0184</td>
-      <td>0.6632 ± 0.0126</td>
-      <td>0.8647 ± 0.0131</td>
+      <td>0.7759 ± 0.007</td>
+      <td>0.4951 ± 0.0129</td>
+      <td>0.6071 ± 0.006</td>
+      <td>0.5453 ± 0.0088</td>
+      <td>0.782 ± 0.0045</td>
     </tr>
     <tr>
-      <th>1</th>
+      <th>62</th>
+      <td>xgboost</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.7726 ± 0.0094</td>
+      <td>0.4896 ± 0.0161</td>
+      <td>0.6154 ± 0.0089</td>
+      <td>0.5451 ± 0.0099</td>
+      <td>0.7817 ± 0.0041</td>
+    </tr>
+    <tr>
+      <th>76</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>grid_search</td>
+      <td>0.7743 ± 0.004</td>
+      <td>0.492 ± 0.0072</td>
+      <td>0.6103 ± 0.0112</td>
+      <td>0.5448 ± 0.0074</td>
+      <td>0.7833 ± 0.0039</td>
+    </tr>
+    <tr>
+      <th>78</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.7785 ± 0.0068</td>
+      <td>0.4998 ± 0.0126</td>
+      <td>0.598 ± 0.0035</td>
+      <td>0.5444 ± 0.0079</td>
+      <td>0.7804 ± 0.0055</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>knn</td>
+      <td>none</td>
+      <td>bayesian_optuna</td>
+      <td>0.8023 ± 0.0028</td>
+      <td>0.5924 ± 0.0134</td>
+      <td>0.3418 ± 0.0019</td>
+      <td>0.4334 ± 0.0038</td>
+      <td>0.7318 ± 0.0146</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>logistic_regression</td>
+      <td>none</td>
+      <td>genetic_deap</td>
+      <td>0.8071 ± 0.0017</td>
+      <td>0.6599 ± 0.0114</td>
+      <td>0.2647 ± 0.0024</td>
+      <td>0.3778 ± 0.0037</td>
+      <td>0.75 ± 0.0096</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>logistic_regression</td>
+      <td>none</td>
+      <td>grid_search</td>
+      <td>0.8071 ± 0.0017</td>
+      <td>0.6597 ± 0.0113</td>
+      <td>0.2647 ± 0.0024</td>
+      <td>0.3778 ± 0.0037</td>
+      <td>0.75 ± 0.0096</td>
+    </tr>
+    <tr>
+      <th>17</th>
       <td>logistic_regression</td>
       <td>none</td>
       <td>random_search</td>
-      <td>0.8628 ± 0.0098</td>
-      <td>0.7685 ± 0.027</td>
-      <td>0.5565 ± 0.03</td>
-      <td>0.6454 ± 0.0285</td>
-      <td>0.8609 ± 0.0067</td>
+      <td>0.8071 ± 0.0017</td>
+      <td>0.6597 ± 0.0113</td>
+      <td>0.2647 ± 0.0024</td>
+      <td>0.3778 ± 0.0037</td>
+      <td>0.75 ± 0.0096</td>
     </tr>
     <tr>
-      <th>2</th>
+      <th>18</th>
       <td>logistic_regression</td>
-      <td>class_weight</td>
-      <td>random_search</td>
-      <td>0.7886 ± 0.0099</td>
-      <td>0.52 ± 0.0154</td>
-      <td>0.789 ± 0.0081</td>
-      <td>0.6266 ± 0.0086</td>
-      <td>0.8623 ± 0.0029</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>naive_bayes</td>
       <td>none</td>
-      <td>random_search</td>
-      <td>0.7982 ± 0.0056</td>
-      <td>0.5433 ± 0.0138</td>
-      <td>0.65 ± 0.0287</td>
-      <td>0.5912 ± 0.0045</td>
-      <td>0.8113 ± 0.0058</td>
+      <td>bayesian_optuna</td>
+      <td>0.8071 ± 0.0017</td>
+      <td>0.6597 ± 0.0113</td>
+      <td>0.2647 ± 0.0024</td>
+      <td>0.3778 ± 0.0037</td>
+      <td>0.75 ± 0.0096</td>
     </tr>
   </tbody>
 </table>
+<p>96 rows × 8 columns</p>
 </div></div></div>
 </div>
 <p>Continuar en <code class="docutils literal notranslate"><span class="pre">05_results_analysis.ipynb</span></code>: funciona directamente desde <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>, en una sesión nueva, sin necesitar nada de este notebook en memoria.</p>
@@ -719,17 +878,15 @@ X: (5000, 20), balance del target: {0: 0.7754, 1: 0.2246}
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item"><div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="pst-show_toc_level nav section-nav flex-column">
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos">Cargar datos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-de-la-corrida">Configuración de la corrida</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecutar-incremental-reanudable">Ejecutar (incremental, reanudable)</a></li>
@@ -758,7 +915,7 @@ By Equipo del proyecto
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2022.
       <br/>
     
   </p>
@@ -782,8 +939,8 @@ By Equipo del proyecto
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

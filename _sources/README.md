@@ -109,6 +109,15 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
+`requirements.txt` refleja las versiones con las que se ejecutó y compiló
+todo el proyecto. Si Windows bloquea el `.venv` (ocurrió con pandas/scipy
+por la directiva de Control de aplicaciones), crea el entorno con Anaconda
+(`conda create -n creditcard python=3.13`) e instala ahí las mismas
+dependencias.
+
+```bash
+```
+
 Luego abre `notebooks/00_eda.ipynb` para el análisis exploratorio sobre el
 dataset original (ya incluido en `data/raw/`), `notebooks/01_baseline_logistic.ipynb`
 para el modelo base de Regresión Logística, o
