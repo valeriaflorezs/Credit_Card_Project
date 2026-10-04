@@ -1,0 +1,1421 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SVM + RBF acelerado por GPU (cuML/RAPIDS) — combinaciones faltantes &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/07_svm_gpu_colab';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Default of Credit Card Clients — Pipeline de Clasificación</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../README.html">
+                    Default of Credit Card Clients — Pipeline de Clasificación (Entregable 3)
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/07_svm_gpu_colab.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>SVM + RBF acelerado por GPU (cuML/RAPIDS) — combinaciones faltantes</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencias-cuml-vs-scikit-learn-a-tener-en-cuenta-verificadas-no-asumidas">⚠️ Diferencias cuML vs. scikit-learn a tener en cuenta (verificadas, no asumidas)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-usar-este-notebook">Cómo usar este notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verificar-gpu-asignada">1. Verificar GPU asignada</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instalar-rapids-cuml">2. Instalar RAPIDS cuML</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports-chequeo-de-versiones">3. Imports + chequeo de versiones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chequeo-de-compatibilidad-cuml-correr-antes-de-cualquier-combinacion-real">4. Chequeo de compatibilidad cuML (correr ANTES de cualquier combinación real)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subir-dataset-final-csv">5. Subir <code class="docutils literal notranslate"><span class="pre">dataset_final.csv</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-deduplicar-y-separar-x-y">6. Cargar, deduplicar y separar X/y</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-identica-a-src-config-py">7. Configuración (idéntica a <code class="docutils literal notranslate"><span class="pre">src/config.py</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#espacio-de-busqueda-de-svm-identico-a-models-py-model-registry-svm">8. Espacio de búsqueda de SVM (idéntico a <code class="docutils literal notranslate"><span class="pre">models.py::MODEL_REGISTRY["svm"]</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocesamiento-identico-a-preprocessing-py-con-salida-densa">9. Preprocesamiento (idéntico a <code class="docutils literal notranslate"><span class="pre">preprocessing.py</span></code>, con salida densa)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#balanceo-identico-a-balancing-py-fabrica-del-modelo-cuml">10. Balanceo (idéntico a <code class="docutils literal notranslate"><span class="pre">balancing.py</span></code>) + fábrica del modelo cuML</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#los-4-metodos-de-optimizacion-identicos-a-optimization-py">11. Los 4 métodos de optimización (idénticos a <code class="docutils literal notranslate"><span class="pre">optimization.py</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-cruzada-anidada-identica-a-nested-cv-py">12. Validación cruzada anidada (idéntica a <code class="docutils literal notranslate"><span class="pre">nested_cv.py</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-de-combinaciones-a-correr">13. Selección de combinaciones a correr</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion">14. Ejecutar — guardado incremental (una fila apenas termina cada combinación)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado-final-descarga">15. Resultado final + descarga</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="svm-rbf-acelerado-por-gpu-cuml-rapids-combinaciones-faltantes">
+<h1>SVM + RBF acelerado por GPU (cuML/RAPIDS) — combinaciones faltantes<a class="headerlink" href="#svm-rbf-acelerado-por-gpu-cuml-rapids-combinaciones-faltantes" title="Link to this heading">#</a></h1>
+<p>Corre en Google Colab con runtime GPU (T4 gratuita) las combinaciones de
+<strong>SVM</strong> que todavía no tienen fila en <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code> del
+proyecto local, usando <strong>cuML (RAPIDS)</strong> en vez de scikit-learn para
+acelerar por hardware el ajuste del kernel RBF (el cuello de botella real,
+documentado en <code class="docutils literal notranslate"><span class="pre">EXPERIMENT_STATUS.md</span></code> como el modelo más costoso del
+pipeline: O(n²)-O(n³) + <code class="docutils literal notranslate"><span class="pre">probability=True</span></code> agrega 5 fits internos de Platt
+scaling por ajuste).</p>
+<p><strong>Esto NO es un modelo distinto.</strong> Reproduce exactamente la misma
+metodología que <code class="docutils literal notranslate"><span class="pre">src/nested_cv.py</span></code> + <code class="docutils literal notranslate"><span class="pre">src/optimization.py</span></code> +
+<code class="docutils literal notranslate"><span class="pre">src/balancing.py</span></code> + <code class="docutils literal notranslate"><span class="pre">src/preprocessing.py</span></code> del proyecto local:</p>
+<ul class="simple">
+<li><p>Validación cruzada anidada: outer=3 folds, inner=3 folds,
+<code class="docutils literal notranslate"><span class="pre">StratifiedKFold(shuffle=True,</span> <span class="pre">random_state=42)</span></code>.</p></li>
+<li><p>Preprocesamiento (<code class="docutils literal notranslate"><span class="pre">OneHotEncoder</span></code> + <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code>) y balanceo
+(SMOTE/ADASYN/class_weight) <strong>dentro</strong> del pipeline, ajustados solo en
+<code class="docutils literal notranslate"><span class="pre">fit()</span></code> de cada fold — nunca en todo el dataset.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kernel='rbf'</span></code> fijo, <code class="docutils literal notranslate"><span class="pre">C</span></code>/<code class="docutils literal notranslate"><span class="pre">gamma</span></code> en escala log (<code class="docutils literal notranslate"><span class="pre">C</span></code>: 1e-2–1e2, <code class="docutils literal notranslate"><span class="pre">gamma</span></code>:
+1e-4–1e0).</p></li>
+<li><p>Los 4 métodos de optimización con los mismos presupuestos:
+<code class="docutils literal notranslate"><span class="pre">grid_search</span></code> (16 combinaciones, 4×4), <code class="docutils literal notranslate"><span class="pre">random_search</span></code> (<code class="docutils literal notranslate"><span class="pre">n_iter=25</span></code>),
+<code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code> (Optuna TPE, <code class="docutils literal notranslate"><span class="pre">n_trials=30</span></code>, <code class="docutils literal notranslate"><span class="pre">seed=42</span></code>), <code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code>
+(DEAP: población=16, generaciones=10, crossover uniforme
+<code class="docutils literal notranslate"><span class="pre">cx_prob=0.6</span></code>/<code class="docutils literal notranslate"><span class="pre">indpb=0.5</span></code>, mutación gaussiana <code class="docutils literal notranslate"><span class="pre">mut_prob=0.3</span></code>/<code class="docutils literal notranslate"><span class="pre">indpb=0.2</span></code>,
+torneo <code class="docutils literal notranslate"><span class="pre">tournament_size=3</span></code>, elitismo <code class="docutils literal notranslate"><span class="pre">elite_size=2</span></code>).</p></li>
+<li><p>Deduplicación de filas (35 filas, igual que <code class="docutils literal notranslate"><span class="pre">preprocessing.remove_duplicate_rows</span></code>)
+aplicada ANTES de cualquier split, para que los folds de este notebook
+caigan en las mismas particiones que las corridas locales de <code class="docutils literal notranslate"><span class="pre">svm/none/*</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">random_state=42</span></code> en todo (folds, samplers, GA).</p></li>
+</ul>
+<p><strong>Único cambio real:</strong> el paso <code class="docutils literal notranslate"><span class="pre">&quot;model&quot;</span></code> del pipeline es
+<code class="docutils literal notranslate"><span class="pre">cuml.svm.SVC(kernel='rbf',</span> <span class="pre">...)</span></code> (GPU) en vez de <code class="docutils literal notranslate"><span class="pre">sklearn.svm.SVC(...)</span></code>
+(CPU) — mismo algoritmo (SVM de margen máximo con kernel RBF, solver SMO),
+misma interpretación de <code class="docutils literal notranslate"><span class="pre">C</span></code>/<code class="docutils literal notranslate"><span class="pre">gamma</span></code>/<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>. Todo lo demás
+(preprocesamiento, balanceo, folds, espacio de búsqueda, operadores del GA,
+sampler de Optuna) es el mismo código, transcrito para no depender de los
+módulos <code class="docutils literal notranslate"><span class="pre">src/*</span></code> del proyecto (Colab no tiene el repo).</p>
+<p><code class="docutils literal notranslate"><span class="pre">grid_search</span></code> y <code class="docutils literal notranslate"><span class="pre">random_search</span></code> <strong>no</strong> usan <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code>/<code class="docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code>
+de scikit-learn envolviendo un pipeline con un estimador de cuML adentro —
+se implementan de forma manual (mismo algoritmo: por cada candidato, CV
+interna, promedio de folds, se queda con el mejor, refit sobre todo el fold
+externo) para no depender de que <code class="docutils literal notranslate"><span class="pre">sklearn.base.clone()</span></code>/<code class="docutils literal notranslate"><span class="pre">get_params()</span></code>/
+<code class="docutils literal notranslate"><span class="pre">set_params()</span></code> funcionen sin fricción sobre un estimador de cuML dentro de
+un meta-estimador de sklearn. Es un cambio de <strong>implementación</strong>, no de
+metodología (mismo algoritmo que <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code>/<code class="docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code> usan
+internamente) — mismo principio ya aplicado en el proyecto local para
+<code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>/<code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code> (ver docstring de <code class="docutils literal notranslate"><span class="pre">src/optimization.py</span></code>).
+<code class="docutils literal notranslate"><span class="pre">random_search</span></code> usa <code class="docutils literal notranslate"><span class="pre">sklearn.model_selection.ParameterSampler</span></code> para generar
+los candidatos — es EXACTAMENTE la clase que <code class="docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code> usa
+internamente, así que la secuencia de candidatos muestreados es idéntica
+dado el mismo <code class="docutils literal notranslate"><span class="pre">random_state</span></code>.</p>
+<section id="diferencias-cuml-vs-scikit-learn-a-tener-en-cuenta-verificadas-no-asumidas">
+<h2>⚠️ Diferencias cuML vs. scikit-learn a tener en cuenta (verificadas, no asumidas)<a class="headerlink" href="#diferencias-cuml-vs-scikit-learn-a-tener-en-cuenta-verificadas-no-asumidas" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">probability=True</span></code> tuvo un bug real en cuML 25.08</strong> (<code class="docutils literal notranslate"><span class="pre">AttributeError:</span> <span class="pre">'NoneType'</span> <span class="pre">object</span> <span class="pre">has</span> <span class="pre">no</span> <span class="pre">attribute</span> <span class="pre">'upper'</span></code> al convertir de GPU a host)
+— <a class="reference external" href="https://github.com/rapidsai/cuml/issues/7205">issue #7205</a>, arreglado
+por el PR #7207 (ya mergeado). La celda de instalación imprime la
+versión de cuML instalada y una celda posterior (<strong>“Chequeo de
+compatibilidad”</strong>) hace un fit real con <code class="docutils literal notranslate"><span class="pre">probability=True</span></code> +
+<code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> ANTES de correr nada real — si falla, el notebook se
+detiene con un mensaje explícito en vez de bajar silenciosamente a
+<code class="docutils literal notranslate"><span class="pre">probability=False</span></code> o cambiar el scoring.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">class_weight='balanced'</span></code> es seguro para este dataset</strong> (target
+binario): el único bug conocido de <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> en SVC de cuML (PR
+#8592, “Implement multiclass SVC with non-uniform class weights”) es
+específico de <strong>multiclase</strong> (3+ clases) — no aplica aquí.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">gamma</span></code> acepta un <code class="docutils literal notranslate"><span class="pre">float</span></code> directo</strong>, igual que scikit-learn (además de
+<code class="docutils literal notranslate"><span class="pre">'scale'</span></code>/<code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, que este proyecto no usa) — no hace falta adaptar el
+espacio de búsqueda.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">OneHotEncoder</span></code> debe forzarse a salida densa</strong> (<code class="docutils literal notranslate"><span class="pre">sparse_output=False</span></code>):
+cuML SVC no garantiza aceptar una matriz dispersa de scipy de la forma
+en que lo hace el SVC de scikit-learn (basado en libsvm). Es un cambio
+de representación (denso vs. disperso), NO cambia los valores
+codificados ni la metodología.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">cache_size</span></code></strong> tiene unidades distintas (<code class="docutils literal notranslate"><span class="pre">sklearn</span></code>: MB; <code class="docutils literal notranslate"><span class="pre">cuML</span></code>: MiB) y
+<strong><code class="docutils literal notranslate"><span class="pre">nochange_steps</span></code></strong> es un parámetro de parada temprana del solver SMO
+exclusivo de cuML (sin equivalente en libsvm/sklearn, se deja en su
+default). Ninguno de los dos es un hiperparámetro bajo búsqueda —no
+pueden sesgar la comparación entre los 4 métodos, solo afectan tiempo de
+pared.</p></li>
+<li><p><strong>Calibración de probabilidad (Platt scaling) es una reimplementación
+propia de cuML</strong>, no litealmente el código de libsvm que usa
+scikit-learn. Las métricas de <strong>etiqueta dura</strong> (<code class="docutils literal notranslate"><span class="pre">accuracy</span></code>,
+<code class="docutils literal notranslate"><span class="pre">precision</span></code>, <code class="docutils literal notranslate"><span class="pre">recall</span></code>, <code class="docutils literal notranslate"><span class="pre">f1</span></code>) dependen del signo de la función de
+decisión, no de la calibración, así que deberían ser muy cercanas a lo
+que darías con CPU para los mismos hiperparámetros — pero <code class="docutils literal notranslate"><span class="pre">roc_auc</span></code>
+podría mostrar pequeñas diferencias atribuibles a la reimplementación de
+la calibración, no a un error de metodología. Documentarlo si se nota
+una diferencia grande.</p></li>
+<li><p><strong>Versiones de librerías</strong>: Colab instalará lo último que <code class="docutils literal notranslate"><span class="pre">pip</span></code>
+resuelva para <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>/<code class="docutils literal notranslate"><span class="pre">imbalanced-learn</span></code>/<code class="docutils literal notranslate"><span class="pre">optuna</span></code>/<code class="docutils literal notranslate"><span class="pre">deap</span></code> (las
+restricciones de los wheels de RAPIDS probablemente no dejan fijar
+exactamente <code class="docutils literal notranslate"><span class="pre">scikit-learn==1.9.1</span></code>/<code class="docutils literal notranslate"><span class="pre">imbalanced-learn==0.14.2</span></code>/
+<code class="docutils literal notranslate"><span class="pre">optuna==5.0.0</span></code>/<code class="docutils literal notranslate"><span class="pre">deap==1.4.4</span></code> como en <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> local). La
+celda de imports imprime todas las versiones instaladas — anotarlas
+junto a los resultados.</p></li>
+</ol>
+</section>
+<section id="como-usar-este-notebook">
+<h2>Cómo usar este notebook<a class="headerlink" href="#como-usar-este-notebook" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Entorno</span> <span class="pre">de</span> <span class="pre">ejecución</span> <span class="pre">→</span> <span class="pre">Cambiar</span> <span class="pre">tipo</span> <span class="pre">de</span> <span class="pre">entorno</span> <span class="pre">de</span> <span class="pre">ejecución</span> <span class="pre">→</span> <span class="pre">GPU</span> <span class="pre">(T4)</span></code>.</p></li>
+<li><p>Correr las celdas en orden. La celda de instalación de RAPIDS puede
+pedir reiniciar la sesión — si lo hace, reiniciar y seguir desde la
+siguiente celda (no hace falta repetir la instalación).</p></li>
+<li><p>Subir <code class="docutils literal notranslate"><span class="pre">dataset_final.csv</span></code> cuando la celda de carga lo pida.</p></li>
+<li><p>Revisar la celda <strong>“Selección de combinaciones a correr”</strong> — por defecto
+corre las 13 combinaciones de SVM que faltan (ver más abajo cuáles ya
+están corridas localmente). Editar <code class="docutils literal notranslate"><span class="pre">COMBOS_TO_RUN</span></code> para correr un
+subconjunto.</p></li>
+<li><p>Correr la celda de ejecución. Guarda cada fila al CSV apenas termina esa
+combinación (no espera a que terminen las 13) — si Colab se desconecta,
+basta con volver a correr desde la celda de ejecución: salta
+automáticamente lo que ya esté en el CSV de salida.</p></li>
+<li><p>Al final, descargar <code class="docutils literal notranslate"><span class="pre">svm_gpu_results.csv</span></code> y pegar las filas en tu tabla
+maestra local (mismo esquema exacto de columnas).</p></li>
+</ol>
+</section>
+<section id="verificar-gpu-asignada">
+<h2>1. Verificar GPU asignada<a class="headerlink" href="#verificar-gpu-asignada" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>!nvidia-smi
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="instalar-rapids-cuml">
+<h2>2. Instalar RAPIDS cuML<a class="headerlink" href="#instalar-rapids-cuml" title="Link to this heading">#</a></h2>
+<p>Usa el instalador oficial de RAPIDS para Colab (<code class="docutils literal notranslate"><span class="pre">rapidsai-csp-utils</span></code>),
+el método recomendado por la documentación de RAPIDS porque ajusta
+versiones/paquetes preinstalados de Colab que a veces chocan con un
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">cuml-cu12</span></code> directo. <strong>Puede pedir reiniciar la sesión</strong> — si
+lo hace, reiniciar (<code class="docutils literal notranslate"><span class="pre">Entorno</span> <span class="pre">de</span> <span class="pre">ejecución</span> <span class="pre">→</span> <span class="pre">Reiniciar</span> <span class="pre">sesión</span></code>) y continuar
+desde la celda siguiente sin volver a correr esta.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>!git clone --depth 1 https://github.com/rapidsai/rapidsai-csp-utils.git
+!python rapidsai-csp-utils/colab/pip-install.py
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Optuna y DEAP no vienen con RAPIDS -- se instalan aparte.
+!pip install -q optuna deap
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="imports-chequeo-de-versiones">
+<h2>3. Imports + chequeo de versiones<a class="headerlink" href="#imports-chequeo-de-versiones" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import sys
+import time
+import json
+import random
+import traceback
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
+import cuml
+from cuml.svm import SVC as cuSVC
+
+import sklearn
+import imblearn
+import optuna
+import deap
+from imblearn.over_sampling import SMOTE, ADASYN
+from imblearn.pipeline import Pipeline as ImbPipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.model_selection import StratifiedKFold, ParameterGrid, ParameterSampler
+from sklearn.metrics import get_scorer, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
+from scipy.stats import loguniform
+from deap import base, creator, tools
+
+optuna.logging.set_verbosity(optuna.logging.WARNING)
+
+print("cuml          :", cuml.__version__)
+print("scikit-learn  :", sklearn.__version__)
+print("imbalanced-learn:", imblearn.__version__)
+print("optuna        :", optuna.__version__)
+print("deap          :", deap.__version__)
+print("numpy         :", np.__version__)
+print("pandas        :", pd.__version__)
+print()
+print("Local (requirements.txt): scikit-learn==1.9.1, imbalanced-learn==0.14.2, "
+      "optuna==5.0.0, deap==1.4.4 -- comparar contra lo de arriba y anotar "
+      "cualquier diferencia relevante junto a los resultados.")
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="chequeo-de-compatibilidad-cuml-correr-antes-de-cualquier-combinacion-real">
+<h2>4. Chequeo de compatibilidad cuML (correr ANTES de cualquier combinación real)<a class="headerlink" href="#chequeo-de-compatibilidad-cuml-correr-antes-de-cualquier-combinacion-real" title="Link to this heading">#</a></h2>
+<p>Verifica, con datos sintéticos chicos, que:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cuml.svm.SVC(probability=True)</span></code> ajusta y <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> funciona (ver
+aviso #1 más arriba — bug conocido en 25.08).</p></li>
+<li><p>El mismo estimador funciona compuesto dentro de un
+<code class="docutils literal notranslate"><span class="pre">imblearn.pipeline.Pipeline</span></code> (preprocesamiento denso + SMOTE + modelo),
+igual que se usará en las combinaciones reales.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">class_weight='balanced'</span></code> no rompe nada en el caso binario.</p></li>
+</ol>
+<p>Si cualquiera de estos chequeos falla, el notebook se detiene acá con el
+error completo — <strong>no</strong> baja a <code class="docutils literal notranslate"><span class="pre">probability=False</span></code> ni cambia de scoring
+por su cuenta.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>from sklearn.datasets import make_classification
+
+X_chk, y_chk = make_classification(
+    n_samples=300, n_features=8, n_informative=5, weights=[0.75, 0.25], random_state=42
+)
+X_chk = X_chk.astype(np.float32)
+
+print("Chequeo 1/3: SVC(probability=True).fit() + predict_proba()...")
+clf_chk = cuSVC(kernel="rbf", C=1.0, gamma=0.1, probability=True, random_state=42, output_type="numpy")
+clf_chk.fit(X_chk, y_chk)
+proba_chk = clf_chk.predict_proba(X_chk)
+pred_chk = clf_chk.predict(X_chk)
+assert proba_chk.shape == (300, 2), f"forma inesperada de predict_proba: {proba_chk.shape}"
+assert np.allclose(proba_chk.sum(axis=1), 1.0, atol=1e-3), "las filas de predict_proba no suman 1"
+assert list(clf_chk.classes_) == [0, 1], f"orden de clases inesperado: {clf_chk.classes_}"
+print("  OK -- predict_proba shape:", proba_chk.shape, "| classes_:", clf_chk.classes_)
+
+print("Chequeo 2/3: class_weight='balanced' (binario)...")
+clf_bal = cuSVC(kernel="rbf", C=1.0, gamma=0.1, probability=True, class_weight="balanced",
+                 random_state=42, output_type="numpy")
+clf_bal.fit(X_chk, y_chk)
+_ = clf_bal.predict_proba(X_chk)
+print("  OK")
+
+print("Chequeo 3/3: pipeline completo (preprocesamiento denso + SMOTE + cuML SVC) + CV manual...")
+ct_chk = ColumnTransformer(
+    transformers=[], remainder=StandardScaler()
+)
+pipe_chk = ImbPipeline(steps=[
+    ("preprocessing", ct_chk),
+    ("smote", SMOTE(random_state=42, k_neighbors=3)),
+    ("model", cuSVC(kernel="rbf", C=1.0, gamma=0.1, probability=True, random_state=42, output_type="numpy")),
+])
+cv_chk = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
+scorer_chk = get_scorer("f1")
+fold_scores_chk = []
+for tr_idx, val_idx in cv_chk.split(X_chk, y_chk):
+    pipe_chk.fit(X_chk[tr_idx], y_chk[tr_idx])
+    fold_scores_chk.append(scorer_chk(pipe_chk, X_chk[val_idx], y_chk[val_idx]))
+print("  OK -- f1 por fold:", [round(s, 4) for s in fold_scores_chk])
+
+print()
+print("Los 3 chequeos pasaron. Es seguro continuar con las combinaciones reales.")
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="subir-dataset-final-csv">
+<h2>5. Subir <code class="docutils literal notranslate"><span class="pre">dataset_final.csv</span></code><a class="headerlink" href="#subir-dataset-final-csv" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>from google.colab import files
+
+uploaded = files.upload()
+assert "dataset_final.csv" in uploaded, (
+    f"Se esperaba un archivo llamado 'dataset_final.csv', se subio: {list(uploaded.keys())}"
+)
+DATASET_PATH = "dataset_final.csv" 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="cargar-deduplicar-y-separar-x-y">
+<h2>6. Cargar, deduplicar y separar X/y<a class="headerlink" href="#cargar-deduplicar-y-separar-x-y" title="Link to this heading">#</a></h2>
+<p>Reproduce exactamente <code class="docutils literal notranslate"><span class="pre">src/data_loader.load_processed_dataset</span></code> +
+<code class="docutils literal notranslate"><span class="pre">src/preprocessing.remove_duplicate_rows</span></code> + <code class="docutils literal notranslate"><span class="pre">src/data_loader.split_features_target</span></code>
+del proyecto local: mismo dataset -&gt; mismas 35 filas duplicadas eliminadas
+(<code class="docutils literal notranslate"><span class="pre">drop_duplicates(keep=&quot;first&quot;)</span></code>, índice reseteado) -&gt; mismo <code class="docutils literal notranslate"><span class="pre">X</span></code>/<code class="docutils literal notranslate"><span class="pre">y</span></code>. Esto
+es necesario para que <code class="docutils literal notranslate"><span class="pre">StratifiedKFold(shuffle=True,</span> <span class="pre">random_state=42)</span></code>
+genere los mismos folds que usaron las corridas locales de <code class="docutils literal notranslate"><span class="pre">svm/none/*</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>TARGET_COLUMN = "default_payment_next_month"
+CATEGORICAL_COLUMNS = ["SEX", "EDUCATION", "MARRIAGE"]
+RANDOM_STATE = 42
+
+df = pd.read_csv(DATASET_PATH)
+print(f"Dataset cargado: {df.shape}")
+assert df.shape == (30000, 24), f"forma inesperada: {df.shape} (se esperaba (30000, 24), sin columna ID)"
+
+n_before = len(df)
+df = df.drop_duplicates(subset=None, keep="first").reset_index(drop=True)
+n_removed = n_before - len(df)
+print(f"Filas duplicadas eliminadas: {n_removed}")
+assert n_removed == 35, (
+    f"Se esperaban 35 filas duplicadas (igual que el dataset local), se encontraron {n_removed}. "
+    "Verificar que este sea el MISMO dataset_final.csv que el proyecto local -- si no, "
+    "los folds de este notebook NO van a coincidir con los de las corridas locales de svm/none/*."
+)
+
+X = df.drop(columns=[TARGET_COLUMN])
+y = df[TARGET_COLUMN]
+print(f"X: {X.shape}, balance del target: {y.value_counts(normalize=True).round(4).to_dict()}")
+
+np.random.seed(RANDOM_STATE)
+random.seed(RANDOM_STATE)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="configuracion-identica-a-src-config-py">
+<h2>7. Configuración (idéntica a <code class="docutils literal notranslate"><span class="pre">src/config.py</span></code>)<a class="headerlink" href="#configuracion-identica-a-src-config-py" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>N_OUTER_FOLDS = 3
+N_INNER_FOLDS = 3
+
+RANDOM_SEARCH_ITER = 25
+OPTUNA_N_TRIALS = 30
+
+GA_POPULATION_SIZE = 16
+GA_N_GENERATIONS = 10
+GA_CX_PROB = 0.6
+GA_MUT_PROB = 0.3
+GA_MUT_INDPB = 0.2
+GA_TOURNAMENT_SIZE = 3
+GA_ELITE_SIZE = 2
+
+DEFAULT_SCORING = "f1"
+CORE_METRICS = ("accuracy", "precision", "recall", "f1", "roc_auc")
+
+# Parametros del modelo SVM (fijos, no bajo busqueda): kernel RBF fijo
+# (requisito del curso), probability=True (necesario para roc_auc),
+# max_iter acotado (misma razon que en el proyecto local: evitar que el
+# solver SMO tarde indefinidamente en converger en combinaciones
+# patologicas de C/gamma -- ver models.py::_svm_factory).
+SVM_MAX_ITER = 200_000
+SVM_CACHE_SIZE_MIB = 2048  # generoso: T4 tiene 16GB: no es un hiperparametro bajo busqueda
+
+print("Config OK")
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="espacio-de-busqueda-de-svm-identico-a-models-py-model-registry-svm">
+<h2>8. Espacio de búsqueda de SVM (idéntico a <code class="docutils literal notranslate"><span class="pre">models.py::MODEL_REGISTRY[&quot;svm&quot;]</span></code>)<a class="headerlink" href="#espacio-de-busqueda-de-svm-identico-a-models-py-model-registry-svm" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">C</span></code> y <code class="docutils literal notranslate"><span class="pre">gamma</span></code>, ambos <code class="docutils literal notranslate"><span class="pre">float</span></code>, escala logarítmica. Reproduce
+<code class="docutils literal notranslate"><span class="pre">HyperparamSpec</span></code>/<code class="docutils literal notranslate"><span class="pre">get_param_grid</span></code>/<code class="docutils literal notranslate"><span class="pre">get_param_distributions</span></code> de <code class="docutils literal notranslate"><span class="pre">models.py</span></code>
+especializado a los 2 hiperparámetros de SVM (no hace falta el resto del
+sistema genérico multi-modelo).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>from dataclasses import dataclass
+
+
+@dataclass
+class HyperparamSpec:
+    name: str
+    low: float
+    high: float
+    log: bool = True  # los dos hiperparametros de SVM (C, gamma) son log=True
+
+
+SVM_HYPERPARAMS = [
+    HyperparamSpec("C", low=1e-2, high=1e2),
+    HyperparamSpec("gamma", low=1e-4, high=1e0),
+]
+
+
+def get_param_grid(hyperparams=SVM_HYPERPARAMS, n_points=4):
+    '''Igual a models.py::get_param_grid especializado a floats log=True.
+    n_points=4 (igual que localmente: numeric_hp_count=2 &gt; 1, entonces
+    n_points = max(2, min(4, int(200 ** (1/2)))) = 4 -&gt; 4x4 = 16 combinaciones,
+    igual que grid_search en la corrida local).'''
+    grid = {}
+    for hp in hyperparams:
+        values = np.logspace(np.log10(hp.low), np.log10(hp.high), num=n_points)
+        grid[hp.name] = list(values)
+    return grid
+
+
+def get_param_distributions(hyperparams=SVM_HYPERPARAMS):
+    '''Igual a models.py::get_param_distributions para floats log=True.'''
+    return {hp.name: loguniform(hp.low, hp.high) for hp in hyperparams}
+
+
+SVM_PARAM_GRID = get_param_grid()
+SVM_PARAM_DISTRIBUTIONS = get_param_distributions()
+print("param_grid (n_points=4):")
+for k, v in SVM_PARAM_GRID.items():
+    print(f"  {k}: {[round(float(x), 6) for x in v]}")
+print(f"Total combinaciones grid_search: {len(list(ParameterGrid(SVM_PARAM_GRID)))} (se espera 16)")
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="preprocesamiento-identico-a-preprocessing-py-con-salida-densa">
+<h2>9. Preprocesamiento (idéntico a <code class="docutils literal notranslate"><span class="pre">preprocessing.py</span></code>, con salida densa)<a class="headerlink" href="#preprocesamiento-identico-a-preprocessing-py-con-salida-densa" title="Link to this heading">#</a></h2>
+<p>Mismo <code class="docutils literal notranslate"><span class="pre">ColumnTransformer</span></code>: <code class="docutils literal notranslate"><span class="pre">OneHotEncoder(handle_unknown=&quot;ignore&quot;,</span> <span class="pre">drop=&quot;if_binary&quot;)</span></code> en las categóricas + <code class="docutils literal notranslate"><span class="pre">StandardScaler()</span></code> en el resto
+(SVM siempre tiene <code class="docutils literal notranslate"><span class="pre">requires_scaling=True</span></code>). Único cambio: <code class="docutils literal notranslate"><span class="pre">sparse_output=False</span></code>
+(aviso #4 más arriba) — necesario para que cuML reciba un array denso.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>def build_column_transformer(categorical_columns=CATEGORICAL_COLUMNS):
+    return ColumnTransformer(
+        transformers=[
+            (
+                "categorical",
+                OneHotEncoder(handle_unknown="ignore", drop="if_binary", sparse_output=False),
+                categorical_columns,
+            )
+        ],
+        remainder=StandardScaler(),
+    )
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="balanceo-identico-a-balancing-py-fabrica-del-modelo-cuml">
+<h2>10. Balanceo (idéntico a <code class="docutils literal notranslate"><span class="pre">balancing.py</span></code>) + fábrica del modelo cuML<a class="headerlink" href="#balanceo-identico-a-balancing-py-fabrica-del-modelo-cuml" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>BALANCING_TECHNIQUES = ("none", "smote", "adasyn", "class_weight")
+
+
+def _safe_k_neighbors(y, default=5, cv_n_splits=None):
+    '''Identico a balancing.py::_safe_k_neighbors.'''
+    n_minority = int(pd.Series(y).value_counts().min())
+    if cv_n_splits is not None and cv_n_splits &gt; 1:
+        n_minority = int(n_minority * (cv_n_splits - 1) / cv_n_splits)
+    return max(1, min(default, n_minority - 1))
+
+
+def get_resampler(technique, y_train=None, random_state=RANDOM_STATE, cv_n_splits=None):
+    '''Identico a balancing.py::get_resampler.'''
+    if technique in ("none", "class_weight"):
+        return None
+    if technique == "smote":
+        k = _safe_k_neighbors(y_train, cv_n_splits=cv_n_splits) if y_train is not None else 5
+        return SMOTE(random_state=random_state, k_neighbors=k)
+    if technique == "adasyn":
+        k = _safe_k_neighbors(y_train, cv_n_splits=cv_n_splits) if y_train is not None else 5
+        return ADASYN(random_state=random_state, n_neighbors=k)
+    raise ValueError(f"Tecnica de balanceo desconocida: '{technique}'")
+
+
+def svm_factory(random_state=RANDOM_STATE, **kwargs):
+    '''Equivalente cuML de models.py::_svm_factory. kernel='rbf' fijo,
+    probability=True (necesario para roc_auc), max_iter/cache_size iguales
+    en espiritu a la version CPU (ver aviso #5 sobre unidades de cache_size).'''
+    return cuSVC(
+        kernel="rbf",
+        probability=True,
+        max_iter=SVM_MAX_ITER,
+        cache_size=SVM_CACHE_SIZE_MIB,
+        random_state=random_state,
+        output_type="numpy",
+        **kwargs,
+    )
+
+
+def build_pipeline(technique, y_train=None, cv_n_splits=None, random_state=RANDOM_STATE, **model_kwargs):
+    '''Identico a balancing.py::build_pipeline, especializado a SVM+cuML.'''
+    steps = [("preprocessing", build_column_transformer())]
+
+    resampler = get_resampler(technique, y_train=y_train, random_state=random_state, cv_n_splits=cv_n_splits)
+    if resampler is not None:
+        steps.append((technique, resampler))
+
+    extra_kwargs = dict(model_kwargs)
+    if technique == "class_weight":
+        if y_train is None:
+            raise ValueError("technique='class_weight' requiere y_train.")
+        extra_kwargs["class_weight"] = "balanced"  # SVM: class_weight_param default ("balanced" nativo de SVC)
+
+    estimator = svm_factory(random_state=random_state, **extra_kwargs)
+    steps.append(("model", estimator))
+
+    return ImbPipeline(steps=steps)  # sin memory=Memory(...): cache de joblib no aporta con GPU (el costo esta en el fit, no en recalcular SMOTE/ADASYN)
+
+
+print("build_pipeline OK -- ejemplo:")
+print(build_pipeline("smote", y_train=y, cv_n_splits=3, C=1.0, gamma=0.1))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="los-4-metodos-de-optimizacion-identicos-a-optimization-py">
+<h2>11. Los 4 métodos de optimización (idénticos a <code class="docutils literal notranslate"><span class="pre">optimization.py</span></code>)<a class="headerlink" href="#los-4-metodos-de-optimizacion-identicos-a-optimization-py" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">grid_search</span></code>/<code class="docutils literal notranslate"><span class="pre">random_search</span></code>: implementación manual (ver nota metodológica
+arriba) con <code class="docutils literal notranslate"><span class="pre">ParameterGrid</span></code>/<code class="docutils literal notranslate"><span class="pre">ParameterSampler</span></code> de scikit-learn — mismo
+algoritmo que <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code>/<code class="docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code> usan por dentro (por cada
+candidato: CV interna -&gt; promedio de folds -&gt; se queda con el mejor -&gt;
+refit sobre todo el fold externo).</p>
+<p><code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>/<code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code>: transcripción directa de
+<code class="docutils literal notranslate"><span class="pre">run_bayesian_search</span></code>/<code class="docutils literal notranslate"><span class="pre">run_genetic_search</span></code> de <code class="docutils literal notranslate"><span class="pre">optimization.py</span></code> (mismo
+sampler TPE, mismos operadores genéticos), con <code class="docutils literal notranslate"><span class="pre">n_jobs=1</span></code> siempre (una
+sola GPU — no tiene sentido paralelizar evaluaciones independientes contra
+el mismo contexto de GPU; esto es una decisión de implementación, no de
+metodología, mismo principio que ya documenta el proyecto local en
+<code class="docutils literal notranslate"><span class="pre">EXPERIMENT_STATUS.md</span></code> sección 8a: “no cambia folds/rangos/tamaños, solo
+tiempo de pared”).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>def _n_splits(cv):
+    return int(cv.n_splits)
+
+
+def _mean_cv_score(params, technique, X, y, cv, scoring):
+    scorer = get_scorer(scoring)
+    fold_scores = []
+    for train_idx, val_idx in cv.split(X, y):
+        X_tr, X_val = X.iloc[train_idx], X.iloc[val_idx]
+        y_tr, y_val = y.iloc[train_idx], y.iloc[val_idx]
+        pipe = build_pipeline(technique, y_train=y_tr, cv_n_splits=_n_splits(cv), random_state=RANDOM_STATE, **params)
+        pipe.fit(X_tr, y_tr)
+        fold_scores.append(scorer(pipe, X_val, y_val))
+    return float(np.mean(fold_scores))
+
+
+def _manual_search(candidates, technique, X, y, cv, scoring):
+    '''Mismo algoritmo que GridSearchCV/RandomizedSearchCV: evalua cada
+    candidato con CV interna, se queda con el de mejor score promedio
+    (primer empate gana, igual que np.argmax), refit sobre todo (X, y).'''
+    best_score, best_params = -np.inf, None
+    for params in candidates:
+        score = _mean_cv_score(params, technique, X, y, cv, scoring)
+        if score &gt; best_score:
+            best_score, best_params = score, params
+
+    best_pipeline = build_pipeline(technique, y_train=y, cv_n_splits=_n_splits(cv), random_state=RANDOM_STATE, **best_params)
+    best_pipeline.fit(X, y)
+    return {
+        "best_params": best_params,
+        "best_score": best_score,
+        "best_pipeline": best_pipeline,
+        "n_evaluations": len(candidates),
+    }
+
+
+def run_grid_search(technique, X, y, cv, scoring=DEFAULT_SCORING):
+    candidates = list(ParameterGrid(SVM_PARAM_GRID))
+    return _manual_search(candidates, technique, X, y, cv, scoring)
+
+
+def run_random_search(technique, X, y, cv, scoring=DEFAULT_SCORING, n_iter=RANDOM_SEARCH_ITER):
+    # ParameterSampler es EXACTAMENTE lo que RandomizedSearchCV usa por dentro
+    # para generar candidatos -- misma secuencia dado el mismo random_state.
+    candidates = list(ParameterSampler(SVM_PARAM_DISTRIBUTIONS, n_iter=n_iter, random_state=RANDOM_STATE))
+    candidates = [{k: float(v) for k, v in c.items()} for c in candidates]
+    return _manual_search(candidates, technique, X, y, cv, scoring)
+
+
+def run_bayesian_search(technique, X, y, cv, scoring=DEFAULT_SCORING, n_trials=OPTUNA_N_TRIALS):
+    '''Transcripcion de optimization.py::run_bayesian_search.'''
+    scorer = get_scorer(scoring)
+
+    def objective(trial):
+        params = {
+            "C": trial.suggest_float("C", 1e-2, 1e2, log=True),
+            "gamma": trial.suggest_float("gamma", 1e-4, 1e0, log=True),
+        }
+        fold_scores = []
+        for train_idx, val_idx in cv.split(X, y):
+            X_tr, X_val = X.iloc[train_idx], X.iloc[val_idx]
+            y_tr, y_val = y.iloc[train_idx], y.iloc[val_idx]
+            pipe = build_pipeline(technique, y_train=y_tr, random_state=RANDOM_STATE, **params)
+            pipe.fit(X_tr, y_tr)
+            fold_scores.append(scorer(pipe, X_val, y_val))
+        return float(np.mean(fold_scores))
+
+    sampler = optuna.samplers.TPESampler(seed=RANDOM_STATE)
+    study = optuna.create_study(direction="maximize", sampler=sampler)
+    study.optimize(objective, n_trials=n_trials, n_jobs=1, show_progress_bar=False)
+
+    best_params = study.best_params
+    best_pipeline = build_pipeline(technique, y_train=y, cv_n_splits=_n_splits(cv), random_state=RANDOM_STATE, **best_params)
+    best_pipeline.fit(X, y)
+    return {
+        "best_params": best_params,
+        "best_score": float(study.best_value),
+        "best_pipeline": best_pipeline,
+        "n_evaluations": len(study.trials),
+    }
+
+
+# --- Algoritmo genetico (DEAP) -- transcripcion de optimization.py::run_genetic_search ---
+
+def _init_gene(hp):
+    return float(10 ** random.uniform(np.log10(hp.low), np.log10(hp.high)))
+
+
+def _cx_uniform(ind1, ind2, indpb=0.5):
+    for i in range(len(ind1)):
+        if random.random() &lt; indpb:
+            ind1[i], ind2[i] = ind2[i], ind1[i]
+    return ind1, ind2
+
+
+def _mutate_individual(individual, hyperparams, indpb, sigma=0.15):
+    for i, hp in enumerate(hyperparams):
+        if random.random() &gt; indpb:
+            continue
+        log_lo, log_hi = np.log10(hp.low), np.log10(hp.high)
+        current_log = np.log10(max(individual[i], 1e-300))
+        new_log = current_log + random.gauss(0, sigma * (log_hi - log_lo))
+        new_log = min(max(new_log, log_lo), log_hi)
+        individual[i] = float(10 ** new_log)
+    return (individual,)
+
+
+def run_genetic_search(
+    technique, X, y, cv, scoring=DEFAULT_SCORING,
+    population_size=GA_POPULATION_SIZE, n_generations=GA_N_GENERATIONS,
+    cx_prob=GA_CX_PROB, mut_prob=GA_MUT_PROB, mut_indpb=GA_MUT_INDPB,
+    tournament_size=GA_TOURNAMENT_SIZE, elite_size=GA_ELITE_SIZE,
+):
+    random.seed(RANDOM_STATE)  # DEAP usa el modulo `random` global, igual que localmente
+
+    if not hasattr(creator, "FitnessMax"):
+        creator.create("FitnessMax", base.Fitness, weights=(1.0,))
+    if not hasattr(creator, "Individual"):
+        creator.create("Individual", list, fitness=creator.FitnessMax)
+
+    hyperparams = SVM_HYPERPARAMS
+    scorer = get_scorer(scoring)
+
+    def _init_individual():
+        return creator.Individual([_init_gene(hp) for hp in hyperparams])
+
+    def _decode(individual):
+        return {hp.name: gene for hp, gene in zip(hyperparams, individual)}
+
+    def _evaluate(individual):
+        params = _decode(individual)
+        fold_scores = []
+        for train_idx, val_idx in cv.split(X, y):
+            X_tr, X_val = X.iloc[train_idx], X.iloc[val_idx]
+            y_tr, y_val = y.iloc[train_idx], y.iloc[val_idx]
+            pipe = build_pipeline(technique, y_train=y_tr, random_state=RANDOM_STATE, **params)
+            pipe.fit(X_tr, y_tr)
+            fold_scores.append(scorer(pipe, X_val, y_val))
+        return (float(np.mean(fold_scores)),)
+
+    toolbox = base.Toolbox()
+    toolbox.register("individual", _init_individual)
+    toolbox.register("population", tools.initRepeat, list, toolbox.individual)
+    toolbox.register("mate", _cx_uniform, indpb=0.5)
+    toolbox.register("mutate", _mutate_individual, hyperparams=hyperparams, indpb=mut_indpb)
+    toolbox.register("select", tools.selTournament, tournsize=tournament_size)
+    toolbox.register("evaluate", _evaluate)
+
+    population = toolbox.population(n=population_size)
+    for ind, fit in zip(population, map(toolbox.evaluate, population)):
+        ind.fitness.values = fit
+    n_evaluations = len(population)
+
+    for _generation in range(1, n_generations + 1):
+        elite = [toolbox.clone(ind) for ind in tools.selBest(population, elite_size)]
+        offspring = [toolbox.clone(ind) for ind in toolbox.select(population, len(population) - elite_size)]
+
+        for child1, child2 in zip(offspring[::2], offspring[1::2]):
+            if random.random() &lt; cx_prob:
+                toolbox.mate(child1, child2)
+                del child1.fitness.values
+                del child2.fitness.values
+
+        for mutant in offspring:
+            if random.random() &lt; mut_prob:
+                toolbox.mutate(mutant)
+                del mutant.fitness.values
+
+        invalid = [ind for ind in offspring if not ind.fitness.valid]
+        for ind, fit in zip(invalid, map(toolbox.evaluate, invalid)):
+            ind.fitness.values = fit
+        n_evaluations += len(invalid)
+
+        population = elite + offspring
+
+    best_ind = tools.selBest(population, 1)[0]
+    best_params = _decode(best_ind)
+    best_pipeline = build_pipeline(technique, y_train=y, cv_n_splits=_n_splits(cv), random_state=RANDOM_STATE, **best_params)
+    best_pipeline.fit(X, y)
+    return {
+        "best_params": best_params,
+        "best_score": float(best_ind.fitness.values[0]),
+        "best_pipeline": best_pipeline,
+        "n_evaluations": n_evaluations,
+    }
+
+
+OPTIMIZATION_DISPATCH = {
+    "grid_search": run_grid_search,
+    "random_search": run_random_search,
+    "bayesian_optuna": run_bayesian_search,
+    "genetic_deap": run_genetic_search,
+}
+print("4 metodos de optimizacion definidos:", list(OPTIMIZATION_DISPATCH.keys()))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="validacion-cruzada-anidada-identica-a-nested-cv-py">
+<h2>12. Validación cruzada anidada (idéntica a <code class="docutils literal notranslate"><span class="pre">nested_cv.py</span></code>)<a class="headerlink" href="#validacion-cruzada-anidada-identica-a-nested-cv-py" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>def compute_core_metrics(y_true, y_pred, y_proba):
+    '''Identico a nested_cv.py::compute_core_metrics.'''
+    return {
+        "accuracy": float(accuracy_score(y_true, y_pred)),
+        "precision": float(precision_score(y_true, y_pred, zero_division=0)),
+        "recall": float(recall_score(y_true, y_pred, zero_division=0)),
+        "f1": float(f1_score(y_true, y_pred, zero_division=0)),
+        "roc_auc": float(roc_auc_score(y_true, y_proba)),
+    }
+
+
+def run_nested_cv(technique, method, X, y, n_outer_folds=N_OUTER_FOLDS, n_inner_folds=N_INNER_FOLDS,
+                   scoring=DEFAULT_SCORING, random_state=RANDOM_STATE):
+    '''Identico a nested_cv.py::run_nested_cv, especializado a SVM+cuML.'''
+    outer_cv = StratifiedKFold(n_splits=n_outer_folds, shuffle=True, random_state=random_state)
+    inner_cv = StratifiedKFold(n_splits=n_inner_folds, shuffle=True, random_state=random_state)
+
+    fold_results = []
+    t_start_total = time.time()
+
+    for fold_index, (train_idx, test_idx) in enumerate(outer_cv.split(X, y)):
+        X_train_outer, X_test_outer = X.iloc[train_idx], X.iloc[test_idx]
+        y_train_outer, y_test_outer = y.iloc[train_idx], y.iloc[test_idx]
+
+        t0 = time.time()
+        opt_result = OPTIMIZATION_DISPATCH[method](technique, X_train_outer, y_train_outer, inner_cv, scoring=scoring)
+        fit_time_seconds = time.time() - t0
+
+        y_pred = opt_result["best_pipeline"].predict(X_test_outer)
+        y_proba = opt_result["best_pipeline"].predict_proba(X_test_outer)[:, 1]
+        y_true = y_test_outer.to_numpy()
+
+        fold_results.append({
+            "fold_index": fold_index,
+            "best_params": opt_result["best_params"],
+            "metrics": compute_core_metrics(y_true, y_pred, y_proba),
+            "fit_time_seconds": fit_time_seconds,
+        })
+        print(
+            f"    fold {fold_index}: f1={fold_results[-1]['metrics']['f1']:.4f} "
+            f"best_params={ {k: round(v, 6) for k, v in opt_result['best_params'].items()} } "
+            f"({fit_time_seconds:.1f}s)"
+        )
+
+    total_time_seconds = time.time() - t_start_total
+
+    row = {
+        "model": "svm",
+        "technique": technique,
+        "method": method,
+        "total_time_seconds": total_time_seconds,
+        "n_outer_folds": len(fold_results),
+    }
+    for metric_name in CORE_METRICS:
+        values = [fr["metrics"][metric_name] for fr in fold_results]
+        row[f"{metric_name}_mean"] = float(np.mean(values))
+        row[f"{metric_name}_std"] = float(np.std(values))
+        row[f"{metric_name}_per_fold"] = json.dumps(values)
+    row["best_params_per_fold"] = json.dumps([fr["best_params"] for fr in fold_results])
+    row["random_state"] = random_state
+    row["n_inner_folds"] = n_inner_folds
+    return row
+
+
+print("run_nested_cv definido")
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="seleccion-de-combinaciones-a-correr">
+<h2>13. Selección de combinaciones a correr<a class="headerlink" href="#seleccion-de-combinaciones-a-correr" title="Link to this heading">#</a></h2>
+<p><strong>Ya corridas localmente (CPU, en <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>)</strong> —
+verificado el 2026-09-23: <code class="docutils literal notranslate"><span class="pre">svm/none/grid_search</span></code>, <code class="docutils literal notranslate"><span class="pre">svm/none/random_search</span></code>,
+<code class="docutils literal notranslate"><span class="pre">svm/none/bayesian_optuna</span></code> (3/16).</p>
+<p><strong>Pendientes (13/16)</strong> — todas las demás. <code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> puede
+estar corriendo AHORA MISMO en local (proceso CPU en curso al momento de
+armar este notebook) — si ya terminó localmente antes de correr esta
+celda, sacarla de <code class="docutils literal notranslate"><span class="pre">COMBOS_TO_RUN</span></code> para no repetir trabajo.</p>
+<p>Editar <code class="docutils literal notranslate"><span class="pre">COMBOS_TO_RUN</span></code> para correr solo un subconjunto (ej. dejar solo
+<code class="docutils literal notranslate"><span class="pre">smote</span></code>/<code class="docutils literal notranslate"><span class="pre">adasyn</span></code>, que son las que más tardaron/se trabaron en CPU local
+según <code class="docutils literal notranslate"><span class="pre">EXPERIMENT_STATUS.md</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ALL_SVM_COMBOS = [(t, m) for t in BALANCING_TECHNIQUES
+                  for m in ("grid_search", "random_search", "bayesian_optuna", "genetic_deap")]
+assert len(ALL_SVM_COMBOS) == 16
+
+DONE_LOCALLY = [
+    ("none", "grid_search"),
+    ("none", "random_search"),
+    ("none", "bayesian_optuna"),
+]
+
+PENDING = [c for c in ALL_SVM_COMBOS if c not in DONE_LOCALLY]
+assert len(PENDING) == 13
+
+# Editar esta lista para correr solo un subconjunto:
+COMBOS_TO_RUN = list(PENDING)
+
+print(f"Ya corridas localmente: {DONE_LOCALLY}")
+print(f"Pendientes ({len(PENDING)}): {PENDING}")
+print(f"COMBOS_TO_RUN ({len(COMBOS_TO_RUN)}): {COMBOS_TO_RUN}")
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion">
+<h2>14. Ejecutar — guardado incremental (una fila apenas termina cada combinación)<a class="headerlink" href="#ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion" title="Link to this heading">#</a></h2>
+<p>Si Colab se desconecta a mitad de camino: volver a correr esta celda (no
+hace falta repetir nada de arriba salvo reinstalar/reimportar si se
+reinició la sesión) — salta automáticamente las combinaciones que ya estén
+en <code class="docutils literal notranslate"><span class="pre">RESULTS_CSV_PATH</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>RESULTS_CSV_PATH = Path("svm_gpu_results.csv")
+ERRORS_LOG_PATH = Path("svm_gpu_errors_log.csv")
+
+already_done = set()
+if RESULTS_CSV_PATH.exists():
+    existing = pd.read_csv(RESULTS_CSV_PATH)
+    already_done = set(zip(existing["technique"], existing["method"]))
+    print(f"{len(already_done)} combinaciones ya en {RESULTS_CSV_PATH}, se omiten.")
+
+to_run = [c for c in COMBOS_TO_RUN if c not in already_done]
+print(f"{len(to_run)} combinaciones a correr en esta sesion: {to_run}")
+
+for technique, method in to_run:
+    print(f"\n=== svm / {technique} / {method} ===")
+    t0 = time.time()
+    try:
+        row = run_nested_cv(technique, method, X, y)
+    except Exception as exc:
+        elapsed = time.time() - t0
+        print(f"  ERROR tras {elapsed:.1f}s: {exc!r}")
+        traceback.print_exc()
+        err_row = pd.DataFrame([{
+            "technique": technique, "method": method,
+            "elapsed_seconds": elapsed, "error": repr(exc), "traceback": traceback.format_exc(),
+        }])
+        err_row.to_csv(ERRORS_LOG_PATH, mode="a", header=not ERRORS_LOG_PATH.exists(), index=False)
+        continue
+
+    row_df = pd.DataFrame([row])
+    row_df.to_csv(RESULTS_CSV_PATH, mode="a", header=not RESULTS_CSV_PATH.exists(), index=False)
+    print(
+        f"  OK svm/{technique}/{method} -- "
+        f"f1={row['f1_mean']:.4f}+/-{row['f1_std']:.4f} "
+        f"roc_auc={row['roc_auc_mean']:.4f}+/-{row['roc_auc_std']:.4f} "
+        f"({row['total_time_seconds']:.1f}s)"
+    )
+
+print("\nListo. Filas guardadas en:", RESULTS_CSV_PATH.resolve())
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="resultado-final-descarga">
+<h2>15. Resultado final + descarga<a class="headerlink" href="#resultado-final-descarga" title="Link to this heading">#</a></h2>
+<p>Mismo esquema exacto de columnas que <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>
+local (<code class="docutils literal notranslate"><span class="pre">model,</span> <span class="pre">technique,</span> <span class="pre">method,</span> <span class="pre">total_time_seconds,</span> <span class="pre">n_outer_folds,</span> <span class="pre">accuracy_mean,</span> <span class="pre">accuracy_std,</span> <span class="pre">accuracy_per_fold,</span> <span class="pre">precision_mean,</span> <span class="pre">precision_std,</span> <span class="pre">precision_per_fold,</span> <span class="pre">recall_mean,</span> <span class="pre">recall_std,</span> <span class="pre">recall_per_fold,</span> <span class="pre">f1_mean,</span> <span class="pre">f1_std,</span> <span class="pre">f1_per_fold,</span> <span class="pre">roc_auc_mean,</span> <span class="pre">roc_auc_std,</span> <span class="pre">roc_auc_per_fold,</span> <span class="pre">best_params_per_fold,</span> <span class="pre">random_state,</span> <span class="pre">n_inner_folds</span></code>) — se
+puede concatenar directamente (<code class="docutils literal notranslate"><span class="pre">pd.concat</span></code>) o pegar las filas sin
+reformatear.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>final_results = pd.read_csv(RESULTS_CSV_PATH) if RESULTS_CSV_PATH.exists() else pd.DataFrame()
+display(final_results)
+
+if ERRORS_LOG_PATH.exists():
+    print("\nHubo errores en algunas combinaciones -- revisar antes de dar por completo el batch:")
+    display(pd.read_csv(ERRORS_LOG_PATH)[["technique", "method", "elapsed_seconds", "error"]])
+
+from google.colab import files
+files.download(str(RESULTS_CSV_PATH))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencias-cuml-vs-scikit-learn-a-tener-en-cuenta-verificadas-no-asumidas">⚠️ Diferencias cuML vs. scikit-learn a tener en cuenta (verificadas, no asumidas)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-usar-este-notebook">Cómo usar este notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verificar-gpu-asignada">1. Verificar GPU asignada</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instalar-rapids-cuml">2. Instalar RAPIDS cuML</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports-chequeo-de-versiones">3. Imports + chequeo de versiones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chequeo-de-compatibilidad-cuml-correr-antes-de-cualquier-combinacion-real">4. Chequeo de compatibilidad cuML (correr ANTES de cualquier combinación real)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subir-dataset-final-csv">5. Subir <code class="docutils literal notranslate"><span class="pre">dataset_final.csv</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-deduplicar-y-separar-x-y">6. Cargar, deduplicar y separar X/y</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-identica-a-src-config-py">7. Configuración (idéntica a <code class="docutils literal notranslate"><span class="pre">src/config.py</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#espacio-de-busqueda-de-svm-identico-a-models-py-model-registry-svm">8. Espacio de búsqueda de SVM (idéntico a <code class="docutils literal notranslate"><span class="pre">models.py::MODEL_REGISTRY["svm"]</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocesamiento-identico-a-preprocessing-py-con-salida-densa">9. Preprocesamiento (idéntico a <code class="docutils literal notranslate"><span class="pre">preprocessing.py</span></code>, con salida densa)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#balanceo-identico-a-balancing-py-fabrica-del-modelo-cuml">10. Balanceo (idéntico a <code class="docutils literal notranslate"><span class="pre">balancing.py</span></code>) + fábrica del modelo cuML</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#los-4-metodos-de-optimizacion-identicos-a-optimization-py">11. Los 4 métodos de optimización (idénticos a <code class="docutils literal notranslate"><span class="pre">optimization.py</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-cruzada-anidada-identica-a-nested-cv-py">12. Validación cruzada anidada (idéntica a <code class="docutils literal notranslate"><span class="pre">nested_cv.py</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-de-combinaciones-a-correr">13. Selección de combinaciones a correr</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion">14. Ejecutar — guardado incremental (una fila apenas termina cada combinación)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado-final-descarga">15. Resultado final + descarga</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Equipo del proyecto
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
