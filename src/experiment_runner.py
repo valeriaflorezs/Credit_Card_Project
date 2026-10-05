@@ -3,13 +3,13 @@ método de optimización, paralelizado con joblib, con registro estructurado
 en una tabla maestra (CSV) que se guarda de forma INCREMENTAL — cada
 combinación agrega su fila apenas termina, no al final de todo el batch.
 
-**Por qué 104 combinaciones y no 112:** el curso pide 7 modelos × 4
-técnicas de balanceo × 4 métodos de optimización = 112 nominal. Pero KNN
-y Naive Bayes no soportan la técnica ``"class_weight"`` (ver
-``models.ModelSpec.supports_class_weight`` / ``balancing.is_compatible``)
-— esas 2 combinaciones (modelo, técnica) × 4 métodos = 8 corridas se
-excluyen de forma explícita y documentada, no por omisión. Total
-efectivamente ejecutable: (7×4 - 2) × 4 = 104.
+**112 combinaciones:** 7 modelos × 4 técnicas de balanceo × 4 métodos de
+optimización. KNN y Naive Bayes no tienen ``class_weight`` nativo en
+scikit-learn, pero ``models.BalancedKNeighborsClassifier`` y
+``models.BalancedGaussianNB`` lo emulan (el de KNN es una extensión no
+estándar), así que las 112 son ejecutables. En la corrida v2 SVM se
+ejecuta aparte en Colab (16 combinaciones), por lo que esta tabla maestra
+contiene 96.
 
 **Registro incremental / reanudable:** cada combinación se agrega a
 ``results/experiments_master.csv`` apenas termina (no se espera a que
@@ -368,21 +368,22 @@ def run_experiments(
             )
             start = time.time()
             proc.start()
-            proc.join(timeout=timeout_seconds)
-            elapsed = time.time() - start
-
-            if proc.is_alive():
-                proc.terminate()
+            # Se vacía la cola ANTES de hacer join: el resultado (con y_true/y_pred/
+            # y_proba por fold) puede superar el buffer de la tubería, y un hijo
+            # bloqueado en q.put() nunca termina, lo que se confundiría con un timeout.
+            try:
+                status, payload = q.get(timeout=timeout_seconds)
+                reason = None if status == "ok" else "error"
                 proc.join()
-                reason = "timeout"
-                status, payload = None, None
-            else:
-                try:
-                    status, payload = q.get_nowait()
-                except queue_module.Empty:
-                    reason, status, payload = "process_died", None, None
+            except queue_module.Empty:
+                if proc.is_alive():
+                    proc.terminate()
+                    proc.join()
+                    reason = "timeout"
                 else:
-                    reason = None if status == "ok" else "error"
+                    reason = "process_died"
+                status, payload = None, None
+            elapsed = time.time() - start
 
             if reason is not None or status != "ok":
                 detail = f"tras {elapsed:.1f}s" + (f": {payload}" if payload else "")

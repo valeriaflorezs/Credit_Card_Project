@@ -1,6 +1,15 @@
 # Estado de la corrida de experimentos (04_run_experiments.ipynb)
 
-Última actualización: 2026-09-22, ~23:50 (autónomo, ver sección 8). Este archivo es el punto de partida para retomar la corrida en una sesión nueva.
+Última revisión de este encabezado: 2026-10-05.
+
+## Estado actual (corrida v2, dataset de 29,965 × 21)
+
+- `results/experiments_master.csv`: **96/96** combinaciones (6 modelos × 4 técnicas × 4 métodos), sin duplicados ni NaN; 3 folds externos × 3 internos, `random_state=42`.
+- SVM (16 combinaciones) corrió en Colab con GPU (cuML): `results/svm_gpu_results_colab.csv`, 16/16. No es estrictamente comparable con las demás (otro solver, `cache_size`, versiones de librerías; tiempos no comparables) — ver la nota en `05_results_analysis.ipynb`.
+- Total: 112/112 entre ambas tablas.
+- Métricas complementarias (2026-10-05): `results/experiments_posthoc_metrics.csv` (generado con `python -m src.posthoc_metrics`) trae F1, precisión, recall, ROC-AUC y PR-AUC por fold (std con `ddof=1`) para las 96 filas locales, reajustando cada pipeline con los `best_params` ya guardados (sin repetir búsquedas; el F1 recalculado coincide exactamente con la tabla maestra). No incluye SVM (cuML/Colab). La tabla maestra no se modificó; sus columnas `*_std` usan `ddof=0`.
+- El respaldo de la tabla del dataset anterior (`results/experiments_master_v1_dataset_anterior.csv`) **no está en `results/`** (no se encontró al revisar el 2026-10-05; tampoco figura en git).
+- **Todo lo que sigue desde la sección 1 es historia de la corrida v1** (dataset anterior, 7 modelos con SVM local, `skipped_timeout_log`, 99–104/112). Se conserva como registro de decisiones técnicas (paralelismo, wrappers de `class_weight`, `max_iter` de SVM, etc.), no como estado vigente. Las instrucciones de la sección 2 usan el `.venv`, que ya no se usa: ver el entorno conda `creditcard`.
 
 > **Nota (2026-10-03): el dataset cambió.** Todo lo que sigue se corrió con la versión anterior de `data/processed/dataset_final.csv` (respaldada en `data/processed/dataset_final_v1_antes_de_resolver_eda.csv`: con las seis `BILL_AMT` por separado y sin transformaciones log; los duplicados se quitaban al cargar, en el notebook). La versión actual resuelve todos los hallazgos del EDA (ver Parte 5 de `notebooks/00_eda.ipynb` y el README): 29,965 filas × 21 columnas, `BILL_AMT1-6` resumidas en 3 variables, `LIMIT_BAL`/`PAY_AMT*` en log. Las 99 filas de `results/experiments_master.csv` son, por tanto, de otro dataset y no son comparables con una corrida nueva.
 

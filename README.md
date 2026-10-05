@@ -4,7 +4,9 @@
 [![Conda](https://img.shields.io/badge/Environment-Conda-44A833?style=for-the-badge&logo=anaconda&logoColor=white)](https://www.anaconda.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-> **Resumen del Proyecto:** Este proyecto desarrolla un flujo completo e integral de ciencia de datos y aprendizaje automático para predecir el riesgo de incumplimiento de pago (*default*) en clientes de tarjetas de crédito. A partir del análisis del conjunto de datos del repositorio UCI (30,000 registros), la solución abarca desde un pipeline riguroso de extracción, limpieza y transformación de datos (ETL) y un profundo análisis exploratorio (EDA) orientado a solucionar problemas críticos de desbalance de clases y multicolinealidad severa entre montos facturados, hasta un diseño experimental factorial exhaustivo de 112 configuraciones. La estrategia evalúa sistemáticamente algoritmos de clasificación, representaciones de variables, técnicas de balanceo y optimizaciones avanzadas (algoritmos genéticos y bayesianos), logrando elevar significativamente el *F1* de la clase minoritaria y reducir los falsos negativos frente al modelo de regresión logística base.
+> **Resumen del Proyecto:** Este proyecto desarrolla un flujo completo e integral de ciencia de datos y aprendizaje automático para predecir el riesgo de incumplimiento de pago (*default*) en clientes de tarjetas de crédito. A partir del conjunto de datos del repositorio UCI (30,000 registros; 29,965 y 21 columnas tras eliminar 35 duplicados exactos y transformar variables), la solución abarca un pipeline de extracción, limpieza y transformación de datos (ETL) y un análisis exploratorio (EDA) orientado al desbalance de clases (≈22 % de *default*) y a la multicolinealidad entre montos facturados, hasta un diseño experimental factorial de 112 configuraciones: 7 modelos × 4 técnicas de balanceo × 4 métodos de optimización, con validación cruzada anidada (3 folds externos × 3 internos). Seis modelos se ejecutan localmente (96 combinaciones) y SVM en Colab con GPU (16 combinaciones, ver la nota de comparabilidad en `05_results_analysis.ipynb`).
+>
+> **Resultados y alcance:** el F1 de la clase minoritaria sube de ≈0.38 (regresión logística sin balanceo) a ≈0.52–0.55 con balanceo. Esa mejora proviene en buena parte del balanceo, que desplaza el umbral de decisión (el ROC-AUC casi no cambia entre técnicas); la comparación estadística entre las 112 combinaciones es descriptiva, porque con 3 folds el post-hoc de Nemenyi no puede declarar diferencias significativas.
 
 ---
 
@@ -24,13 +26,13 @@ Asegúrate de contar con **Anaconda** o **Miniconda** instalado en tu equipo ant
 1. **Abrir Anaconda Prompt** desde el menú de inicio de tu sistema operativo.
 2. **Crear el entorno virtual** con Python 3.12:
    ```bash
-   conda create --name credit_card_env python=3.12 -y
+   conda create --name creditcard python=3.12 -y
 
 ```
 
 3. **Activar el entorno virtual**:
 ```bash
-conda activate credit_card_env
+conda activate creditcard
 
 ```
 
@@ -72,20 +74,30 @@ Credit_Card_Project/
 
 ##  Flujo de Trabajo del Proyecto
 
+| Notebook | Contenido |
+|---|---|
+| `00_eda.ipynb` | EDA y construcción de `data/processed/dataset_final.csv` (Parte 5) |
+| `01_baseline_logistic.ipynb` | Baseline: regresión logística con partición 80/20 |
+| `02_setup_check.ipynb`, `03_pipeline_dev.ipynb` | Verificación del entorno y desarrollo del pipeline (datos sintéticos) |
+| `04_run_experiments.ipynb` | Corrida de las combinaciones (6 modelos, local) → `results/experiments_master.csv` |
+| `07_svm_gpu_colab.ipynb` | SVM (16 combinaciones) en Colab con GPU → `results/svm_gpu_results_colab.csv` |
+| `05_results_analysis.ipynb` | Tabla de las 112 combinaciones, métricas complementarias (ROC-AUC, PR-AUC; el F1 sigue siendo la principal), Friedman/Nemenyi, comparación por factor, DeLong, calibración y complejidad |
+| `06_interpretability.ipynb` | SHAP del Random Forest y comparación LIME vs. SHAP de XGBoost (una observación) |
+
 ---
 
 ##  Guía de Ejecución
 
 1. **Activar el entorno virtual:**
 ```bash
-conda activate credit_card_env
+conda activate creditcard
 
 ```
 
 
 2. **Ejecución desde VS Code (Recomendado):**
 * Abre la carpeta del proyecto en **VS Code**.
-* Selecciona el intérprete de Python correspondiente al entorno `credit_card_env` (presiona `Ctrl + Shift + P` -> **Python: Select Interpreter**).
+* Selecciona el intérprete de Python correspondiente al entorno `creditcard` (presiona `Ctrl + Shift + P` -> **Python: Select Interpreter**).
 * Abre cualquier cuaderno dentro de la carpeta `notebooks/` y ejecútalo directamente.
 
 

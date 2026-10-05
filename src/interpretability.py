@@ -23,7 +23,7 @@ Bayes, Regresión Logística, SVM), SHAP recurre a un explicador
 model-agnostic (permutación/Kernel SHAP), mucho más lento que
 ``TreeExplainer``. Por eso ``background``/``n_explain`` se limitan
 explícitamente por defecto — este módulo está pensado para explicar UN
-modelo (el mejor identificado), no las 104 combinaciones.
+modelo (el mejor identificado), no las 112 combinaciones.
 """
 
 from __future__ import annotations

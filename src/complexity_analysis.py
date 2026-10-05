@@ -166,7 +166,7 @@ def recover_outer_fold(
     ``nested_cv.run_nested_cv``.
 
     ``NestedCVResult`` no guarda ``X_train``/``X_test`` por fold (para no
-    duplicar el dataset completo en memoria/disco por cada una de las 104
+    duplicar el dataset completo en memoria/disco por cada una de las 112
     combinaciones). En su lugar, dado que ``StratifiedKFold`` con
     ``shuffle=True`` y una semilla fija es determinístico para un mismo
     ``(X, y)``, este helper reconstruye el MISMO split re-instanciando el
@@ -211,7 +211,7 @@ def compare_standard_vs_optimized(
 ) -> dict[str, Any]:
     """Compara el modelo ESTÁNDAR (hiperparámetros por defecto, sin
     balanceo) contra el OPTIMIZADO (``technique`` + ``best_params``
-    encontrados por el pipeline de las 104 combinaciones) para un modelo,
+    encontrados por el pipeline de las 112 combinaciones) para un modelo,
     sobre el MISMO fold externo (para que la comparación de tiempo/memoria/
     desempeño sea sobre datos idénticos).
 
@@ -307,7 +307,7 @@ def build_complexity_table(
         ``{model_name: (technique, NestedCVResult)}`` — típicamente, para
         cada modelo, la combinación (técnica, método) con mejor desempeño
         en la tabla maestra de ``experiment_runner.py`` (bloque 6). Se pide
-        UNA combinación por modelo (no las 104) porque la tabla de
+        UNA combinación por modelo (no las 112) porque la tabla de
         complejidad del curso es "por modelo", no por combinación.
     X, y : DataFrame, Series
         Dataset COMPLETO usado para generar esos ``NestedCVResult``.

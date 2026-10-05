@@ -4,8 +4,8 @@ balanceo × optimización): Friedman (ómnibus) -> Nemenyi + CD diagram
 subconjunto reducido (top 2-3), con corrección por comparaciones
 múltiples -> Cliff's Delta (tamaño del efecto) -> bootstrap BCa (IC).
 
-**Por qué jerárquico y no todas las comparaciones pareadas:** con ~104
-combinaciones válidas hay C(104, 2) = 5,356 pares posibles. Correr DeLong
+**Por qué jerárquico y no todas las comparaciones pareadas:** con 112
+combinaciones hay C(112, 2) = 6,216 pares posibles. Correr DeLong
 (u otro test) sobre todos ellos sin corrección infla el error tipo I —
 cientos de "diferencias significativas" solo por azar. Por eso: primero
 Friedman responde si HAY evidencia de que no todas las combinaciones son
@@ -15,15 +15,20 @@ equivalentes; solo si la respuesta es sí se identifica CUÁLES difieren
 (DeLong) con corrección de Holm-Bonferroni/Benjamini-Hochberg.
 
 **Limitación honesta de los datos:** ``config.N_OUTER_FOLDS = 3`` (elegido
-por costo computacional dado el volumen de 104 combinaciones — ver
+por costo computacional dado el volumen de 112 combinaciones — ver
 config.py) significa que Friedman/Nemenyi comparan solo 3 "bloques", muy
 por debajo de lo recomendado en la literatura (Demšar 2006 sugiere ~10+
 datasets/folds para potencia estadística razonable). Este módulo reporta
 los resultados igual — es la validación cruzada con la que se generaron
-las 104 corridas — pero si Friedman NO resulta significativo, la
+las 112 corridas — pero si Friedman NO resulta significativo, la
 conclusión correcta con tan pocos bloques es "no hay potencia suficiente
 para detectar diferencias", no necesariamente "los modelos son
-equivalentes". Esta ambigüedad debe discutirse explícitamente en el
+equivalentes". Con k=112 y N=3 la diferencia crítica de Nemenyi (≈115)
+supera incluso la máxima diferencia posible entre rangos promedio
+(k-1=111), así que el post-hoc NO puede declarar ningún par significativo:
+el ranking debe leerse como descriptivo. Además, los folds comparten datos
+de entrenamiento y no son bloques independientes (Demšar 2006 supone
+datasets distintos), por lo que los p-valores son optimistas. Esta ambigüedad debe discutirse explícitamente en el
 reporte, no ocultarse.
 """
 
@@ -145,7 +150,13 @@ def friedman_test(performance_matrix: pd.DataFrame, alpha: float = 0.05) -> dict
 
     # Rank 1 = mejor desempeño (ascending=False sobre la métrica de performance).
     ranks = performance_matrix.rank(axis=1, ascending=False, method="average")
-    avg_ranks = ranks.mean(axis=0).sort_values()
+    avg_ranks = ranks.mean(axis=0)
+    # Desempate explícito (no depende del orden interno de sort_values): a igual
+    # rango promedio, queda primero la de mayor media de la métrica (F1).
+    mean_metric = performance_matrix.mean(axis=0)
+    order = sorted(avg_ranks.index, key=lambda c: (round(avg_ranks[c], 10), -mean_metric[c], str(c)))
+    n_tied = int(avg_ranks.round(10).duplicated(keep=False).sum())
+    avg_ranks = avg_ranks.loc[order]
 
     return {
         "statistic": float(statistic),
@@ -155,6 +166,84 @@ def friedman_test(performance_matrix: pd.DataFrame, alpha: float = 0.05) -> dict
         "avg_ranks": avg_ranks,
         "n_blocks": performance_matrix.shape[0],
         "k_combinations": performance_matrix.shape[1],
+        "n_tied_in_avg_ranks": n_tied,
+    }
+
+
+def per_fold_std(master_table: pd.DataFrame, metric: str = "f1") -> pd.Series:
+    """Desviación estándar entre folds con ``ddof=1`` (estimador muestral).
+
+    Las columnas ``{metric}_std`` de la tabla maestra se guardaron con
+    ``np.std`` (``ddof=0``); con 3 folds eso subestima la dispersión por un
+    factor ``sqrt(2/3)`` ≈ 0.82. Esta función la recalcula desde
+    ``{metric}_per_fold``. Aun así, los folds comparten datos de
+    entrenamiento, por lo que incluso esta cifra subestima la varianza real
+    (Nadeau y Bengio, 2003).
+    """
+    import json
+
+    values = master_table[f"{metric}_per_fold"].map(lambda s: np.std(json.loads(s), ddof=1))
+    values.index = master_table.index
+    return values
+
+
+# ---------------------------------------------------------------------------
+# Comparación por FACTOR (técnica de balanceo, método de optimización, modelo)
+# ---------------------------------------------------------------------------
+
+FACTOR_COLUMNS: tuple[str, ...] = ("model", "technique", "method")
+
+
+def build_factor_matrix(master_table: pd.DataFrame, factor: str, metric: str = "f1") -> pd.DataFrame:
+    """Matriz bloques × niveles de UN factor del diseño factorial.
+
+    Cada fila (bloque) es una combinación de los OTROS dos factores y cada
+    columna es un nivel de ``factor``; el valor es la media de la métrica en
+    los folds externos. Es el análogo del diseño de Demšar (2006) con las
+    otras combinaciones como "datasets": responde, por ejemplo, ¿importa la
+    técnica de balanceo? con 24 bloques (modelo × método) en vez de los 3
+    folds de la comparación entre 112 combinaciones, donde Nemenyi no puede
+    declarar nada.
+
+    Limitación: los bloques no son independientes (comparten dataset y
+    folds, y los 4 métodos de un mismo modelo se parecen mucho), así que
+    los p-valores son optimistas; es un análisis exploratorio.
+    """
+    import json
+
+    if factor not in FACTOR_COLUMNS:
+        raise ValueError(f"factor debe ser uno de {FACTOR_COLUMNS}")
+    others = [c for c in FACTOR_COLUMNS if c != factor]
+    table = master_table.copy()
+    table["_value"] = table[f"{metric}_per_fold"].map(lambda s: float(np.mean(json.loads(s))))
+    matrix = table.pivot_table(index=others, columns=factor, values="_value", aggfunc="mean")
+    return matrix.dropna(axis=0, how="any")
+
+
+def compare_factor_levels(
+    master_table: pd.DataFrame, factor: str, metric: str = "f1", alpha: float = 0.05
+) -> dict[str, Any]:
+    """Friedman + Nemenyi + diferencia crítica sobre los niveles de un factor
+    (ver ``build_factor_matrix``).
+
+    Returns
+    -------
+    dict con ``matrix``, ``friedman``, ``nemenyi_p_matrix``,
+    ``critical_difference``, ``mean_metric`` (media por nivel) y ``has_power``
+    (``False`` si CD >= k-1, caso en el que Nemenyi no puede declarar nada).
+    """
+    matrix = build_factor_matrix(master_table, factor, metric)
+    friedman = friedman_test(matrix, alpha=alpha)
+    k, n = friedman["k_combinations"], friedman["n_blocks"]
+    cd = compute_critical_difference(k=k, n_blocks=n, alpha=alpha)
+    return {
+        "factor": factor,
+        "matrix": matrix,
+        "friedman": friedman,
+        "nemenyi_p_matrix": nemenyi_posthoc(matrix),
+        "critical_difference": cd,
+        "mean_metric": matrix.mean(axis=0).sort_values(ascending=False),
+        "has_power": bool(cd < k - 1),
     }
 
 
@@ -304,7 +393,7 @@ def delong_test(y_true: np.ndarray, proba_a: np.ndarray, proba_b: np.ndarray) ->
         z_statistic, p_value = 0.0, 1.0
     else:
         z_statistic = float(auc_diff / np.sqrt(variance))
-        p_value = float(2 * (1 - norm.cdf(abs(z_statistic))))
+        p_value = float(2 * norm.sf(abs(z_statistic)))
 
     return {"auc_a": float(aucs[0]), "auc_b": float(aucs[1]), "z_statistic": z_statistic, "p_value": p_value}
 
@@ -551,6 +640,8 @@ def run_hierarchical_comparison(
     )
     output["nemenyi_p_matrix"] = sig_matrix
     output["critical_difference"] = cd
+    # Si CD >= k-1, ningún par puede ser significativo ni siquiera con rangos extremos.
+    output["nemenyi_has_power"] = bool(cd < friedman["k_combinations"] - 1)
 
     top_labels = list(friedman["avg_ranks"].index[:top_k_for_delong])
     top_combos = [tuple(label.split("|")) for label in top_labels]
@@ -597,7 +688,7 @@ def run_hierarchical_comparison_from_table(
     reajusta el top-k (2-3 combinaciones) con sus ``best_params_per_fold``
     ya conocidos (ver ``evaluation.regenerate_outof_fold_predictions`` —
     un ``fit`` por fold, no una búsqueda de hiperparámetros), nunca las
-    104 combinaciones completas.
+    112 combinaciones completas.
 
     Parameters
     ----------
@@ -635,6 +726,8 @@ def run_hierarchical_comparison_from_table(
     cd = compute_critical_difference(k=friedman["k_combinations"], n_blocks=friedman["n_blocks"], alpha=alpha)
     output["nemenyi_p_matrix"] = sig_matrix
     output["critical_difference"] = cd
+    # Si CD >= k-1, ningún par puede ser significativo ni siquiera con rangos extremos.
+    output["nemenyi_has_power"] = bool(cd < friedman["k_combinations"] - 1)
 
     top_labels = list(friedman["avg_ranks"].index[:top_k_for_delong])
     top_combos = [tuple(label.split("|")) for label in top_labels]
