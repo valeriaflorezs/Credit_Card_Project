@@ -163,7 +163,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../README.html">
-                    Default of Credit Card Clients — Pipeline de Clasificación (Entregable 3)
+                    Default of Credit Card Clients
                 </a>
             </li>
         </ul>
@@ -327,7 +327,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="setup-check">
 <h1>02. Setup Check<a class="headerlink" href="#setup-check" title="Permalink to this heading">#</a></h1>
-<p>Verifica: imports, semilla global, config, carga de datos sintéticos (para probar el pipeline sin depender del dataset real) y que el dataset real preprocesado en el EDA (<code class="docutils literal notranslate"><span class="pre">data/processed/dataset_final.csv</span></code>) se pueda cargar.</p>
+<p>Comprueba que el proyecto esté bien configurado antes de correr los experimentos. La configuración usa semilla aleatoria 42 (para que los resultados se puedan reproducir) y validación cruzada anidada con 3 pliegues externos y 3 internos, y la variable objetivo es <code class="docutils literal notranslate"><span class="pre">default_payment_next_month</span></code>. Se probó la separación de variables y objetivo con un conjunto sintético de 5,000 filas (22.46 % de clase positiva) y se confirmó que el objetivo es binario. Finalmente, se verificó que el dataset real procesado (29,965 filas y 21 columnas) está disponible y contiene el objetivo y las columnas categóricas definidas en la configuración.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">

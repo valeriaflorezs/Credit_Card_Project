@@ -163,7 +163,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../README.html">
-                    Default of Credit Card Clients — Pipeline de Clasificación (Entregable 3)
+                    Default of Credit Card Clients
                 </a>
             </li>
         </ul>
@@ -334,7 +334,6 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-y-calibracion-bloque-8">9. Evaluación y calibración (bloque 8)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad-shap-rapido-bloque-9">10. Interpretabilidad: SHAP rápido (bloque 9)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-estadistica-jerarquica-bloque-10-mini">11. Comparación estadística jerárquica (bloque 10, mini)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#listo">Listo</a></li>
 </ul>
             </nav>
         </div>
@@ -348,8 +347,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="desarrollo-y-prueba-del-pipeline-completo">
 <h1>03. Desarrollo y prueba del pipeline completo<a class="headerlink" href="#desarrollo-y-prueba-del-pipeline-completo" title="Permalink to this heading">#</a></h1>
-<p>Recorre los 11 bloques del pipeline (<code class="docutils literal notranslate"><span class="pre">preprocessing</span></code> → <code class="docutils literal notranslate"><span class="pre">balancing</span></code> → <code class="docutils literal notranslate"><span class="pre">models</span></code> → <code class="docutils literal notranslate"><span class="pre">optimization</span></code> → <code class="docutils literal notranslate"><span class="pre">nested_cv</span></code> → <code class="docutils literal notranslate"><span class="pre">experiment_runner</span></code> → <code class="docutils literal notranslate"><span class="pre">complexity_analysis</span></code> → <code class="docutils literal notranslate"><span class="pre">evaluation</span></code> → <code class="docutils literal notranslate"><span class="pre">interpretability</span></code> → <code class="docutils literal notranslate"><span class="pre">stats_comparison</span></code>) con <strong>datos sintéticos y configuraciones pequeñas</strong> (pocos folds, pocas iteraciones), para validar rápido que todo sigue funcionando junto después de cualquier cambio de código.</p>
-<p><strong>No reemplaza</strong> a <code class="docutils literal notranslate"><span class="pre">04_run_experiments.ipynb</span></code> (la corrida real con el dataset final): este notebook escribe en <code class="docutils literal notranslate"><span class="pre">results/dev_pipeline_check.csv</span></code> (gitignored, throwaway), nunca en <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>.</p>
+<p>Antes de correr los experimentos completos, el pipeline se probó en miniatura con un conjunto de datos sintético de 500 filas (20 variables, 23.4 % de la clase positiva). La prueba confirmó que cada etapa funciona: preprocesamiento (20 variables pasan a 25 tras la codificación <em>one-hot</em>), las 4 técnicas de balanceo (ninguna, SMOTE, ADASYN y <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>), los 4 métodos de búsqueda (malla, aleatoria, Optuna y algoritmo genético), la validación cruzada anidada, la calibración y el cálculo de SHAP. También se verificó que la métrica del bucle interno (selección de hiperparámetros) se mantenga separada de la del bucle externo (evaluación), para no mezclar ambas. Los valores obtenidos (por ejemplo, F1 de 0.52 a 0.55 y prueba de Friedman con p = 0.753) son solo de verificación, con pocos datos y pocos pliegues, y no se interpretan como resultados del estudio.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -423,7 +421,6 @@ Balance del target: {0: 0.766, 1: 0.234}
 </section>
 <section id="preprocesamiento-encoding-scaling-condicional">
 <h2>2. Preprocesamiento: encoding + scaling condicional<a class="headerlink" href="#preprocesamiento-encoding-scaling-condicional" title="Permalink to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">SEX</span></code>/<code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code>/<code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code> (o sus equivalentes sintéticos) se codifican one-hot; el resto se escala solo si el modelo lo requiere (<code class="docutils literal notranslate"><span class="pre">ModelSpec.requires_scaling</span></code>).</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -448,7 +445,6 @@ Balance del target: {0: 0.766, 1: 0.234}
 </section>
 <section id="balanceo-compatibilidad-por-modelo-bloque-3">
 <h2>3. Balanceo: compatibilidad por modelo (bloque 3)<a class="headerlink" href="#balanceo-compatibilidad-por-modelo-bloque-3" title="Permalink to this heading">#</a></h2>
-<p>KNN y Naive Bayes no soportan <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>, deben aparecer con solo 3 técnicas.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -515,7 +511,6 @@ param_grid (decision_tree): {&#39;max_depth&#39;: [2, 11, 21, 30], &#39;min_samp
 </section>
 <section id="optimizacion-los-4-metodos-en-miniatura-bloque-4">
 <h2>5. Optimización: los 4 métodos, en miniatura (bloque 4)<a class="headerlink" href="#optimizacion-los-4-metodos-en-miniatura-bloque-4" title="Permalink to this heading">#</a></h2>
-<p>Mismo modelo/técnica para los 4, con presupuestos diminutos (esto es una prueba de humo, no una búsqueda real).</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -581,7 +576,6 @@ param_grid (decision_tree): {&#39;max_depth&#39;: [2, 11, 21, 30], &#39;min_samp
 </section>
 <section id="validacion-cruzada-anidada-inner-vs-outer-bloque-5">
 <h2>6. Validación cruzada anidada: inner vs. outer (bloque 5)<a class="headerlink" href="#validacion-cruzada-anidada-inner-vs-outer-bloque-5" title="Permalink to this heading">#</a></h2>
-<p>El punto clave a verificar: <code class="docutils literal notranslate"><span class="pre">inner_best_score</span></code> (validación interna) y la métrica del outer fold son números DISTINTOS, nunca deben confundirse.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -614,7 +608,6 @@ metrics_summary: {&#39;accuracy&#39;: (0.72, 0.028), &#39;precision&#39;: (0.437
 </section>
 <section id="orquestador-unas-pocas-combinaciones-bloque-6">
 <h2>7. Orquestador: unas pocas combinaciones (bloque 6)<a class="headerlink" href="#orquestador-unas-pocas-combinaciones-bloque-6" title="Permalink to this heading">#</a></h2>
-<p>Checkpoint DEDICADO a desarrollo (<code class="docutils literal notranslate"><span class="pre">results/dev_pipeline_check.csv</span></code>, gitignored), nunca toca <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -954,7 +947,6 @@ Brier: 0.2087  ECE: 0.2208  (deficiente: True)
 </section>
 <section id="comparacion-estadistica-jerarquica-bloque-10-mini">
 <h2>11. Comparación estadística jerárquica (bloque 10, mini)<a class="headerlink" href="#comparacion-estadistica-jerarquica-bloque-10-mini" title="Permalink to this heading">#</a></h2>
-<p>Con tan pocas combinaciones/folds de prueba (solo para validar que el código corre), es normal y esperado que Friedman NO dé significativo (ver la limitación de potencia estadística documentada en <code class="docutils literal notranslate"><span class="pre">stats_comparison.py</span></code>).</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -978,10 +970,6 @@ Friedman no significativo (p=0.7530 &gt;= alpha=0.05): no se reporta evidencia d
 </div>
 </div>
 </div>
-</section>
-<section id="listo">
-<h2>Listo<a class="headerlink" href="#listo" title="Permalink to this heading">#</a></h2>
-<p>Los 11 bloques corrieron de punta a punta sin errores. Para la corrida real (dataset final, ~104 combinaciones): <code class="docutils literal notranslate"><span class="pre">04_run_experiments.ipynb</span></code>.</p>
 </section>
 </section>
 
@@ -1060,7 +1048,6 @@ Friedman no significativo (p=0.7530 &gt;= alpha=0.05): no se reporta evidencia d
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-y-calibracion-bloque-8">9. Evaluación y calibración (bloque 8)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad-shap-rapido-bloque-9">10. Interpretabilidad: SHAP rápido (bloque 9)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-estadistica-jerarquica-bloque-10-mini">11. Comparación estadística jerárquica (bloque 10, mini)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#listo">Listo</a></li>
 </ul>
   </nav></div>
 

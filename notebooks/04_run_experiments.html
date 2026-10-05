@@ -163,7 +163,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../README.html">
-                    Default of Credit Card Clients — Pipeline de Clasificación (Entregable 3)
+                    Default of Credit Card Clients
                 </a>
             </li>
         </ul>
@@ -325,7 +325,6 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos">Cargar datos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-de-la-corrida">Configuración de la corrida</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecutar-incremental-reanudable">Ejecutar (incremental, reanudable)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado">Resultado</a></li>
 </ul>
             </nav>
@@ -340,8 +339,12 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="ejecutar-experimentos">
 <h1>04. Ejecutar experimentos<a class="headerlink" href="#ejecutar-experimentos" title="Permalink to this heading">#</a></h1>
-<p>Corre el batch de combinaciones (modelo x tecnica de balanceo x metodo de optimizacion) via <code class="docutils literal notranslate"><span class="pre">experiment_runner.run_experiments()</span></code>, con registro <strong>incremental</strong> en <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>: cada combinacion se guarda apenas termina, y una corrida posterior con <code class="docutils literal notranslate"><span class="pre">resume=True</span></code> (default) omite las que ya estan en el CSV. Se puede interrumpir y continuar despues, o correr un subconjunto ahora (ej. modelos baratos en local) y el resto despues (ej. SVM/KNN en Colab).</p>
-<p><strong>Datos:</strong> el dataset real ya viene preprocesado desde el EDA (<code class="docutils literal notranslate"><span class="pre">00_eda.ipynb</span></code>, Parte 5): sin duplicados, con las categorias no oficiales reagrupadas, variables monetarias en log y el bloque <code class="docutils literal notranslate"><span class="pre">BILL_AMT</span></code> resumido. <code class="docutils literal notranslate"><span class="pre">TARGET_COLUMN</span></code>/<code class="docutils literal notranslate"><span class="pre">CATEGORICAL_COLUMNS</span></code> en <code class="docutils literal notranslate"><span class="pre">config.py</span></code> ya estan confirmados. La celda de carga igual vuelve a verificar duplicados (deberian ser 0) como red de seguridad.</p>
+<p>Se usaron 29,965 clientes y 20 variables predictoras, con 22.13 % de <em>default</em>. Ya no había duplicados por eliminar y se mantienen los 21 grupos con variables idénticas y etiqueta distinta (ruido del dataset). Se ejecutaron 96 combinaciones (6 modelos × 4 balanceos × 4 métodos de búsqueda de hiperparámetros) con validación cruzada anidada y el F1 como métrica de selección. La SVM se corrió aparte en Colab con GPU y completa las 112 combinaciones.</p>
+<ul class="simple">
+<li><p><strong>El balanceo es lo que más influye.</strong> <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> obtuvo el mayor F1 en los tres modelos (Random Forest 0.544 a 0.546, XGBoost 0.544 a 0.545 y KNN 0.524 a 0.527). SMOTE y ADASYN quedaron en un nivel intermedio y sin balanceo el F1 fue el más bajo (por ejemplo, 0.473 a 0.479 en Random Forest).</p></li>
+<li><p><strong>El método de búsqueda importa poco en F1, pero mucho en tiempo.</strong> Con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> las diferencias entre métodos son menores que la desviación estándar. En cambio, el algoritmo genético tardó mucho más: 2,432 s frente a 178 s con búsqueda en malla en Random Forest, y hasta 10,880 s en KNN sin balanceo.</p></li>
+<li><p><strong>Mejor configuración:</strong> Random Forest con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y búsqueda genética, con F1 de 0.5460 ± 0.0088, prácticamente empatada con otras cuatro.</p></li>
+</ul>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -380,7 +383,6 @@ document.write(`
 </div>
 <section id="cargar-datos">
 <h2>Cargar datos<a class="headerlink" href="#cargar-datos" title="Permalink to this heading">#</a></h2>
-<p>Usa el dataset real preprocesado en <code class="docutils literal notranslate"><span class="pre">data/processed/</span></code> (ver <code class="docutils literal notranslate"><span class="pre">config.PROCESSED_DATA_PATH</span></code>); si por alguna razon no existe, cae a datos sinteticos con la misma forma (util para probar el pipeline).</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -425,9 +427,6 @@ X: (29965, 20), balance del target: {0: 0.7787, 1: 0.2213}
 </section>
 <section id="configuracion-de-la-corrida">
 <h2>Configuración de la corrida<a class="headerlink" href="#configuracion-de-la-corrida" title="Permalink to this heading">#</a></h2>
-<p>Corre <strong>6 de los 7 modelos base</strong> (todos menos SVM) × 4 técnicas de balanceo × 4 métodos de optimización, con los presupuestos reales definidos en <code class="docutils literal notranslate"><span class="pre">config.py</span></code> (<code class="docutils literal notranslate"><span class="pre">N_OUTER_FOLDS</span></code>, <code class="docutils literal notranslate"><span class="pre">N_INNER_FOLDS</span></code>, <code class="docutils literal notranslate"><span class="pre">RANDOM_SEARCH_ITER</span></code>, <code class="docutils literal notranslate"><span class="pre">OPTUNA_N_TRIALS</span></code>, <code class="docutils literal notranslate"><span class="pre">GA_POPULATION_SIZE</span></code>/<code class="docutils literal notranslate"><span class="pre">GA_N_GENERATIONS</span></code>). <strong>SVM se corre aparte, en Colab con GPU</strong> (<code class="docutils literal notranslate"><span class="pre">07_svm_gpu_colab.ipynb</span></code>), por su costo computacional (~90% del tiempo total de la corrida anterior); sus filas se agregan después a <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code> con el mismo esquema de columnas. Para correrlo localmente de todas formas, basta con quitar el filtro de <code class="docutils literal notranslate"><span class="pre">models</span></code> en la celda siguiente.</p>
-<p>KNN y Naive Bayes aceptan <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> mediante los wrappers <code class="docutils literal notranslate"><span class="pre">BalancedKNeighborsClassifier</span></code> y <code class="docutils literal notranslate"><span class="pre">BalancedGaussianNB</span></code> (ver <code class="docutils literal notranslate"><span class="pre">src/models.py</span></code>), así que las 4 técnicas aplican a los 7 modelos: 6 modelos × 16 = <strong>96 combinaciones</strong> en este notebook y 16 más de SVM en Colab (112 en total). <code class="docutils literal notranslate"><span class="pre">get_all_combinations</span></code> sigue filtrando automáticamente cualquier combinación (modelo, técnica) incompatible. Ver <code class="docutils literal notranslate"><span class="pre">experiment_runner.MODEL_COST_ORDER</span></code> para el orden de ejecución (baratos primero).</p>
-<p><strong>Dataset:</strong> <code class="docutils literal notranslate"><span class="pre">data/processed/dataset_final.csv</span></code> preprocesado en el EDA (versión del 2026-10-03). Los resultados de la versión anterior del dataset quedaron archivados en <code class="docutils literal notranslate"><span class="pre">results/experiments_master_v1_dataset_anterior.csv</span></code>.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -479,10 +478,6 @@ Orden por costo computacional: (&#39;naive_bayes&#39;, &#39;logistic_regression&
 </div>
 </div>
 </div>
-</section>
-<section id="ejecutar-incremental-reanudable">
-<h2>Ejecutar (incremental, reanudable)<a class="headerlink" href="#ejecutar-incremental-reanudable" title="Permalink to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">resume=True</span></code> (default) salta las combinaciones que ya esten en <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>; se puede volver a correr esta celda tantas veces como haga falta (ej. tras agregar mas modelos a la lista de arriba) sin repetir trabajo ya hecho.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -889,7 +884,6 @@ Orden por costo computacional: (&#39;naive_bayes&#39;, &#39;logistic_regression&
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos">Cargar datos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-de-la-corrida">Configuración de la corrida</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecutar-incremental-reanudable">Ejecutar (incremental, reanudable)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado">Resultado</a></li>
 </ul>
   </nav></div>

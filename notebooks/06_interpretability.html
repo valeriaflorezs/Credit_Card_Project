@@ -162,7 +162,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../README.html">
-                    Default of Credit Card Clients — Pipeline de Clasificación (Entregable 3)
+                    Default of Credit Card Clients
                 </a>
             </li>
         </ul>
@@ -468,6 +468,12 @@ Features post-transformación: 25
 <img alt="../_images/da5581c30a1496ca875f9fa3db06554122ec89a20fd2a241fe088a4fa395ae31.png" src="../_images/da5581c30a1496ca875f9fa3db06554122ec89a20fd2a241fe088a4fa395ae31.png" />
 </div>
 </div>
+<ul class="simple">
+<li><p><strong>El historial de pagos domina.</strong> <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> es la variable más importante, con una diferencia clara frente a las demás. Sus valores altos (meses de atraso) generan los aportes más grandes hacia <em>default</em>, de hasta cerca de +0.37. Le siguen <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_3</span></code>, y más abajo <code class="docutils literal notranslate"><span class="pre">PAY_4</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_5</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_6</span></code>. En todas ellas, más atraso aumenta el riesgo. Esto coincide con el EDA, con los coeficientes de la regresión logística base y con el SHAP preliminar del Random Forest.</p></li>
+<li><p><strong>Mayor límite de crédito, menor riesgo.</strong> En <code class="docutils literal notranslate"><span class="pre">LIMIT_BAL_LOG</span></code> los valores altos (rojo) quedan a la izquierda, es decir, reducen la probabilidad de <em>default</em>. Esto es coherente con la diferencia de límites entre clientes con y sin <em>default</em> encontrada en el EDA.</p></li>
+<li><p><strong>Montos pagados.</strong> En las variables <code class="docutils literal notranslate"><span class="pre">PAY_AMT*_LOG</span></code>, los clientes que pagaron más (rojo) tienden a tener aportes negativos, o sea menor riesgo. Su efecto individual es pequeño.</p></li>
+<li><p><strong>Facturación.</strong> <code class="docutils literal notranslate"><span class="pre">BILL_AMT_MEAN_6M_LOG</span></code> aparece en quinto lugar y <code class="docutils literal notranslate"><span class="pre">BILL_AMT_TREND_6M_LOG</span></code> en un nivel más bajo, con un efecto moderado y menos claro que el de los pagos. Esto es consistente con el EDA, donde el monto facturado discriminaba poco entre clases.</p></li>
+</ul>
 </section>
 <section id="shap-local-una-observacion-bien-clasificada-y-una-con-error-alto">
 <h2>SHAP local: una observación bien clasificada y una con error alto<a class="headerlink" href="#shap-local-una-observacion-bien-clasificada-y-una-con-error-alto" title="Permalink to this heading">#</a></h2>
@@ -513,6 +519,22 @@ well_classified: y_true=1, y_pred=1, proba=0.982
 <img alt="../_images/309b4eac961e96996fd7947c9bec15b8bc392ce263f1f522d2262846d698c9a1.png" src="../_images/309b4eac961e96996fd7947c9bec15b8bc392ce263f1f522d2262846d698c9a1.png" />
 </div>
 </div>
+<p>Se analizaron dos clientes del pliegue de prueba. El valor base del modelo es 0.5 y cada barra indica cuánto sube o baja la probabilidad predicha.</p>
+<p><strong>1. Cliente bien clasificado</strong> (<em>default</em> real = 1, predicho = 1, probabilidad = 0.982)</p>
+<ul class="simple">
+<li><p>Tiene un atraso de 2 meses en <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> y también en <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code> a <code class="docutils literal notranslate"><span class="pre">PAY_6</span></code>, es decir, atrasos en los seis meses.</p></li>
+<li><p>Las seis variables <code class="docutils literal notranslate"><span class="pre">PAY</span></code> suman cerca de +0.41, lo que explica casi todo el aumento de 0.5 a 0.982. El mayor aporte es el de <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> (+0.15).</p></li>
+<li><p>No registra pagos (<code class="docutils literal notranslate"><span class="pre">PAY_AMT_LOG</span> <span class="pre">=</span> <span class="pre">0</span></code>), lo que suma un poco más al riesgo.</p></li>
+<li><p>Su límite de crédito (<code class="docutils literal notranslate"><span class="pre">LIMIT_BAL_LOG</span></code> = 12.206, cercano a 200,000) es el único factor que lo reduce, y solo en −0.01.</p></li>
+</ul>
+<p>El modelo acierta con mucha seguridad porque todas las señales importantes apuntan en la misma dirección.</p>
+<p><strong>2. Cliente con error alto</strong> (<em>default</em> real = 0, predicho = 1, probabilidad = 0.964)</p>
+<ul class="simple">
+<li><p>Es un falso positivo. Tiene atrasos en todos los meses (<code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> = 4, <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code> = 3, <code class="docutils literal notranslate"><span class="pre">PAY_3</span></code> = 2 y <code class="docutils literal notranslate"><span class="pre">PAY_4</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_5</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_6</span></code> = 7) y sin pagos registrados.</p></li>
+<li><p>Las seis variables <code class="docutils literal notranslate"><span class="pre">PAY</span></code> suman cerca de +0.37, con <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> como mayor aporte (+0.13). Según su historial, el modelo lo considera casi seguro de caer en <em>default</em>.</p></li>
+<li><p>Su historial es poco habitual: los atrasos pasan de 2 a 7 meses de un mes a otro. Esto podría indicar un registro atípico o con errores, pero con estos datos no se puede confirmar.</p></li>
+</ul>
+<p>El error no parece venir de una falla del modelo, sino de un cliente que, con ese historial, no incumplió. Esto es consistente con el ruido que ya se había detectado en el EDA: hay clientes con las mismas variables y etiquetas distintas, por lo que ningún modelo puede acertar en todos los casos.</p>
 </section>
 <section id="lime-vs-shap-especificamente-para-xgboost">
 <h2>LIME vs. SHAP (específicamente para XGBoost)<a class="headerlink" href="#lime-vs-shap-especificamente-para-xgboost" title="Permalink to this heading">#</a></h2>
@@ -671,7 +693,6 @@ well_classified: y_true=1, y_pred=1, proba=0.982
 <li><p><strong>No linealidad local fuerte</strong> (ej. el efecto no lineal de <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> que el EDA ya detectó): un sustituto lineal como el de LIME la aproxima mal; SHAP (exacto para árboles) la sigue reflejando correctamente.</p></li>
 <li><p><strong>Sensibilidad a hiperparámetros de LIME</strong> (ancho del kernel, nº de muestras): puede cambiar el ranking entre corridas; SHAP/TreeExplainer es determinístico.</p></li>
 </ol>
-<p>(Texto completo en <code class="docutils literal notranslate"><span class="pre">interpretability.DISCUSSION_LIME_VS_SHAP</span></code>.)</p>
 </section>
 </section>
 </section>

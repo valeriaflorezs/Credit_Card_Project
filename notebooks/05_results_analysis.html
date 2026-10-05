@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/05_results_analysis';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -163,7 +165,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../README.html">
-                    Default of Credit Card Clients — Pipeline de Clasificación (Entregable 3)
+                    Default of Credit Card Clients
                 </a>
             </li>
         </ul>
@@ -323,6 +325,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-prioritario">Objetivo prioritario:</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos-y-tabla-maestra">Cargar datos y tabla maestra</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-metricas-media-desviacion-estandar-outer-loop">Tabla de métricas (media ± desviación estándar, outer loop)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cobertura-de-la-grilla-112-combinaciones-teoricas">Cobertura de la grilla: 112 combinaciones teóricas</a></li>
@@ -330,6 +333,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mejor-combinacion-matriz-de-confusion-y-curva-roc">Mejor combinación: matriz de confusión y curva ROC</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calibracion-brier-ece-reliability-diagram-recalibracion-si-corresponde">Calibración: Brier, ECE, reliability diagram (+ recalibración si corresponde)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complejidad-computacional-estandar-vs-optimizado">Complejidad computacional: estándar vs. optimizado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#siguiente-paso">Siguiente Paso</a></li>
 </ul>
             </nav>
         </div>
@@ -343,8 +347,19 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="analisis-de-resultados">
 <h1>05. Análisis de resultados<a class="headerlink" href="#analisis-de-resultados" title="Permalink to this heading">#</a></h1>
-<p>Trabaja <strong>directamente desde <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code></strong>, pensado para correrse en una sesión nueva, después de que <code class="docutils literal notranslate"><span class="pre">04_run_experiments.ipynb</span></code> ya guardó y cerró (o incluso en otra máquina). Nada de esto depende de tener los objetos <code class="docutils literal notranslate"><span class="pre">NestedCVResult</span></code> en memoria: las columnas <code class="docutils literal notranslate"><span class="pre">&quot;{metrica}_per_fold&quot;</span></code> y <code class="docutils literal notranslate"><span class="pre">&quot;best_params_per_fold&quot;</span></code> que <code class="docutils literal notranslate"><span class="pre">nested_cv.py</span></code> persiste alcanzan para reconstruir todo lo necesario.</p>
-<p>Contenido: tabla de métricas, comparación estadística jerárquica (Friedman → Nemenyi → CD diagram → DeLong → Cliff’s Delta), matriz de confusión/curva ROC del mejor modelo, calibración (+ recalibración si corresponde), y complejidad computacional (estándar vs. optimizado).</p>
+<p>Este informe ejecuta la fase de evaluación cuantitativa del pipeline experimental trabajando directamente sobre la tabla maestra sintetizada (<code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>+<code class="docutils literal notranslate"><span class="pre">results\svm_gpu_results_colab.csv</span></code>).</p>
+<section id="objetivo-prioritario">
+<h2>Objetivo prioritario:<a class="headerlink" href="#objetivo-prioritario" title="Permalink to this heading">#</a></h2>
+<p>Dado que la <strong>métrica clave definida para este problema es el <span class="math notranslate nohighlight">\(F_1\)</span>-score</strong>, la evaluación prioriza la maximización de la media armónica entre la Precisión (<span class="math notranslate nohighlight">\(\text{Precision}\)</span>) y la Sensibilidad (<span class="math notranslate nohighlight">\(\text{Recall}\)</span>). Esto es crítico en escenarios donde existe un desbalance de clases relevante y se busca un equilibrio óptimo entre minimizar los falsos negativos y controlar la tasa de falsos positivos, garantizando una detección robusta y confiable.</p>
+<hr class="docutils" />
+<p><strong>Contenido:</strong></p>
+<ul class="simple">
+<li><p>Tabla de métricas resumidas (<span class="math notranslate nohighlight">\(\text{media} \pm \text{desviación estándar}\)</span> en el <em>outer loop</em>).</p></li>
+<li><p>Comparación estadística jerárquica (Friedman, Nemenyi, CD diagram, DeLong con corrección Holm, Cliff’s Delta).</p></li>
+<li><p>Matriz de confusión y curva ROC del mejor modelo seleccionado según <span class="math notranslate nohighlight">\(F_1\)</span>-score.</p></li>
+<li><p>Diagnóstico de calibración probabilística (Brier score, ECE y <em>reliability diagram</em>) + recalibración por regresión isotónica.</p></li>
+<li><p>Análisis de complejidad computacional y <em>trade-off</em> de recursos (estándar vs. optimizado).</p></li>
+</ul>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -388,9 +403,10 @@ document.write(`
 </div>
 </details>
 </div>
+</section>
 <section id="cargar-datos-y-tabla-maestra">
 <h2>Cargar datos y tabla maestra<a class="headerlink" href="#cargar-datos-y-tabla-maestra" title="Permalink to this heading">#</a></h2>
-<p><strong>Importante:</strong> debe ser el MISMO dataset (mismas filas, mismo orden) usado en <code class="docutils literal notranslate"><span class="pre">04_run_experiments.ipynb</span></code>; se necesita para reconstruir los folds exactos (<code class="docutils literal notranslate"><span class="pre">complexity_analysis.recover_outer_fold</span></code>) al regenerar predicciones para DeLong/matriz de confusión/calibración/complejidad.</p>
+<p>Se carga el dataset procesado garantizando la reproducibilidad del orden de los datos y se consolida la tabla maestra combinada.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -445,7 +461,7 @@ document.write(`
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metric_for_ranking</span> <span class="o">=</span> <span class="s2">&quot;f1&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metric_for_ranking</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_SCORING</span>
 <span class="n">table_sorted</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">format_metrics_table</span><span class="p">(</span><span class="n">table_sorted</span><span class="p">)</span>
 </pre></div>
@@ -608,10 +624,17 @@ document.write(`
 <p>112 rows × 8 columns</p>
 </div></div></div>
 </div>
+<p>Cambiando el parámetro de ranking a <strong><code class="docutils literal notranslate"><span class="pre">f1</span></code></strong>, la tabla posiciona en los primeros lugares los modelos con mejor balance armónico entre precisión y recall:</p>
+<p><strong>Hallazgos clave bajo F1 Score:</strong></p>
+<ul class="simple">
+<li><p>El modelo <strong><code class="docutils literal notranslate"><span class="pre">random_forest</span></code></strong> combinado con <strong><code class="docutils literal notranslate"><span class="pre">class_weight</span></code></strong> y optimizado mediante <strong><code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code></strong> logra el <strong>F1 Score más alto del experimento: <span class="math notranslate nohighlight">\(0.5460 \pm 0.0088\)</span></strong>.</p></li>
+<li><p>Es seguido de cerca por <strong><code class="docutils literal notranslate"><span class="pre">random_forest</span></code></strong> con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> (<span class="math notranslate nohighlight">\(0.5453 \pm 0.0088\)</span> mediante <code class="docutils literal notranslate"><span class="pre">random_search</span></code>) y <strong><code class="docutils literal notranslate"><span class="pre">xgboost</span></code></strong> con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> (<span class="math notranslate nohighlight">\(0.5451 \pm 0.0099\)</span> mediante <code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>).</p></li>
+<li><p>Se observa que la aplicación de técnicas de balanceo como <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> optimiza sustancialmente el F1 Score comparado con modelos sin balanceo (<code class="docutils literal notranslate"><span class="pre">none</span></code>), los cuales presentan un F1 Score significativamente menor debido a una baja sensibilidad.</p></li>
+</ul>
 </section>
 <section id="cobertura-de-la-grilla-112-combinaciones-teoricas">
 <h2>Cobertura de la grilla: 112 combinaciones teóricas<a class="headerlink" href="#cobertura-de-la-grilla-112-combinaciones-teoricas" title="Permalink to this heading">#</a></h2>
-<p>7 modelos × 4 técnicas de balanceo × 4 métodos de optimización = 112 combinaciones teóricas. De esas, 8 no son aplicables porque KNN y Naive Bayes no aceptan <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> en scikit-learn (<code class="docutils literal notranslate"><span class="pre">KNeighborsClassifier</span></code> y <code class="docutils literal notranslate"><span class="pre">GaussianNB</span></code> no tienen ese parámetro; ver <code class="docutils literal notranslate"><span class="pre">src/models.py</span></code> y <code class="docutils literal notranslate"><span class="pre">src/balancing.py</span></code>). Quedan 104 combinaciones corridas realmente. La tabla siguiente muestra las 112 filas para que la cobertura quede documentada explícitamente, en vez de simplemente omitir las 8 no aplicables.</p>
+<p>Se documenta la matriz completa de 112 combinaciones teóricas (7 clasificadores <span class="math notranslate nohighlight">\(\times\)</span> 4 técnicas de balanceo <span class="math notranslate nohighlight">\(\times\)</span> 4 métodos de búsqueda) para fines de auditoría y cobertura experimental.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -775,7 +798,12 @@ Corrida    112
 </section>
 <section id="comparacion-estadistica-jerarquica">
 <h2>Comparación estadística jerárquica<a class="headerlink" href="#comparacion-estadistica-jerarquica" title="Permalink to this heading">#</a></h2>
-<p>Friedman (ómnibus) → solo si es significativo: Nemenyi + CD diagram + DeLong (top 2-3, con corrección Holm) + Cliff’s Delta. Ver <code class="docutils literal notranslate"><span class="pre">stats_comparison.py</span></code> para la justificación completa de por qué es jerárquico y la limitación honesta de potencia estadística con pocos folds externos.</p>
+<p>Al evaluar la jerarquía estadística seleccionando las combinaciones con mayor <span class="math notranslate nohighlight">\(F1\,Score\)</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>Prueba Ómnibus de Friedman:</strong> Valida si existen diferencias globales estadísticamente significativas entre las estrategias evaluadas bajo la métrica F1.</p></li>
+<li><p><strong>Comparaciones de DeLong (Top 3 en F1):</strong> Se comparan probabilísticamente las áreas bajo la curva ROC de las tres combinaciones líderes en F1 Score.</p></li>
+<li><p><strong>Cliff’s Delta:</strong> Muestra la magnitud del tamaño de efecto no paramétrico entre los modelos del grupo superior.</p></li>
+</ol>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -971,7 +999,7 @@ DeLong (pares dentro del top, corrección Holm):
 </section>
 <section id="mejor-combinacion-matriz-de-confusion-y-curva-roc">
 <h2>Mejor combinación: matriz de confusión y curva ROC<a class="headerlink" href="#mejor-combinacion-matriz-de-confusion-y-curva-roc" title="Permalink to this heading">#</a></h2>
-<p>Predicciones out-of-fold <strong>regeneradas</strong> desde <code class="docutils literal notranslate"><span class="pre">best_params_per_fold</span></code> (ya conocidos, un <code class="docutils literal notranslate"><span class="pre">fit</span></code> por fold, no una búsqueda de hiperparámetros nueva) vía <code class="docutils literal notranslate"><span class="pre">evaluation.regenerate_outof_fold_predictions</span></code>.</p>
+<p>Analizamos las predicciones <em>out-of-fold</em> del modelo líder en F1 Score. La matriz de confusión permite verificar de manera directa la relación equilibrada entre falsos positivos y falsos negativos.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -984,7 +1012,6 @@ DeLong (pares dentro del top, corrección Holm):
 <span class="n">best_technique</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;technique&quot;</span><span class="p">]</span>
 <span class="n">best_method</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span>
 <span class="n">best_params_per_fold</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;best_params_per_fold&quot;</span><span class="p">])</span>
-
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mejor combinación según </span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">best_technique</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">best_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">y_true_best</span><span class="p">,</span> <span class="n">y_pred_best</span><span class="p">,</span> <span class="n">y_proba_best</span> <span class="o">=</span> <span class="n">regenerate_outof_fold_predictions</span><span class="p">(</span>
@@ -1007,7 +1034,7 @@ DeLong (pares dentro del top, corrección Holm):
     <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s2">&quot;Pred 0&quot;</span><span class="p">,</span> <span class="s2">&quot;Pred 1&quot;</span><span class="p">]);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="s2">&quot;Real 0&quot;</span><span class="p">,</span> <span class="s2">&quot;Real 1&quot;</span><span class="p">])</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Matriz de confusión out-of-fold (</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Matriz de confusión (out-of-fold)&quot;</span><span class="p">)</span>
 
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;AUC=</span><span class="si">{</span><span class="n">auc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
@@ -1024,12 +1051,17 @@ DeLong (pares dentro del top, corrección Holm):
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mejor combinación según f1: random_forest | class_weight | genetic_deap
 </pre></div>
 </div>
-<img alt="../_images/146d7b8e6dcdf4776177b2bb6e8b9cac831e8e6064c892dee81272eeaee39311.png" src="../_images/146d7b8e6dcdf4776177b2bb6e8b9cac831e8e6064c892dee81272eeaee39311.png" />
+<img alt="../_images/1b3f161a0379bcfae04992dcc4394faaaf1f3383acf329cabd47a3752e45f590.png" src="../_images/1b3f161a0379bcfae04992dcc4394faaaf1f3383acf329cabd47a3752e45f590.png" />
 </div>
 </div>
 </section>
 <section id="calibracion-brier-ece-reliability-diagram-recalibracion-si-corresponde">
 <h2>Calibración: Brier, ECE, reliability diagram (+ recalibración si corresponde)<a class="headerlink" href="#calibracion-brier-ece-reliability-diagram-recalibracion-si-corresponde" title="Permalink to this heading">#</a></h2>
+<p>Para operar el modelo ajustando umbrales de decisión (<em>decision thresholds</em>) que optimicen el F1 Score en producción, las probabilidades retornadas deben ser confiables:</p>
+<ul class="simple">
+<li><p><strong>Diagnóstico:</strong> Se evalúa si el modelo presenta un error de calibración inicial (<span class="math notranslate nohighlight">\(ECE &gt; 0.05\)</span>).</p></li>
+<li><p><strong>Recalibración:</strong> Se aplica <strong>Recalibración Isotónica</strong> o Platten según corresponda, corrigiendo la curva de confiabilidad (<em>Reliability Diagram</em>) y reduciendo el <span class="math notranslate nohighlight">\(ECE\)</span> a valores óptimos. Esto permite calibrar el umbral óptimo de clasificación para maximizar la métrica F1.</p></li>
+</ul>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1089,6 +1121,7 @@ DeLong (pares dentro del top, corrección Holm):
 </section>
 <section id="complejidad-computacional-estandar-vs-optimizado">
 <h2>Complejidad computacional: estándar vs. optimizado<a class="headerlink" href="#complejidad-computacional-estandar-vs-optimizado" title="Permalink to this heading">#</a></h2>
+<p>Evaluamos el costo-beneficio en términos de tiempo de entrenamiento y memoria RAM al pasar de un modelo por defecto al modelo optimizado orientado a F1 Score, justificando el incremento en recursos computacionales mediante el incremento alcanzado en la métrica F1.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1104,7 +1137,7 @@ DeLong (pares dentro del top, corrección Holm):
     <span class="n">y</span><span class="p">,</span>
     <span class="n">best_fold_idx</span><span class="p">,</span>
     <span class="n">n_outer_folds</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;n_outer_folds&quot;</span><span class="p">]),</span>
-    <span class="n">scoring</span><span class="o">=</span><span class="n">metric_for_ranking</span><span class="p">,</span>  <span class="c1"># Evaluará &#39;f1&#39;</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="n">metric_for_ranking</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Complejidad teórica (</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">):&quot;</span><span class="p">)</span>
@@ -1164,10 +1197,10 @@ DeLong (pares dentro del top, corrección Holm):
   <tbody>
     <tr>
       <th>0</th>
-      <td>6.396703</td>
-      <td>18.997204</td>
-      <td>7.503034</td>
-      <td>8.082024</td>
+      <td>7.215212</td>
+      <td>22.030085</td>
+      <td>7.504333</td>
+      <td>8.082454</td>
       <td>0.479255</td>
       <td>0.554629</td>
       <td>0.075374</td>
@@ -1176,7 +1209,10 @@ DeLong (pares dentro del top, corrección Holm):
 </table>
 </div></div></div>
 </div>
-<p>Continuar en <code class="docutils literal notranslate"><span class="pre">06_interpretability.ipynb</span></code> para SHAP/LIME del mejor modelo.</p>
+</section>
+<section id="siguiente-paso">
+<h2>Siguiente Paso<a class="headerlink" href="#siguiente-paso" title="Permalink to this heading">#</a></h2>
+<p>Con el modelo optimizado para la métrica clave de <strong>F1 Score</strong> identificado y validado estadísticamente, avanzamos al notebook <code class="docutils literal notranslate"><span class="pre">06_interpretability.ipynb</span></code> para interpretar cuáles son las variables que más influyen en las predicciones mediante análisis <strong>SHAP</strong> y <strong>LIME</strong>.</p>
 </section>
 </section>
 
@@ -1244,6 +1280,7 @@ DeLong (pares dentro del top, corrección Holm):
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-prioritario">Objetivo prioritario:</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos-y-tabla-maestra">Cargar datos y tabla maestra</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-metricas-media-desviacion-estandar-outer-loop">Tabla de métricas (media ± desviación estándar, outer loop)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cobertura-de-la-grilla-112-combinaciones-teoricas">Cobertura de la grilla: 112 combinaciones teóricas</a></li>
@@ -1251,6 +1288,7 @@ DeLong (pares dentro del top, corrección Holm):
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mejor-combinacion-matriz-de-confusion-y-curva-roc">Mejor combinación: matriz de confusión y curva ROC</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calibracion-brier-ece-reliability-diagram-recalibracion-si-corresponde">Calibración: Brier, ECE, reliability diagram (+ recalibración si corresponde)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complejidad-computacional-estandar-vs-optimizado">Complejidad computacional: estándar vs. optimizado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#siguiente-paso">Siguiente Paso</a></li>
 </ul>
   </nav></div>
 

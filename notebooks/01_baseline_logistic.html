@@ -163,7 +163,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../README.html">
-                    Default of Credit Card Clients — Pipeline de Clasificación (Entregable 3)
+                    Default of Credit Card Clients
                 </a>
             </li>
         </ul>
@@ -346,7 +346,6 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="modelo-base-regresion-logistica">
 <h1>01. Modelo base: Regresión Logística<a class="headerlink" href="#modelo-base-regresion-logistica" title="Permalink to this heading">#</a></h1>
-<p>Después del EDA (<code class="docutils literal notranslate"><span class="pre">00_eda.ipynb</span></code>), el siguiente paso es un modelo de clasificación <strong>base</strong>, antes de entrar al pipeline completo de optimización (<code class="docutils literal notranslate"><span class="pre">03_pipeline_dev.ipynb</span></code> en adelante). Como este es un problema de clasificación binaria (<code class="docutils literal notranslate"><span class="pre">default_payment_next_month</span></code>), el equivalente natural a un Ridge/Lasso de regresión es la <strong>Regresión Logística</strong>: mismo tipo de penalización L2 sobre los coeficientes, pero para clasificación en vez de para una variable continua.</p>
 <p>Este notebook entrena una regresión logística con los hiperparámetros por defecto de scikit-learn (sin búsqueda todavía), y reporta <strong>score (accuracy)</strong> y <strong>error (log-loss)</strong> junto con AUC-ROC, coeficientes, matriz de confusión y curva ROC. Como ya adelantaba el EDA (desbalance de clases 77.9% / 22.1%), el objetivo es mostrar que el accuracy por sí solo esconde un margen de mejora real, el mismo margen que el pipeline completo (balanceo, optimización de hiperparámetros, comparación de 7 modelos) busca cerrar.</p>
 <section id="preparacion-de-los-datos">
 <h2>1. Preparación de los datos<a class="headerlink" href="#preparacion-de-los-datos" title="Permalink to this heading">#</a></h2>
@@ -396,7 +395,6 @@ document.write(`
 </div>
 <section id="carga-del-dataset-final">
 <h3>1.1 Carga del dataset final<a class="headerlink" href="#carga-del-dataset-final" title="Permalink to this heading">#</a></h3>
-<p>El dataset ya viene preprocesado desde el EDA (<code class="docutils literal notranslate"><span class="pre">00_eda.ipynb</span></code>, Parte 5) y está en <code class="docutils literal notranslate"><span class="pre">data/processed/dataset_final.csv</span></code>: sin filas duplicadas, con las categorías no oficiales de <code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code>/<code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code> reagrupadas en “Otros”, con <code class="docutils literal notranslate"><span class="pre">LIMIT_BAL</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_AMT1</span></code>-<code class="docutils literal notranslate"><span class="pre">PAY_AMT6</span></code> en escala logarítmica (variables <code class="docutils literal notranslate"><span class="pre">*_LOG</span></code>) y con las seis facturas <code class="docutils literal notranslate"><span class="pre">BILL_AMT1</span></code>-<code class="docutils literal notranslate"><span class="pre">BILL_AMT6</span></code> reemplazadas por su nivel medio, su tendencia y el número de meses con saldo a favor (esto último resuelve la multicolinealidad severa que el EDA midió con el VIF). Todas esas transformaciones son deterministas y fila por fila (no aprenden nada de otras filas), así que no hay fuga de información entre train y test. Lo único que se aprende de los datos, el one-hot y el escalado, va dentro del pipeline de la sección 2.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -428,7 +426,7 @@ Name: proporción, dtype: float64
 </section>
 <section id="division-train-test-encoding-y-escalado">
 <h2>2. División train/test, encoding y escalado<a class="headerlink" href="#division-train-test-encoding-y-escalado" title="Permalink to this heading">#</a></h2>
-<p>80/20 estratificado por la variable objetivo, con la misma semilla que el resto del proyecto (<code class="docutils literal notranslate"><span class="pre">config.RANDOM_STATE</span></code>). El encoding de las categóricas (<code class="docutils literal notranslate"><span class="pre">OneHotEncoder</span></code>) y el escalado de las numéricas (<code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code>) van dentro de un <code class="docutils literal notranslate"><span class="pre">sklearn.Pipeline</span></code> junto con el modelo, así se ajustan <strong>únicamente sobre el fold de entrenamiento</strong> en <code class="docutils literal notranslate"><span class="pre">fit()</span></code> y se aplican a test con esos mismos parámetros, sin fuga de información. Es el mismo <code class="docutils literal notranslate"><span class="pre">build_column_transformer</span></code> que usa el resto del pipeline (<code class="docutils literal notranslate"><span class="pre">src/preprocessing.py</span></code>), para no duplicar lógica entre este notebook y <code class="docutils literal notranslate"><span class="pre">03_pipeline_dev.ipynb</span></code>.</p>
+<p>Partición estratificada 80/20 con <code class="docutils literal notranslate"><span class="pre">config.RANDOM_STATE</span></code>. El preprocesamiento y el modelo van en un Pipeline para evitar fuga de información y reutilizar <code class="docutils literal notranslate"><span class="pre">build_column_transformer</span></code> de <code class="docutils literal notranslate"><span class="pre">src/preprocessing.py.</span></code></p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">

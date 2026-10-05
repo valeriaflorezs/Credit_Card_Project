@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Default of Credit Card Clients — Pipeline de Clasificación (Entregable 3) &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
+    <title>Default of Credit Card Clients &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
   
   
   
@@ -164,7 +164,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1 current active">
                 <a class="reference internal" href="#">
-                    Default of Credit Card Clients — Pipeline de Clasificación (Entregable 3)
+                    Default of Credit Card Clients
                 </a>
             </li>
         </ul>
@@ -314,7 +314,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Default of Credit Card Clients — Pipeline de Clasificación (Entregable 3)</h1>
+    <h1>Default of Credit Card Clients</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -324,12 +324,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estado-del-pipeline-por-bloque">Estado del pipeline (por bloque)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-y-preprocesamiento">Dataset y preprocesamiento</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proximos-pasos-modelado-sobre-el-dataset-preprocesado">Próximos pasos (modelado sobre el dataset preprocesado)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-correr">Cómo correr</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#presentacion-como-jupyter-book">Presentación como Jupyter Book</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura">Estructura</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inicio-rapido-requisitos-y-configuracion">Inicio Rápido (Requisitos y Configuración)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-repositorio">Estructura del Repositorio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flujo-de-trabajo-del-proyecto">Flujo de Trabajo del Proyecto</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guia-de-ejecucion">Guía de Ejecución</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autoras">Autoras</a></li>
 </ul>
             </nav>
         </div>
@@ -341,177 +340,98 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="default-of-credit-card-clients-pipeline-de-clasificacion-entregable-3">
-<h1>Default of Credit Card Clients — Pipeline de Clasificación (Entregable 3)<a class="headerlink" href="#default-of-credit-card-clients-pipeline-de-clasificacion-entregable-3" title="Permalink to this heading">#</a></h1>
-<p>Pipeline de optimización de hiperparámetros y validación estadística para
-112 modelos de clasificación (7 modelos base × 4 técnicas de balanceo ×
-4 métodos de optimización) sobre el dataset “Default of Credit Card
-Clients” (UCI, id=350), con validación cruzada anidada y comparación
-estadística jerárquica (Friedman → Nemenyi → DeLong).</p>
-<p>Ver <span class="xref myst">PROJECT_BRIEF.md</span> para el detalle completo de requisitos.</p>
-<section id="estado-del-pipeline-por-bloque">
-<h2>Estado del pipeline (por bloque)<a class="headerlink" href="#estado-del-pipeline-por-bloque" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p>[x] <strong>Bloque 0</strong> — Setup y reproducibilidad (<code class="docutils literal notranslate"><span class="pre">config.py</span></code>, <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>, estructura de carpetas)</p></li>
-<li><p>[x] <strong>Bloque 1</strong> — Split + generador de datos sintéticos (<code class="docutils literal notranslate"><span class="pre">data_loader.py</span></code>, <code class="docutils literal notranslate"><span class="pre">synthetic_data.py</span></code>)</p></li>
-<li><p>[x] <strong>Bloque 2</strong> — Modelos base y espacios de búsqueda (<code class="docutils literal notranslate"><span class="pre">models.py</span></code>)</p></li>
-<li><p>[x] <strong>Bloque 3</strong> — Wrappers de balanceo (<code class="docutils literal notranslate"><span class="pre">balancing.py</span></code>)</p></li>
-<li><p>[x] <strong>Bloque 4</strong> — Métodos de optimización: Grid/Random/Bayesiana/Genética (<code class="docutils literal notranslate"><span class="pre">optimization.py</span></code>)</p></li>
-<li><p>[x] <strong>Preprocesamiento</strong> — ejecutado: dataset final en <code class="docutils literal notranslate"><span class="pre">data/processed/dataset_final.csv</span></code> (deduplicación, categorías reagrupadas, log de variables asimétricas, resumen de <code class="docutils literal notranslate"><span class="pre">BILL_AMT1-6</span></code>) + encoding y scaling condicional dentro del pipeline (<code class="docutils literal notranslate"><span class="pre">preprocessing.py</span></code>, ver Parte 5 de <code class="docutils literal notranslate"><span class="pre">00_eda.ipynb</span></code>)</p></li>
-<li><p>[x] <strong>Bloque 5</strong> — Validación cruzada anidada (<code class="docutils literal notranslate"><span class="pre">nested_cv.py</span></code>)</p></li>
-<li><p>[x] <strong>Bloque 6</strong> — Orquestador de experimentos (<code class="docutils literal notranslate"><span class="pre">experiment_runner.py</span></code>)</p></li>
-<li><p>[x] <strong>Bloque 7</strong> — Análisis de complejidad computacional (<code class="docutils literal notranslate"><span class="pre">complexity_analysis.py</span></code>)</p></li>
-<li><p>[x] <strong>Bloque 8</strong> — Evaluación y calibración (<code class="docutils literal notranslate"><span class="pre">evaluation.py</span></code>)</p></li>
-<li><p>[x] <strong>Bloque 9</strong> — Interpretabilidad SHAP/LIME (<code class="docutils literal notranslate"><span class="pre">interpretability.py</span></code>)</p></li>
-<li><p>[x] <strong>Bloque 10</strong> — Comparación estadística jerárquica (<code class="docutils literal notranslate"><span class="pre">stats_comparison.py</span></code>)</p></li>
-</ul>
-</section>
-<section id="dataset-y-preprocesamiento">
-<h2>Dataset y preprocesamiento<a class="headerlink" href="#dataset-y-preprocesamiento" title="Permalink to this heading">#</a></h2>
-<p>El dataset preprocesado ya está en <code class="docutils literal notranslate"><span class="pre">data/processed/dataset_final.csv</span></code>
-(29,965 filas × 21 columnas, target <code class="docutils literal notranslate"><span class="pre">default_payment_next_month</span></code> al final).
-Lo genera la Parte 5 de <code class="docutils literal notranslate"><span class="pre">notebooks/00_eda.ipynb</span></code>, que resuelve cada
-hallazgo del EDA y verifica el resultado; también se puede regenerar desde
-el archivo original con <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.preprocessing</span></code>.</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Hallazgo del EDA</p></th>
-<th class="head"><p>Resolución</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>35 filas duplicadas</p></td>
-<td><p>Eliminadas (antes de cualquier split)</p></td>
-</tr>
-<tr class="row-odd"><td><p>Códigos no documentados en <code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code> (0, 5, 6) y <code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code> (0)</p></td>
-<td><p>Reagrupados en “Otros”</p></td>
-</tr>
-<tr class="row-even"><td><p>Saldos de facturación negativos</p></td>
-<td><p>Conservados; resumidos en <code class="docutils literal notranslate"><span class="pre">N_CREDIT_BALANCE_MONTHS</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p>Asimetría extrema en <code class="docutils literal notranslate"><span class="pre">LIMIT_BAL</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_AMT1-6</span></code></p></td>
-<td><p>Log con signo (columnas <code class="docutils literal notranslate"><span class="pre">*_LOG</span></code>)</p></td>
-</tr>
-<tr class="row-even"><td><p>Multicolinealidad en <code class="docutils literal notranslate"><span class="pre">BILL_AMT1-6</span></code> (VIF hasta ~25)</p></td>
-<td><p>Reemplazadas por <code class="docutils literal notranslate"><span class="pre">BILL_AMT_MEAN_6M_LOG</span></code> y <code class="docutils literal notranslate"><span class="pre">BILL_AMT_TREND_6M_LOG</span></code> (VIF máximo del dataset: 5.8)</p></td>
-</tr>
-<tr class="row-odd"><td><p>Desbalance 78/22</p></td>
-<td><p>Dentro de la validación cruzada (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>, SMOTE, ADASYN)</p></td>
-</tr>
-<tr class="row-even"><td><p>Categóricas sin codificar / escalas distintas</p></td>
-<td><p>One-hot y <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> condicional dentro del pipeline</p></td>
-</tr>
-</tbody>
-</table>
+  <section class="tex2jax_ignore mathjax_ignore" id="default-of-credit-card-clients">
+<h1>Default of Credit Card Clients<a class="headerlink" href="#default-of-credit-card-clients" title="Permalink to this heading">#</a></h1>
+<p><a class="reference external" href="https://www.python.org/"><img alt="Python 3.12" src="https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&amp;logo=python&amp;logoColor=white" /></a>
+<a class="reference external" href="https://www.anaconda.com/"><img alt="Conda" src="https://img.shields.io/badge/Environment-Conda-44A833?style=for-the-badge&amp;logo=anaconda&amp;logoColor=white" /></a>
+<span class="xref myst"><img alt="License" src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" /></span></p>
+<blockquote>
+<div><p><strong>Resumen del Proyecto:</strong> Este proyecto desarrolla un flujo completo e integral de ciencia de datos y aprendizaje automático para predecir el riesgo de incumplimiento de pago (<em>default</em>) en clientes de tarjetas de crédito. A partir del análisis del conjunto de datos del repositorio UCI (30,000 registros), la solución abarca desde un pipeline riguroso de extracción, limpieza y transformación de datos (ETL) y un profundo análisis exploratorio (EDA) orientado a solucionar problemas críticos de desbalance de clases y multicolinealidad severa entre montos facturados, hasta un diseño experimental factorial exhaustivo de 112 configuraciones. La estrategia evalúa sistemáticamente algoritmos de clasificación, representaciones de variables, técnicas de balanceo y optimizaciones avanzadas (algoritmos genéticos y bayesianos), logrando elevar significativamente el <em>F1</em> de la clase minoritaria y reducir los falsos negativos frente al modelo de regresión logística base.</p>
+</div></blockquote>
+<hr class="docutils" />
+<section id="inicio-rapido-requisitos-y-configuracion">
+<h2>Inicio Rápido (Requisitos y Configuración)<a class="headerlink" href="#inicio-rapido-requisitos-y-configuracion" title="Permalink to this heading">#</a></h2>
+<p>Asegúrate de contar con <strong>Anaconda</strong> o <strong>Miniconda</strong> instalado en tu equipo antes de comenzar.</p>
+<a href="https://www.anaconda.com/download/success?reg=skipped-miniconda" target="_blank">
+  <img src="https://img.shields.io/badge/Descargar_Miniconda-44A833?style=for-the-badge&logo=anaconda&logoColor=white" alt="Descargar Miniconda" />
+</a>
+<details open>
+<summary><b> Pasos para la Configuración del Entorno Virtual (Anaconda Prompt)</b></summary>
+<br>
+<ol class="arabic">
+<li><p><strong>Abrir Anaconda Prompt</strong> desde el menú de inicio de tu sistema operativo.</p></li>
+<li><p><strong>Crear el entorno virtual</strong> con Python 3.12:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>credit_card_env<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>-y
+</pre></div>
 </div>
-<p>Todo el código del pipeline es <strong>agnóstico a los nombres de columnas
-numéricas</strong> — solo necesita el nombre de la columna target
-(<code class="docutils literal notranslate"><span class="pre">src/config.py::TARGET_COLUMN</span></code>) y la lista de columnas categóricas
-nominales (<code class="docutils literal notranslate"><span class="pre">src/config.py::CATEGORICAL_COLUMNS</span></code>), ya confirmados contra el
-dataset real. <code class="docutils literal notranslate"><span class="pre">src.synthetic_data.generate_synthetic_dataset()</span></code> sigue
-disponible para probar el pipeline sin datos reales (<code class="docutils literal notranslate"><span class="pre">03_pipeline_dev</span></code>).</p>
-<p><strong>Resultados anteriores:</strong> los resultados de <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>
-(y los notebooks <code class="docutils literal notranslate"><span class="pre">05</span></code>/<code class="docutils literal notranslate"><span class="pre">06</span></code> que los leen) se calcularon con la versión previa
-del dataset (sin transformaciones log ni resumen de <code class="docutils literal notranslate"><span class="pre">BILL_AMT</span></code>). Esa versión
-quedó respaldada en <code class="docutils literal notranslate"><span class="pre">data/processed/dataset_final_v1_antes_de_resolver_eda.csv</span></code>.
-Para comparar modelos sobre el dataset actual hay que volver a correr <code class="docutils literal notranslate"><span class="pre">04</span></code>.</p>
-</section>
-<section id="proximos-pasos-modelado-sobre-el-dataset-preprocesado">
-<h2>Próximos pasos (modelado sobre el dataset preprocesado)<a class="headerlink" href="#proximos-pasos-modelado-sobre-el-dataset-preprocesado" title="Permalink to this heading">#</a></h2>
-<p>Los 11 bloques del pipeline están implementados y probados con datos
-sintéticos y con el dataset real (ver docstrings de cada módulo para el
-detalle de qué se verificó). Falta:</p>
-<ol class="arabic simple">
-<li><p>~~Dataset final preprocesado~~ — hecho (ver sección anterior).</p></li>
-<li><p>Revisar/mejorar los modelos y volver a correr <code class="docutils literal notranslate"><span class="pre">experiment_runner.run_experiments()</span></code> sobre las ~104
-combinaciones válidas reales (empezando por los modelos baratos,
-dejando SVM/KNN para el final o para Colab — ver
-<code class="docutils literal notranslate"><span class="pre">experiment_runner.MODEL_COST_ORDER</span></code>).</p></li>
-<li><p>Con los resultados reales: <code class="docutils literal notranslate"><span class="pre">complexity_analysis.build_complexity_table</span></code>,
-<code class="docutils literal notranslate"><span class="pre">evaluation</span></code> (calibración/recalibración/sensibilidad a semillas),
-<code class="docutils literal notranslate"><span class="pre">interpretability</span></code> (SHAP/LIME del mejor modelo) y
-<code class="docutils literal notranslate"><span class="pre">stats_comparison.run_hierarchical_comparison</span></code> para la comparación
-jerárquica final.</p></li>
-<li><p>Los 7 notebooks (<code class="docutils literal notranslate"><span class="pre">00</span></code>-<code class="docutils literal notranslate"><span class="pre">06</span></code>) ya están armados:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">00_eda</span></code>: EDA (dataset original UCI, en
-<code class="docutils literal notranslate"><span class="pre">data/raw/default_of_credit_card_clients.xls</span></code>) — análisis univariado,
-bivariado, multicolinealidad (VIF) e interpretabilidad SHAP sobre un
-Random Forest de referencia, y Parte 5 con el preprocesamiento que
-resuelve los hallazgos y guarda <code class="docutils literal notranslate"><span class="pre">data/processed/dataset_final.csv</span></code>.
-Los gráficos interactivos de las secciones 1.2 y 2.2 muestran, debajo,
-la interpretación de la variable elegida en el desplegable, con botones
-para alternar entre la versión básica y la técnica.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">01_baseline_logistic</span></code>: modelo base de Regresión Logística (hiperparámetros
-por defecto de scikit-learn, sin búsqueda todavía) sobre el dataset preprocesado —
-score (accuracy), error (log-loss), AUC-ROC, coeficientes, matriz de
-confusión y curva ROC. Deja documentado el margen de mejora frente al
-baseline ingenuo (predecir siempre “no default”), que el pipeline
-completo (<code class="docutils literal notranslate"><span class="pre">03</span></code>-<code class="docutils literal notranslate"><span class="pre">06</span></code>) busca cerrar con balanceo, optimización de
-hiperparámetros y comparación de 7 modelos.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">02_setup_check</span></code>: entorno, semillas, config, carga de datos sintéticos y del dataset real.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">03_pipeline_dev</span></code>: recorre los 11 bloques del pipeline en miniatura
-(checkpoint propio <code class="docutils literal notranslate"><span class="pre">results/dev_pipeline_check.csv</span></code>, gitignored —
-nunca toca <code class="docutils literal notranslate"><span class="pre">experiments_master.csv</span></code>); correr esto tras cualquier
-cambio de código para validar rápido que todo sigue funcionando junto.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">04_run_experiments</span></code>: corre el batch real (<code class="docutils literal notranslate"><span class="pre">QUICK_MODE</span></code> para iterar
-rápido; <code class="docutils literal notranslate"><span class="pre">False</span></code> para las ~104 combinaciones completas), guarda
-incremental/reanudable en <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">05_results_analysis</span></code> y <code class="docutils literal notranslate"><span class="pre">06_interpretability</span></code>: funcionan de forma
-independiente desde <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code> (no dependen de
-tener nada en memoria de un notebook anterior) — tabla de métricas,
-Friedman → Nemenyi → CD diagram → DeLong → Cliff’s Delta, matriz de
-confusión/ROC, calibración (+ recalibración si corresponde),
-complejidad estándar vs. optimizado, y SHAP/LIME del mejor modelo.</p></li>
-</ul>
 </li>
 </ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+3. **Activar el entorno virtual**:
+```bash
+conda activate credit_card_env
+
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p><strong>Instalar las dependencias</strong>:
+Navega a la carpeta raíz del repositorio e instala las librerías necesarias:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
 </section>
-<section id="como-correr">
-<h2>Cómo correr<a class="headerlink" href="#como-correr" title="Permalink to this heading">#</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
-.venv<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
-pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<hr class="docutils" />
+<section id="estructura-del-repositorio">
+<h2>Estructura del Repositorio<a class="headerlink" href="#estructura-del-repositorio" title="Permalink to this heading">#</a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Credit_Card_Project/
+│
+├── 📁 data/                  # Datos del proyecto
+│   └── processed/            # Conjuntos de datos procesados y transformados
+│
+├── 📁 logs/                  # Registros de ejecución y monitoreo
+├── 📁 notebooks/             # Jupyter Notebooks de análisis exploratorio y modelado
+├── 📁 results/               # Resultados de experimentos, métricas y gráficas
+├── 📁 src/                   # Código fuente modular reutilizable
+│
+├── .gitignore                # Archivos ignorados por Git
+├── EXPERIMENT_STATUS.md      # Estado de experimentos y seguimiento de pruebas
+├── README.md                 # Documentación principal del proyecto
+├── requirements.txt          # Lista de dependencias del proyecto
+├── _config.yml               # Configuración de Jupyter Book
+└── _toc.yml                  # Tabla de contenidos de Jupyter Book
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> refleja las versiones con las que se ejecutó y compiló
-todo el proyecto. Si Windows bloquea el <code class="docutils literal notranslate"><span class="pre">.venv</span></code> (ocurrió con pandas/scipy
-por la directiva de Control de aplicaciones), crea el entorno con Anaconda
-(<code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">create</span> <span class="pre">-n</span> <span class="pre">creditcard</span> <span class="pre">python=3.13</span></code>) e instala ahí las mismas
-dependencias.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<p>Luego abre <code class="docutils literal notranslate"><span class="pre">notebooks/00_eda.ipynb</span></code> para el análisis exploratorio sobre el
-dataset original (ya incluido en <code class="docutils literal notranslate"><span class="pre">data/raw/</span></code>), <code class="docutils literal notranslate"><span class="pre">notebooks/01_baseline_logistic.ipynb</span></code>
-para el modelo base de Regresión Logística, o
-<code class="docutils literal notranslate"><span class="pre">notebooks/02_setup_check.ipynb</span></code> para verificar el entorno, semillas y la
-carga de datos sintéticos.</p>
 </section>
-<section id="presentacion-como-jupyter-book">
-<h2>Presentación como Jupyter Book<a class="headerlink" href="#presentacion-como-jupyter-book" title="Permalink to this heading">#</a></h2>
-<p>Los notebooks están configurados para compilarse como un Jupyter Book
-(<code class="docutils literal notranslate"><span class="pre">_config.yml</span></code> / <code class="docutils literal notranslate"><span class="pre">_toc.yml</span></code> en la raíz): cada celda de código queda
-colapsada bajo un botón <strong>“Show code cell source”</strong> (se puede abrir si
-hace falta revisar el código), dejando el foco en texto, tablas y
-gráficos.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>jupyter-book<span class="w"> </span>build<span class="w"> </span>.
-</pre></div>
-</div>
-<p>Abre <code class="docutils literal notranslate"><span class="pre">_build/html/index.html</span></code> en el navegador. Si agregas o modificas
-código, vuelve a ejecutar el notebook correspondiente (para refrescar sus
-salidas) antes de recompilar — el book solo renderiza lo que ya está
-guardado en cada <code class="docutils literal notranslate"><span class="pre">.ipynb</span></code> (<code class="docutils literal notranslate"><span class="pre">execute_notebooks:</span> <span class="pre">&quot;off&quot;</span></code> en <code class="docutils literal notranslate"><span class="pre">_config.yml</span></code>).</p>
+<hr class="docutils" />
+<section id="flujo-de-trabajo-del-proyecto">
+<h2>Flujo de Trabajo del Proyecto<a class="headerlink" href="#flujo-de-trabajo-del-proyecto" title="Permalink to this heading">#</a></h2>
 </section>
-<section id="estructura">
-<h2>Estructura<a class="headerlink" href="#estructura" title="Permalink to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">/</span><span class="n">raw</span><span class="o">/</span>                 <span class="c1"># dataset original UCI (.xls), usado por 00_eda.ipynb</span>
-<span class="n">data</span><span class="o">/</span><span class="n">processed</span><span class="o">/</span>           <span class="c1"># dataset preprocesado final (no versionado)</span>
-<span class="n">src</span><span class="o">/</span>                       <span class="c1"># código del pipeline (ver docstrings de cada módulo)</span>
-<span class="n">notebooks</span><span class="o">/</span>                 <span class="c1"># desarrollo y ejecución interactiva</span>
-<span class="n">results</span><span class="o">/</span>                   <span class="c1"># tabla maestra de experimentos, figuras, modelos serializados</span>
+<hr class="docutils" />
+<section id="guia-de-ejecucion">
+<h2>Guía de Ejecución<a class="headerlink" href="#guia-de-ejecucion" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Activar el entorno virtual:</strong></p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>credit_card_env
 </pre></div>
 </div>
+<ol class="arabic simple" start="2">
+<li><p><strong>Ejecución desde VS Code (Recomendado):</strong></p></li>
+</ol>
+<ul class="simple">
+<li><p>Abre la carpeta del proyecto en <strong>VS Code</strong>.</p></li>
+<li><p>Selecciona el intérprete de Python correspondiente al entorno <code class="docutils literal notranslate"><span class="pre">credit_card_env</span></code> (presiona <code class="docutils literal notranslate"><span class="pre">Ctrl</span> <span class="pre">+</span> <span class="pre">Shift</span> <span class="pre">+</span> <span class="pre">P</span></code> -&gt; <strong>Python: Select Interpreter</strong>).</p></li>
+<li><p>Abre cualquier cuaderno dentro de la carpeta <code class="docutils literal notranslate"><span class="pre">notebooks/</span></code> y ejecútalo directamente.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="autoras">
+<h2>Autoras<a class="headerlink" href="#autoras" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Valeria Florez Sarmiento</strong></p></li>
+<li><p><strong>Katherin Barrera López</strong></p></li>
+</ul>
 </section>
 <div class="toctree-wrapper compound">
 </div>
@@ -572,12 +492,11 @@ guardado en cada <code class="docutils literal notranslate"><span class="pre">.i
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estado-del-pipeline-por-bloque">Estado del pipeline (por bloque)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-y-preprocesamiento">Dataset y preprocesamiento</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proximos-pasos-modelado-sobre-el-dataset-preprocesado">Próximos pasos (modelado sobre el dataset preprocesado)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-correr">Cómo correr</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#presentacion-como-jupyter-book">Presentación como Jupyter Book</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura">Estructura</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inicio-rapido-requisitos-y-configuracion">Inicio Rápido (Requisitos y Configuración)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-repositorio">Estructura del Repositorio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flujo-de-trabajo-del-proyecto">Flujo de Trabajo del Proyecto</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guia-de-ejecucion">Guía de Ejecución</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autoras">Autoras</a></li>
 </ul>
   </nav></div>
 

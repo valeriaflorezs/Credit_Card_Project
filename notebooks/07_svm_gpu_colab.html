@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>SVM + RBF acelerado por GPU (cuML/RAPIDS) — las 16 combinaciones &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
+    <title>SVM + RBF acelerado por GPU (cuML/RAPIDS) &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
   
   
   
@@ -163,7 +163,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../README.html">
-                    Default of Credit Card Clients — Pipeline de Clasificación (Entregable 3)
+                    Default of Credit Card Clients
                 </a>
             </li>
         </ul>
@@ -313,7 +313,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>SVM + RBF acelerado por GPU (cuML/RAPIDS) — las 16 combinaciones</h1>
+    <h1>SVM + RBF acelerado por GPU (cuML/RAPIDS)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -323,8 +323,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencias-cuml-vs-scikit-learn-a-tener-en-cuenta-verificadas-no-asumidas">⚠️ Diferencias cuML vs. scikit-learn a tener en cuenta (verificadas, no asumidas)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-usar-este-notebook">Cómo usar este notebook</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verificar-gpu-asignada">1. Verificar GPU asignada</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instalar-rapids-cuml">2. Instalar RAPIDS cuML</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-instalacion-alternativa-de-cuml-solo-si-la-instalacion-de-la-seccion-2-fallo">2b. Instalación alternativa de cuML (solo si la instalación de la sección 2 falló)</a></li>
@@ -354,127 +352,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="svm-rbf-acelerado-por-gpu-cuml-rapids-las-16-combinaciones">
-<h1>SVM + RBF acelerado por GPU (cuML/RAPIDS) — las 16 combinaciones<a class="headerlink" href="#svm-rbf-acelerado-por-gpu-cuml-rapids-las-16-combinaciones" title="Permalink to this heading">#</a></h1>
-<p>Corre en Google Colab con runtime GPU las <strong>16 combinaciones de SVM</strong>
-(4 técnicas de balanceo × 4 métodos de optimización) sobre el dataset
-preprocesado <code class="docutils literal notranslate"><span class="pre">data/processed/dataset_final.csv</span></code> (versión del 2026-10-03,
-resultado de la Parte 5 de <code class="docutils literal notranslate"><span class="pre">00_eda.ipynb</span></code>). El resto de los modelos se corre
-en local con <code class="docutils literal notranslate"><span class="pre">04_run_experiments.ipynb</span></code>; las filas de este notebook se
-agregan después a <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>. Usa <strong>cuML (RAPIDS)</strong> en vez de scikit-learn para
-acelerar por hardware el ajuste del kernel RBF (el cuello de botella real,
-documentado en <code class="docutils literal notranslate"><span class="pre">EXPERIMENT_STATUS.md</span></code> como el modelo más costoso del
-pipeline: O(n²)-O(n³) + <code class="docutils literal notranslate"><span class="pre">probability=True</span></code> agrega 5 fits internos de Platt
-scaling por ajuste).</p>
-<p><strong>Esto NO es un modelo distinto.</strong> Reproduce exactamente la misma
-metodología que <code class="docutils literal notranslate"><span class="pre">src/nested_cv.py</span></code> + <code class="docutils literal notranslate"><span class="pre">src/optimization.py</span></code> +
-<code class="docutils literal notranslate"><span class="pre">src/balancing.py</span></code> + <code class="docutils literal notranslate"><span class="pre">src/preprocessing.py</span></code> del proyecto local:</p>
-<ul class="simple">
-<li><p>Validación cruzada anidada: outer=3 folds, inner=3 folds,
-<code class="docutils literal notranslate"><span class="pre">StratifiedKFold(shuffle=True,</span> <span class="pre">random_state=42)</span></code>.</p></li>
-<li><p>Preprocesamiento (<code class="docutils literal notranslate"><span class="pre">OneHotEncoder</span></code> + <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code>) y balanceo
-(SMOTE/ADASYN/class_weight) <strong>dentro</strong> del pipeline, ajustados solo en
-<code class="docutils literal notranslate"><span class="pre">fit()</span></code> de cada fold — nunca en todo el dataset.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">kernel='rbf'</span></code> fijo, <code class="docutils literal notranslate"><span class="pre">C</span></code>/<code class="docutils literal notranslate"><span class="pre">gamma</span></code> en escala log (<code class="docutils literal notranslate"><span class="pre">C</span></code>: 1e-2–1e2, <code class="docutils literal notranslate"><span class="pre">gamma</span></code>:
-1e-4–1e0).</p></li>
-<li><p>Los 4 métodos de optimización con los mismos presupuestos:
-<code class="docutils literal notranslate"><span class="pre">grid_search</span></code> (16 combinaciones, 4×4), <code class="docutils literal notranslate"><span class="pre">random_search</span></code> (<code class="docutils literal notranslate"><span class="pre">n_iter=25</span></code>),
-<code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code> (Optuna TPE, <code class="docutils literal notranslate"><span class="pre">n_trials=30</span></code>, <code class="docutils literal notranslate"><span class="pre">seed=42</span></code>), <code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code>
-(DEAP: población=16, generaciones=10, crossover uniforme
-<code class="docutils literal notranslate"><span class="pre">cx_prob=0.6</span></code>/<code class="docutils literal notranslate"><span class="pre">indpb=0.5</span></code>, mutación gaussiana <code class="docutils literal notranslate"><span class="pre">mut_prob=0.3</span></code>/<code class="docutils literal notranslate"><span class="pre">indpb=0.2</span></code>,
-torneo <code class="docutils literal notranslate"><span class="pre">tournament_size=3</span></code>, elitismo <code class="docutils literal notranslate"><span class="pre">elite_size=2</span></code>).</p></li>
-<li><p>Mismo dataset (<code class="docutils literal notranslate"><span class="pre">dataset_final.csv</span></code>, ya sin duplicados desde el EDA) y mismo
-orden de filas que las corridas locales, para que <code class="docutils literal notranslate"><span class="pre">StratifiedKFold(shuffle=True,</span> <span class="pre">random_state=42)</span></code> genere los mismos folds. La celda de carga igual verifica que
-no queden duplicados.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">random_state=42</span></code> en todo (folds, samplers, GA).</p></li>
-</ul>
-<p><strong>Único cambio real:</strong> el paso <code class="docutils literal notranslate"><span class="pre">&quot;model&quot;</span></code> del pipeline es
-<code class="docutils literal notranslate"><span class="pre">cuml.svm.SVC(kernel='rbf',</span> <span class="pre">...)</span></code> (GPU) en vez de <code class="docutils literal notranslate"><span class="pre">sklearn.svm.SVC(...)</span></code>
-(CPU) — mismo algoritmo (SVM de margen máximo con kernel RBF, solver SMO),
-misma interpretación de <code class="docutils literal notranslate"><span class="pre">C</span></code>/<code class="docutils literal notranslate"><span class="pre">gamma</span></code>/<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>. Todo lo demás
-(preprocesamiento, balanceo, folds, espacio de búsqueda, operadores del GA,
-sampler de Optuna) es el mismo código, transcrito para no depender de los
-módulos <code class="docutils literal notranslate"><span class="pre">src/*</span></code> del proyecto (Colab no tiene el repo).</p>
-<p><code class="docutils literal notranslate"><span class="pre">grid_search</span></code> y <code class="docutils literal notranslate"><span class="pre">random_search</span></code> <strong>no</strong> usan <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code>/<code class="docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code>
-de scikit-learn envolviendo un pipeline con un estimador de cuML adentro —
-se implementan de forma manual (mismo algoritmo: por cada candidato, CV
-interna, promedio de folds, se queda con el mejor, refit sobre todo el fold
-externo) para no depender de que <code class="docutils literal notranslate"><span class="pre">sklearn.base.clone()</span></code>/<code class="docutils literal notranslate"><span class="pre">get_params()</span></code>/
-<code class="docutils literal notranslate"><span class="pre">set_params()</span></code> funcionen sin fricción sobre un estimador de cuML dentro de
-un meta-estimador de sklearn. Es un cambio de <strong>implementación</strong>, no de
-metodología (mismo algoritmo que <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code>/<code class="docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code> usan
-internamente) — mismo principio ya aplicado en el proyecto local para
-<code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>/<code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code> (ver docstring de <code class="docutils literal notranslate"><span class="pre">src/optimization.py</span></code>).
-<code class="docutils literal notranslate"><span class="pre">random_search</span></code> usa <code class="docutils literal notranslate"><span class="pre">sklearn.model_selection.ParameterSampler</span></code> para generar
-los candidatos — es EXACTAMENTE la clase que <code class="docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code> usa
-internamente, así que la secuencia de candidatos muestreados es idéntica
-dado el mismo <code class="docutils literal notranslate"><span class="pre">random_state</span></code>.</p>
-<section id="diferencias-cuml-vs-scikit-learn-a-tener-en-cuenta-verificadas-no-asumidas">
-<h2>⚠️ Diferencias cuML vs. scikit-learn a tener en cuenta (verificadas, no asumidas)<a class="headerlink" href="#diferencias-cuml-vs-scikit-learn-a-tener-en-cuenta-verificadas-no-asumidas" title="Permalink to this heading">#</a></h2>
-<ol class="arabic simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">probability=True</span></code> tuvo un bug real en cuML 25.08</strong> (<code class="docutils literal notranslate"><span class="pre">AttributeError:</span> <span class="pre">'NoneType'</span> <span class="pre">object</span> <span class="pre">has</span> <span class="pre">no</span> <span class="pre">attribute</span> <span class="pre">'upper'</span></code> al convertir de GPU a host)
-— <a class="reference external" href="https://github.com/rapidsai/cuml/issues/7205">issue #7205</a>, arreglado
-por el PR #7207 (ya mergeado). La celda de instalación imprime la
-versión de cuML instalada y una celda posterior (<strong>“Chequeo de
-compatibilidad”</strong>) hace un fit real con <code class="docutils literal notranslate"><span class="pre">probability=True</span></code> +
-<code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> ANTES de correr nada real — si falla, el notebook se
-detiene con un mensaje explícito en vez de bajar silenciosamente a
-<code class="docutils literal notranslate"><span class="pre">probability=False</span></code> o cambiar el scoring.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">class_weight='balanced'</span></code> es seguro para este dataset</strong> (target
-binario): el único bug conocido de <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> en SVC de cuML (PR
-#8592, “Implement multiclass SVC with non-uniform class weights”) es
-específico de <strong>multiclase</strong> (3+ clases) — no aplica aquí.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">gamma</span></code> acepta un <code class="docutils literal notranslate"><span class="pre">float</span></code> directo</strong>, igual que scikit-learn (además de
-<code class="docutils literal notranslate"><span class="pre">'scale'</span></code>/<code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, que este proyecto no usa) — no hace falta adaptar el
-espacio de búsqueda.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">OneHotEncoder</span></code> debe forzarse a salida densa</strong> (<code class="docutils literal notranslate"><span class="pre">sparse_output=False</span></code>):
-cuML SVC no garantiza aceptar una matriz dispersa de scipy de la forma
-en que lo hace el SVC de scikit-learn (basado en libsvm). Es un cambio
-de representación (denso vs. disperso), NO cambia los valores
-codificados ni la metodología.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">cache_size</span></code></strong> tiene unidades distintas (<code class="docutils literal notranslate"><span class="pre">sklearn</span></code>: MB; <code class="docutils literal notranslate"><span class="pre">cuML</span></code>: MiB) y
-<strong><code class="docutils literal notranslate"><span class="pre">nochange_steps</span></code></strong> es un parámetro de parada temprana del solver SMO
-exclusivo de cuML (sin equivalente en libsvm/sklearn, se deja en su
-default). Ninguno de los dos es un hiperparámetro bajo búsqueda —no
-pueden sesgar la comparación entre los 4 métodos, solo afectan tiempo de
-pared.</p></li>
-<li><p><strong>Calibración de probabilidad (Platt scaling) es una reimplementación
-propia de cuML</strong>, no litealmente el código de libsvm que usa
-scikit-learn. Las métricas de <strong>etiqueta dura</strong> (<code class="docutils literal notranslate"><span class="pre">accuracy</span></code>,
-<code class="docutils literal notranslate"><span class="pre">precision</span></code>, <code class="docutils literal notranslate"><span class="pre">recall</span></code>, <code class="docutils literal notranslate"><span class="pre">f1</span></code>) dependen del signo de la función de
-decisión, no de la calibración, así que deberían ser muy cercanas a lo
-que darías con CPU para los mismos hiperparámetros — pero <code class="docutils literal notranslate"><span class="pre">roc_auc</span></code>
-podría mostrar pequeñas diferencias atribuibles a la reimplementación de
-la calibración, no a un error de metodología. Documentarlo si se nota
-una diferencia grande.</p></li>
-<li><p><strong>Versiones de librerías</strong>: Colab instalará lo último que <code class="docutils literal notranslate"><span class="pre">pip</span></code>
-resuelva para <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>/<code class="docutils literal notranslate"><span class="pre">imbalanced-learn</span></code>/<code class="docutils literal notranslate"><span class="pre">optuna</span></code>/<code class="docutils literal notranslate"><span class="pre">deap</span></code> (las
-restricciones de los wheels de RAPIDS probablemente no dejan fijar
-exactamente <code class="docutils literal notranslate"><span class="pre">scikit-learn==1.9.1</span></code>/<code class="docutils literal notranslate"><span class="pre">imbalanced-learn==0.14.2</span></code>/
-<code class="docutils literal notranslate"><span class="pre">optuna==5.0.0</span></code>/<code class="docutils literal notranslate"><span class="pre">deap==1.4.4</span></code> como en <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> local). La
-celda de imports imprime todas las versiones instaladas — anotarlas
-junto a los resultados.</p></li>
-</ol>
-</section>
-<section id="como-usar-este-notebook">
-<h2>Cómo usar este notebook<a class="headerlink" href="#como-usar-este-notebook" title="Permalink to this heading">#</a></h2>
-<ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Entorno</span> <span class="pre">de</span> <span class="pre">ejecución</span> <span class="pre">→</span> <span class="pre">Cambiar</span> <span class="pre">tipo</span> <span class="pre">de</span> <span class="pre">entorno</span> <span class="pre">de</span> <span class="pre">ejecución</span> <span class="pre">→</span> <span class="pre">GPU</span> <span class="pre">(T4)</span></code>.</p></li>
-<li><p>Correr las celdas en orden. La celda de instalación de RAPIDS puede
-pedir reiniciar la sesión — si lo hace, reiniciar y seguir desde la
-siguiente celda (no hace falta repetir la instalación).</p></li>
-<li><p>Subir <code class="docutils literal notranslate"><span class="pre">dataset_final.csv</span></code> cuando la celda de carga lo pida.</p></li>
-<li><p>Revisar la celda <strong>“Selección de combinaciones a correr”</strong> — por defecto
-corre las 16 combinaciones de SVM. Editar <code class="docutils literal notranslate"><span class="pre">COMBOS_TO_RUN</span></code> para correr un
-subconjunto.</p></li>
-<li><p>Correr la celda de ejecución. Guarda cada fila al CSV apenas termina esa
-combinación (no espera a que terminen las 16) — si Colab se desconecta,
-basta con volver a correr desde la celda de ejecución: salta
-automáticamente lo que ya esté en el CSV de salida.</p></li>
-<li><p>Al final, descargar <code class="docutils literal notranslate"><span class="pre">svm_gpu_results.csv</span></code> y pegar las filas en tu tabla
-maestra local (mismo esquema exacto de columnas).</p></li>
-</ol>
-</section>
+  <section class="tex2jax_ignore mathjax_ignore" id="svm-rbf-acelerado-por-gpu-cuml-rapids">
+<h1>SVM + RBF acelerado por GPU (cuML/RAPIDS)<a class="headerlink" href="#svm-rbf-acelerado-por-gpu-cuml-rapids" title="Permalink to this heading">#</a></h1>
+<p>Este notebook implementa un clasificador SVM con kernel RBF utilizando cuML de RAPIDS para aprovechar la aceleración por GPU. El kernel RBF permite modelar relaciones no lineales entre las variables y aplicar el modelo al problema de clasificación de tarjetas de crédito.</p>
 <section id="verificar-gpu-asignada">
 <h2>1. Verificar GPU asignada<a class="headerlink" href="#verificar-gpu-asignada" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
@@ -511,12 +391,6 @@ maestra local (mismo esquema exacto de columnas).</p></li>
 </section>
 <section id="instalar-rapids-cuml">
 <h2>2. Instalar RAPIDS cuML<a class="headerlink" href="#instalar-rapids-cuml" title="Permalink to this heading">#</a></h2>
-<p>Usa el instalador oficial de RAPIDS para Colab (<code class="docutils literal notranslate"><span class="pre">rapidsai-csp-utils</span></code>),
-el método recomendado por la documentación de RAPIDS porque ajusta
-versiones/paquetes preinstalados de Colab que a veces chocan con un
-<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">cuml-cu12</span></code> directo. <strong>Puede pedir reiniciar la sesión</strong> — si
-lo hace, reiniciar (<code class="docutils literal notranslate"><span class="pre">Entorno</span> <span class="pre">de</span> <span class="pre">ejecución</span> <span class="pre">→</span> <span class="pre">Reiniciar</span> <span class="pre">sesión</span></code>) y continuar
-desde la celda siguiente sin volver a correr esta.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!git clone --depth 1 https://github.com/rapidsai/rapidsai-csp-utils.git
@@ -689,9 +563,6 @@ Installed 58 packages in 132ms
 </div>
 <section id="b-instalacion-alternativa-de-cuml-solo-si-la-instalacion-de-la-seccion-2-fallo">
 <h3>2b. Instalación alternativa de cuML (solo si la instalación de la sección 2 falló)<a class="headerlink" href="#b-instalacion-alternativa-de-cuml-solo-si-la-instalacion-de-la-seccion-2-fallo" title="Permalink to this heading">#</a></h3>
-<p><strong>No la uses si <code class="docutils literal notranslate"><span class="pre">!pip</span> <span class="pre">list</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">-i</span> <span class="pre">-E</span> <span class="pre">&quot;cupy|cuml&quot;</span></code> muestra una sola familia coherente (por ejemplo todo <code class="docutils literal notranslate"><span class="pre">-cu13</span></code>, sin <code class="docutils literal notranslate"><span class="pre">cupy-cuda12x</span></code>)</strong>: en ese caso basta con reiniciar la sesión e importar. Esta celda instala la familia CUDA 12, así que sobre una instalación CUDA 13 sana la desmontaría.</p>
-<p>Úsala si al importar <code class="docutils literal notranslate"><span class="pre">cuml</span></code> aparece <code class="docutils literal notranslate"><span class="pre">ImportError:</span> <span class="pre">libcuml.so:</span> <span class="pre">cannot</span> <span class="pre">open</span> <span class="pre">shared</span> <span class="pre">object</span> <span class="pre">file</span></code> o el aviso de que hay <strong>dos paquetes de CuPy</strong> instalados (<code class="docutils literal notranslate"><span class="pre">cupy-cuda12x</span></code> y <code class="docutils literal notranslate"><span class="pre">cupy-cuda13x</span></code>). Pasa cuando se mezclan paquetes de CUDA 12 y CUDA 13 (típico en el runtime «Más reciente», con Python 3.13).</p>
-<p>Pasos: (1) <em>Entorno de ejecución → Desconectar y eliminar entorno de ejecución</em> y volver a conectar; (2) correr SOLO esta celda, no la de la sección 2; (3) <em>Reiniciar sesión</em>; (4) seguir desde la celda de imports. Si sigue fallando, probar una versión de runtime anterior (Python 3.12) en <em>Cambiar tipo de entorno de ejecución</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span># Deja UNA sola familia de paquetes (CUDA 12; los drivers de Colab con CUDA 13 también ejecutan wheels cu12).
@@ -777,18 +648,6 @@ Local (requirements.txt): scikit-learn==1.9.1, imbalanced-learn==0.14.2, optuna=
 </section>
 <section id="chequeo-de-compatibilidad-cuml-correr-antes-de-cualquier-combinacion-real">
 <h2>4. Chequeo de compatibilidad cuML (correr ANTES de cualquier combinación real)<a class="headerlink" href="#chequeo-de-compatibilidad-cuml-correr-antes-de-cualquier-combinacion-real" title="Permalink to this heading">#</a></h2>
-<p>Verifica, con datos sintéticos chicos, que:</p>
-<ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">cuml.svm.SVC(probability=True)</span></code> ajusta y <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> funciona (ver
-aviso #1 más arriba — bug conocido en 25.08).</p></li>
-<li><p>El mismo estimador funciona compuesto dentro de un
-<code class="docutils literal notranslate"><span class="pre">imblearn.pipeline.Pipeline</span></code> (preprocesamiento denso + SMOTE + modelo),
-igual que se usará en las combinaciones reales.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">class_weight='balanced'</span></code> no rompe nada en el caso binario.</p></li>
-</ol>
-<p>Si cualquiera de estos chequeos falla, el notebook se detiene acá con el
-error completo — <strong>no</strong> baja a <code class="docutils literal notranslate"><span class="pre">probability=False</span></code> ni cambia de scoring
-por su cuenta.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_classification</span>
@@ -1077,14 +936,6 @@ scope.google.colab._files = {
 </section>
 <section id="cargar-verificar-y-separar-x-y">
 <h2>6. Cargar, verificar y separar X/y<a class="headerlink" href="#cargar-verificar-y-separar-x-y" title="Permalink to this heading">#</a></h2>
-<p>Reproduce <code class="docutils literal notranslate"><span class="pre">src/data_loader.load_processed_dataset</span></code> +
-<code class="docutils literal notranslate"><span class="pre">src/data_loader.split_features_target</span></code> del proyecto local. El dataset ya
-viene deduplicado desde el EDA (29,965 filas × 21 columnas); la celda lo
-verifica y conserva la misma deduplicación defensiva
-(<code class="docutils literal notranslate"><span class="pre">drop_duplicates(keep=&quot;first&quot;)</span></code>) que <code class="docutils literal notranslate"><span class="pre">preprocessing.remove_duplicate_rows</span></code>,
-que no debería eliminar nada. El orden de las filas debe ser el del archivo
-original para que <code class="docutils literal notranslate"><span class="pre">StratifiedKFold(shuffle=True,</span> <span class="pre">random_state=42)</span></code> genere los
-mismos folds que las corridas locales.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TARGET_COLUMN</span> <span class="o">=</span> <span class="s2">&quot;default_payment_next_month&quot;</span>
@@ -1165,10 +1016,6 @@ X: (29965, 20), balance del target: {0: 0.7787, 1: 0.2213}
 </section>
 <section id="espacio-de-busqueda-de-svm-identico-a-models-py-model-registry-svm">
 <h2>8. Espacio de búsqueda de SVM (idéntico a <code class="docutils literal notranslate"><span class="pre">models.py::MODEL_REGISTRY[&quot;svm&quot;]</span></code>)<a class="headerlink" href="#espacio-de-busqueda-de-svm-identico-a-models-py-model-registry-svm" title="Permalink to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">C</span></code> y <code class="docutils literal notranslate"><span class="pre">gamma</span></code>, ambos <code class="docutils literal notranslate"><span class="pre">float</span></code>, escala logarítmica. Reproduce
-<code class="docutils literal notranslate"><span class="pre">HyperparamSpec</span></code>/<code class="docutils literal notranslate"><span class="pre">get_param_grid</span></code>/<code class="docutils literal notranslate"><span class="pre">get_param_distributions</span></code> de <code class="docutils literal notranslate"><span class="pre">models.py</span></code>
-especializado a los 2 hiperparámetros de SVM (no hace falta el resto del
-sistema genérico multi-modelo).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
@@ -1226,9 +1073,6 @@ Total combinaciones grid_search: 16 (se espera 16)
 </section>
 <section id="preprocesamiento-identico-a-preprocessing-py-con-salida-densa">
 <h2>9. Preprocesamiento (idéntico a <code class="docutils literal notranslate"><span class="pre">preprocessing.py</span></code>, con salida densa)<a class="headerlink" href="#preprocesamiento-identico-a-preprocessing-py-con-salida-densa" title="Permalink to this heading">#</a></h2>
-<p>Mismo <code class="docutils literal notranslate"><span class="pre">ColumnTransformer</span></code>: <code class="docutils literal notranslate"><span class="pre">OneHotEncoder(handle_unknown=&quot;ignore&quot;,</span> <span class="pre">drop=&quot;if_binary&quot;)</span></code> en las categóricas + <code class="docutils literal notranslate"><span class="pre">StandardScaler()</span></code> en el resto
-(SVM siempre tiene <code class="docutils literal notranslate"><span class="pre">requires_scaling=True</span></code>). Único cambio: <code class="docutils literal notranslate"><span class="pre">sparse_output=False</span></code>
-(aviso #4 más arriba) — necesario para que cuML reciba un array denso.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_column_transformer</span><span class="p">(</span><span class="n">categorical_columns</span><span class="o">=</span><span class="n">CATEGORICAL_COLUMNS</span><span class="p">):</span>
@@ -1333,19 +1177,6 @@ Pipeline(steps=[(&#39;preprocessing&#39;,
 </section>
 <section id="los-4-metodos-de-optimizacion-identicos-a-optimization-py">
 <h2>11. Los 4 métodos de optimización (idénticos a <code class="docutils literal notranslate"><span class="pre">optimization.py</span></code>)<a class="headerlink" href="#los-4-metodos-de-optimizacion-identicos-a-optimization-py" title="Permalink to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">grid_search</span></code>/<code class="docutils literal notranslate"><span class="pre">random_search</span></code>: implementación manual (ver nota metodológica
-arriba) con <code class="docutils literal notranslate"><span class="pre">ParameterGrid</span></code>/<code class="docutils literal notranslate"><span class="pre">ParameterSampler</span></code> de scikit-learn — mismo
-algoritmo que <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code>/<code class="docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code> usan por dentro (por cada
-candidato: CV interna -&gt; promedio de folds -&gt; se queda con el mejor -&gt;
-refit sobre todo el fold externo).</p>
-<p><code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>/<code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code>: transcripción directa de
-<code class="docutils literal notranslate"><span class="pre">run_bayesian_search</span></code>/<code class="docutils literal notranslate"><span class="pre">run_genetic_search</span></code> de <code class="docutils literal notranslate"><span class="pre">optimization.py</span></code> (mismo
-sampler TPE, mismos operadores genéticos), con <code class="docutils literal notranslate"><span class="pre">n_jobs=1</span></code> siempre (una
-sola GPU — no tiene sentido paralelizar evaluaciones independientes contra
-el mismo contexto de GPU; esto es una decisión de implementación, no de
-metodología, mismo principio que ya documenta el proyecto local en
-<code class="docutils literal notranslate"><span class="pre">EXPERIMENT_STATUS.md</span></code> sección 8a: “no cambia folds/rangos/tamaños, solo
-tiempo de pared”).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_n_splits</span><span class="p">(</span><span class="n">cv</span><span class="p">):</span>
@@ -1662,10 +1493,6 @@ para una segunda sesión las 4 de <code class="docutils literal notranslate"><sp
 </section>
 <section id="ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion">
 <h2>14. Ejecutar — guardado incremental (una fila apenas termina cada combinación)<a class="headerlink" href="#ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion" title="Permalink to this heading">#</a></h2>
-<p>Si Colab se desconecta a mitad de camino: volver a correr esta celda (no
-hace falta repetir nada de arriba salvo reinstalar/reimportar si se
-reinició la sesión) — salta automáticamente las combinaciones que ya estén
-en <code class="docutils literal notranslate"><span class="pre">RESULTS_CSV_PATH</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Se guarda en Google Drive para no perder lo ya corrido si Colab recicla la sesión</span>
@@ -1829,10 +1656,6 @@ Listo. Filas guardadas en: /content/drive/MyDrive/svm_resultados/svm_gpu_results
 </section>
 <section id="resultado-final-descarga">
 <h2>15. Resultado final + descarga<a class="headerlink" href="#resultado-final-descarga" title="Permalink to this heading">#</a></h2>
-<p>Mismo esquema exacto de columnas que <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>
-local (<code class="docutils literal notranslate"><span class="pre">model,</span> <span class="pre">technique,</span> <span class="pre">method,</span> <span class="pre">total_time_seconds,</span> <span class="pre">n_outer_folds,</span> <span class="pre">accuracy_mean,</span> <span class="pre">accuracy_std,</span> <span class="pre">accuracy_per_fold,</span> <span class="pre">precision_mean,</span> <span class="pre">precision_std,</span> <span class="pre">precision_per_fold,</span> <span class="pre">recall_mean,</span> <span class="pre">recall_std,</span> <span class="pre">recall_per_fold,</span> <span class="pre">f1_mean,</span> <span class="pre">f1_std,</span> <span class="pre">f1_per_fold,</span> <span class="pre">roc_auc_mean,</span> <span class="pre">roc_auc_std,</span> <span class="pre">roc_auc_per_fold,</span> <span class="pre">best_params_per_fold,</span> <span class="pre">random_state,</span> <span class="pre">n_inner_folds</span></code>) — se
-puede concatenar directamente (<code class="docutils literal notranslate"><span class="pre">pd.concat</span></code>) o pegar las filas sin
-reformatear.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">final_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">RESULTS_CSV_PATH</span><span class="p">)</span> <span class="k">if</span> <span class="n">RESULTS_CSV_PATH</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
@@ -2635,8 +2458,6 @@ reformatear.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencias-cuml-vs-scikit-learn-a-tener-en-cuenta-verificadas-no-asumidas">⚠️ Diferencias cuML vs. scikit-learn a tener en cuenta (verificadas, no asumidas)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-usar-este-notebook">Cómo usar este notebook</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verificar-gpu-asignada">1. Verificar GPU asignada</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instalar-rapids-cuml">2. Instalar RAPIDS cuML</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-instalacion-alternativa-de-cuml-solo-si-la-instalacion-de-la-seccion-2-fallo">2b. Instalación alternativa de cuML (solo si la instalación de la sección 2 falló)</a></li>
