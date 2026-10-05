@@ -398,23 +398,39 @@ document.write(`
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="k">try</span><span class="p">:</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">load_processed_dataset</span><span class="p">()</span>
 <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">generate_synthetic_dataset</span><span class="p">()</span>
 <span class="n">df</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">remove_duplicate_rows</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">split_features_target</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
-<span class="n">table</span> <span class="o">=</span> <span class="n">load_master_table</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">EXPERIMENTS_MASTER_PATH</span><span class="p">)</span>
+<span class="c1"># 1. Cargar la tabla maestra principal</span>
+<span class="n">table_master</span> <span class="o">=</span> <span class="n">load_master_table</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">EXPERIMENTS_MASTER_PATH</span><span class="p">)</span>
+
+<span class="c1"># 2. Cargar la tabla adicional de SVM desde Colab</span>
+<span class="n">colab_csv_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">PROJECT_ROOT</span> <span class="o">/</span> <span class="s2">&quot;results&quot;</span> <span class="o">/</span> <span class="s2">&quot;svm_gpu_results_colab.csv&quot;</span>
+
+<span class="k">if</span> <span class="n">colab_csv_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="n">table_colab</span> <span class="o">=</span> <span class="n">load_master_table</span><span class="p">(</span><span class="n">colab_csv_path</span><span class="p">)</span>
+    <span class="c1"># Concatenar ambas tablas y eliminar duplicados basados en combinación única</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">table_master</span><span class="p">,</span> <span class="n">table_colab</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;technique&quot;</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">],</span> <span class="n">keep</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">table_master</span>
+
 <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;La tabla maestra está vacía. Correr primero 04_run_experiments.ipynb.&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones en la tabla maestra.&quot;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;La tabla maestra está vacía. Correr primero 04_run_experiments.ipynb o verificar los CSVs.&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones en la tabla maestra combinada.&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5 combinaciones en la tabla maestra.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>112 combinaciones en la tabla maestra combinada.
 </pre></div>
 </div>
 </div>
@@ -429,7 +445,7 @@ document.write(`
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metric_for_ranking</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_SCORING</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metric_for_ranking</span> <span class="o">=</span> <span class="s2">&quot;f1&quot;</span>
 <span class="n">table_sorted</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">format_metrics_table</span><span class="p">(</span><span class="n">table_sorted</span><span class="p">)</span>
 </pre></div>
@@ -467,62 +483,129 @@ document.write(`
   </thead>
   <tbody>
     <tr>
-      <th>3</th>
-      <td>decision_tree</td>
-      <td>none</td>
-      <td>random_search</td>
-      <td>0.8552 ± 0.0121</td>
-      <td>0.6894 ± 0.0213</td>
-      <td>0.6447 ± 0.0444</td>
-      <td>0.6661 ± 0.0335</td>
-      <td>0.8513 ± 0.0117</td>
+      <th>79</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>genetic_deap</td>
+      <td>0.7776 ± 0.0053</td>
+      <td>0.498 ± 0.0098</td>
+      <td>0.6042 ± 0.0092</td>
+      <td>0.546 ± 0.0088</td>
+      <td>0.7813 ± 0.0056</td>
     </tr>
     <tr>
-      <th>4</th>
-      <td>decision_tree</td>
+      <th>77</th>
+      <td>random_forest</td>
       <td>class_weight</td>
       <td>random_search</td>
-      <td>0.8194 ± 0.0063</td>
-      <td>0.5706 ± 0.0098</td>
-      <td>0.7916 ± 0.0184</td>
-      <td>0.6632 ± 0.0126</td>
-      <td>0.8647 ± 0.0131</td>
+      <td>0.7759 ± 0.007</td>
+      <td>0.4951 ± 0.0129</td>
+      <td>0.6071 ± 0.006</td>
+      <td>0.5453 ± 0.0088</td>
+      <td>0.782 ± 0.0045</td>
     </tr>
     <tr>
-      <th>1</th>
+      <th>62</th>
+      <td>xgboost</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.7726 ± 0.0094</td>
+      <td>0.4896 ± 0.0161</td>
+      <td>0.6154 ± 0.0089</td>
+      <td>0.5451 ± 0.0099</td>
+      <td>0.7817 ± 0.0041</td>
+    </tr>
+    <tr>
+      <th>76</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>grid_search</td>
+      <td>0.7743 ± 0.004</td>
+      <td>0.492 ± 0.0072</td>
+      <td>0.6103 ± 0.0112</td>
+      <td>0.5448 ± 0.0074</td>
+      <td>0.7833 ± 0.0039</td>
+    </tr>
+    <tr>
+      <th>78</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.7785 ± 0.0068</td>
+      <td>0.4998 ± 0.0126</td>
+      <td>0.598 ± 0.0035</td>
+      <td>0.5444 ± 0.0079</td>
+      <td>0.7804 ± 0.0055</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>knn</td>
+      <td>none</td>
+      <td>bayesian_optuna</td>
+      <td>0.8023 ± 0.0028</td>
+      <td>0.5924 ± 0.0134</td>
+      <td>0.3418 ± 0.0019</td>
+      <td>0.4334 ± 0.0038</td>
+      <td>0.7318 ± 0.0146</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>logistic_regression</td>
+      <td>none</td>
+      <td>genetic_deap</td>
+      <td>0.8071 ± 0.0017</td>
+      <td>0.6599 ± 0.0114</td>
+      <td>0.2647 ± 0.0024</td>
+      <td>0.3778 ± 0.0037</td>
+      <td>0.75 ± 0.0096</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>logistic_regression</td>
+      <td>none</td>
+      <td>bayesian_optuna</td>
+      <td>0.8071 ± 0.0017</td>
+      <td>0.6597 ± 0.0113</td>
+      <td>0.2647 ± 0.0024</td>
+      <td>0.3778 ± 0.0037</td>
+      <td>0.75 ± 0.0096</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>logistic_regression</td>
+      <td>none</td>
+      <td>grid_search</td>
+      <td>0.8071 ± 0.0017</td>
+      <td>0.6597 ± 0.0113</td>
+      <td>0.2647 ± 0.0024</td>
+      <td>0.3778 ± 0.0037</td>
+      <td>0.75 ± 0.0096</td>
+    </tr>
+    <tr>
+      <th>17</th>
       <td>logistic_regression</td>
       <td>none</td>
       <td>random_search</td>
-      <td>0.8628 ± 0.0098</td>
-      <td>0.7685 ± 0.027</td>
-      <td>0.5565 ± 0.03</td>
-      <td>0.6454 ± 0.0285</td>
-      <td>0.8609 ± 0.0067</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>logistic_regression</td>
-      <td>class_weight</td>
-      <td>random_search</td>
-      <td>0.7886 ± 0.0099</td>
-      <td>0.52 ± 0.0154</td>
-      <td>0.789 ± 0.0081</td>
-      <td>0.6266 ± 0.0086</td>
-      <td>0.8623 ± 0.0029</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>naive_bayes</td>
-      <td>none</td>
-      <td>random_search</td>
-      <td>0.7982 ± 0.0056</td>
-      <td>0.5433 ± 0.0138</td>
-      <td>0.65 ± 0.0287</td>
-      <td>0.5912 ± 0.0045</td>
-      <td>0.8113 ± 0.0058</td>
+      <td>0.8071 ± 0.0017</td>
+      <td>0.6597 ± 0.0113</td>
+      <td>0.2647 ± 0.0024</td>
+      <td>0.3778 ± 0.0037</td>
+      <td>0.75 ± 0.0096</td>
     </tr>
   </tbody>
 </table>
+<p>112 rows × 8 columns</p>
 </div></div></div>
 </div>
 </section>
@@ -564,6 +647,130 @@ document.write(`
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total de combinaciones teóricas: 112
+estado
+Corrida    112
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>model</th>
+      <th>technique</th>
+      <th>method</th>
+      <th>f1_mean</th>
+      <th>estado</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>58</th>
+      <td>decision_tree</td>
+      <td>adasyn</td>
+      <td>bayesian_optuna</td>
+      <td>0.517838</td>
+      <td>Corrida</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>decision_tree</td>
+      <td>adasyn</td>
+      <td>genetic_deap</td>
+      <td>0.517838</td>
+      <td>Corrida</td>
+    </tr>
+    <tr>
+      <th>56</th>
+      <td>decision_tree</td>
+      <td>adasyn</td>
+      <td>grid_search</td>
+      <td>0.510033</td>
+      <td>Corrida</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>decision_tree</td>
+      <td>adasyn</td>
+      <td>random_search</td>
+      <td>0.517838</td>
+      <td>Corrida</td>
+    </tr>
+    <tr>
+      <th>62</th>
+      <td>decision_tree</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.516955</td>
+      <td>Corrida</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>81</th>
+      <td>xgboost</td>
+      <td>none</td>
+      <td>random_search</td>
+      <td>0.478821</td>
+      <td>Corrida</td>
+    </tr>
+    <tr>
+      <th>86</th>
+      <td>xgboost</td>
+      <td>smote</td>
+      <td>bayesian_optuna</td>
+      <td>0.519437</td>
+      <td>Corrida</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>xgboost</td>
+      <td>smote</td>
+      <td>genetic_deap</td>
+      <td>0.527377</td>
+      <td>Corrida</td>
+    </tr>
+    <tr>
+      <th>84</th>
+      <td>xgboost</td>
+      <td>smote</td>
+      <td>grid_search</td>
+      <td>0.534431</td>
+      <td>Corrida</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>xgboost</td>
+      <td>smote</td>
+      <td>random_search</td>
+      <td>0.526678</td>
+      <td>Corrida</td>
+    </tr>
+  </tbody>
+</table>
+<p>112 rows × 5 columns</p>
+</div></div></div>
 </div>
 </section>
 <section id="comparacion-estadistica-jerarquica">
@@ -592,15 +799,21 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Friedman: estadístico=8.8000, p=0.0663, significativo=False (alpha=0.05, 3 folds, 5 combinaciones)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Friedman: estadístico=323.1670, p=0.0000, significativo=True (alpha=0.05, 3 folds, 112 combinaciones)
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>decision_tree|none|random_search                  1.666667
-decision_tree|class_weight|random_search          2.000000
-logistic_regression|none|random_search            2.666667
-logistic_regression|class_weight|random_search    3.666667
-naive_bayes|none|random_search                    5.000000
-dtype: float64
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>random_forest|class_weight|genetic_deap       3.000000
+random_forest|class_weight|random_search      3.333333
+xgboost|class_weight|bayesian_optuna          4.000000
+xgboost|class_weight|grid_search              5.000000
+random_forest|class_weight|grid_search        5.000000
+                                               ...    
+knn|none|bayesian_optuna                    107.000000
+logistic_regression|none|genetic_deap       110.000000
+logistic_regression|none|bayesian_optuna    110.666667
+logistic_regression|none|grid_search        110.666667
+logistic_regression|none|random_search      110.666667
+Length: 112, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -632,10 +845,128 @@ dtype: float64
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Friedman no significativo (p=0.0663 &gt;= alpha=0.05): no se reporta evidencia de superioridad de ninguna combinación. Dado que N_OUTER_FOLDS=3 (pocos bloques), esto puede reflejar falta de potencia estadística tanto como equivalencia real — ver limitación documentada en el docstring del módulo.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Diferencia Crítica (CD): 115.3789
+Top-3 para DeLong: [&#39;random_forest|class_weight|genetic_deap&#39;, &#39;random_forest|class_weight|random_search&#39;, &#39;xgboost|class_weight|bayesian_optuna&#39;]
+
+DeLong (pares dentro del top, corrección Holm):
 </pre></div>
 </div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>combo_a</th>
+      <th>combo_b</th>
+      <th>auc_a</th>
+      <th>auc_b</th>
+      <th>z_statistic</th>
+      <th>p_value</th>
+      <th>p_value_adjusted</th>
+      <th>multiple_test_method</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>random_forest|class_weight|genetic_deap</td>
+      <td>random_forest|class_weight|random_search</td>
+      <td>0.781211</td>
+      <td>0.781621</td>
+      <td>-0.744815</td>
+      <td>0.456384</td>
+      <td>0.456384</td>
+      <td>holm</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>random_forest|class_weight|genetic_deap</td>
+      <td>xgboost|class_weight|bayesian_optuna</td>
+      <td>0.781211</td>
+      <td>0.776715</td>
+      <td>4.500524</td>
+      <td>0.000007</td>
+      <td>0.000014</td>
+      <td>holm</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>random_forest|class_weight|random_search</td>
+      <td>xgboost|class_weight|bayesian_optuna</td>
+      <td>0.781621</td>
+      <td>0.776715</td>
+      <td>4.679044</td>
+      <td>0.000003</td>
+      <td>0.000009</td>
+      <td>holm</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cliff&#39;s Delta (tamaño del efecto, ver limitación de N_OUTER_FOLDS pequeño en el docstring):
+</pre></div>
 </div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>combo_a</th>
+      <th>combo_b</th>
+      <th>cliffs_delta</th>
+      <th>interpretation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>random_forest|class_weight|genetic_deap</td>
+      <td>random_forest|class_weight|random_search</td>
+      <td>0.111111</td>
+      <td>despreciable</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>random_forest|class_weight|genetic_deap</td>
+      <td>xgboost|class_weight|bayesian_optuna</td>
+      <td>0.111111</td>
+      <td>despreciable</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>random_forest|class_weight|random_search</td>
+      <td>xgboost|class_weight|bayesian_optuna</td>
+      <td>0.111111</td>
+      <td>despreciable</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 </section>
 <section id="mejor-combinacion-matriz-de-confusion-y-curva-roc">
@@ -653,6 +984,7 @@ dtype: float64
 <span class="n">best_technique</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;technique&quot;</span><span class="p">]</span>
 <span class="n">best_method</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span>
 <span class="n">best_params_per_fold</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;best_params_per_fold&quot;</span><span class="p">])</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mejor combinación según </span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">best_technique</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">best_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">y_true_best</span><span class="p">,</span> <span class="n">y_pred_best</span><span class="p">,</span> <span class="n">y_proba_best</span> <span class="o">=</span> <span class="n">regenerate_outof_fold_predictions</span><span class="p">(</span>
@@ -675,7 +1007,7 @@ dtype: float64
     <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s2">&quot;Pred 0&quot;</span><span class="p">,</span> <span class="s2">&quot;Pred 1&quot;</span><span class="p">]);</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="s2">&quot;Real 0&quot;</span><span class="p">,</span> <span class="s2">&quot;Real 1&quot;</span><span class="p">])</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Matriz de confusión (out-of-fold)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Matriz de confusión out-of-fold (</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;AUC=</span><span class="si">{</span><span class="n">auc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
@@ -689,10 +1021,10 @@ dtype: float64
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mejor combinación según f1: decision_tree | none | random_search
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mejor combinación según f1: random_forest | class_weight | genetic_deap
 </pre></div>
 </div>
-<img alt="../_images/d02df63601302ac37235da8592aac85fa95eadd8cdf32ba2ddfb11c1ad35dba2.png" src="../_images/d02df63601302ac37235da8592aac85fa95eadd8cdf32ba2ddfb11c1ad35dba2.png" />
+<img alt="../_images/146d7b8e6dcdf4776177b2bb6e8b9cac831e8e6064c892dee81272eeaee39311.png" src="../_images/146d7b8e6dcdf4776177b2bb6e8b9cac831e8e6064c892dee81272eeaee39311.png" />
 </div>
 </div>
 </section>
@@ -745,11 +1077,11 @@ dtype: float64
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Brier: 0.1147  ECE: 0.0878  (calibración deficiente: True)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Brier: 0.1745  ECE: 0.1958  (calibración deficiente: True)
 </pre></div>
 </div>
-<img alt="../_images/2a77f5dc137cd24ff8e86063213e585dfcf95106e43074da0440349de383fcec.png" src="../_images/2a77f5dc137cd24ff8e86063213e585dfcf95106e43074da0440349de383fcec.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Recalibración (isotonic, fold 2): ECE 0.0998 -&gt; 0.0223 (mejora Brier: 0.0100)
+<img alt="../_images/a22d978bbd6de8d97db3119c2fd43944fc9d0b12474ba76be16c5b13d01dbcfd.png" src="../_images/a22d978bbd6de8d97db3119c2fd43944fc9d0b12474ba76be16c5b13d01dbcfd.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Recalibración (isotonic, fold 2): ECE 0.1892 -&gt; 0.0149 (mejora Brier: 0.0377)
 </pre></div>
 </div>
 </div>
@@ -772,7 +1104,7 @@ dtype: float64
     <span class="n">y</span><span class="p">,</span>
     <span class="n">best_fold_idx</span><span class="p">,</span>
     <span class="n">n_outer_folds</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;n_outer_folds&quot;</span><span class="p">]),</span>
-    <span class="n">scoring</span><span class="o">=</span><span class="n">metric_for_ranking</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="n">metric_for_ranking</span><span class="p">,</span>  <span class="c1"># Evaluará &#39;f1&#39;</span>
 <span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Complejidad teórica (</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">):&quot;</span><span class="p">)</span>
@@ -797,9 +1129,9 @@ dtype: float64
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Complejidad teórica (decision_tree):
-  Train:      O(n·p·log n) en promedio (ordenar features para evaluar cada split).
-  Inferencia: O(log n) por consulta en promedio (profundidad del árbol).
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Complejidad teórica (random_forest):
+  Train:      O(T·n·p·log n) — T árboles independientes, cada uno O(n·p·log n).
+  Inferencia: O(T·log n) por consulta (promedio sobre los T árboles).
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -832,13 +1164,13 @@ dtype: float64
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.057769</td>
-      <td>0.064309</td>
-      <td>1.428141</td>
-      <td>1.417515</td>
-      <td>0.668421</td>
-      <td>0.71159</td>
-      <td>0.043169</td>
+      <td>6.396703</td>
+      <td>18.997204</td>
+      <td>7.503034</td>
+      <td>8.082024</td>
+      <td>0.479255</td>
+      <td>0.554629</td>
+      <td>0.075374</td>
     </tr>
   </tbody>
 </table>

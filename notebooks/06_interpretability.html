@@ -423,7 +423,7 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mejor modelo: decision_tree | none | random_search (fold 2)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mejor modelo: random_forest | class_weight | genetic_deap (fold 2)
 Features post-transformación: 25
 </pre></div>
 </div>
@@ -465,7 +465,7 @@ Features post-transformación: 25
   shap.summary_plot(
 </pre></div>
 </div>
-<img alt="../_images/f54ba638ea5cd3c635bd74246ab3ce2c2f066cc247ba7454f5dc1ed28ec25833.png" src="../_images/f54ba638ea5cd3c635bd74246ab3ce2c2f066cc247ba7454f5dc1ed28ec25833.png" />
+<img alt="../_images/da5581c30a1496ca875f9fa3db06554122ec89a20fd2a241fe088a4fa395ae31.png" src="../_images/da5581c30a1496ca875f9fa3db06554122ec89a20fd2a241fe088a4fa395ae31.png" />
 </div>
 </div>
 </section>
@@ -502,15 +502,15 @@ Features post-transformación: 25
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;well_classified&#39;: 0, &#39;high_error&#39;: 32}
-well_classified: y_true=0, y_pred=0, proba=0.000
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;well_classified&#39;: 2555, &#39;high_error&#39;: 3936}
+well_classified: y_true=1, y_pred=1, proba=0.982
 </pre></div>
 </div>
-<img alt="../_images/587d70c0356269fd80b39d632e93ec1f487c43604d7ec886cb203ad154283829.png" src="../_images/587d70c0356269fd80b39d632e93ec1f487c43604d7ec886cb203ad154283829.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>high_error: y_true=1, y_pred=0, proba=0.000
+<img alt="../_images/cde4017441bfa78f70db3128206f37a8a0261035293d10c798ea26353d0552c0.png" src="../_images/cde4017441bfa78f70db3128206f37a8a0261035293d10c798ea26353d0552c0.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>high_error: y_true=0, y_pred=1, proba=0.964
 </pre></div>
 </div>
-<img alt="../_images/984eebcbc12bf9371055d4c1a845621b5463e0886ba44602305d0a96da94d6af.png" src="../_images/984eebcbc12bf9371055d4c1a845621b5463e0886ba44602305d0a96da94d6af.png" />
+<img alt="../_images/309b4eac961e96996fd7947c9bec15b8bc392ce263f1f522d2262846d698c9a1.png" src="../_images/309b4eac961e96996fd7947c9bec15b8bc392ce263f1f522d2262846d698c9a1.png" />
 </div>
 </div>
 </section>
@@ -568,10 +568,96 @@ well_classified: y_true=0, y_pred=0, proba=0.000
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No hay corridas de XGBoost en la tabla maestra todavía: correr 04_run_experiments.ipynb incluyendo xgboost para esta sección.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Observación &#39;high_error&#39; (XGBoost, class_weight, fold 2):
 </pre></div>
 </div>
-</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>feature</th>
+      <th>shap_value</th>
+      <th>lime_weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>remainder__PAY_0</td>
+      <td>1.245319</td>
+      <td>0.091352</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>remainder__PAY_2</td>
+      <td>0.314957</td>
+      <td>0.043534</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>remainder__PAY_3</td>
+      <td>0.232570</td>
+      <td>0.071247</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>remainder__PAY_6</td>
+      <td>0.178103</td>
+      <td>0.034266</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>remainder__PAY_4</td>
+      <td>0.173505</td>
+      <td>0.056531</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>remainder__PAY_5</td>
+      <td>0.133808</td>
+      <td>0.025168</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>remainder__BILL_AMT_TREND_6M_LOG</td>
+      <td>0.051481</td>
+      <td>0.021247</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>remainder__BILL_AMT_MEAN_6M_LOG</td>
+      <td>-0.048345</td>
+      <td>-0.025667</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>remainder__LIMIT_BAL_LOG</td>
+      <td>0.046637</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>remainder__AGE</td>
+      <td>0.042024</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <section id="discusion-cuando-divergen-lime-y-shap">
 <h3>Discusión: ¿cuándo divergen LIME y SHAP?<a class="headerlink" href="#discusion-cuando-divergen-lime-y-shap" title="Permalink to this heading">#</a></h3>
