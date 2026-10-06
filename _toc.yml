@@ -1,6 +1,7 @@
 format: jb-book
-root: README
+root: portada
 chapters:
+  - file: introduccion
   - file: notebooks/00_eda
   - file: notebooks/01_baseline_logistic
   - file: notebooks/02_setup_check

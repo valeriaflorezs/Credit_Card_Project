@@ -1,11 +1,14 @@
 title: "Default of Credit Card Clients — Pipeline de Clasificación"
-author: "Equipo del proyecto"
+author: "Katherin Barrera López y Valeria Florez Sarmiento"
 logo: ""
 
 # Los notebooks ya se ejecutan y versionan con sus salidas —
 # el book solo los renderiza, no los vuelve a correr.
 execute:
   execute_notebooks: "off"
+
+bibtex_bibfiles:
+  - references.bib
 
 html:
   use_repository_button: false
