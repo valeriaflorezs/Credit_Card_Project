@@ -383,7 +383,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#los-4-metodos-de-optimizacion-identicos-a-optimization-py">11. Los 4 métodos de optimización (idénticos a <code class="docutils literal notranslate"><span class="pre">optimization.py</span></code>)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-cruzada-anidada-identica-a-nested-cv-py">12. Validación cruzada anidada (idéntica a <code class="docutils literal notranslate"><span class="pre">nested_cv.py</span></code>)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-de-combinaciones-a-correr">13. Selección de combinaciones a correr</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion">14. Ejecutar — guardado incremental (una fila apenas termina cada combinación)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion">14. Ejecutar: guardado incremental (una fila apenas termina cada combinación)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado-final-descarga">15. Resultado final + descarga</a></li>
 </ul>
             </nav>
@@ -1517,8 +1517,8 @@ Pipeline(steps=[('preprocessing',
 </section>
 <section id="seleccion-de-combinaciones-a-correr">
 <h2>13. Selección de combinaciones a correr<a class="headerlink" href="#seleccion-de-combinaciones-a-correr" title="Link to this heading">#</a></h2>
-<p>Por defecto corre las <strong>16 combinaciones</strong> de SVM (4 técnicas × 4 métodos): este
-modelo se corre solo en Colab, porque en CPU local representó ~90% del tiempo
+<p>Por defecto corre las <strong>16 combinaciones</strong> de SVM (4 técnicas x 4 métodos): este
+modelo se corre solo en Colab, porque en CPU local representó aprox. 90% del tiempo
 total de la corrida anterior (ver <code class="docutils literal notranslate"><span class="pre">EXPERIMENT_STATUS.md</span></code>). Las filas de los
 otros 6 modelos salen de <code class="docutils literal notranslate"><span class="pre">04_run_experiments.ipynb</span></code>.</p>
 <p>Editar <code class="docutils literal notranslate"><span class="pre">COMBOS_TO_RUN</span></code> para correr solo un subconjunto (por ejemplo, dejar
@@ -1545,7 +1545,7 @@ para una segunda sesión las 4 de <code class="docutils literal notranslate"><sp
 </div>
 </section>
 <section id="ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion">
-<h2>14. Ejecutar — guardado incremental (una fila apenas termina cada combinación)<a class="headerlink" href="#ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion" title="Link to this heading">#</a></h2>
+<h2>14. Ejecutar: guardado incremental (una fila apenas termina cada combinación)<a class="headerlink" href="#ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Se guarda en Google Drive para no perder lo ya corrido si Colab recicla la sesión</span>
@@ -2529,7 +2529,7 @@ Listo. Filas guardadas en: /content/drive/MyDrive/svm_resultados/svm_gpu_results
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#los-4-metodos-de-optimizacion-identicos-a-optimization-py">11. Los 4 métodos de optimización (idénticos a <code class="docutils literal notranslate"><span class="pre">optimization.py</span></code>)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-cruzada-anidada-identica-a-nested-cv-py">12. Validación cruzada anidada (idéntica a <code class="docutils literal notranslate"><span class="pre">nested_cv.py</span></code>)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-de-combinaciones-a-correr">13. Selección de combinaciones a correr</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion">14. Ejecutar — guardado incremental (una fila apenas termina cada combinación)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion">14. Ejecutar: guardado incremental (una fila apenas termina cada combinación)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado-final-descarga">15. Resultado final + descarga</a></li>
 </ul>
   </nav></div>

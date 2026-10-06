@@ -371,7 +371,7 @@
                 <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-prioritario">Objetivo prioritario:</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos-y-tabla-maestra">Cargar datos y tabla maestra</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-metricas-media-desviacion-estandar-outer-loop">Tabla de métricas (media ± desviación estándar, outer loop)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-metricas-media-y-desviacion-estandar-outer-loop">Tabla de métricas (media y desviación estándar, outer loop)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-complementarias-independientes-del-umbral">Métricas complementarias (independientes del umbral)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cobertura-de-la-grilla-112-combinaciones-teoricas">Cobertura de la grilla: 112 combinaciones teóricas</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-estadistica-jerarquica">Comparación estadística jerárquica</a></li>
@@ -508,8 +508,8 @@
 </div>
 </div>
 </section>
-<section id="tabla-de-metricas-media-desviacion-estandar-outer-loop">
-<h2>Tabla de métricas (media ± desviación estándar, outer loop)<a class="headerlink" href="#tabla-de-metricas-media-desviacion-estandar-outer-loop" title="Link to this heading">#</a></h2>
+<section id="tabla-de-metricas-media-y-desviacion-estandar-outer-loop">
+<h2>Tabla de métricas (media y desviación estándar, outer loop)<a class="headerlink" href="#tabla-de-metricas-media-y-desviacion-estandar-outer-loop" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1018,7 +1018,7 @@
 </table>
 </div></div></div>
 </div>
-<p><strong>Lectura.</strong> El <span class="math notranslate nohighlight">\(F_1\)</span> lo lideran Random Forest y XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> (0.544–0.546; desviación entre folds con <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code> de 0.006 a 0.013). Sobre las 96 combinaciones locales, el balanceo cambia el punto de operación más que la capacidad de ordenar: sin balanceo el ROC-AUC medio (0.758) es mayor que con SMOTE (0.754) o ADASYN (0.749), y su PR-AUC (0.514) es mayor que con SMOTE (0.509) o ADASYN (0.502); solo <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> mejora algo en ambos (0.761 y 0.517). Lo que sí cambia es el equilibrio entre recall y precisión al umbral de 0.5: el recall pasa de 0.377 (<code class="docutils literal notranslate"><span class="pre">none</span></code>) a 0.610 (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>) y la precisión baja de 0.618 a 0.460. Por eso la ganancia de <span class="math notranslate nohighlight">\(F_1\)</span> al balancear (0.456 → 0.523) viene en gran parte del umbral y no de un modelo que discrimine mejor, lo que es coherente con que el <span class="math notranslate nohighlight">\(F_1\)</span> siga siendo la métrica principal siempre que se lea así. Las diferencias de PR-AUC entre las ocho primeras combinaciones (0.550–0.558) son del orden de su variabilidad entre folds.</p>
+<p><strong>Lectura.</strong> El <span class="math notranslate nohighlight">\(F_1\)</span> lo lideran Random Forest y XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> (0.544 a 0.546; desviación entre folds con <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code> de 0.006 a 0.013). Sobre las 96 combinaciones locales, el balanceo cambia el punto de operación más que la capacidad de ordenar: sin balanceo el ROC-AUC medio (0.758) es mayor que con SMOTE (0.754) o ADASYN (0.749), y su PR-AUC (0.514) es mayor que con SMOTE (0.509) o ADASYN (0.502); solo <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> mejora algo en ambos (0.761 y 0.517). Lo que sí cambia es el equilibrio entre recall y precisión al umbral de 0.5: el recall pasa de 0.377 (<code class="docutils literal notranslate"><span class="pre">none</span></code>) a 0.610 (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>) y la precisión baja de 0.618 a 0.460. Por eso la ganancia de <span class="math notranslate nohighlight">\(F_1\)</span> al balancear (de 0.456 a 0.523) viene en gran parte del umbral y no de un modelo que discrimine mejor, lo que es coherente con que el <span class="math notranslate nohighlight">\(F_1\)</span> siga siendo la métrica principal siempre que se lea así. Las diferencias de PR-AUC entre las ocho primeras combinaciones (0.550 a 0.558) son del orden de su variabilidad entre folds.</p>
 </section>
 <section id="cobertura-de-la-grilla-112-combinaciones-teoricas">
 <h2>Cobertura de la grilla: 112 combinaciones teóricas<a class="headerlink" href="#cobertura-de-la-grilla-112-combinaciones-teoricas" title="Link to this heading">#</a></h2>
@@ -1386,11 +1386,11 @@ DeLong (pares dentro del top, corrección Holm):
 </table>
 </div></div></div>
 </div>
-<p><strong>Lectura de los resultados.</strong> El CD (115.4) supera la máxima diferencia de rangos medios (107.7), por lo que Nemenyi no declara significativo ningún par. En DeLong, las dos primeras combinaciones (Random Forest) no se distinguen (AUC agrupado 0.7812 y 0.7816; p ajustado = 0.46), y ambas resultan distintas de XGBoost (0.7767; p ajustado ≈ 1e-5). Esa diferencia de AUC es de 0.005 y proviene de predicciones agrupadas de modelos distintos sobre 29,965 clientes, donde una diferencia así puede ser significativa sin ser relevante en la práctica. El Cliff’s Delta es 0.11 (despreciable) en los tres pares, pero con 9 pares no es informativo. En conjunto no hay evidencia inferencial para preferir una combinación sobre otra dentro de este grupo.</p>
+<p><strong>Lectura de los resultados.</strong> El CD (115.4) supera la máxima diferencia de rangos medios (107.7), por lo que Nemenyi no declara significativo ningún par. En DeLong, las dos primeras combinaciones (Random Forest) no se distinguen (AUC agrupado 0.7812 y 0.7816; p ajustado = 0.46), y ambas resultan distintas de XGBoost (0.7767; p ajustado aprox. 1e-5). Esa diferencia de AUC es de 0.005 y proviene de predicciones agrupadas de modelos distintos sobre 29,965 clientes, donde una diferencia así puede ser significativa sin ser relevante en la práctica. El Cliff’s Delta es 0.11 (despreciable) en los tres pares, pero con 9 pares no es informativo. En conjunto no hay evidencia inferencial para preferir una combinación sobre otra dentro de este grupo.</p>
 </section>
 <section id="comparacion-por-factor-del-diseno-tecnica-metodo-de-optimizacion-modelo">
 <h2>Comparación por factor del diseño (técnica, método de optimización, modelo)<a class="headerlink" href="#comparacion-por-factor-del-diseno-tecnica-metodo-de-optimizacion-modelo" title="Link to this heading">#</a></h2>
-<p>Con las 112 combinaciones y 3 folds, Nemenyi no tiene potencia. Como el diseño es factorial, se contrasta cada factor por separado: los bloques son las combinaciones de los otros dos factores (por ejemplo, para la técnica de balanceo, los 28 pares modelo × método) y el valor es el <span class="math notranslate nohighlight">\(F_1\)</span> medio de los 3 folds. Es el análogo del diseño de Demšar (2006) con esas combinaciones como “conjuntos de datos”. Es un análisis <strong>exploratorio</strong>: los bloques no son independientes (comparten datos y folds, y los cuatro métodos de un mismo modelo se parecen mucho), así que los p-valores son optimistas.</p>
+<p>Con las 112 combinaciones y 3 folds, Nemenyi no tiene potencia. Como el diseño es factorial, se contrasta cada factor por separado: los bloques son las combinaciones de los otros dos factores (por ejemplo, para la técnica de balanceo, los 28 pares modelo x método) y el valor es el <span class="math notranslate nohighlight">\(F_1\)</span> medio de los 3 folds. Es el análogo del diseño de Demšar (2006) con esas combinaciones como “conjuntos de datos”. Es un análisis <strong>exploratorio</strong>: los bloques no son independientes (comparten datos y folds, y los cuatro métodos de un mismo modelo se parecen mucho), así que los p-valores son optimistas.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2114,7 +2114,7 @@ DeLong (pares dentro del top, corrección Holm):
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-prioritario">Objetivo prioritario:</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos-y-tabla-maestra">Cargar datos y tabla maestra</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-metricas-media-desviacion-estandar-outer-loop">Tabla de métricas (media ± desviación estándar, outer loop)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-metricas-media-y-desviacion-estandar-outer-loop">Tabla de métricas (media y desviación estándar, outer loop)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-complementarias-independientes-del-umbral">Métricas complementarias (independientes del umbral)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cobertura-de-la-grilla-112-combinaciones-teoricas">Cobertura de la grilla: 112 combinaciones teóricas</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-estadistica-jerarquica">Comparación estadística jerárquica</a></li>
