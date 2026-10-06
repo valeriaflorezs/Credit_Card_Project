@@ -1,4 +1,4 @@
-#  Default of Credit Card Clients
+# Default of Credit Card Clients
 
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Conda](https://img.shields.io/badge/Environment-Conda-44A833?style=for-the-badge&logo=anaconda&logoColor=white)](https://www.anaconda.com/)
@@ -19,7 +19,7 @@ Asegúrate de contar con **Anaconda** o **Miniconda** instalado en tu equipo ant
 </a>
 
 <details open>
-<summary><b> Pasos para la Configuración del Entorno Virtual (Anaconda Prompt)</b></summary>
+<summary><b>Pasos para la Configuración del Entorno Virtual (Anaconda Prompt)</b></summary>
 
 <br>
 
@@ -53,13 +53,13 @@ pip install -r requirements.txt
 ```text
 Credit_Card_Project/
 │
-├── 📁 data/                  # Datos del proyecto
+├── data/                     # Datos del proyecto
 │   └── processed/            # Conjuntos de datos procesados y transformados
 │
-├── 📁 logs/                  # Registros de ejecución y monitoreo
-├── 📁 notebooks/             # Jupyter Notebooks de análisis exploratorio y modelado
-├── 📁 results/               # Resultados de experimentos, métricas y gráficas
-├── 📁 src/                   # Código fuente modular reutilizable
+├── logs/                     # Registros de ejecución y monitoreo
+├── notebooks/                # Jupyter Notebooks de análisis exploratorio y modelado
+├── results/                  # Resultados de experimentos, métricas y gráficas
+├── src/                      # Código fuente modular reutilizable
 │
 ├── .gitignore                # Archivos ignorados por Git
 ├── EXPERIMENT_STATUS.md      # Estado de experimentos y seguimiento de pruebas
@@ -72,7 +72,7 @@ Credit_Card_Project/
 
 ---
 
-##  Flujo de Trabajo del Proyecto
+## Flujo de Trabajo del Proyecto
 
 | Notebook | Contenido |
 |---|---|
@@ -86,7 +86,7 @@ Credit_Card_Project/
 
 ---
 
-##  Guía de Ejecución
+## Guía de Ejecución
 
 1. **Activar el entorno virtual:**
 ```bash
