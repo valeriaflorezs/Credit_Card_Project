@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>04. Ejecutar experimentos &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
   
@@ -17,86 +16,82 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
-  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/04_run_experiments';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="05. Análisis de resultados" href="05_results_analysis.html" />
     <link rel="prev" title="03. Desarrollo y prueba del pipeline completo" href="03_pipeline_dev.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -104,7 +99,6 @@ const thebe_selector_output = ".output, .cell_output"
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -112,15 +106,59 @@ const thebe_selector_output = ".output, .cell_output"
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -129,7 +167,8 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -147,7 +186,7 @@ const thebe_selector_output = ".output, .cell_output"
     
   
 
-<a class="navbar-brand logo" href="../README.html">
+<a class="navbar-brand logo" href="../portada.html">
   
   
   
@@ -157,17 +196,25 @@ const thebe_selector_output = ".output, .cell_output"
     <p class="title logo__title">Default of Credit Card Clients — Pipeline de Clasificación</p>
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
-                <a class="reference internal" href="../README.html">
+                <a class="reference internal" href="../portada.html">
                     Default of Credit Card Clients
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Introducción y marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
@@ -183,9 +230,14 @@ const thebe_selector_output = ".output, .cell_output"
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -204,9 +256,9 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -268,7 +320,7 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -282,27 +334,19 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -322,7 +366,7 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos">Cargar datos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-de-la-corrida">Configuración de la corrida</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado">Resultado</a></li>
@@ -338,18 +382,19 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="ejecutar-experimentos">
-<h1>04. Ejecutar experimentos<a class="headerlink" href="#ejecutar-experimentos" title="Permalink to this heading">#</a></h1>
+<h1>04. Ejecutar experimentos<a class="headerlink" href="#ejecutar-experimentos" title="Link to this heading">#</a></h1>
 <p>Se usaron 29,965 clientes y 20 variables predictoras, con 22.13 % de <em>default</em>. Ya no había duplicados por eliminar y se mantienen los 21 grupos con variables idénticas y etiqueta distinta (ruido del dataset). Se ejecutaron 96 combinaciones (6 modelos × 4 balanceos × 4 métodos de búsqueda de hiperparámetros) con validación cruzada anidada y el F1 como métrica de selección. La SVM se corrió aparte en Colab con GPU y completa las 112 combinaciones.</p>
 <ul class="simple">
-<li><p><strong>El balanceo es lo que más influye.</strong> <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> obtuvo el mayor F1 en los tres modelos (Random Forest 0.544 a 0.546, XGBoost 0.544 a 0.545 y KNN 0.524 a 0.527). SMOTE y ADASYN quedaron en un nivel intermedio y sin balanceo el F1 fue el más bajo (por ejemplo, 0.473 a 0.479 en Random Forest).</p></li>
+<li><p><strong>El balanceo es lo que más influye en la mayoría de los modelos.</strong> <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> obtuvo el mayor F1 en Random Forest (0.544 a 0.546), XGBoost (0.544 a 0.545) y KNN (0.524 a 0.527). SMOTE y ADASYN quedaron en un nivel intermedio y sin balanceo el F1 fue el más bajo (por ejemplo, 0.473 a 0.479 en Random Forest). No se generaliza a todos: en Naive Bayes el balanceo casi no cambia el F1 (0.494 a 0.499), en regresión logística SMOTE (0.5154 en promedio) y <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> (0.5147) quedan prácticamente igualados, y en árbol de decisión sus rangos se solapan (0.510 a 0.519 frente a 0.510 a 0.518).</p></li>
 <li><p><strong>El método de búsqueda importa poco en F1, pero mucho en tiempo.</strong> Con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> las diferencias entre métodos son menores que la desviación estándar. En cambio, el algoritmo genético tardó mucho más: 2,432 s frente a 178 s con búsqueda en malla en Random Forest, y hasta 10,880 s en KNN sin balanceo.</p></li>
-<li><p><strong>Mejor configuración:</strong> Random Forest con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y búsqueda genética, con F1 de 0.5460 ± 0.0088, prácticamente empatada con otras cuatro.</p></li>
+<li><p><strong>Combinación con mayor F1 medio:</strong> Random Forest con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y búsqueda genética, con F1 de 0.5460 ± 0.0088. La diferencia con las siguientes es menor que la dispersión entre folds: de las 96 combinaciones de esta corrida, 8 (incluida esta) quedan a menos de una desviación estándar (0.0088) y 6 a menos de 0.0016 de F1; con la SVM, 15 de 112 quedan dentro de una desviación estándar. No hay base para declarar una única mejor configuración.</p></li>
 </ul>
+<p>Las salidas guardadas de este notebook muestran solo las 40 combinaciones corridas en la última sesión (<code class="docutils literal notranslate"><span class="pre">resume=True</span></code> omite las otras 56); las cifras de arriba salen del CSV completo. La tabla completa y la comparación estadística están en <code class="docutils literal notranslate"><span class="pre">05_results_analysis.ipynb</span></code>.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -382,35 +427,35 @@ document.write(`
 </div>
 </div>
 <section id="cargar-datos">
-<h2>Cargar datos<a class="headerlink" href="#cargar-datos" title="Permalink to this heading">#</a></h2>
+<h2>Cargar datos<a class="headerlink" href="#cargar-datos" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">load_processed_dataset</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset real cargado: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dataset real cargado: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dataset real aun no disponible, usando datos sinteticos para desarrollo/pruebas:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Dataset real aun no disponible, usando datos sinteticos para desarrollo/pruebas:"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">generate_synthetic_dataset</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset sintetico generado: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dataset sintetico generado: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="n">df</span><span class="p">,</span> <span class="n">n_removed</span> <span class="o">=</span> <span class="n">remove_duplicate_rows</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Filas duplicadas eliminadas: </span><span class="si">{</span><span class="n">n_removed</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Filas duplicadas eliminadas: </span><span class="si">{</span><span class="n">n_removed</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="n">n_conflicts</span> <span class="o">=</span> <span class="n">check_label_conflicts</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">n_conflicts</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;AVISO: </span><span class="si">{</span><span class="n">n_conflicts</span><span class="si">}</span><span class="s2"> grupos de filas con features identicas pero target distinto &quot;</span>
-        <span class="s2">&quot;(ruido irreducible del dataset, no se resuelve automaticamente).&quot;</span>
+        <span class="sa">f</span><span class="s2">"AVISO: </span><span class="si">{</span><span class="n">n_conflicts</span><span class="si">}</span><span class="s2"> grupos de filas con features identicas pero target distinto "</span>
+        <span class="s2">"(ruido irreducible del dataset, no se resuelve automaticamente)."</span>
     <span class="p">)</span>
 
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">split_features_target</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;X: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, balance del target: </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"X: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, balance del target: </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -426,16 +471,16 @@ X: (29965, 20), balance del target: {0: 0.7787, 1: 0.2213}
 </div>
 </section>
 <section id="configuracion-de-la-corrida">
-<h2>Configuración de la corrida<a class="headerlink" href="#configuracion-de-la-corrida" title="Permalink to this heading">#</a></h2>
+<h2>Configuración de la corrida<a class="headerlink" href="#configuracion-de-la-corrida" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Todos los modelos menos SVM (se corre en Colab con GPU, ver 07_svm_gpu_colab.ipynb).</span>
-<span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">spec</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">MODEL_REGISTRY</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;svm&quot;</span><span class="p">]</span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">spec</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">MODEL_REGISTRY</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">"svm"</span><span class="p">]</span>
 
 <span class="c1"># Las 4 técnicas de balanceo y los 4 métodos de optimización (None = todos).</span>
 <span class="n">techniques</span> <span class="o">=</span> <span class="kc">None</span>
@@ -446,15 +491,15 @@ X: (29965, 20), balance del target: {0: 0.7787, 1: 0.2213}
 <span class="c1"># evaluaciones independientes de CADA método (candidatos de grid/random</span>
 <span class="c1"># search, trials de Optuna, individuos de la población en genetic_deap).</span>
 <span class="c1"># No cambia folds/rangos/tamaño de población/iteraciones, solo el tiempo de</span>
-<span class="c1"># pared -- ver EXPERIMENT_STATUS.md sección &quot;Paralelismo (2026-09-22)&quot;.</span>
+<span class="c1"># pared -- ver EXPERIMENT_STATUS.md sección "Paralelismo (2026-09-22)".</span>
 <span class="n">optimizer_kwargs_by_method</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;grid_search&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;n_jobs&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">},</span>
-    <span class="s2">&quot;random_search&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;n_iter&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">RANDOM_SEARCH_ITER</span><span class="p">,</span> <span class="s2">&quot;n_jobs&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">},</span>
-    <span class="s2">&quot;bayesian_optuna&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;n_trials&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTUNA_N_TRIALS</span><span class="p">,</span> <span class="s2">&quot;n_jobs&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">},</span>
-    <span class="s2">&quot;genetic_deap&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;population_size&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">GA_POPULATION_SIZE</span><span class="p">,</span>
-        <span class="s2">&quot;n_generations&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">GA_N_GENERATIONS</span><span class="p">,</span>
-        <span class="s2">&quot;n_jobs&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">,</span>
+    <span class="s2">"grid_search"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"n_jobs"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">},</span>
+    <span class="s2">"random_search"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"n_iter"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">RANDOM_SEARCH_ITER</span><span class="p">,</span> <span class="s2">"n_jobs"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">},</span>
+    <span class="s2">"bayesian_optuna"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"n_trials"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTUNA_N_TRIALS</span><span class="p">,</span> <span class="s2">"n_jobs"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">},</span>
+    <span class="s2">"genetic_deap"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"population_size"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">GA_POPULATION_SIZE</span><span class="p">,</span>
+        <span class="s2">"n_generations"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">GA_N_GENERATIONS</span><span class="p">,</span>
+        <span class="s2">"n_jobs"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">}</span>
 <span class="c1"># n_jobs=1 aquí (bucle EXTERNO sobre combinaciones, secuencial): el</span>
@@ -465,24 +510,24 @@ X: (29965, 20), balance del target: {0: 0.7787, 1: 0.2213}
 <span class="n">timeout_seconds</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="n">combos</span> <span class="o">=</span> <span class="n">get_all_combinations</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">techniques</span><span class="p">,</span> <span class="n">methods</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">combos</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones a considerar.&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Orden por costo computacional: </span><span class="si">{</span><span class="n">MODEL_COST_ORDER</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">combos</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones a considerar."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Orden por costo computacional: </span><span class="si">{</span><span class="n">MODEL_COST_ORDER</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>96 combinaciones a considerar.
-Orden por costo computacional: (&#39;naive_bayes&#39;, &#39;logistic_regression&#39;, &#39;decision_tree&#39;, &#39;xgboost&#39;, &#39;random_forest&#39;, &#39;knn&#39;, &#39;svm&#39;)
+Orden por costo computacional: ('naive_bayes', 'logistic_regression', 'decision_tree', 'xgboost', 'random_forest', 'knn', 'svm')
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">run_experiments</span><span class="p">(</span>
@@ -500,8 +545,8 @@ Orden por costo computacional: (&#39;naive_bayes&#39;, &#39;logistic_regression&
     <span class="n">timeout_seconds</span><span class="o">=</span><span class="n">timeout_seconds</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones nuevas corridas en esta sesion.&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="si">}</span><span class="s2"> filas totales en la tabla maestra (</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">EXPERIMENTS_MASTER_PATH</span><span class="si">}</span><span class="s2">).&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones nuevas corridas en esta sesion."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="si">}</span><span class="s2"> filas totales en la tabla maestra (</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">EXPERIMENTS_MASTER_PATH</span><span class="si">}</span><span class="s2">)."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -642,17 +687,17 @@ Orden por costo computacional: (&#39;naive_bayes&#39;, &#39;logistic_regression&
 </div>
 </section>
 <section id="resultado">
-<h2>Resultado<a class="headerlink" href="#resultado" title="Permalink to this heading">#</a></h2>
+<h2>Resultado<a class="headerlink" href="#resultado" title="Link to this heading">#</a></h2>
 <p>Tabla de métricas (media ± desviación estándar del outer loop, nunca un valor puntual), ordenada por la métrica principal de validación (ver <code class="docutils literal notranslate"><span class="pre">config.DEFAULT_SCORING</span></code> y la justificación en <code class="docutils literal notranslate"><span class="pre">evaluation.py</span></code>).</p>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metric_for_ranking</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_SCORING</span>
-<span class="n">table_sorted</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">table_sorted</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">format_metrics_table</span><span class="p">(</span><span class="n">table_sorted</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -873,15 +918,17 @@ Orden por costo computacional: (&#39;naive_bayes&#39;, &#39;logistic_regression&
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos">Cargar datos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-de-la-corrida">Configuración de la corrida</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado">Resultado</a></li>
@@ -899,7 +946,7 @@ Orden por costo computacional: (&#39;naive_bayes&#39;, &#39;logistic_regression&
   <div class="footer-item">
     
 <p class="component-author">
-By Equipo del proyecto
+By Katherin Barrera López y Valeria Florez Sarmiento
 </p>
 
   </div>
@@ -909,7 +956,7 @@ By Equipo del proyecto
 
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>
@@ -933,8 +980,8 @@ By Equipo del proyecto
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

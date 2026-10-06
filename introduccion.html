@@ -1,0 +1,920 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Introducción y marco del proyecto &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'introduccion';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="EDA: Análisis Exploratorio de Datos" href="notebooks/00_eda.html" />
+    <link rel="prev" title="Default of Credit Card Clients" href="portada.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="portada.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Default of Credit Card Clients — Pipeline de Clasificación</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="portada.html">
+                    Default of Credit Card Clients
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introducción y marco del proyecto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Setup Check</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/04_run_experiments.html">04. Ejecutar experimentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/05_results_analysis.html">05. Análisis de resultados</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/introduccion.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Introducción y marco del proyecto</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduccion">Introducción</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#planteamiento-del-problema">Planteamiento del problema</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preguntas-de-investigacion">Preguntas de investigación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hipotesis-exploratorias">Hipótesis exploratorias</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alcance-y-limitaciones">Alcance y limitaciones</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion">Justificación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos">Objetivos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-general">Objetivo general</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-especificos">Objetivos específicos</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marco-teorico">Marco teórico</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diccionario-de-variables">Diccionario de variables</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metodologia">Metodología</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#datos">Datos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#etl">ETL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-exploratorio">Análisis exploratorio</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-base">Modelo base</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diseno-experimental">Diseño experimental</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad">Interpretabilidad</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-libro">Estructura del libro</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#referencias">Referencias</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="introduccion-y-marco-del-proyecto">
+<h1>Introducción y marco del proyecto<a class="headerlink" href="#introduccion-y-marco-del-proyecto" title="Link to this heading">#</a></h1>
+<section id="introduccion">
+<h2>Introducción<a class="headerlink" href="#introduccion" title="Link to this heading">#</a></h2>
+<p>La predicción del incumplimiento de pago (<em>credit default</em>) es uno de los problemas de mayor relevancia
+práctica en la gestión del riesgo crediticio, por su efecto directo sobre la solvencia de las entidades
+financieras y sobre las políticas de otorgamiento de crédito. Anticipar qué clientes tienen mayor probabilidad
+de caer en mora permite ajustar límites de crédito, diferenciar tasas de interés y diseñar estrategias de
+cobranza preventiva, reduciendo la exposición a pérdidas <span class="bibtex-citation" id="id1">[<a class="reference internal" href="#id14" title="I. C. Yeh and C. F. Lien. The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. Expert Systems with Applications, 36(2):2473–2480, 2009.">YL09</a>]</span>.</p>
+<p>En aprendizaje automático el problema se aborda como una clasificación binaria supervisada, con modelos que van
+desde la regresión logística, interpretable, hasta métodos de ensamble como Random Forest y <em>gradient
+boosting</em>, cuyo desempeño comparativo se evaluó originalmente sobre el conjunto de datos de este trabajo
+<span class="bibtex-citation" id="id2">[<a class="reference internal" href="#id14" title="I. C. Yeh and C. F. Lien. The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. Expert Systems with Applications, 36(2):2473–2480, 2009.">YL09</a>]</span>. Técnicas de interpretabilidad como SHAP <span class="bibtex-citation" id="id3">[<a class="reference internal" href="#id15" title="S. M. Lundberg and S. I. Lee. A unified approach to interpreting model predictions. In Advances in Neural Information Processing Systems, volume 30, 4765–4774. 2017.">LL17</a>]</span> complementan esos modelos con
+explicaciones por variable, algo valioso en el sector financiero, donde la trazabilidad de las decisiones
+automatizadas suele ser un requisito.</p>
+</section>
+<section id="planteamiento-del-problema">
+<h2>Planteamiento del problema<a class="headerlink" href="#planteamiento-del-problema" title="Link to this heading">#</a></h2>
+<p>El conjunto de datos contiene 30,000 clientes de tarjetas de crédito en Taiwán (2005), con 23 variables
+predictoras (límite de crédito, datos demográficos, historial de pagos, montos facturados y montos pagados de
+seis meses) y una variable objetivo binaria: si el cliente incumplió el pago al mes siguiente.</p>
+<p>Tres dificultades hacen que el problema no se resuelva con un modelo estándar:</p>
+<ul class="simple">
+<li><p><strong>Desbalance de clases.</strong> Solo ≈22 % de los clientes incumple. Un modelo entrenado sin ajustes favorece la
+clase mayoritaria y puede mostrar un <em>accuracy</em> alto mientras detecta pocos casos de <em>default</em>. La regresión
+logística base de este proyecto, por ejemplo, tiene un F1 de la clase minoritaria de ≈0.38.</p></li>
+<li><p><strong>Calidad y estructura de los datos.</strong> Hay duplicados exactos, categorías no documentadas en <code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code> y
+<code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code>, códigos ambiguos en las variables <code class="docutils literal notranslate"><span class="pre">PAY_x</span></code>, distribuciones muy asimétricas y una multicolinealidad
+severa entre las seis variables <code class="docutils literal notranslate"><span class="pre">BILL_AMT</span></code>.</p></li>
+<li><p><strong>Muchas decisiones que interactúan.</strong> El algoritmo, la técnica de balanceo y la forma de optimizar los
+hiperparámetros afectan el resultado y rara vez se comparan de manera conjunta y con una validación que
+evite la fuga de información.</p></li>
+</ul>
+<p>Para una entidad financiera el costo de equivocarse no es simétrico. Si concede cupos altos a clientes que luego
+incumplen, pierde capital, aumentan sus costos de cobranza y debe constituir mayores provisiones. Si restringe
+el crédito en exceso, pierde ingresos por intereses y comisiones. En esta muestra 6,630 clientes (22.1 %) no
+pagaron su tarjeta el mes siguiente, y no detectar a quien incumplirá (falso negativo) suele costar más que
+revisar de más a quien sí pagaría (falso positivo).</p>
+<section id="preguntas-de-investigacion">
+<h3>Preguntas de investigación<a class="headerlink" href="#preguntas-de-investigacion" title="Link to this heading">#</a></h3>
+<p>La pregunta general es: <strong>¿qué características del cliente, de su línea de crédito y de su historial reciente de
+pagos se asocian con el incumplimiento del mes siguiente, y con qué intensidad?</strong> A partir de ella, el trabajo
+se pregunta:</p>
+<ul class="simple">
+<li><p>¿Cómo se distribuyen las variables y qué problemas de calidad presentan?</p></li>
+<li><p>¿Qué tan desbalanceada está la variable objetivo?</p></li>
+<li><p>¿Qué variables separan mejor a los clientes que incumplen?</p></li>
+<li><p>¿Existe redundancia entre las variables predictoras?</p></li>
+<li><p>¿Qué combinación de algoritmo, técnica de balanceo y método de optimización detecta mejor a los clientes en
+riesgo de incumplimiento, y qué parte de la mejora se debe a cada decisión?</p></li>
+</ul>
+</section>
+<section id="hipotesis-exploratorias">
+<h3>Hipótesis exploratorias<a class="headerlink" href="#hipotesis-exploratorias" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>Hipótesis</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>H1</p></td>
+<td><p>El historial reciente de pagos (<code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> … <code class="docutils literal notranslate"><span class="pre">PAY_6</span></code>) es el factor más fuertemente asociado al incumplimiento.</p></td>
+</tr>
+<tr class="row-odd"><td><p>H2</p></td>
+<td><p>Los clientes con menor límite de crédito (<code class="docutils literal notranslate"><span class="pre">LIMIT_BAL</span></code>) presentan una mayor tasa de <em>default</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p>H3</p></td>
+<td><p>Las variables demográficas (sexo, educación, estado civil, edad) se asocian con el <em>default</em>, pero con un tamaño de efecto pequeño.</p></td>
+</tr>
+<tr class="row-odd"><td><p>H4</p></td>
+<td><p>Los montos facturados mensuales (<code class="docutils literal notranslate"><span class="pre">BILL_AMT1–6</span></code>) están fuertemente correlacionados entre sí (multicolinealidad).</p></td>
+</tr>
+<tr class="row-even"><td><p>H5</p></td>
+<td><p>La clase <em>default</em> es minoritaria, por lo que el problema presenta desbalance de clases.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="alcance-y-limitaciones">
+<h3>Alcance y limitaciones<a class="headerlink" href="#alcance-y-limitaciones" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Los datos provienen de un solo banco de Taiwán y de un periodo corto (abril a septiembre de 2005), por lo que
+no se generalizan sin cautela a otros mercados o épocas.</p></li>
+<li><p>El análisis es asociativo: una correlación no implica causalidad.</p></li>
+<li><p>Los códigos <code class="docutils literal notranslate"><span class="pre">-2</span></code> y <code class="docutils literal notranslate"><span class="pre">0</span></code> de <code class="docutils literal notranslate"><span class="pre">PAY_x</span></code> no están documentados con precisión en la fuente y se conservan sin
+recodificar.</p></li>
+<li><p>Las cifras monetarias están en dólares taiwaneses (NT$).</p></li>
+</ul>
+</section>
+</section>
+<section id="justificacion">
+<h2>Justificación<a class="headerlink" href="#justificacion" title="Link to this heading">#</a></h2>
+<p>En riesgo crediticio un falso negativo, un cliente que incumple y no fue detectado, es más costoso que un
+falso positivo. Por eso el <em>accuracy</em> no basta, y el trabajo prioriza métricas sensibles a la clase minoritaria
+(F1, <em>recall</em>, PR-AUC). Documentar de forma reproducible el preprocesamiento y comparar de manera sistemática
+las alternativas permite separar el aporte real de cada decisión (por ejemplo, el balanceo frente al modelo
+elegido) y evitar conclusiones basadas en una sola configuración.</p>
+</section>
+<section id="objetivos">
+<h2>Objetivos<a class="headerlink" href="#objetivos" title="Link to this heading">#</a></h2>
+<section id="objetivo-general">
+<h3>Objetivo general<a class="headerlink" href="#objetivo-general" title="Link to this heading">#</a></h3>
+<p>Evaluar de forma sistemática el efecto del preprocesamiento, el algoritmo, la técnica de balanceo y el método de
+optimización de hiperparámetros sobre la capacidad de predecir el incumplimiento de pago de clientes de tarjetas
+de crédito.</p>
+</section>
+<section id="objetivos-especificos">
+<h3>Objetivos específicos<a class="headerlink" href="#objetivos-especificos" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Describir el problema y el conjunto de datos, incluida la variable objetivo y su nivel de desbalance.</p></li>
+<li><p>Documentar de forma reproducible el proceso ETL, justificando cada decisión de limpieza.</p></li>
+<li><p>Caracterizar estadísticamente las variables mediante un EDA univariado y bivariado, y evaluar la
+multicolinealidad.</p></li>
+<li><p>Entrenar un modelo base (regresión logística) sobre una partición <em>train/test</em> aislada de fuga de
+información, y cuantificar su margen de mejora, en especial en falsos negativos y falsos positivos.</p></li>
+<li><p>Comparar 112 configuraciones (7 modelos × 4 técnicas de balanceo × 4 métodos de optimización) con
+validación cruzada anidada y el F1 de la clase <em>default</em> como métrica principal.</p></li>
+<li><p>Contrastar estadísticamente las configuraciones y analizar la calibración de probabilidades y el costo
+computacional.</p></li>
+<li><p>Interpretar los modelos con SHAP y LIME para identificar las variables que más influyen en la predicción.</p></li>
+</ol>
+</section>
+</section>
+<section id="marco-teorico">
+<h2>Marco teórico<a class="headerlink" href="#marco-teorico" title="Link to this heading">#</a></h2>
+<p><strong>Riesgo de crédito y <em>default</em>.</strong> El riesgo de crédito es la posibilidad de que una entidad sufra pérdidas
+porque un deudor no cumple sus obligaciones. En Basilea II la pérdida esperada se descompone como
+<span class="math notranslate nohighlight">\(EL = PD \times LGD \times EAD\)</span>, donde <span class="math notranslate nohighlight">\(PD\)</span> es la probabilidad de incumplimiento en un horizonte dado (lo que
+estudian estos datos), <span class="math notranslate nohighlight">\(LGD\)</span> la fracción de la exposición que se pierde si hay incumplimiento y <span class="math notranslate nohighlight">\(EAD\)</span> el monto
+expuesto en ese momento.</p>
+<p><strong>Scoring crediticio.</strong> Los modelos de <em>scoring</em> estiman la <span class="math notranslate nohighlight">\(PD\)</span> a partir del comportamiento de pago, el
+límite, la deuda y el perfil demográfico, y sirven para aprobar solicitudes, fijar cupos y priorizar la
+cobranza.</p>
+<p><strong>Análisis exploratorio de datos (EDA).</strong> Propuesto por Tukey <span class="bibtex-citation" id="id4">[<a class="reference internal" href="#id16" title="J. W. Tukey. Exploratory Data Analysis. Addison-Wesley, 1977.">Tuk77</a>]</span>: explorar los datos con
+resúmenes numéricos y gráficos antes de ajustar modelos, para descubrir patrones, anomalías y supuestos.</p>
+<p><strong>Valores atípicos y asimetría.</strong> Se usa el criterio de Tukey: es atípico un valor menor que <span class="math notranslate nohighlight">\(Q_1 - 1.5\,IQR\)</span> o
+mayor que <span class="math notranslate nohighlight">\(Q_3 + 1.5\,IQR\)</span>. La winsorización recorta los extremos a percentiles sin eliminar clientes, y la
+transformación logarítmica con signo suaviza colas largas cuando hay ceros o negativos.</p>
+<p><strong>Desbalance de clases.</strong> Con una clase minoritaria, un clasificador puede lograr alta exactitud ignorándola.
+Por eso se pondera las clases (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>), se sobremuestrea la minoritaria con SMOTE <span class="bibtex-citation" id="id5">[<a class="reference internal" href="#id17" title="N. V. Chawla, K. W. Bowyer, L. O. Hall, and W. P. Kegelmeyer. SMOTE: synthetic minority over-sampling technique. Journal of Artificial Intelligence Research, 16:321–357, 2002.">CBHK02</a>]</span>
+o ADASYN, se ajusta el umbral y se evalúa con F1, <em>recall</em> de la clase minoritaria y AUC en lugar de <em>accuracy</em>.</p>
+<p><strong>Correlación de Spearman y multicolinealidad.</strong> Spearman <span class="bibtex-citation" id="id6">[<a class="reference internal" href="#id18" title="C. Spearman. The proof and measurement of association between two things. The American Journal of Psychology, 15(1):72–101, 1904.">Spe04</a>]</span> mide asociación monótona con
+los rangos de los datos, sin exigir linealidad ni normalidad, y resiste los valores extremos. Se prefiere sobre
+Pearson porque los montos son muy asimétricos, las variables <code class="docutils literal notranslate"><span class="pre">PAY_x</span></code> son ordinales y el objetivo es binario. La
+multicolinealidad se mide con <span class="math notranslate nohighlight">\(VIF_j = 1/(1 - R_j^2)\)</span>; un VIF mayor que 10 (algunos autores usan 5) es señal de
+alerta.</p>
+<p><strong>Asociación y comparación de grupos.</strong> La prueba <span class="math notranslate nohighlight">\(\chi^2\)</span> de independencia y la V de Cramér
+<span class="bibtex-citation" id="id7">[<a class="reference internal" href="#id19" title="H. Cramér. Mathematical Methods of Statistics. Princeton University Press, 1946.">Cramer46</a>]</span> miden la asociación entre variables categóricas. Para comparar grupos sin suponer
+normalidad se usan Mann–Whitney <span class="bibtex-citation" id="id8">[<a class="reference internal" href="#id20" title="H. B. Mann and D. R. Whitney. On a test of whether one of two random variables is stochastically larger than the other. Annals of Mathematical Statistics, 18(1):50–60, 1947.">MW47</a>]</span> y Kruskal–Wallis <span class="bibtex-citation" id="id9">[<a class="reference internal" href="#id21" title="W. H. Kruskal and W. A. Wallis. Use of ranks in one-criterion variance analysis. Journal of the American Statistical Association, 47(260):583–621, 1952.">KW52</a>]</span>, y la t de Welch
+para medias con varianzas distintas. Con <span class="math notranslate nohighlight">\(n \approx 30\,000\)</span> casi cualquier diferencia resulta significativa,
+así que se reporta también el tamaño del efecto.</p>
+<p><strong>Antecedentes.</strong> Yeh y Lien <span class="bibtex-citation" id="id10">[<a class="reference internal" href="#id14" title="I. C. Yeh and C. F. Lien. The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. Expert Systems with Applications, 36(2):2473–2480, 2009.">YL09</a>]</span> compararon seis técnicas de minería de datos (regresión
+logística, análisis discriminante, k vecinos, Naive Bayes, redes neuronales y árboles de clasificación) con
+estos mismos datos y propusieron un método de suavizado por ordenamiento para estimar la probabilidad real de
+incumplimiento. Este trabajo parte de ese conjunto de datos, completa la etapa de comprensión de los datos y
+compara de manera sistemática algoritmos modernos, técnicas de balanceo y métodos de optimización.</p>
+<section id="diccionario-de-variables">
+<h3>Diccionario de variables<a class="headerlink" href="#diccionario-de-variables" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descripción</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LIMIT_BAL</span></code></p></td>
+<td><p>Numérica continua</p></td>
+<td><p>Monto del crédito otorgado (individual y familiar) en NT$.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SEX</span></code></p></td>
+<td><p>Categórica</p></td>
+<td><p>1 = hombre, 2 = mujer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code></p></td>
+<td><p>Categórica ordinal</p></td>
+<td><p>1 = posgrado, 2 = universidad, 3 = secundaria, 4 = otros (los códigos 0, 5 y 6 no documentados se reagrupan en “Otros”).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code></p></td>
+<td><p>Categórica</p></td>
+<td><p>1 = casado, 2 = soltero, 3 = otros (el código 0 se reagrupa en “Otros”).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">AGE</span></code></p></td>
+<td><p>Numérica discreta</p></td>
+<td><p>Edad en años.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PAY_0</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code>–<code class="docutils literal notranslate"><span class="pre">PAY_6</span></code></p></td>
+<td><p>Ordinal</p></td>
+<td><p>Estado de pago mensual, de septiembre (<code class="docutils literal notranslate"><span class="pre">PAY_0</span></code>) a abril (<code class="docutils literal notranslate"><span class="pre">PAY_6</span></code>). −2, −1 y 0 = sin atraso; 1 = un mes de atraso; y así hasta 8–9 meses. El dataset no incluye <code class="docutils literal notranslate"><span class="pre">PAY_1</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BILL_AMT1</span></code>–<code class="docutils literal notranslate"><span class="pre">BILL_AMT6</span></code></p></td>
+<td><p>Numérica continua</p></td>
+<td><p>Monto facturado de septiembre (1) a abril (6), en NT$. Puede ser negativo (saldo a favor).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PAY_AMT1</span></code>–<code class="docutils literal notranslate"><span class="pre">PAY_AMT6</span></code></p></td>
+<td><p>Numérica continua</p></td>
+<td><p>Monto efectivamente pagado de septiembre (1) a abril (6), en NT$.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">default_payment_next_month</span></code></p></td>
+<td><p>Binaria (objetivo)</p></td>
+<td><p>1 = el cliente incumple el pago el mes siguiente (octubre de 2005); 0 = no incumple.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="metodologia">
+<h2>Metodología<a class="headerlink" href="#metodologia" title="Link to this heading">#</a></h2>
+<section id="datos">
+<h3>Datos<a class="headerlink" href="#datos" title="Link to this heading">#</a></h3>
+<p><em>Default of Credit Card Clients Dataset</em> del repositorio UCI <span class="bibtex-citation" id="id11">[<a class="reference internal" href="#id22" title="UCI Machine Learning Repository. Default of credit card clients dataset. University of California, Irvine, School of Information and Computer Sciences.">UCIMLRepository</a>]</span>, publicado por Yeh y Lien
+<span class="bibtex-citation" id="id12">[<a class="reference internal" href="#id14" title="I. C. Yeh and C. F. Lien. The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. Expert Systems with Applications, 36(2):2473–2480, 2009.">YL09</a>]</span>: 30,000 clientes, 23 variables predictoras y la variable objetivo
+<code class="docutils literal notranslate"><span class="pre">default_payment_next_month</span></code> (≈78 % clase 0, ≈22 % clase 1).</p>
+</section>
+<section id="etl">
+<h3>ETL<a class="headerlink" href="#etl" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Extract:</strong> lectura del archivo fuente con <code class="docutils literal notranslate"><span class="pre">pandas</span></code>, renombrado de la variable objetivo y uso de <code class="docutils literal notranslate"><span class="pre">ID</span></code> solo
+como índice, no como predictor.</p></li>
+<li><p><strong>Transform:</strong> eliminación de 35 duplicados exactos (para que una fila no quede en entrenamiento y su copia en
+prueba); reagrupación de los códigos no documentados de <code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code> y <code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code> en “Otros”; conservación de
+los códigos <code class="docutils literal notranslate"><span class="pre">-2</span></code>, <code class="docutils literal notranslate"><span class="pre">-1</span></code> y <code class="docutils literal notranslate"><span class="pre">0</span></code> de <code class="docutils literal notranslate"><span class="pre">PAY_x</span></code>, con su ambigüedad documentada como limitación; transformación
+logarítmica con signo de <code class="docutils literal notranslate"><span class="pre">LIMIT_BAL</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_AMT1-6</span></code>; reemplazo de <code class="docutils literal notranslate"><span class="pre">BILL_AMT1-6</span></code> por su promedio, su
+tendencia y el número de meses con saldo a favor, para resolver la multicolinealidad.</p></li>
+<li><p><strong>Load:</strong> <code class="docutils literal notranslate"><span class="pre">dataset_final.csv</span></code> con 29,965 filas × 21 columnas. El escalado y los demás pasos que dependen de
+estadísticos de la muestra se aplican dentro de cada pipeline, después de la partición, para evitar fuga de
+información.</p></li>
+</ul>
+</section>
+<section id="analisis-exploratorio">
+<h3>Análisis exploratorio<a class="headerlink" href="#analisis-exploratorio" title="Link to this heading">#</a></h3>
+<p>Estadística descriptiva, diagnóstico de nulos y duplicados, forma de las distribuciones, valores atípicos
+(criterio de Tukey), comparación formal de grupos con pruebas no paramétricas y de independencia, y
+multicolinealidad con correlaciones y VIF.</p>
+</section>
+<section id="modelo-base">
+<h3>Modelo base<a class="headerlink" href="#modelo-base" title="Link to this heading">#</a></h3>
+<p>Regresión logística en un <em>pipeline</em> de <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> con partición estratificada 80/20, codificación y
+escalado, evaluada con <em>accuracy</em>, <em>log-loss</em>, ROC-AUC, matriz de confusión y reporte de clasificación.</p>
+</section>
+<section id="diseno-experimental">
+<h3>Diseño experimental<a class="headerlink" href="#diseno-experimental" title="Link to this heading">#</a></h3>
+<p>Diseño factorial de <strong>7 × 4 × 4 = 112 configuraciones</strong>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Factor</p></th>
+<th class="head"><p>Niveles</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Modelo (7)</p></td>
+<td><p>Regresión logística, árbol de decisión, Random Forest, XGBoost, K-Nearest Neighbors, Naive Bayes gaussiano, SVM</p></td>
+</tr>
+<tr class="row-odd"><td><p>Balanceo (4)</p></td>
+<td><p>Sin balanceo, SMOTE, ADASYN, <code class="docutils literal notranslate"><span class="pre">class_weight</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Optimización de hiperparámetros (4)</p></td>
+<td><p>Grid search, random search, optimización bayesiana (Optuna), algoritmo genético (DEAP)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul class="simple">
+<li><p><strong>Validación:</strong> validación cruzada anidada, con 3 folds externos para estimar el desempeño y 3 internos para
+seleccionar hiperparámetros, y <code class="docutils literal notranslate"><span class="pre">random_state=42</span></code>.</p></li>
+<li><p><strong>Métrica principal:</strong> F1 de la clase <em>default</em>. Se reportan también precisión, <em>recall</em>, ROC-AUC y PR-AUC.</p></li>
+<li><p><strong>Ejecución:</strong> seis modelos (96 combinaciones) se corrieron localmente. SVM (16 combinaciones) se corrió en
+Google Colab con GPU, con otro solver y otras versiones de librerías, por lo que no es estrictamente
+comparable con el resto, en especial en tiempos.</p></li>
+<li><p><strong>Comparación estadística:</strong> prueba de Friedman con post-hoc de Nemenyi, comparación por factor y prueba de
+DeLong. Con solo 3 folds el post-hoc no puede declarar diferencias significativas, y la comparación se
+interpreta de manera descriptiva.</p></li>
+<li><p><strong>Calibración y complejidad:</strong> curvas de calibración, error de calibración esperado (ECE) y costo
+computacional de cada configuración.</p></li>
+</ul>
+</section>
+<section id="interpretabilidad">
+<h3>Interpretabilidad<a class="headerlink" href="#interpretabilidad" title="Link to this heading">#</a></h3>
+<p>SHAP sobre el Random Forest y comparación LIME vs. SHAP para XGBoost sobre una observación.</p>
+</section>
+</section>
+<section id="estructura-del-libro">
+<h2>Estructura del libro<a class="headerlink" href="#estructura-del-libro" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Capítulo</p></th>
+<th class="head"><p>Contenido</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">00_eda</span></code></p></td>
+<td><p>EDA y construcción del dataset final</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">01_baseline_logistic</span></code></p></td>
+<td><p>Modelo base de regresión logística</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">02_setup_check</span></code>, <code class="docutils literal notranslate"><span class="pre">03_pipeline_dev</span></code></p></td>
+<td><p>Verificación del entorno y desarrollo del pipeline</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">04_run_experiments</span></code></p></td>
+<td><p>Corrida de las combinaciones</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">05_results_analysis</span></code></p></td>
+<td><p>Resultados, comparación estadística, calibración y complejidad</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">06_interpretability</span></code></p></td>
+<td><p>SHAP y LIME</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="referencias">
+<h2>Referencias<a class="headerlink" href="#referencias" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id13">
+<div role="list" class="citation-list">
+<div class="citation" id="id17" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">CBHK02</a><span class="fn-bracket">]</span></span>
+<p>N. V. Chawla, K. W. Bowyer, L. O. Hall, and W. P. Kegelmeyer. SMOTE: synthetic minority over-sampling technique. <em>Journal of Artificial Intelligence Research</em>, 16:321–357, 2002.</p>
+</div>
+<div class="citation" id="id19" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">Cramer46</a><span class="fn-bracket">]</span></span>
+<p>H. Cramér. <em>Mathematical Methods of Statistics</em>. Princeton University Press, 1946.</p>
+</div>
+<div class="citation" id="id21" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">KW52</a><span class="fn-bracket">]</span></span>
+<p>W. H. Kruskal and W. A. Wallis. Use of ranks in one-criterion variance analysis. <em>Journal of the American Statistical Association</em>, 47(260):583–621, 1952.</p>
+</div>
+<div class="citation" id="id15" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">LL17</a><span class="fn-bracket">]</span></span>
+<p>S. M. Lundberg and S. I. Lee. A unified approach to interpreting model predictions. In <em>Advances in Neural Information Processing Systems</em>, volume 30, 4765–4774. 2017.</p>
+</div>
+<div class="citation" id="id20" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">MW47</a><span class="fn-bracket">]</span></span>
+<p>H. B. Mann and D. R. Whitney. On a test of whether one of two random variables is stochastically larger than the other. <em>Annals of Mathematical Statistics</em>, 18(1):50–60, 1947.</p>
+</div>
+<div class="citation" id="id18" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">Spe04</a><span class="fn-bracket">]</span></span>
+<p>C. Spearman. The proof and measurement of association between two things. <em>The American Journal of Psychology</em>, 15(1):72–101, 1904.</p>
+</div>
+<div class="citation" id="id16" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">Tuk77</a><span class="fn-bracket">]</span></span>
+<p>J. W. Tukey. <em>Exploratory Data Analysis</em>. Addison-Wesley, 1977.</p>
+</div>
+<div class="citation" id="id14" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>YL09<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>,<a role="doc-backlink" href="#id10">3</a>,<a role="doc-backlink" href="#id12">4</a>)</span>
+<p>I. C. Yeh and C. F. Lien. The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. <em>Expert Systems with Applications</em>, 36(2):2473–2480, 2009.</p>
+</div>
+<div class="citation" id="id22" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">UCIMLRepository</a><span class="fn-bracket">]</span></span>
+<p>UCI Machine Learning Repository. Default of credit card clients dataset. University of California, Irvine, School of Information and Computer Sciences.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="portada.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Default of Credit Card Clients</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="notebooks/00_eda.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">EDA: Análisis Exploratorio de Datos</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduccion">Introducción</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#planteamiento-del-problema">Planteamiento del problema</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preguntas-de-investigacion">Preguntas de investigación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hipotesis-exploratorias">Hipótesis exploratorias</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alcance-y-limitaciones">Alcance y limitaciones</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion">Justificación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos">Objetivos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-general">Objetivo general</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-especificos">Objetivos específicos</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marco-teorico">Marco teórico</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diccionario-de-variables">Diccionario de variables</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metodologia">Metodología</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#datos">Datos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#etl">ETL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-exploratorio">Análisis exploratorio</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-base">Modelo base</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diseno-experimental">Diseño experimental</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad">Interpretabilidad</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-libro">Estructura del libro</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#referencias">Referencias</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Katherin Barrera López y Valeria Florez Sarmiento
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

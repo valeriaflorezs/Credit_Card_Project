@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Estado de la corrida de experimentos (04_run_experiments.ipynb) &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
   
@@ -17,84 +16,80 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
-  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'EXPERIMENT_STATUS';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -102,7 +97,6 @@ const thebe_selector_output = ".output, .cell_output"
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -110,15 +104,59 @@ const thebe_selector_output = ".output, .cell_output"
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -129,7 +167,8 @@ const thebe_selector_output = ".output, .cell_output"
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -147,7 +186,7 @@ const thebe_selector_output = ".output, .cell_output"
     
   
 
-<a class="navbar-brand logo" href="README.html">
+<a class="navbar-brand logo" href="portada.html">
   
   
   
@@ -157,17 +196,25 @@ const thebe_selector_output = ".output, .cell_output"
     <p class="title logo__title">Default of Credit Card Clients — Pipeline de Clasificación</p>
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
-                <a class="reference internal" href="README.html">
-                    Default of Credit Card Clients — Pipeline de Clasificación (Entregable 3)
+                <a class="reference internal" href="portada.html">
+                    Default of Credit Card Clients
                 </a>
             </li>
         </ul>
         <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduccion.html">Introducción y marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Setup Check</a></li>
@@ -183,9 +230,14 @@ const thebe_selector_output = ".output, .cell_output"
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -204,9 +256,9 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -268,7 +320,7 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -282,27 +334,19 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -322,7 +366,8 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estado-actual-corrida-v2-dataset-de-29-965-21">Estado actual (corrida v2, dataset de 29,965 × 21)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#progreso-corrida-anterior-dataset-v1-100-112-combinaciones-guardadas-svm-none-genetic-deap-termino-ok-2026-09-23-17-07-con-el-fix-de-threading-15645-8s-4h21min">1. Progreso (corrida anterior, dataset v1): 100/112 combinaciones guardadas — <code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> terminó OK (2026-09-23 ~17:07) con el fix de threading, 15645.8s (~4h21min)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-continuar">2. Cómo continuar</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ajustes-hechos-autonomos-documentados-tambien-como-comentarios-en-el-codigo">3. Ajustes hechos (autónomos, documentados también como comentarios en el código)</a><ul class="nav section-nav flex-column">
@@ -370,16 +415,27 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="estado-de-la-corrida-de-experimentos-04-run-experiments-ipynb">
-<h1>Estado de la corrida de experimentos (04_run_experiments.ipynb)<a class="headerlink" href="#estado-de-la-corrida-de-experimentos-04-run-experiments-ipynb" title="Permalink to this heading">#</a></h1>
-<p>Última actualización: 2026-09-22, ~23:50 (autónomo, ver sección 8). Este archivo es el punto de partida para retomar la corrida en una sesión nueva.</p>
+<h1>Estado de la corrida de experimentos (04_run_experiments.ipynb)<a class="headerlink" href="#estado-de-la-corrida-de-experimentos-04-run-experiments-ipynb" title="Link to this heading">#</a></h1>
+<p>Última revisión de este encabezado: 2026-10-05.</p>
+<section id="estado-actual-corrida-v2-dataset-de-29-965-21">
+<h2>Estado actual (corrida v2, dataset de 29,965 × 21)<a class="headerlink" href="#estado-actual-corrida-v2-dataset-de-29-965-21" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>: <strong>96/96</strong> combinaciones (6 modelos × 4 técnicas × 4 métodos), sin duplicados ni NaN; 3 folds externos × 3 internos, <code class="docutils literal notranslate"><span class="pre">random_state=42</span></code>.</p></li>
+<li><p>SVM (16 combinaciones) corrió en Colab con GPU (cuML): <code class="docutils literal notranslate"><span class="pre">results/svm_gpu_results_colab.csv</span></code>, 16/16. No es estrictamente comparable con las demás (otro solver, <code class="docutils literal notranslate"><span class="pre">cache_size</span></code>, versiones de librerías; tiempos no comparables) — ver la nota en <code class="docutils literal notranslate"><span class="pre">05_results_analysis.ipynb</span></code>.</p></li>
+<li><p>Total: 112/112 entre ambas tablas.</p></li>
+<li><p>Métricas complementarias (2026-10-05): <code class="docutils literal notranslate"><span class="pre">results/experiments_posthoc_metrics.csv</span></code> (generado con <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.posthoc_metrics</span></code>) trae F1, precisión, recall, ROC-AUC y PR-AUC por fold (std con <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code>) para las 96 filas locales, reajustando cada pipeline con los <code class="docutils literal notranslate"><span class="pre">best_params</span></code> ya guardados (sin repetir búsquedas; el F1 recalculado coincide exactamente con la tabla maestra). No incluye SVM (cuML/Colab). La tabla maestra no se modificó; sus columnas <code class="docutils literal notranslate"><span class="pre">*_std</span></code> usan <code class="docutils literal notranslate"><span class="pre">ddof=0</span></code>.</p></li>
+<li><p>El respaldo de la tabla del dataset anterior (<code class="docutils literal notranslate"><span class="pre">results/experiments_master_v1_dataset_anterior.csv</span></code>) <strong>no está en <code class="docutils literal notranslate"><span class="pre">results/</span></code></strong> (no se encontró al revisar el 2026-10-05; tampoco figura en git).</p></li>
+<li><p><strong>Todo lo que sigue desde la sección 1 es historia de la corrida v1</strong> (dataset anterior, 7 modelos con SVM local, <code class="docutils literal notranslate"><span class="pre">skipped_timeout_log</span></code>, 99–104/112). Se conserva como registro de decisiones técnicas (paralelismo, wrappers de <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">max_iter</span></code> de SVM, etc.), no como estado vigente. Las instrucciones de la sección 2 usan el <code class="docutils literal notranslate"><span class="pre">.venv</span></code>, que ya no se usa: ver el entorno conda <code class="docutils literal notranslate"><span class="pre">creditcard</span></code>.</p></li>
+</ul>
 <blockquote>
 <div><p><strong>Nota (2026-10-03): el dataset cambió.</strong> Todo lo que sigue se corrió con la versión anterior de <code class="docutils literal notranslate"><span class="pre">data/processed/dataset_final.csv</span></code> (respaldada en <code class="docutils literal notranslate"><span class="pre">data/processed/dataset_final_v1_antes_de_resolver_eda.csv</span></code>: con las seis <code class="docutils literal notranslate"><span class="pre">BILL_AMT</span></code> por separado y sin transformaciones log; los duplicados se quitaban al cargar, en el notebook). La versión actual resuelve todos los hallazgos del EDA (ver Parte 5 de <code class="docutils literal notranslate"><span class="pre">notebooks/00_eda.ipynb</span></code> y el README): 29,965 filas × 21 columnas, <code class="docutils literal notranslate"><span class="pre">BILL_AMT1-6</span></code> resumidas en 3 variables, <code class="docutils literal notranslate"><span class="pre">LIMIT_BAL</span></code>/<code class="docutils literal notranslate"><span class="pre">PAY_AMT*</span></code> en log. Las 99 filas de <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code> son, por tanto, de otro dataset y no son comparables con una corrida nueva.</p>
 </div></blockquote>
 <blockquote>
 <div><p><strong>Corrida v2 (2026-10-03, ~08:19):</strong> se archivó la tabla anterior en <code class="docutils literal notranslate"><span class="pre">results/experiments_master_v1_dataset_anterior.csv</span></code> y se relanzó <code class="docutils literal notranslate"><span class="pre">04_run_experiments.ipynb</span></code> sobre el dataset nuevo con <strong>6 modelos (todos menos SVM) × 4 técnicas × 4 métodos = 96 combinaciones</strong>, empezando <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code> desde cero. El lanzador <code class="docutils literal notranslate"><span class="pre">logs/run_04_v2.sh</span></code> reintenta si el proceso muere (hasta 6 veces; <code class="docutils literal notranslate"><span class="pre">resume=True</span></code> salta lo ya guardado) y escribe <code class="docutils literal notranslate"><span class="pre">logs/04_v2_lanzador.log</span></code> y <code class="docutils literal notranslate"><span class="pre">logs/04_v2_intentoN.log</span></code>. SVM (16 combinaciones) va aparte en Colab con GPU (<code class="docutils literal notranslate"><span class="pre">notebooks/07_svm_gpu_colab.ipynb</span></code>, ya ajustado al dataset nuevo). Cambio de entorno: <code class="docutils literal notranslate"><span class="pre">deap==1.4.3</span></code> (la 1.4.4 depende de <code class="docutils literal notranslate"><span class="pre">moocore</span></code>, cuyo archivo compilado bloquea Windows); mismos operadores genéticos.</p>
 </div></blockquote>
+</section>
 <section id="progreso-corrida-anterior-dataset-v1-100-112-combinaciones-guardadas-svm-none-genetic-deap-termino-ok-2026-09-23-17-07-con-el-fix-de-threading-15645-8s-4h21min">
-<h2>1. Progreso (corrida anterior, dataset v1): 100/112 combinaciones guardadas — <code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> terminó OK (2026-09-23 ~17:07) con el fix de threading, 15645.8s (~4h21min)<a class="headerlink" href="#progreso-corrida-anterior-dataset-v1-100-112-combinaciones-guardadas-svm-none-genetic-deap-termino-ok-2026-09-23-17-07-con-el-fix-de-threading-15645-8s-4h21min" title="Permalink to this heading">#</a></h2>
+<h2>1. Progreso (corrida anterior, dataset v1): 100/112 combinaciones guardadas — <code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> terminó OK (2026-09-23 ~17:07) con el fix de threading, 15645.8s (~4h21min)<a class="headerlink" href="#progreso-corrida-anterior-dataset-v1-100-112-combinaciones-guardadas-svm-none-genetic-deap-termino-ok-2026-09-23-17-07-con-el-fix-de-threading-15645-8s-4h21min" title="Link to this heading">#</a></h2>
 <p>Archivo de resultados: <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code> (checkpoint incremental, una fila por combinación terminada).</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -416,21 +472,21 @@ document.write(`
 <p><strong>Total teórico: 112</strong> (7 modelos × 4 técnicas de balanceo × 4 métodos de optimización). Ya no hay combinaciones “no aplicables” — ver sección 3.</p>
 </section>
 <section id="como-continuar">
-<h2>2. Cómo continuar<a class="headerlink" href="#como-continuar" title="Permalink to this heading">#</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="s2">&quot;C:/Users/valef/OneDrive/Desktop/Credit_Card_Project&quot;</span>
-./.venv/Scripts/jupyter-nbconvert.exe<span class="w"> </span>--to<span class="w"> </span>notebook<span class="w"> </span>--execute<span class="w"> </span>--inplace<span class="w"> </span>--ExecutePreprocessor.timeout<span class="o">=</span>-1<span class="w"> </span><span class="s2">&quot;notebooks/04_run_experiments.ipynb&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>logs/04_run_resumeN.log<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<h2>2. Cómo continuar<a class="headerlink" href="#como-continuar" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="s2">"C:/Users/valef/OneDrive/Desktop/Credit_Card_Project"</span>
+./.venv/Scripts/jupyter-nbconvert.exe<span class="w"> </span>--to<span class="w"> </span>notebook<span class="w"> </span>--execute<span class="w"> </span>--inplace<span class="w"> </span>--ExecutePreprocessor.timeout<span class="o">=</span>-1<span class="w"> </span><span class="s2">"notebooks/04_run_experiments.ipynb"</span><span class="w"> </span>&gt;<span class="w"> </span>logs/04_run_resumeN.log<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
 </pre></div>
 </div>
 <p>Correrlo en background. El notebook ya tiene <code class="docutils literal notranslate"><span class="pre">resume=True</span></code> en la llamada a <code class="docutils literal notranslate"><span class="pre">run_experiments()</span></code>, así que salta automáticamente las 75 combinaciones ya guardadas y sigue con <code class="docutils literal notranslate"><span class="pre">random_forest/adasyn/genetic_deap</span></code>.</p>
 <p><strong>Antes de pausar</strong>, siempre verificar que no queden procesos activos:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>powershell<span class="w"> </span>-Command<span class="w"> </span><span class="s2">&quot;Get-Process | Where-Object {\$_.ProcessName -match &#39;python|jupyter&#39;}&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>powershell<span class="w"> </span>-Command<span class="w"> </span><span class="s2">"Get-Process | Where-Object {\$_.ProcessName -match 'python|jupyter'}"</span>
 </pre></div>
 </div>
 </section>
 <section id="ajustes-hechos-autonomos-documentados-tambien-como-comentarios-en-el-codigo">
-<h2>3. Ajustes hechos (autónomos, documentados también como comentarios en el código)<a class="headerlink" href="#ajustes-hechos-autonomos-documentados-tambien-como-comentarios-en-el-codigo" title="Permalink to this heading">#</a></h2>
+<h2>3. Ajustes hechos (autónomos, documentados también como comentarios en el código)<a class="headerlink" href="#ajustes-hechos-autonomos-documentados-tambien-como-comentarios-en-el-codigo" title="Link to this heading">#</a></h2>
 <section id="a-dataset-real">
-<h3>a) Dataset real<a class="headerlink" href="#a-dataset-real" title="Permalink to this heading">#</a></h3>
+<h3>a) Dataset real<a class="headerlink" href="#a-dataset-real" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">data/processed/dataset_final.csv</span></code> construido desde <code class="docutils literal notranslate"><span class="pre">data/raw/default_of_credit_card_clients.xls</span></code> con las reglas ya confirmadas por el EDA (renombrar target, reagrupar EDUCATION/MARRIAGE en “Otros”).</p></li>
 <li><p><strong>Se sacó la columna <code class="docutils literal notranslate"><span class="pre">ID</span></code></strong> — el primer intento la había dejado, lo que la habría convertido en una feature más (fuga/ruido). Corregido antes de correr nada.</p></li>
@@ -438,7 +494,7 @@ document.write(`
 </ul>
 </section>
 <section id="b-bug-de-explosion-combinatoria-en-grid-search-src-models-py-get-param-grid">
-<h3>b) Bug de explosión combinatoria en <code class="docutils literal notranslate"><span class="pre">grid_search</span></code> (src/models.py::get_param_grid)<a class="headerlink" href="#b-bug-de-explosion-combinatoria-en-grid-search-src-models-py-get-param-grid" title="Permalink to this heading">#</a></h3>
+<h3>b) Bug de explosión combinatoria en <code class="docutils literal notranslate"><span class="pre">grid_search</span></code> (src/models.py::get_param_grid)<a class="headerlink" href="#b-bug-de-explosion-combinatoria-en-grid-search-src-models-py-get-param-grid" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Con <code class="docutils literal notranslate"><span class="pre">n_points=4</span></code> fijo por hiperparámetro, modelos con muchos hiperparámetros continuos explotaban: XGBoost (6 hiperparámetros) daba 4⁶=4096 combinaciones × 9 folds ≈ 37,000 ajustes (~7+ horas, se colgó).</p></li>
 <li><p><strong>Fix</strong>: se agregó <code class="docutils literal notranslate"><span class="pre">max_combinations</span></code> (tope general de 200) que reduce <code class="docutils literal notranslate"><span class="pre">n_points</span></code> automáticamente solo cuando hace falta. XGBoost bajó a 64 combinaciones.</p></li>
@@ -447,7 +503,7 @@ document.write(`
 </ul>
 </section>
 <section id="c-cache-de-joblib-para-smote-adasyn-src-balancing-py">
-<h3>c) Cache de joblib para SMOTE/ADASYN (src/balancing.py)<a class="headerlink" href="#c-cache-de-joblib-para-smote-adasyn-src-balancing-py" title="Permalink to this heading">#</a></h3>
+<h3>c) Cache de joblib para SMOTE/ADASYN (src/balancing.py)<a class="headerlink" href="#c-cache-de-joblib-para-smote-adasyn-src-balancing-py" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">_PIPELINE_CACHE</span> <span class="pre">=</span> <span class="pre">Memory(location=results/.joblib_cache)</span></code>, pasado a todo <code class="docutils literal notranslate"><span class="pre">ImbPipeline</span></code>.</p></li>
 <li><p>Hipótesis inicial: evitar recalcular SMOTE/ADASYN redundantemente en cada combinación de hiperparámetros de <code class="docutils literal notranslate"><span class="pre">grid_search</span></code>.</p></li>
@@ -455,7 +511,7 @@ document.write(`
 </ul>
 </section>
 <section id="d-112-en-vez-de-104-naive-bayes-y-knn-ahora-si-soportan-class-weight">
-<h3>d) 112 en vez de 104: <code class="docutils literal notranslate"><span class="pre">naive_bayes</span></code> y <code class="docutils literal notranslate"><span class="pre">knn</span></code> ahora sí soportan <code class="docutils literal notranslate"><span class="pre">class_weight</span></code><a class="headerlink" href="#d-112-en-vez-de-104-naive-bayes-y-knn-ahora-si-soportan-class-weight" title="Permalink to this heading">#</a></h3>
+<h3>d) 112 en vez de 104: <code class="docutils literal notranslate"><span class="pre">naive_bayes</span></code> y <code class="docutils literal notranslate"><span class="pre">knn</span></code> ahora sí soportan <code class="docutils literal notranslate"><span class="pre">class_weight</span></code><a class="headerlink" href="#d-112-en-vez-de-104-naive-bayes-y-knn-ahora-si-soportan-class-weight" title="Link to this heading">#</a></h3>
 <p>KNN y Naive Bayes no tienen <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> nativo en scikit-learn. Se investigó (notas del profesor + documentación de sklearn + búsqueda web) antes de decidir qué hacer:</p>
 <ul class="simple">
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">naive_bayes</span></code> → <code class="docutils literal notranslate"><span class="pre">BalancedGaussianNB</span></code></strong> (en <code class="docutils literal notranslate"><span class="pre">src/models.py</span></code>): <code class="docutils literal notranslate"><span class="pre">GaussianNB.fit()</span></code> sí acepta <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code>. El wrapper traduce <code class="docutils literal notranslate"><span class="pre">class_weight='balanced'</span></code> a <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> vía <code class="docutils literal notranslate"><span class="pre">sklearn.utils.class_weight.compute_sample_weight</span></code> — <strong>mecanismo estándar de sklearn</strong>, no un hack.</p></li>
@@ -465,14 +521,14 @@ document.write(`
 </ul>
 </section>
 <section id="e-archivo-de-resultados-obsoleto-apartado">
-<h3>e) Archivo de resultados obsoleto apartado<a class="headerlink" href="#e-archivo-de-resultados-obsoleto-apartado" title="Permalink to this heading">#</a></h3>
+<h3>e) Archivo de resultados obsoleto apartado<a class="headerlink" href="#e-archivo-de-resultados-obsoleto-apartado" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Existía un <code class="docutils literal notranslate"><span class="pre">experiments_master.csv</span></code> de una corrida de demostración vieja (<code class="docutils literal notranslate"><span class="pre">QUICK_MODE</span></code>, datos sintéticos). Se movió a <code class="docutils literal notranslate"><span class="pre">results/experiments_master_quickmode_demo_backup.csv</span></code> antes de empezar la corrida real, para que <code class="docutils literal notranslate"><span class="pre">resume=True</span></code> no se saltara combinaciones por error.</p></li>
 </ul>
 </section>
 </section>
 <section id="lo-que-no-se-toco-y-no-se-debe-tocar-sin-autorizacion-explicita">
-<h2>4. Lo que NO se tocó (y no se debe tocar sin autorización explícita)<a class="headerlink" href="#lo-que-no-se-toco-y-no-se-debe-tocar-sin-autorizacion-explicita" title="Permalink to this heading">#</a></h2>
+<h2>4. Lo que NO se tocó (y no se debe tocar sin autorización explícita)<a class="headerlink" href="#lo-que-no-se-toco-y-no-se-debe-tocar-sin-autorizacion-explicita" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">N_OUTER_FOLDS</span></code>, <code class="docutils literal notranslate"><span class="pre">N_INNER_FOLDS</span></code>, <code class="docutils literal notranslate"><span class="pre">RANDOM_SEARCH_ITER</span></code>, <code class="docutils literal notranslate"><span class="pre">OPTUNA_N_TRIALS</span></code>, <code class="docutils literal notranslate"><span class="pre">GA_POPULATION_SIZE</span></code>, <code class="docutils literal notranslate"><span class="pre">GA_N_GENERATIONS</span></code> en <code class="docutils literal notranslate"><span class="pre">config.py</span></code> — parámetros metodológicos parejos para los 7 modelos.</p></li>
 <li><p>Los rangos (<code class="docutils literal notranslate"><span class="pre">low</span></code>/<code class="docutils literal notranslate"><span class="pre">high</span></code>) de los hiperparámetros de cada modelo en <code class="docutils literal notranslate"><span class="pre">models.py</span></code>.</p></li>
@@ -481,7 +537,7 @@ document.write(`
 </ul>
 </section>
 <section id="regla-para-decidir-si-intervenir-cuando-una-combinacion-tarda-mucho">
-<h2>5. Regla para decidir si intervenir cuando una combinación tarda mucho<a class="headerlink" href="#regla-para-decidir-si-intervenir-cuando-una-combinacion-tarda-mucho" title="Permalink to this heading">#</a></h2>
+<h2>5. Regla para decidir si intervenir cuando una combinación tarda mucho<a class="headerlink" href="#regla-para-decidir-si-intervenir-cuando-una-combinacion-tarda-mucho" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p>¿Es por el tamaño de la grilla de <code class="docutils literal notranslate"><span class="pre">grid_search</span></code> (muchos hiperparámetros continuos)? → Sí se puede ajustar <code class="docutils literal notranslate"><span class="pre">grid_search_max_combinations</span></code> por modelo (ver 3b), documentando el cambio.</p></li>
 <li><p>¿Es por el costo inherente del algoritmo o por cómo el GA/random search explora el espacio (ej. <code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code> tiende a converger hacia configuraciones más caras)? → <strong>No tocar nada</strong>, es esperado y metodológicamente correcto. Ejemplos ya observados: <code class="docutils literal notranslate"><span class="pre">random_forest/none/genetic_deap</span></code> tardó 157.6 min, <code class="docutils literal notranslate"><span class="pre">xgboost/*/grid_search</span></code> con <code class="docutils literal notranslate"><span class="pre">smote</span></code> tardó hasta 66.7 min — ninguno de los dos es un bug, es SVM/Random Forest/XGBoost siendo inherentemente costosos combinados con datasets agrandados por oversampling.</p></li>
@@ -489,14 +545,14 @@ document.write(`
 </ol>
 </section>
 <section id="alerta-para-lo-que-sigue-svm">
-<h2>6. Alerta para lo que sigue: <code class="docutils literal notranslate"><span class="pre">svm</span></code><a class="headerlink" href="#alerta-para-lo-que-sigue-svm" title="Permalink to this heading">#</a></h2>
+<h2>6. Alerta para lo que sigue: <code class="docutils literal notranslate"><span class="pre">svm</span></code><a class="headerlink" href="#alerta-para-lo-que-sigue-svm" title="Link to this heading">#</a></h2>
 <p>Todavía no ha corrido ninguna combinación de <code class="docutils literal notranslate"><span class="pre">svm</span></code>. El propio código del proyecto ya lo documenta como “el modelo más costoso del pipeline” (kernel RBF con complejidad O(n²)-O(n³) sobre ~20-30K filas, más <code class="docutils literal notranslate"><span class="pre">probability=True</span></code> que agrega una validación cruzada interna de 5 folds en libsvm). Es razonable esperar que sea el modelo más lento de los 7. Si alguna combinación de <code class="docutils literal notranslate"><span class="pre">svm</span></code> se comporta de forma anómala (no solo lenta, sino sin avanzar en CPU durante mucho tiempo), ahí sí vale la pena investigar más a fondo (podría ser un problema real, no solo lentitud esperada).</p>
 </section>
 <section id="autonomo-2026-09-22-22-15-en-adelante-paralelismo-tope-de-tiempo">
-<h2>8. Autónomo (2026-09-22, ~22:15 en adelante): paralelismo + tope de tiempo<a class="headerlink" href="#autonomo-2026-09-22-22-15-en-adelante-paralelismo-tope-de-tiempo" title="Permalink to this heading">#</a></h2>
+<h2>8. Autónomo (2026-09-22, ~22:15 en adelante): paralelismo + tope de tiempo<a class="headerlink" href="#autonomo-2026-09-22-22-15-en-adelante-paralelismo-tope-de-tiempo" title="Link to this heading">#</a></h2>
 <p>Instrucción del usuario: presupuesto de 7h para terminar las 112, con permiso de “pasar al siguiente” si algo se dificulta, pero <strong>priorizando primero acelerar de verdad la implementación sin comprometer la metodología</strong>, antes que simplemente recortar y saltar. A partir de este punto se trabajó de forma autónoma; se documenta cada decisión aquí.</p>
 <section id="a-paralelismo-real-nuevo-sin-tocar-folds-rangos-tamanos">
-<h3>a) Paralelismo real (nuevo) — sin tocar folds/rangos/tamaños<a class="headerlink" href="#a-paralelismo-real-nuevo-sin-tocar-folds-rangos-tamanos" title="Permalink to this heading">#</a></h3>
+<h3>a) Paralelismo real (nuevo) — sin tocar folds/rangos/tamaños<a class="headerlink" href="#a-paralelismo-real-nuevo-sin-tocar-folds-rangos-tamanos" title="Link to this heading">#</a></h3>
 <p>Diagnóstico: <code class="docutils literal notranslate"><span class="pre">RandomForestClassifier</span></code>/<code class="docutils literal notranslate"><span class="pre">XGBClassifier</span></code> ya tenían <code class="docutils literal notranslate"><span class="pre">n_jobs=1</span></code> “a propósito” (comentario original: el paralelismo se manejaría a nivel de <code class="docutils literal notranslate"><span class="pre">experiment_runner.py</span></code>), pero el bucle externo de <code class="docutils literal notranslate"><span class="pre">experiment_runner.run_experiments()</span></code> también corre con <code class="docutils literal notranslate"><span class="pre">n_jobs=1</span></code> (secuencial) — es decir, <strong>nunca hubo paralelismo real en ningún nivel</strong>, con 12 núcleos lógicos disponibles sin usar.</p>
 <p>Cambio: se paraleliza el eje de evaluaciones INDEPENDIENTES dentro de cada método de optimización (no el modelo, no el bucle de combinaciones — evita anidar paralelismo):</p>
 <ul class="simple">
@@ -509,19 +565,19 @@ document.write(`
 <p>Esto es una optimización de <strong>implementación</strong>, no de metodología: mismos folds, mismos rangos de hiperparámetros, mismo <code class="docutils literal notranslate"><span class="pre">GA_POPULATION_SIZE</span></code>/<code class="docutils literal notranslate"><span class="pre">GA_N_GENERATIONS</span></code>/<code class="docutils literal notranslate"><span class="pre">RANDOM_SEARCH_ITER</span></code>/<code class="docutils literal notranslate"><span class="pre">OPTUNA_N_TRIALS</span></code> para los 7 modelos — solo se usa hardware que estaba ocioso.</p>
 </section>
 <section id="b-tope-de-tiempo-por-combinacion-backstop-no-la-primera-linea-de-defensa">
-<h3>b) Tope de tiempo por combinación (backstop, no la primera línea de defensa)<a class="headerlink" href="#b-tope-de-tiempo-por-combinacion-backstop-no-la-primera-linea-de-defensa" title="Permalink to this heading">#</a></h3>
+<h3>b) Tope de tiempo por combinación (backstop, no la primera línea de defensa)<a class="headerlink" href="#b-tope-de-tiempo-por-combinacion-backstop-no-la-primera-linea-de-defensa" title="Link to this heading">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">src/experiment_runner.py::run_experiments(timeout_seconds=...)</span></code> (nuevo, default <code class="docutils literal notranslate"><span class="pre">None</span></code> = comportamiento original sin cambios): cada combinación corre en un <code class="docutils literal notranslate"><span class="pre">multiprocessing.Process</span></code> aparte; si excede <code class="docutils literal notranslate"><span class="pre">timeout_seconds</span></code> se cancela (<code class="docutils literal notranslate"><span class="pre">terminate()</span></code>), se registra en <code class="docutils literal notranslate"><span class="pre">results/skipped_timeout_log.csv</span></code> (NUNCA en <code class="docutils literal notranslate"><span class="pre">experiments_master.csv</span></code> — la tabla maestra solo tiene corridas con métricas reales) con motivo y tiempo transcurrido, y se sigue con la siguiente. <code class="docutils literal notranslate"><span class="pre">resume=True</span></code> excluye tanto lo ya completado como lo ya saltado por timeout (no se reintenta solo, hay que acotar explícitamente <code class="docutils literal notranslate"><span class="pre">models</span></code>/<code class="docutils literal notranslate"><span class="pre">techniques</span></code>/<code class="docutils literal notranslate"><span class="pre">methods</span></code> a esas combinaciones para reintentarlas).</p>
 <p>Valor elegido: <strong>45 minutos</strong> (confirmado con el usuario). Pendiente al final de la corrida: <strong>si sobra tiempo del presupuesto de 7h, reintentar las combinaciones de <code class="docutils literal notranslate"><span class="pre">skipped_timeout_log.csv</span></code></strong> (autorizado explícitamente por el usuario) — probablemente ya no hagan falta gracias al paralelismo de (a), pero queda como red de seguridad para casos genuinamente atípicos (ej. SVM con probability=True, que ya se documentó como el más costoso).</p>
 <p>Probado de forma aislada antes de tocar la corrida real (deadline propio, tiempo transcurrido corriendo en paralelo sin afectar el proceso en vivo de random_forest): timeout forzado (se cancela y registra correctamente, no toca <code class="docutils literal notranslate"><span class="pre">experiments_master.csv</span></code>), combinación real completa dentro del tope (se registra normal), y <code class="docutils literal notranslate"><span class="pre">resume=True</span></code> no reintenta ni lo completado ni lo saltado.</p>
 </section>
 <section id="c-correccion-el-tope-de-tiempo-b-se-colgo-desactivado">
-<h3>c) Corrección: el tope de tiempo (b) se colgó — desactivado<a class="headerlink" href="#c-correccion-el-tope-de-tiempo-b-se-colgo-desactivado" title="Permalink to this heading">#</a></h3>
+<h3>c) Corrección: el tope de tiempo (b) se colgó — desactivado<a class="headerlink" href="#c-correccion-el-tope-de-tiempo-b-se-colgo-desactivado" title="Link to this heading">#</a></h3>
 <p>Al aplicar (a)+(b) juntos en la corrida real, <code class="docutils literal notranslate"><span class="pre">random_forest/class_weight/*</span></code> se quedó colgado (~35 min sin avanzar, CPU de los workers totalmente plano — no lento, literalmente sin cambiar ni un segundo de CPU en 15s de muestreo repetido). Causa: el wrapper de <code class="docutils literal notranslate"><span class="pre">timeout_seconds</span></code> mete cada combinación en su propio <code class="docutils literal notranslate"><span class="pre">multiprocessing.Process</span></code>, y ESE proceso a su vez llama a un método con <code class="docutils literal notranslate"><span class="pre">n_jobs=10</span></code> (que también usa <code class="docutils literal notranslate"><span class="pre">multiprocessing</span></code>/loky para paralelizar) — paralelismo de procesos anidado dentro de otro proceso (spawn dentro de spawn en Windows), que se colgó en vez de simplemente ser ineficiente.</p>
 <p><strong>Corrección</strong>: <code class="docutils literal notranslate"><span class="pre">timeout_seconds=None</span></code> en <code class="docutils literal notranslate"><span class="pre">04_run_experiments.ipynb</span></code> (desactivado). El paralelismo de (a) queda activo (es lo que de verdad importa para el presupuesto de 7h) sin el wrapper de proceso extra. El backstop para una combinación genuinamente atípica se maneja por fuera, con un monitor externo que compara el CPU total de los workers entre chequeos (~30s) y avisa si se mantiene plano ~3 minutos seguidos — sin matar nada automáticamente, para poder decidir caso por caso en vez de arriesgar otro falso positivo.</p>
 <p>El código de <code class="docutils literal notranslate"><span class="pre">run_experiments(timeout_seconds=...)</span></code> en <code class="docutils literal notranslate"><span class="pre">src/experiment_runner.py</span></code> queda en el repo (probado de forma aislada y correcto en sí mismo — el problema es específicamente la combinación con <code class="docutils literal notranslate"><span class="pre">n_jobs&gt;1</span></code> a nivel de método, no el mecanismo en sí), documentado para no reusarlo junto con paralelismo a nivel de método sin resolver antes el anidamiento (ej. usar backend <code class="docutils literal notranslate"><span class="pre">&quot;threading&quot;</span></code> en vez de <code class="docutils literal notranslate"><span class="pre">&quot;loky&quot;</span></code> para el wrapper, o mover el tope de tiempo a nivel de método en vez de por combinación completa).</p>
 </section>
 <section id="e-svm-tope-externo-diferenciado-por-metodo-2026-09-23-01-30">
-<h3>e) SVM: tope externo diferenciado por método (2026-09-23, ~01:30)<a class="headerlink" href="#e-svm-tope-externo-diferenciado-por-metodo-2026-09-23-01-30" title="Permalink to this heading">#</a></h3>
+<h3>e) SVM: tope externo diferenciado por método (2026-09-23, ~01:30)<a class="headerlink" href="#e-svm-tope-externo-diferenciado-por-metodo-2026-09-23-01-30" title="Link to this heading">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">svm/none/grid_search</span></code> (la grilla más chica de las 4 de svm: solo 16 combinaciones, <code class="docutils literal notranslate"><span class="pre">C</span></code>×<code class="docutils literal notranslate"><span class="pre">gamma</span></code>) terminó en 3399.6s (~57 min) — mucho más lento que cualquier otro modelo incluso con paralelismo, consistente con lo ya documentado (RBF O(n²)-O(n³) + <code class="docutils literal notranslate"><span class="pre">probability=True</span></code> agrega un CV interno de 5 folds por cada fit). Con ~3h48min restantes del presupuesto de 7h y 15 combinaciones de svm pendientes, seguir sin tope habría arriesgado todo el presupuesto en una sola combinación.</p>
 <p>Proyección (evaluaciones, no tiempo — mismo <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>, así que el tiempo escala aprox. igual): <code class="docutils literal notranslate"><span class="pre">grid_search</span></code> evalúa 16 combinaciones × 3 folds internos = 48; <code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code> evalúa <code class="docutils literal notranslate"><span class="pre">GA_POPULATION_SIZE</span> <span class="pre">+</span> <span class="pre">(GA_POPULATION_SIZE</span> <span class="pre">-</span> <span class="pre">GA_ELITE_SIZE)</span> <span class="pre">×</span> <span class="pre">GA_N_GENERATIONS</span></code> ≈ 16 + 14×10 = 156 individuos × 3 folds internos ≈ <strong>~10x más evaluaciones que grid_search</strong>. Con svm ya en ~57 min para el método más barato, <code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code> corriendo al mismo ritmo tomaría horas — inviable dentro del presupuesto.</p>
 <p>Como el wrapper interno (<code class="docutils literal notranslate"><span class="pre">timeout_seconds</span></code> en <code class="docutils literal notranslate"><span class="pre">run_experiments</span></code>) se cuelga anidado con <code class="docutils literal notranslate"><span class="pre">n_jobs&gt;1</span></code> (sección 8c), se implementó un vigilante EXTERNO (<code class="docutils literal notranslate"><span class="pre">watch_and_cap.py</span></code>, corre en un proceso Python aparte, fuera del notebook): identifica la combinación pendiente actual (primera en el orden — determinista dado que la corrida es secuencial), le asigna un tope según el método, y espera a que aparezca una fila nueva en <code class="docutils literal notranslate"><span class="pre">experiments_master.csv</span></code> o se cumpla el tope. Si se cumple el tope, registra la combinación en <code class="docutils literal notranslate"><span class="pre">results/skipped_timeout_log.csv</span></code> (mismo esquema que el mecanismo interno) — así que aunque el mecanismo cambió, el rastro documentado es consistente — y yo (agente) mato los procesos viejos y relanzo el notebook, que la salta automáticamente vía <code class="docutils literal notranslate"><span class="pre">resume=True</span></code>.</p>
@@ -533,12 +589,12 @@ document.write(`
 <p>Con estos topes, el peor caso (los 15 restantes agotan su tope) sigue excediendo el presupuesto (~11×90min + 4×30min ≈ 18.8h) — es decir, <strong>es matemáticamente esperable que no se complete el 112/112 dentro de las 7h</strong>, incluso con el paralelismo. Se prioriza cobertura amplia (grid/random/bayesian para las 4 técnicas restantes) sobre profundidad (genetic_deap, el más caro) — si sobra tiempo al final, se reintentan las saltadas (instrucción explícita del usuario).</p>
 </section>
 <section id="f-estado-al-cumplirse-el-presupuesto-de-7h-2026-09-23-05-41">
-<h3>f) Estado al cumplirse el presupuesto de 7h (2026-09-23, ~05:41)<a class="headerlink" href="#f-estado-al-cumplirse-el-presupuesto-de-7h-2026-09-23-05-41" title="Permalink to this heading">#</a></h3>
+<h3>f) Estado al cumplirse el presupuesto de 7h (2026-09-23, ~05:41)<a class="headerlink" href="#f-estado-al-cumplirse-el-presupuesto-de-7h-2026-09-23-05-41" title="Link to this heading">#</a></h3>
 <p>Con el ciclo vigilar→(éxito o timeout)→matar→relanzar de (e) funcionando, se completaron 3 combinaciones reales más de svm (<code class="docutils literal notranslate"><span class="pre">none/random_search</span></code> 3822.4s, <code class="docutils literal notranslate"><span class="pre">none/bayesian_optuna</span></code> 3902.1s — ambas ~65 min, dentro del tope de 90) y se saltaron 2 por exceder el tope (<code class="docutils literal notranslate"><span class="pre">none/genetic_deap</span></code> a los 1801.4s del tope de 1800s — justo como se proyectó; <code class="docutils literal notranslate"><span class="pre">smote/grid_search</span></code> a los 5405.4s del tope de 5400s — SMOTE aumenta el dataset de entrenamiento ~1.5-1.6x filas, lo que sobre un modelo O(n²)-O(n³) como SVM explica que ni siquiera grid_search, el método más barato, entrara en 90 min con esta técnica).</p>
 <p><strong>Se llegó al límite de 7h con 99/112 filas reales + 2 saltadas documentadas (101/112 resueltas). Quedan 11 combinaciones pendientes, todas de svm</strong>: <code class="docutils literal notranslate"><span class="pre">smote/{random_search,bayesian_optuna,genetic_deap}</span></code>, <code class="docutils literal notranslate"><span class="pre">adasyn/{grid_search,random_search,bayesian_optuna,genetic_deap}</span></code>, <code class="docutils literal notranslate"><span class="pre">class_weight/{grid_search,random_search,bayesian_optuna,genetic_deap}</span></code>.</p>
 <p><strong>Para continuar</strong> (fuera del presupuesto de 7h, requiere autorización explícita del usuario para seguir):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="s2">&quot;C:/Users/valef/OneDrive/Desktop/Credit_Card_Project&quot;</span>
-./.venv/Scripts/jupyter-nbconvert.exe<span class="w"> </span>--to<span class="w"> </span>notebook<span class="w"> </span>--execute<span class="w"> </span>--inplace<span class="w"> </span>--ExecutePreprocessor.timeout<span class="o">=</span>-1<span class="w"> </span><span class="s2">&quot;notebooks/04_run_experiments.ipynb&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>logs/04_run_resumeN.log<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="s2">"C:/Users/valef/OneDrive/Desktop/Credit_Card_Project"</span>
+./.venv/Scripts/jupyter-nbconvert.exe<span class="w"> </span>--to<span class="w"> </span>notebook<span class="w"> </span>--execute<span class="w"> </span>--inplace<span class="w"> </span>--ExecutePreprocessor.timeout<span class="o">=</span>-1<span class="w"> </span><span class="s2">"notebooks/04_run_experiments.ipynb"</span><span class="w"> </span>&gt;<span class="w"> </span>logs/04_run_resumeN.log<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">resume=True</span></code> sigue saltando automáticamente las 99 ya completas Y las 2 ya registradas en <code class="docutils literal notranslate"><span class="pre">results/skipped_timeout_log.csv</span></code> (no las reintenta solas). Dado el patrón observado (smote ya mostró ser más lento que none; adasyn probablemente similar a smote ya que también sobremuestrea; class_weight no agranda el dataset así que debería comportarse más como <code class="docutils literal notranslate"><span class="pre">none</span></code>), lo esperable es:</p>
@@ -549,68 +605,68 @@ document.write(`
 <p>Si se retoma, considerar subir el tope de grid/random/bayesian a ~120 min específicamente para smote/adasyn (documentando el cambio), o aceptar más saltos — el usuario ya autorizó reintentar las saltadas al final si sobra tiempo (“si pasas todos, puedes reintentar los pendientes”).</p>
 </section>
 <section id="r-pausado-por-el-usuario-2026-09-24-06-5x">
-<h3>r) Pausado por el usuario (2026-09-24, ~06:5x)<a class="headerlink" href="#r-pausado-por-el-usuario-2026-09-24-06-5x" title="Permalink to this heading">#</a></h3>
+<h3>r) Pausado por el usuario (2026-09-24, ~06:5x)<a class="headerlink" href="#r-pausado-por-el-usuario-2026-09-24-06-5x" title="Link to this heading">#</a></h3>
 <p>Detenido limpio a pedido del usuario. <strong>Estado: 104/112.</strong> Completadas desde el reordenamiento (q): <code class="docutils literal notranslate"><span class="pre">class_weight/grid_search</span></code>, <code class="docutils literal notranslate"><span class="pre">class_weight/random_search</span></code>, <code class="docutils literal notranslate"><span class="pre">class_weight/bayesian_optuna</span></code>, <code class="docutils literal notranslate"><span class="pre">smote/grid_search</span></code>. Quedan 8 pendientes: <code class="docutils literal notranslate"><span class="pre">smote/random_search</span></code>, <code class="docutils literal notranslate"><span class="pre">smote/bayesian_optuna</span></code>, <code class="docutils literal notranslate"><span class="pre">smote/genetic_deap</span></code>, <code class="docutils literal notranslate"><span class="pre">adasyn/*</span></code> (las 4), <code class="docutils literal notranslate"><span class="pre">class_weight/genetic_deap</span></code>. El usuario está explorando en paralelo la vía de GPU en Colab (notebook <code class="docutils literal notranslate"><span class="pre">07_svm_gpu_colab.ipynb</span></code>, que falló por un problema conocido de <code class="docutils literal notranslate"><span class="pre">rapidsai-csp-utils</span></code> — requiere reiniciar el runtime de Colab después de instalar RAPIDS antes de importar <code class="docutils literal notranslate"><span class="pre">cuml</span></code>; se armó un prompt para que otro agente lo arregle). Para retomar local: mismo comando de siempre (sección 2), la configuración reordenada (<code class="docutils literal notranslate"><span class="pre">techniques=[&quot;class_weight&quot;,&quot;smote&quot;,&quot;adasyn&quot;]</span></code>, <code class="docutils literal notranslate"><span class="pre">methods</span></code> sin <code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code>) sigue activa en el notebook.</p>
 </section>
 <section id="q-retomado-con-presupuesto-de-6h-reordenado-para-maximizar-cobertura-2026-09-23-17-20">
-<h3>q) Retomado con presupuesto de 6h — reordenado para maximizar cobertura (2026-09-23, ~17:20)<a class="headerlink" href="#q-retomado-con-presupuesto-de-6h-reordenado-para-maximizar-cobertura-2026-09-23-17-20" title="Permalink to this heading">#</a></h3>
+<h3>q) Retomado con presupuesto de 6h — reordenado para maximizar cobertura (2026-09-23, ~17:20)<a class="headerlink" href="#q-retomado-con-presupuesto-de-6h-reordenado-para-maximizar-cobertura-2026-09-23-17-20" title="Link to this heading">#</a></h3>
 <p>El usuario autorizó continuar con un nuevo presupuesto de 6h y “cualquier estrategia” para aprovechar el tiempo. Con datos reales ya medidos (grid_search/random_search/bayesian_optuna en <code class="docutils literal notranslate"><span class="pre">none</span></code>: 57/64/65 min; <code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code> en <code class="docutils literal notranslate"><span class="pre">none</span></code>: 4h21min), la matemática no cierra para las 12 combinaciones restantes en 6h bajo el orden por defecto (que intercala <code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code> cada 4 combinaciones) — ni siquiera las 9 combinaciones “baratas” solas caben cómodas (9 × ~60-90min ≈ 9-13.5h).</p>
 <p><strong>Estrategia</strong>: en vez de un tope de tiempo artificial (que en la fase anterior generó falsos positivos y complejidad), se <strong>reordena</strong> la corrida para maximizar combinaciones REALES completadas: <code class="docutils literal notranslate"><span class="pre">04_run_experiments.ipynb</span></code> ahora pasa <code class="docutils literal notranslate"><span class="pre">techniques=[&quot;class_weight&quot;,</span> <span class="pre">&quot;smote&quot;,</span> <span class="pre">&quot;adasyn&quot;]</span></code> (class_weight primero, más barato — no agranda el dataset como smote/adasyn) y <code class="docutils literal notranslate"><span class="pre">methods=[&quot;grid_search&quot;,</span> <span class="pre">&quot;random_search&quot;,</span> <span class="pre">&quot;bayesian_optuna&quot;]</span></code> (excluye <code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code> de esta primera pasada). <code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code> (el más caro, ~4h+ por técnica) se corre aparte después, solo si sobra presupuesto, para no arriesgar consumir las 6h enteras en un solo intento sin dejar nada más completo. <code class="docutils literal notranslate"><span class="pre">resume=True</span></code> sigue funcionando igual — no se pierde nada de lo ya hecho.</p>
 </section>
 <section id="p-pausado-por-el-usuario-2026-09-23-17-10">
-<h3>p) Pausado por el usuario (2026-09-23, ~17:10)<a class="headerlink" href="#p-pausado-por-el-usuario-2026-09-23-17-10" title="Permalink to this heading">#</a></h3>
+<h3>p) Pausado por el usuario (2026-09-23, ~17:10)<a class="headerlink" href="#p-pausado-por-el-usuario-2026-09-23-17-10" title="Link to this heading">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">svm/smote/grid_search</span></code> (primera de las 12 restantes) acababa de arrancar bajo <code class="docutils literal notranslate"><span class="pre">04_run_resume17.log</span></code> (n_jobs=10, cache_size=500) cuando el usuario pidió pausar. Detenido limpio, sin pérdida más allá de lo ya sabido (nada se había guardado aún de esa combinación). <strong>Estado: 100/112</strong>, 12 pendientes (todas <code class="docutils literal notranslate"><span class="pre">smote</span></code>/<code class="docutils literal notranslate"><span class="pre">adasyn</span></code>/<code class="docutils literal notranslate"><span class="pre">class_weight</span></code> × 4 métodos). Para retomar: mismo comando de siempre (sección 2) — el notebook ya tiene los ajustes de (o) guardados en <code class="docutils literal notranslate"><span class="pre">config.py</span></code>/<code class="docutils literal notranslate"><span class="pre">models.py</span></code>, no hace falta tocar nada.</p>
 </section>
 <section id="o-svm-none-genetic-deap-completo-con-el-fix-relanzado-con-n-jobs-10-2026-09-23-17-07">
-<h3>o) <code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> completó con el fix — relanzado con n_jobs=10 (2026-09-23, ~17:07)<a class="headerlink" href="#o-svm-none-genetic-deap-completo-con-el-fix-relanzado-con-n-jobs-10-2026-09-23-17-07" title="Permalink to this heading">#</a></h3>
+<h3>o) <code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> completó con el fix — relanzado con n_jobs=10 (2026-09-23, ~17:07)<a class="headerlink" href="#o-svm-none-genetic-deap-completo-con-el-fix-relanzado-con-n-jobs-10-2026-09-23-17-07" title="Link to this heading">#</a></h3>
 <p><strong>100/112.</strong> El fix de threading funcionó de punta a punta en la corrida real completa (no solo en la prueba mini): 15645.8s (~4h21min), sin crashes, sin errores. Relanzado como <code class="docutils literal notranslate"><span class="pre">04_run_resume17.log</span></code> con los ajustes acordados con el usuario (<code class="docutils literal notranslate"><span class="pre">OPTIMIZATION_N_JOBS=10</span></code>, <code class="docutils literal notranslate"><span class="pre">cache_size=500</span></code> en SVC) para las 12 combinaciones restantes (<code class="docutils literal notranslate"><span class="pre">smote</span></code>/<code class="docutils literal notranslate"><span class="pre">adasyn</span></code>/<code class="docutils literal notranslate"><span class="pre">class_weight</span></code> × 4 métodos cada una).</p>
 </section>
 <section id="n-causa-raiz-real-encontrada-no-era-memoria-era-loky-procesos-arreglado-con-threading-2026-09-23-12-45">
-<h3>n) Causa raíz real encontrada: no era memoria, era <code class="docutils literal notranslate"><span class="pre">loky</span></code> (procesos) — arreglado con <code class="docutils literal notranslate"><span class="pre">threading</span></code> (2026-09-23, ~12:45)<a class="headerlink" href="#n-causa-raiz-real-encontrada-no-era-memoria-era-loky-procesos-arreglado-con-threading-2026-09-23-12-45" title="Permalink to this heading">#</a></h3>
+<h3>n) Causa raíz real encontrada: no era memoria, era <code class="docutils literal notranslate"><span class="pre">loky</span></code> (procesos) — arreglado con <code class="docutils literal notranslate"><span class="pre">threading</span></code> (2026-09-23, ~12:45)<a class="headerlink" href="#n-causa-raiz-real-encontrada-no-era-memoria-era-loky-procesos-arreglado-con-threading-2026-09-23-12-45" title="Link to this heading">#</a></h3>
 <p>Con <code class="docutils literal notranslate"><span class="pre">OPTIMIZATION_N_JOBS=2</span></code> volvió a crashear (mismo <code class="docutils literal notranslate"><span class="pre">TerminatedWorkerError</span></code>) en <strong>menos de 1 minuto</strong>, con MÁS RAM libre que en intentos anteriores (3.43GB) — esto descartó la memoria como causa. Diagnóstico aislado (<code class="docutils literal notranslate"><span class="pre">diagnose_svm_crash.py</span></code>, en el scratchpad): se evaluó la población inicial de <code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> (misma <code class="docutils literal notranslate"><span class="pre">random_state</span></code>, así que son exactamente los mismos individuos de todos los intentos anteriores) <strong>secuencialmente, sin multiprocessing</strong>. El individuo <code class="docutils literal notranslate"><span class="pre">[0]</span></code> (<code class="docutils literal notranslate"><span class="pre">C=3.61,</span> <span class="pre">gamma=0.000126</span></code>) terminó bien en 258s — sin crash.</p>
 <p>Conclusión: el problema no era el fit de SVM en sí, era específico de <code class="docutils literal notranslate"><span class="pre">loky</span></code> (backend de procesos de joblib): el closure <code class="docutils literal notranslate"><span class="pre">_evaluate</span></code> dentro de <code class="docutils literal notranslate"><span class="pre">run_genetic_search</span></code> captura <code class="docutils literal notranslate"><span class="pre">X</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code> y las clases dinámicas de <code class="docutils literal notranslate"><span class="pre">creator.Individual</span></code>/<code class="docutils literal notranslate"><span class="pre">creator.FitnessMax</span></code> (DEAP) — picklearlas/reconstruirlas a través de procesos (spawn en Windows) resultó frágil.</p>
 <p><strong>Fix</strong>: <code class="docutils literal notranslate"><span class="pre">src/optimization.py::run_genetic_search</span></code> — <code class="docutils literal notranslate"><span class="pre">_map_evaluate</span></code> cambia de <code class="docutils literal notranslate"><span class="pre">backend=&quot;loky&quot;</span></code> a <code class="docutils literal notranslate"><span class="pre">backend=&quot;threading&quot;</span></code>. Sin pickling (memoria compartida entre hilos) se elimina la clase de error por completo, y como <code class="docutils literal notranslate"><span class="pre">SVC.fit()</span></code> libera el GIL durante el cómputo en C (libsvm), sigue habiendo paralelismo real. <strong>Verificado con una corrida mini real</strong> (svm, población=4, 1 generación, <code class="docutils literal notranslate"><span class="pre">n_jobs=2</span></code>, dataset real): <code class="docutils literal notranslate"><span class="pre">OK</span> <span class="pre">sin</span> <span class="pre">crash:</span> <span class="pre">best_score=0.4541,</span> <span class="pre">elapsed=1284.2s,</span> <span class="pre">n_evaluations=6</span></code> — además confirmó que el <code class="docutils literal notranslate"><span class="pre">max_iter=200_000</span></code> de (j) también está funcionando (<code class="docutils literal notranslate"><span class="pre">ConvergenceWarning:</span> <span class="pre">Solver</span> <span class="pre">terminated</span> <span class="pre">early</span></code>, uno de los 6 fits lo alcanzó).</p>
 <p>Con esto arreglado, <code class="docutils literal notranslate"><span class="pre">OPTIMIZATION_N_JOBS</span></code> se sube de nuevo a <strong>8</strong> (ya no hay riesgo de duplicación de memoria por proceso). Relanzado como <code class="docutils literal notranslate"><span class="pre">04_run_resume16.log</span></code>.</p>
 </section>
 <section id="m-4-workers-tambien-crasheo-bajado-a-2-mas-limpieza-de-huerfanos-2026-09-23-12-40">
-<h3>m) 4 workers también crasheó — bajado a 2, más limpieza de huérfanos (2026-09-23, ~12:40)<a class="headerlink" href="#m-4-workers-tambien-crasheo-bajado-a-2-mas-limpieza-de-huerfanos-2026-09-23-12-40" title="Permalink to this heading">#</a></h3>
+<h3>m) 4 workers también crasheó — bajado a 2, más limpieza de huérfanos (2026-09-23, ~12:40)<a class="headerlink" href="#m-4-workers-tambien-crasheo-bajado-a-2-mas-limpieza-de-huerfanos-2026-09-23-12-40" title="Link to this heading">#</a></h3>
 <p>Con <code class="docutils literal notranslate"><span class="pre">OPTIMIZATION_N_JOBS=4</span></code> volvió a fallar en ~1-2 min (mismo <code class="docutils literal notranslate"><span class="pre">TerminatedWorkerError</span></code>). Se encontraron procesos <code class="docutils literal notranslate"><span class="pre">python</span></code>/<code class="docutils literal notranslate"><span class="pre">python3.13</span></code> huérfanos de la corrida anterior (no se limpiaron solos al fallar el notebook) — se mataron, pero la RAM libre NO mejoró significativamente (2.54GB vs 2.77GB antes), confirmando que el problema no es acumulación de huérfanos sino que la máquina simplemente tiene poco margen disponible en este momento (Windows + OneDrive + el navegador y otras aplicaciones ya usan la mayor parte de los 16GB, fuera del control de este proceso). Bajado a <strong><code class="docutils literal notranslate"><span class="pre">OPTIMIZATION_N_JOBS=2</span></code></strong>. Relanzado como <code class="docutils literal notranslate"><span class="pre">04_run_resume15.log</span></code>. <strong>Rutina agregada</strong>: verificar y matar procesos <code class="docutils literal notranslate"><span class="pre">python</span></code>/<code class="docutils literal notranslate"><span class="pre">jupyter</span></code> huérfanos antes de cada relanzamiento, no solo cuando se detecta un cuelgue.</p>
 </section>
 <section id="l-8-workers-tampoco-alcanzo-la-ram-libre-real-es-3gb-no-16gb-2026-09-23-12-38">
-<h3>l) 8 workers tampoco alcanzó — la RAM libre real es ~3GB, no 16GB (2026-09-23, ~12:38)<a class="headerlink" href="#l-8-workers-tampoco-alcanzo-la-ram-libre-real-es-3gb-no-16gb-2026-09-23-12-38" title="Permalink to this heading">#</a></h3>
+<h3>l) 8 workers tampoco alcanzó — la RAM libre real es ~3GB, no 16GB (2026-09-23, ~12:38)<a class="headerlink" href="#l-8-workers-tampoco-alcanzo-la-ram-libre-real-es-3gb-no-16gb-2026-09-23-12-38" title="Link to this heading">#</a></h3>
 <p>Con <code class="docutils literal notranslate"><span class="pre">OPTIMIZATION_N_JOBS=8</span></code>, el mismo <code class="docutils literal notranslate"><span class="pre">TerminatedWorkerError</span></code> volvió a aparecer, esta vez en ~2 minutos (no horas) — señal de que no era una acumulación lenta, sino falta de margen desde el arranque. Verificado: de los 16GB totales de la máquina, solo ~3GB estaban genuinamente libres (Windows + OneDrive + el navegador y otras aplicaciones ya usan ~13GB en base, independiente de los experimentos). Bajado a <strong><code class="docutils literal notranslate"><span class="pre">OPTIMIZATION_N_JOBS=4</span></code></strong>. Relanzado como <code class="docutils literal notranslate"><span class="pre">04_run_resume14.log</span></code>.</p>
 </section>
 <section id="k-la-causa-real-no-era-lentitud-era-un-crash-por-memoria-2026-09-23-12-35">
-<h3>k) La causa real no era lentitud, era un crash por memoria (2026-09-23, ~12:35)<a class="headerlink" href="#k-la-causa-real-no-era-lentitud-era-un-crash-por-memoria-2026-09-23-12-35" title="Permalink to this heading">#</a></h3>
+<h3>k) La causa real no era lentitud, era un crash por memoria (2026-09-23, ~12:35)<a class="headerlink" href="#k-la-causa-real-no-era-lentitud-era-un-crash-por-memoria-2026-09-23-12-35" title="Link to this heading">#</a></h3>
 <p>Antes de que se cumpliera la hora de margen de (j), el proceso terminó solo con error: <code class="docutils literal notranslate"><span class="pre">TerminatedWorkerError</span></code> — un worker fue matado por el sistema operativo (uso excesivo de memoria o segfault) tras &gt;4h corriendo. Diagnóstico: <code class="docutils literal notranslate"><span class="pre">svm</span></code> con <code class="docutils literal notranslate"><span class="pre">probability=True</span></code> entrena 5 modelos internos por cada fit (Platt scaling) sobre ~20K filas; con <code class="docutils literal notranslate"><span class="pre">OPTIMIZATION_N_JOBS=12</span></code> (subido de 10 a 12 en la sección 8i a pedido del usuario) había 12 de estos fits pesados corriendo simultáneamente, saturando los 16GB de RAM de la máquina. El cuello de botella real de <code class="docutils literal notranslate"><span class="pre">svm</span></code> no es CPU — es memoria — así que más núcleos en paralelo no ayuda tanto como en otros modelos y aumenta el riesgo de OOM.</p>
 <p><strong>Corrección</strong>: <code class="docutils literal notranslate"><span class="pre">OPTIMIZATION_N_JOBS</span></code> bajado de 12 a <strong>8</strong> (más RAM disponible por worker). Junto con el <code class="docutils literal notranslate"><span class="pre">max_iter=200_000</span></code> de (j) (protege contra no-convergencia genuina) y el nuevo tope de memoria implícito (menos procesos simultáneos), las dos causas conocidas de “se cuelga para siempre” están mitigadas. Relanzado como <code class="docutils literal notranslate"><span class="pre">04_run_resume13.log</span></code> — se reintenta <code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> desde cero (sin guardado parcial, como ya se explicó). Dado que ambas causas raíz están corregidas, se decide NO reimponer el límite artificial de 1h — se vuelve a la vigilancia por cuelgue real (CPU plano) únicamente.</p>
 </section>
 <section id="j-svm-none-genetic-deap-colgado-en-un-individuo-patologico-2026-09-23-12-15">
-<h3>j) <code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> colgado en un individuo patológico (2026-09-23, ~12:15)<a class="headerlink" href="#j-svm-none-genetic-deap-colgado-en-un-individuo-patologico-2026-09-23-12-15" title="Permalink to this heading">#</a></h3>
+<h3>j) <code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> colgado en un individuo patológico (2026-09-23, ~12:15)<a class="headerlink" href="#j-svm-none-genetic-deap-colgado-en-un-individuo-patologico-2026-09-23-12-15" title="Link to this heading">#</a></h3>
 <p>A las 4h de corrida (arrancó 8:11am, sin resultado a las 12:12pm), diagnóstico: 16 workers activos pero con distribución de CPU muy despareja (un proceso con 8283s acumulados, más del doble que el segundo; dos workers casi sin uso) — consistente con que la mayoría de la población ya se evaluó y UN individuo (una combinación C/gamma específica) está tardando desproporcionadamente en converger en el solver SMO de libsvm. No es un cuelgue (ese proceso sigue sumando CPU), pero sí un caso atípico.</p>
 <p>Se descubrió que <code class="docutils literal notranslate"><span class="pre">_svm_factory</span></code> (src/models.py) <strong>no tenía <code class="docutils literal notranslate"><span class="pre">max_iter</span></code> acotado</strong> (default de sklearn: <code class="docutils literal notranslate"><span class="pre">-1</span></code>, sin límite) — en el peor caso, sin garantía de terminar nunca. Se agregó <code class="docutils literal notranslate"><span class="pre">max_iter=200_000</span></code> (generoso, no afecta convergencia normal; si se alcanza el tope sin converger, sklearn usa la mejor solución parcial y esa combinación simplemente puntúa peor en el CV — comportamiento esperado, no invalida la búsqueda). <strong>Este cambio NO afecta la corrida en curso</strong> (código ya cargado en memoria del proceso viejo), solo protege reintentos futuros.</p>
 <p>Como no hay guardado parcial por fold outer (nested_cv solo escribe la fila al terminar los 3 folds), cortar esta combinación pierde el 100% de las 4h invertidas — no hay forma de “recuperar” ese progreso. Discutido con el usuario: se decidió dar <strong>1 hora más de margen firme</strong> (no indefinido) antes de cortar y seguir con las 12 combinaciones restantes de svm.</p>
 </section>
 <section id="i-retomado-a-maximo-rendimiento-2026-09-23-07-30">
-<h3>i) Retomado a máximo rendimiento (2026-09-23, ~07:30)<a class="headerlink" href="#i-retomado-a-maximo-rendimiento-2026-09-23-07-30" title="Permalink to this heading">#</a></h3>
+<h3>i) Retomado a máximo rendimiento (2026-09-23, ~07:30)<a class="headerlink" href="#i-retomado-a-maximo-rendimiento-2026-09-23-07-30" title="Link to this heading">#</a></h3>
 <p>El usuario pidió seguir, usando el máximo del PC (queda conectado a la corriente, sin supervisión). <code class="docutils literal notranslate"><span class="pre">config.OPTIMIZATION_N_JOBS</span></code> subido de 10 a <strong>12</strong> (todos los núcleos lógicos — ya no se reservan 2 para el SO/monitoreo). Se activó <code class="docutils literal notranslate"><span class="pre">request_keep_awake</span></code> para evitar que el equipo entre en reposo por inactividad durante corridas largas sin interacción (nota: esta protección se libera sola tras ~5 min sin actividad de turno; dado que este PC va a quedar conectado a la corriente, sus propios ajustes de energía son la salvaguarda principal — igual conviene confirmar que Windows no esté configurado para dormir con el cargador conectado). Relanzado como <code class="docutils literal notranslate"><span class="pre">04_run_resume12.log</span></code>.</p>
 </section>
 <section id="h-detenido-por-el-usuario-2026-09-23-07-25">
-<h3>h) Detenido por el usuario (2026-09-23, ~07:25)<a class="headerlink" href="#h-detenido-por-el-usuario-2026-09-23-07-25" title="Permalink to this heading">#</a></h3>
+<h3>h) Detenido por el usuario (2026-09-23, ~07:25)<a class="headerlink" href="#h-detenido-por-el-usuario-2026-09-23-07-25" title="Link to this heading">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> estaba en curso (reintentándose, ~66 min invertidos, CPU sano, sin errores) cuando el usuario pidió detener todo. Se mató el proceso (checkpoint intacto: nada se pierde salvo el trabajo en curso de esa combinación, que no se había guardado — <code class="docutils literal notranslate"><span class="pre">resume=True</span></code> la reintentará desde cero la próxima vez). <strong>Estado al detener: 99/112 filas reales</strong>, 13 pendientes (todas de <code class="docutils literal notranslate"><span class="pre">svm</span></code>, incluyendo las 2 que se habían saltado por timeout antes de que se autorizara seguir sin presupuesto — ver sección 8g/8f). <code class="docutils literal notranslate"><span class="pre">results/skipped_timeout_log.csv</span></code> vacío/no existe (se limpió en 8g). El archivo de las 2 saltadas originalmente sigue en <code class="docutils literal notranslate"><span class="pre">results/skipped_timeout_log_archive_before_full_completion.csv</span></code> por si hace falta consultarlo.</p>
 <p>Para retomar: mismo comando de siempre (sección 2), <code class="docutils literal notranslate"><span class="pre">resume=True</span></code> sigue el orden por costo y no repite las 99 ya completas.</p>
 </section>
 <section id="g-el-usuario-autorizo-continuar-mas-alla-de-las-7h-hasta-112-112">
-<h3>g) El usuario autorizó continuar más allá de las 7h hasta 112/112<a class="headerlink" href="#g-el-usuario-autorizo-continuar-mas-alla-de-las-7h-hasta-112-112" title="Permalink to this heading">#</a></h3>
+<h3>g) El usuario autorizó continuar más allá de las 7h hasta 112/112<a class="headerlink" href="#g-el-usuario-autorizo-continuar-mas-alla-de-las-7h-hasta-112-112" title="Link to this heading">#</a></h3>
 <p>Con eso, se removió el tope artificial de tiempo: ahora el vigilante externo (<code class="docutils literal notranslate"><span class="pre">watch_and_cap.py</span></code>) deja correr cada combinación hasta que termine, y solo interviene si detecta un CUELGUE REAL (CPU total de los workers exactamente plano por ~12 minutos seguidos) — en ese caso, la acción es <strong>reintentar la misma combinación</strong> (matar y relanzar, no marcarla como saltada), porque ya no hay presión de presupuesto que justifique sacrificar cobertura. Las 2 combinaciones previamente saltadas por timeout (<code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code>, <code class="docutils literal notranslate"><span class="pre">svm/smote/grid_search</span></code>) se archivaron en <code class="docutils literal notranslate"><span class="pre">results/skipped_timeout_log_archive_before_full_completion.csv</span></code> y se limpiaron de <code class="docutils literal notranslate"><span class="pre">results/skipped_timeout_log.csv</span></code> para que se reintenten con las demás.</p>
 </section>
 <section id="d-combinacion-en-curso-al-momento-de-este-cambio">
-<h3>d) Combinación en curso al momento de este cambio<a class="headerlink" href="#d-combinacion-en-curso-al-momento-de-este-cambio" title="Permalink to this heading">#</a></h3>
+<h3>d) Combinación en curso al momento de este cambio<a class="headerlink" href="#d-combinacion-en-curso-al-momento-de-este-cambio" title="Link to this heading">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">random_forest/adasyn/genetic_deap</span></code> seguía corriendo bajo el código VIEJO (sin paralelismo, sin tope) cuando se hizo este cambio — el proceso en memoria no puede recargar código nuevo. Decisión explícita del usuario: dejarla terminar sin límite (ya llevaba &gt;1h20min invertidas), y aplicar el paralelismo/tope solo de ahí en adelante. Un monitor automático espera a que esa fila aparezca en <code class="docutils literal notranslate"><span class="pre">experiments_master.csv</span></code> (12/16 de random_forest) o a que el proceso muera/falle, y en ese momento se mata el proceso viejo (que de todas formas ya seguiría con el código antiguo para las combinaciones siguientes) y se relanza <code class="docutils literal notranslate"><span class="pre">04_run_experiments.ipynb</span></code> con los cambios de (a)+(b) ya cargados.</p>
 </section>
 </section>
 <section id="archivos-modificados-en-esta-sesion">
-<h2>7. Archivos modificados en esta sesión<a class="headerlink" href="#archivos-modificados-en-esta-sesion" title="Permalink to this heading">#</a></h2>
+<h2>7. Archivos modificados en esta sesión<a class="headerlink" href="#archivos-modificados-en-esta-sesion" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">src/config.py</span></code> — <code class="docutils literal notranslate"><span class="pre">JOBLIB_CACHE_DIR</span></code> agregado.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">src/models.py</span></code> — <code class="docutils literal notranslate"><span class="pre">BalancedGaussianNB</span></code>, <code class="docutils literal notranslate"><span class="pre">BalancedKNeighborsClassifier</span></code>, <code class="docutils literal notranslate"><span class="pre">get_param_grid</span></code> con <code class="docutils literal notranslate"><span class="pre">max_combinations</span></code>, <code class="docutils literal notranslate"><span class="pre">ModelSpec.grid_search_max_combinations</span></code>, registros de <code class="docutils literal notranslate"><span class="pre">knn</span></code>/<code class="docutils literal notranslate"><span class="pre">naive_bayes</span></code>/<code class="docutils literal notranslate"><span class="pre">random_forest</span></code> actualizados.</p></li>
@@ -664,15 +720,18 @@ document.write(`
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estado-actual-corrida-v2-dataset-de-29-965-21">Estado actual (corrida v2, dataset de 29,965 × 21)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#progreso-corrida-anterior-dataset-v1-100-112-combinaciones-guardadas-svm-none-genetic-deap-termino-ok-2026-09-23-17-07-con-el-fix-de-threading-15645-8s-4h21min">1. Progreso (corrida anterior, dataset v1): 100/112 combinaciones guardadas — <code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> terminó OK (2026-09-23 ~17:07) con el fix de threading, 15645.8s (~4h21min)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-continuar">2. Cómo continuar</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ajustes-hechos-autonomos-documentados-tambien-como-comentarios-en-el-codigo">3. Ajustes hechos (autónomos, documentados también como comentarios en el código)</a><ul class="nav section-nav flex-column">
@@ -722,7 +781,7 @@ document.write(`
   <div class="footer-item">
     
 <p class="component-author">
-By Equipo del proyecto
+By Katherin Barrera López y Valeria Florez Sarmiento
 </p>
 
   </div>
@@ -732,7 +791,7 @@ By Equipo del proyecto
 
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>
@@ -756,8 +815,8 @@ By Equipo del proyecto
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

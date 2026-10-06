@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>06. Interpretabilidad (SHAP y LIME) &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
   
@@ -17,85 +16,81 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
-  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/06_interpretability';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="prev" title="05. Análisis de resultados" href="05_results_analysis.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -103,7 +98,6 @@ const thebe_selector_output = ".output, .cell_output"
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -111,15 +105,59 @@ const thebe_selector_output = ".output, .cell_output"
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -128,7 +166,8 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -146,7 +185,7 @@ const thebe_selector_output = ".output, .cell_output"
     
   
 
-<a class="navbar-brand logo" href="../README.html">
+<a class="navbar-brand logo" href="../portada.html">
   
   
   
@@ -156,17 +195,25 @@ const thebe_selector_output = ".output, .cell_output"
     <p class="title logo__title">Default of Credit Card Clients — Pipeline de Clasificación</p>
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
-                <a class="reference internal" href="../README.html">
+                <a class="reference internal" href="../portada.html">
                     Default of Credit Card Clients
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Introducción y marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
@@ -182,9 +229,14 @@ const thebe_selector_output = ".output, .cell_output"
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -203,9 +255,9 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -267,7 +319,7 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -281,27 +333,19 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -321,7 +365,7 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#elegir-el-mejor-modelo-y-ajustar-su-pipeline">Elegir el mejor modelo y ajustar su pipeline</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-global-summary-plot">SHAP global (summary plot)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-local-una-observacion-bien-clasificada-y-una-con-error-alto">SHAP local: una observación bien clasificada y una con error alto</a></li>
@@ -341,14 +385,21 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="interpretabilidad-shap-y-lime">
-<h1>06. Interpretabilidad (SHAP y LIME)<a class="headerlink" href="#interpretabilidad-shap-y-lime" title="Permalink to this heading">#</a></h1>
-<p>SHAP global (summary plot) y local (waterfall, 2 observaciones: una bien clasificada y una con error alto) para el <strong>mejor modelo</strong> identificado en <code class="docutils literal notranslate"><span class="pre">05_results_analysis.ipynb</span></code>, más la comparación LIME vs. SHAP <strong>específicamente para XGBoost</strong> que pide el curso.</p>
+<h1>06. Interpretabilidad (SHAP y LIME)<a class="headerlink" href="#interpretabilidad-shap-y-lime" title="Link to this heading">#</a></h1>
+<p>SHAP global (summary plot) y local (waterfall, 2 observaciones: una bien clasificada y una con error alto) para la combinación con mayor F1 medio en <code class="docutils literal notranslate"><span class="pre">05_results_analysis.ipynb</span></code> (Random Forest, <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code>), más una comparación LIME vs. SHAP para XGBoost sobre una sola observación.</p>
+<p><strong>Alcance y limitaciones:</strong></p>
+<ul class="simple">
+<li><p>Es la interpretación de <strong>una</strong> combinación, en <strong>un</strong> fold externo (el de mayor F1, elegido a posteriori) y sobre 100 filas de su conjunto de prueba. No describe a todos los modelos ni es un resultado general del dataset.</p></li>
+<li><p>Las dos observaciones del waterfall son casos extremos (probabilidades 0.982 y 0.964), no representativos del conjunto.</p></li>
+<li><p>La comparación LIME vs. SHAP usa una sola observación de XGBoost (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>, mejor fold de ese modelo): ilustra el método, pero no permite concluir cuándo coinciden o divergen en general.</p></li>
+<li><p>Con variables correlacionadas, SHAP reparte la importancia entre ellas de forma arbitraria. Y con modelos entrenados con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> o SMOTE las probabilidades no están calibradas: el valor base de 0.5 refleja el balanceo y no la prevalencia real (22 %), así que los aportes no se leen como cambios de riesgo reales.</p></li>
+</ul>
 <p>Trabaja desde <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code> (mismo patrón que <code class="docutils literal notranslate"><span class="pre">05_results_analysis.ipynb</span></code>), no depende de nada en memoria de notebooks anteriores.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -382,42 +433,42 @@ document.write(`
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">load_master_table</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">EXPERIMENTS_MASTER_PATH</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;La tabla maestra está vacía. Correr primero 04_run_experiments.ipynb.&quot;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"La tabla maestra está vacía. Correr primero 04_run_experiments.ipynb."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
 </div>
 <section id="elegir-el-mejor-modelo-y-ajustar-su-pipeline">
-<h2>Elegir el mejor modelo y ajustar su pipeline<a class="headerlink" href="#elegir-el-mejor-modelo-y-ajustar-su-pipeline" title="Permalink to this heading">#</a></h2>
+<h2>Elegir el mejor modelo y ajustar su pipeline<a class="headerlink" href="#elegir-el-mejor-modelo-y-ajustar-su-pipeline" title="Link to this heading">#</a></h2>
 <p>El fold externo usado es el de mejor desempeño (<code class="docutils literal notranslate"><span class="pre">{metric}_per_fold</span></code>, ver columna persistida por <code class="docutils literal notranslate"><span class="pre">nested_cv.py</span></code>); SHAP/LIME se calculan sobre ESE fold de prueba.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metric_for_ranking</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_SCORING</span>
-<span class="n">best_row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">best_model</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span>
-<span class="n">best_technique</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;technique&quot;</span><span class="p">]</span>
-<span class="n">best_method</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span>
+<span class="n">best_row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">best_model</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">"model"</span><span class="p">]</span>
+<span class="n">best_technique</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">"technique"</span><span class="p">]</span>
+<span class="n">best_method</span> <span class="o">=</span> <span class="n">best_row</span><span class="p">[</span><span class="s2">"method"</span><span class="p">]</span>
 
-<span class="n">best_params_per_fold</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;best_params_per_fold&quot;</span><span class="p">])</span>
-<span class="n">per_fold_metric</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_per_fold&quot;</span><span class="p">])</span>
+<span class="n">best_params_per_fold</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">"best_params_per_fold"</span><span class="p">])</span>
+<span class="n">per_fold_metric</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_per_fold"</span><span class="p">])</span>
 <span class="n">best_fold_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">per_fold_metric</span><span class="p">))</span>
 <span class="n">best_params</span> <span class="o">=</span> <span class="n">best_params_per_fold</span><span class="p">[</span><span class="n">best_fold_idx</span><span class="p">]</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mejor modelo: </span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">best_technique</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">best_method</span><span class="si">}</span><span class="s2"> (fold </span><span class="si">{</span><span class="n">best_fold_idx</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mejor modelo: </span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">best_technique</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">best_method</span><span class="si">}</span><span class="s2"> (fold </span><span class="si">{</span><span class="n">best_fold_idx</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
 
 <span class="n">spec</span> <span class="o">=</span> <span class="n">MODEL_REGISTRY</span><span class="p">[</span><span class="n">best_model</span><span class="p">]</span>
 <span class="n">fitted</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">fit_explainable_pipeline</span><span class="p">(</span>
     <span class="n">spec</span><span class="p">,</span> <span class="n">best_technique</span><span class="p">,</span> <span class="n">best_params</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">best_fold_idx</span><span class="p">,</span>
-    <span class="n">n_outer_folds</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">&quot;n_outer_folds&quot;</span><span class="p">]),</span>
+    <span class="n">n_outer_folds</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">best_row</span><span class="p">[</span><span class="s2">"n_outer_folds"</span><span class="p">]),</span>
 <span class="p">)</span>
-<span class="n">model_step</span> <span class="o">=</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Features post-transformación: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fitted</span><span class="p">[</span><span class="s1">&#39;feature_names&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">model_step</span> <span class="o">=</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">"pipeline"</span><span class="p">]</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">"model"</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Features post-transformación: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fitted</span><span class="p">[</span><span class="s1">'feature_names'</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -431,26 +482,26 @@ Features post-transformación: 25
 </div>
 </section>
 <section id="shap-global-summary-plot">
-<h2>SHAP global (summary plot)<a class="headerlink" href="#shap-global-summary-plot" title="Permalink to this heading">#</a></h2>
+<h2>SHAP global (summary plot)<a class="headerlink" href="#shap-global-summary-plot" title="Link to this heading">#</a></h2>
 <p>Sobre una muestra del fold de prueba (ver <code class="docutils literal notranslate"><span class="pre">interpretability.DEFAULT_N_EXPLAIN</span></code>, limitado por costo computacional para modelos no basados en árboles). Las columnas one-hot de <code class="docutils literal notranslate"><span class="pre">SEX</span></code>/<code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code>/<code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code> se agregan de vuelta a la variable categórica original.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_explain</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ip</span><span class="o">.</span><span class="n">DEFAULT_N_EXPLAIN</span><span class="p">,</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;X_test_t&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_explain</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ip</span><span class="o">.</span><span class="n">DEFAULT_N_EXPLAIN</span><span class="p">,</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">"X_test_t"</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="n">shap_values</span><span class="p">,</span> <span class="n">base_value</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">compute_shap_values</span><span class="p">(</span>
-    <span class="n">best_model</span><span class="p">,</span> <span class="n">model_step</span><span class="p">,</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;X_train_t&quot;</span><span class="p">],</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;X_test_t&quot;</span><span class="p">][:</span><span class="n">n_explain</span><span class="p">]</span>
+    <span class="n">best_model</span><span class="p">,</span> <span class="n">model_step</span><span class="p">,</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">"X_train_t"</span><span class="p">],</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">"X_test_t"</span><span class="p">][:</span><span class="n">n_explain</span><span class="p">]</span>
 <span class="p">)</span>
-<span class="n">agg_values</span><span class="p">,</span> <span class="n">agg_names</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">aggregate_onehot_shap</span><span class="p">(</span><span class="n">shap_values</span><span class="p">,</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;feature_names&quot;</span><span class="p">])</span>
+<span class="n">agg_values</span><span class="p">,</span> <span class="n">agg_names</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">aggregate_onehot_shap</span><span class="p">(</span><span class="n">shap_values</span><span class="p">,</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">"feature_names"</span><span class="p">])</span>
 <span class="n">display_matrix</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">build_aggregated_display_matrix</span><span class="p">(</span>
-    <span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;X_test&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">n_explain</span><span class="p">],</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;X_test_t&quot;</span><span class="p">][:</span><span class="n">n_explain</span><span class="p">],</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;feature_names&quot;</span><span class="p">]</span>
+    <span class="n">fitted</span><span class="p">[</span><span class="s2">"X_test"</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">n_explain</span><span class="p">],</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">"X_test_t"</span><span class="p">][:</span><span class="n">n_explain</span><span class="p">],</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">"feature_names"</span><span class="p">]</span>
 <span class="p">)</span>
 
-<span class="n">summary_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">FIGURES_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;shap_summary_</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">.png&quot;</span>
+<span class="n">summary_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">FIGURES_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"shap_summary_</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">.png"</span>
 <span class="n">ip</span><span class="o">.</span><span class="n">plot_shap_summary</span><span class="p">(</span><span class="n">agg_values</span><span class="p">,</span> <span class="n">display_matrix</span><span class="p">,</span> <span class="n">agg_names</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">summary_path</span><span class="p">))</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span> <span class="k">as</span> <span class="n">ipy_display</span>
@@ -469,38 +520,38 @@ Features post-transformación: 25
 </div>
 </div>
 <ul class="simple">
-<li><p><strong>El historial de pagos domina.</strong> <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> es la variable más importante, con una diferencia clara frente a las demás. Sus valores altos (meses de atraso) generan los aportes más grandes hacia <em>default</em>, de hasta cerca de +0.37. Le siguen <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_3</span></code>, y más abajo <code class="docutils literal notranslate"><span class="pre">PAY_4</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_5</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_6</span></code>. En todas ellas, más atraso aumenta el riesgo. Esto coincide con el EDA, con los coeficientes de la regresión logística base y con el SHAP preliminar del Random Forest.</p></li>
+<li><p><strong>El historial de pagos domina.</strong> <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> es la variable más importante, con una diferencia clara frente a las demás. Sus valores altos (meses de atraso) generan los aportes más grandes hacia <em>default</em>, de hasta cerca de +0.37. Le siguen <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_3</span></code>, y más abajo <code class="docutils literal notranslate"><span class="pre">PAY_4</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_5</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_6</span></code>. En todas ellas, más atraso aumenta el riesgo. Esto coincide con el EDA y, en parte, con la regresión logística base: allí <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> (+0.52) es el mayor coeficiente entre las variables numéricas, pero el mayor en valor absoluto es <code class="docutils literal notranslate"><span class="pre">EDUCATION_4</span></code> (−0.96). Además, coeficientes lineales y SHAP sobre un bosque no son directamente comparables.</p></li>
 <li><p><strong>Mayor límite de crédito, menor riesgo.</strong> En <code class="docutils literal notranslate"><span class="pre">LIMIT_BAL_LOG</span></code> los valores altos (rojo) quedan a la izquierda, es decir, reducen la probabilidad de <em>default</em>. Esto es coherente con la diferencia de límites entre clientes con y sin <em>default</em> encontrada en el EDA.</p></li>
 <li><p><strong>Montos pagados.</strong> En las variables <code class="docutils literal notranslate"><span class="pre">PAY_AMT*_LOG</span></code>, los clientes que pagaron más (rojo) tienden a tener aportes negativos, o sea menor riesgo. Su efecto individual es pequeño.</p></li>
 <li><p><strong>Facturación.</strong> <code class="docutils literal notranslate"><span class="pre">BILL_AMT_MEAN_6M_LOG</span></code> aparece en quinto lugar y <code class="docutils literal notranslate"><span class="pre">BILL_AMT_TREND_6M_LOG</span></code> en un nivel más bajo, con un efecto moderado y menos claro que el de los pagos. Esto es consistente con el EDA, donde el monto facturado discriminaba poco entre clases.</p></li>
 </ul>
 </section>
 <section id="shap-local-una-observacion-bien-clasificada-y-una-con-error-alto">
-<h2>SHAP local: una observación bien clasificada y una con error alto<a class="headerlink" href="#shap-local-una-observacion-bien-clasificada-y-una-con-error-alto" title="Permalink to this heading">#</a></h2>
+<h2>SHAP local: una observación bien clasificada y una con error alto<a class="headerlink" href="#shap-local-una-observacion-bien-clasificada-y-una-con-error-alto" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_pred_test</span> <span class="o">=</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;X_test&quot;</span><span class="p">])</span>
-<span class="n">y_proba_test</span> <span class="o">=</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;X_test&quot;</span><span class="p">])[:,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="n">instances</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">select_representative_instances</span><span class="p">(</span><span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;y_test&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="n">y_pred_test</span><span class="p">,</span> <span class="n">y_proba_test</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_pred_test</span> <span class="o">=</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">"pipeline"</span><span class="p">]</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">fitted</span><span class="p">[</span><span class="s2">"X_test"</span><span class="p">])</span>
+<span class="n">y_proba_test</span> <span class="o">=</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">"pipeline"</span><span class="p">]</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">fitted</span><span class="p">[</span><span class="s2">"X_test"</span><span class="p">])[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">instances</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">select_representative_instances</span><span class="p">(</span><span class="n">fitted</span><span class="p">[</span><span class="s2">"y_test"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="n">y_pred_test</span><span class="p">,</span> <span class="n">y_proba_test</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">instances</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">instances</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">x_row_t</span> <span class="o">=</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;X_test_t&quot;</span><span class="p">][</span><span class="n">pos</span> <span class="p">:</span> <span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="n">sv</span><span class="p">,</span> <span class="n">bv</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">compute_shap_values</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="n">model_step</span><span class="p">,</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;X_train_t&quot;</span><span class="p">],</span> <span class="n">x_row_t</span><span class="p">)</span>
-    <span class="n">agg_sv</span><span class="p">,</span> <span class="n">agg_n</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">aggregate_onehot_shap</span><span class="p">(</span><span class="n">sv</span><span class="p">,</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;feature_names&quot;</span><span class="p">])</span>
+    <span class="n">x_row_t</span> <span class="o">=</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">"X_test_t"</span><span class="p">][</span><span class="n">pos</span> <span class="p">:</span> <span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">sv</span><span class="p">,</span> <span class="n">bv</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">compute_shap_values</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="n">model_step</span><span class="p">,</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">"X_train_t"</span><span class="p">],</span> <span class="n">x_row_t</span><span class="p">)</span>
+    <span class="n">agg_sv</span><span class="p">,</span> <span class="n">agg_n</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">aggregate_onehot_shap</span><span class="p">(</span><span class="n">sv</span><span class="p">,</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">"feature_names"</span><span class="p">])</span>
     <span class="n">row_display</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">build_aggregated_display_matrix</span><span class="p">(</span>
-        <span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;X_test&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos</span> <span class="p">:</span> <span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">x_row_t</span><span class="p">,</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">&quot;feature_names&quot;</span><span class="p">]</span>
+        <span class="n">fitted</span><span class="p">[</span><span class="s2">"X_test"</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos</span> <span class="p">:</span> <span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">x_row_t</span><span class="p">,</span> <span class="n">fitted</span><span class="p">[</span><span class="s2">"feature_names"</span><span class="p">]</span>
     <span class="p">)</span>
-    <span class="n">waterfall_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">FIGURES_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;shap_waterfall_</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">.png&quot;</span>
+    <span class="n">waterfall_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">FIGURES_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"shap_waterfall_</span><span class="si">{</span><span class="n">best_model</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">.png"</span>
     <span class="n">ip</span><span class="o">.</span><span class="n">plot_shap_waterfall</span><span class="p">(</span><span class="n">agg_sv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bv</span><span class="p">,</span> <span class="n">row_display</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">agg_n</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">waterfall_path</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">: y_true=</span><span class="si">{</span><span class="n">fitted</span><span class="p">[</span><span class="s1">&#39;y_test&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span><span class="si">}</span><span class="s2">, y_pred=</span><span class="si">{</span><span class="n">y_pred_test</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span><span class="si">}</span><span class="s2">, &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;proba=</span><span class="si">{</span><span class="n">y_proba_test</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">: y_true=</span><span class="si">{</span><span class="n">fitted</span><span class="p">[</span><span class="s1">'y_test'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span><span class="si">}</span><span class="s2">, y_pred=</span><span class="si">{</span><span class="n">y_pred_test</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span><span class="si">}</span><span class="s2">, "</span>
+        <span class="sa">f</span><span class="s2">"proba=</span><span class="si">{</span><span class="n">y_proba_test</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span>
     <span class="p">)</span>
     <span class="n">ipy_display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">waterfall_path</span><span class="p">)))</span>
 </pre></div>
@@ -508,7 +559,7 @@ Features post-transformación: 25
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;well_classified&#39;: 2555, &#39;high_error&#39;: 3936}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{'well_classified': 2555, 'high_error': 3936}
 well_classified: y_true=1, y_pred=1, proba=0.982
 </pre></div>
 </div>
@@ -535,62 +586,63 @@ well_classified: y_true=1, y_pred=1, proba=0.982
 <li><p>Su historial es poco habitual: los atrasos pasan de 2 a 7 meses de un mes a otro. Esto podría indicar un registro atípico o con errores, pero con estos datos no se puede confirmar.</p></li>
 </ul>
 <p>El error no parece venir de una falla del modelo, sino de un cliente que, con ese historial, no incumplió. Esto es consistente con el ruido que ya se había detectado en el EDA: hay clientes con las mismas variables y etiquetas distintas, por lo que ningún modelo puede acertar en todos los casos.</p>
+<p>Ambos clientes son casos extremos (probabilidades 0.982 y 0.964), elegidos para ilustrar, y no representan el comportamiento típico del modelo. Como el modelo se entrenó con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>, esas probabilidades tampoco están calibradas.</p>
 </section>
 <section id="lime-vs-shap-especificamente-para-xgboost">
-<h2>LIME vs. SHAP (específicamente para XGBoost)<a class="headerlink" href="#lime-vs-shap-especificamente-para-xgboost" title="Permalink to this heading">#</a></h2>
-<p>Si el mejor modelo ya es XGBoost, esta sección reutiliza el mismo ajuste de arriba; si no, ajusta la mejor combinación de XGBoost por separado (el curso pide esta comparación puntualmente para XGBoost, más allá de cuál haya resultado ser el mejor modelo global).</p>
+<h2>LIME vs. SHAP (específicamente para XGBoost)<a class="headerlink" href="#lime-vs-shap-especificamente-para-xgboost" title="Link to this heading">#</a></h2>
+<p>Si el mejor modelo ya es XGBoost, esta sección reutiliza el mismo ajuste de arriba; si no, ajusta la mejor combinación de XGBoost por separado (el curso pide esta comparación puntualmente para XGBoost, más allá de cuál haya resultado ser el mejor modelo global). Se explica una sola observación (<code class="docutils literal notranslate"><span class="pre">high_error</span></code>), por lo que la comparación es ilustrativa.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xgb_rows</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;xgboost&quot;</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xgb_rows</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="p">[</span><span class="s2">"model"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"xgboost"</span><span class="p">]</span>
 
 <span class="k">if</span> <span class="n">xgb_rows</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">&quot;No hay corridas de XGBoost en la tabla maestra todavía: &quot;</span>
-        <span class="s2">&quot;correr 04_run_experiments.ipynb incluyendo xgboost para esta sección.&quot;</span>
+        <span class="s2">"No hay corridas de XGBoost en la tabla maestra todavía: "</span>
+        <span class="s2">"correr 04_run_experiments.ipynb incluyendo xgboost para esta sección."</span>
     <span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="n">xgb_best_row</span> <span class="o">=</span> <span class="n">xgb_rows</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">xgb_technique</span> <span class="o">=</span> <span class="n">xgb_best_row</span><span class="p">[</span><span class="s2">&quot;technique&quot;</span><span class="p">]</span>
-    <span class="n">xgb_best_params_per_fold</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">xgb_best_row</span><span class="p">[</span><span class="s2">&quot;best_params_per_fold&quot;</span><span class="p">])</span>
-    <span class="n">xgb_per_fold_metric</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">xgb_best_row</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_per_fold&quot;</span><span class="p">])</span>
+    <span class="n">xgb_best_row</span> <span class="o">=</span> <span class="n">xgb_rows</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">xgb_technique</span> <span class="o">=</span> <span class="n">xgb_best_row</span><span class="p">[</span><span class="s2">"technique"</span><span class="p">]</span>
+    <span class="n">xgb_best_params_per_fold</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">xgb_best_row</span><span class="p">[</span><span class="s2">"best_params_per_fold"</span><span class="p">])</span>
+    <span class="n">xgb_per_fold_metric</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">xgb_best_row</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_per_fold"</span><span class="p">])</span>
     <span class="n">xgb_fold_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">xgb_per_fold_metric</span><span class="p">))</span>
     <span class="n">xgb_best_params</span> <span class="o">=</span> <span class="n">xgb_best_params_per_fold</span><span class="p">[</span><span class="n">xgb_fold_idx</span><span class="p">]</span>
 
-    <span class="n">xgb_spec</span> <span class="o">=</span> <span class="n">MODEL_REGISTRY</span><span class="p">[</span><span class="s2">&quot;xgboost&quot;</span><span class="p">]</span>
+    <span class="n">xgb_spec</span> <span class="o">=</span> <span class="n">MODEL_REGISTRY</span><span class="p">[</span><span class="s2">"xgboost"</span><span class="p">]</span>
     <span class="n">xgb_fitted</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">fit_explainable_pipeline</span><span class="p">(</span>
         <span class="n">xgb_spec</span><span class="p">,</span> <span class="n">xgb_technique</span><span class="p">,</span> <span class="n">xgb_best_params</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">xgb_fold_idx</span><span class="p">,</span>
-        <span class="n">n_outer_folds</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">xgb_best_row</span><span class="p">[</span><span class="s2">&quot;n_outer_folds&quot;</span><span class="p">]),</span>
+        <span class="n">n_outer_folds</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">xgb_best_row</span><span class="p">[</span><span class="s2">"n_outer_folds"</span><span class="p">]),</span>
     <span class="p">)</span>
-    <span class="n">xgb_model_step</span> <span class="o">=</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span>
+    <span class="n">xgb_model_step</span> <span class="o">=</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">"pipeline"</span><span class="p">]</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">"model"</span><span class="p">]</span>
 
-    <span class="n">xgb_y_pred</span> <span class="o">=</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">&quot;X_test&quot;</span><span class="p">])</span>
-    <span class="n">xgb_y_proba</span> <span class="o">=</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">&quot;X_test&quot;</span><span class="p">])[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">xgb_y_pred</span> <span class="o">=</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">"pipeline"</span><span class="p">]</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">"X_test"</span><span class="p">])</span>
+    <span class="n">xgb_y_proba</span> <span class="o">=</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">"pipeline"</span><span class="p">]</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">"X_test"</span><span class="p">])[:,</span> <span class="mi">1</span><span class="p">]</span>
     <span class="n">xgb_instances</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">select_representative_instances</span><span class="p">(</span>
-        <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">&quot;y_test&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="n">xgb_y_pred</span><span class="p">,</span> <span class="n">xgb_y_proba</span>
+        <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">"y_test"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="n">xgb_y_pred</span><span class="p">,</span> <span class="n">xgb_y_proba</span>
     <span class="p">)</span>
 
-    <span class="n">pos</span> <span class="o">=</span> <span class="n">xgb_instances</span><span class="p">[</span><span class="s2">&quot;high_error&quot;</span><span class="p">]</span>
-    <span class="n">x_row_t</span> <span class="o">=</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">&quot;X_test_t&quot;</span><span class="p">][</span><span class="n">pos</span> <span class="p">:</span> <span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">xgb_instances</span><span class="p">[</span><span class="s2">"high_error"</span><span class="p">]</span>
+    <span class="n">x_row_t</span> <span class="o">=</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">"X_test_t"</span><span class="p">][</span><span class="n">pos</span> <span class="p">:</span> <span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
     <span class="n">lime_exp</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">explain_with_lime</span><span class="p">(</span>
-        <span class="n">xgb_model_step</span><span class="p">,</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">&quot;X_train_t&quot;</span><span class="p">],</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">&quot;feature_names&quot;</span><span class="p">],</span> <span class="n">x_row_t</span>
+        <span class="n">xgb_model_step</span><span class="p">,</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">"X_train_t"</span><span class="p">],</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">"feature_names"</span><span class="p">],</span> <span class="n">x_row_t</span>
     <span class="p">)</span>
-    <span class="n">sv</span><span class="p">,</span> <span class="n">bv</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">compute_shap_values</span><span class="p">(</span><span class="s2">&quot;xgboost&quot;</span><span class="p">,</span> <span class="n">xgb_model_step</span><span class="p">,</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">&quot;X_train_t&quot;</span><span class="p">],</span> <span class="n">x_row_t</span><span class="p">)</span>
-    <span class="n">comparison_table</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">compare_shap_lime</span><span class="p">(</span><span class="n">sv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lime_exp</span><span class="p">,</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">&quot;feature_names&quot;</span><span class="p">])</span>
+    <span class="n">sv</span><span class="p">,</span> <span class="n">bv</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">compute_shap_values</span><span class="p">(</span><span class="s2">"xgboost"</span><span class="p">,</span> <span class="n">xgb_model_step</span><span class="p">,</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">"X_train_t"</span><span class="p">],</span> <span class="n">x_row_t</span><span class="p">)</span>
+    <span class="n">comparison_table</span> <span class="o">=</span> <span class="n">ip</span><span class="o">.</span><span class="n">compare_shap_lime</span><span class="p">(</span><span class="n">sv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lime_exp</span><span class="p">,</span> <span class="n">xgb_fitted</span><span class="p">[</span><span class="s2">"feature_names"</span><span class="p">])</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Observación &#39;high_error&#39; (XGBoost, </span><span class="si">{</span><span class="n">xgb_technique</span><span class="si">}</span><span class="s2">, fold </span><span class="si">{</span><span class="n">xgb_fold_idx</span><span class="si">}</span><span class="s2">):&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Observación 'high_error' (XGBoost, </span><span class="si">{</span><span class="n">xgb_technique</span><span class="si">}</span><span class="s2">, fold </span><span class="si">{</span><span class="n">xgb_fold_idx</span><span class="si">}</span><span class="s2">):"</span><span class="p">)</span>
     <span class="n">display</span><span class="p">(</span><span class="n">comparison_table</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Observación &#39;high_error&#39; (XGBoost, class_weight, fold 2):
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Observación 'high_error' (XGBoost, class_weight, fold 2):
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -682,17 +734,18 @@ well_classified: y_true=1, y_pred=1, proba=0.982
 </div></div></div>
 </div>
 <section id="discusion-cuando-divergen-lime-y-shap">
-<h3>Discusión: ¿cuándo divergen LIME y SHAP?<a class="headerlink" href="#discusion-cuando-divergen-lime-y-shap" title="Permalink to this heading">#</a></h3>
+<h3>Discusión: ¿cuándo divergen LIME y SHAP?<a class="headerlink" href="#discusion-cuando-divergen-lime-y-shap" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>LIME</strong> ajusta un modelo sustituto LINEAL (regularizado) sobre muestras perturbadas alrededor de la observación, ponderadas por cercanía: una aproximación local cuya validez depende del ancho del kernel y el número de muestras perturbadas.</p></li>
 <li><p><strong>SHAP</strong> calcula valores de Shapley (teoría de juegos cooperativos): el aporte marginal promedio de cada feature sobre todas las coaliciones posibles. Para árboles, <code class="docutils literal notranslate"><span class="pre">TreeExplainer</span></code> los calcula de forma EXACTA, y satisface axiomas de consistencia que LIME no garantiza.</p></li>
 </ul>
-<p><strong>Divergen quando:</strong></p>
+<p><strong>Divergen cuando:</strong></p>
 <ol class="arabic simple">
 <li><p><strong>Features correlacionadas</strong> (ej. el bloque <code class="docutils literal notranslate"><span class="pre">BILL_AMT1</span></code>-<code class="docutils literal notranslate"><span class="pre">BILL_AMT6</span></code>, VIF alto según el EDA): SHAP reparte el crédito entre ellas; LIME (Lasso) puede anular una y sobre-atribuir a la otra.</p></li>
 <li><p><strong>No linealidad local fuerte</strong> (ej. el efecto no lineal de <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> que el EDA ya detectó): un sustituto lineal como el de LIME la aproxima mal; SHAP (exacto para árboles) la sigue reflejando correctamente.</p></li>
 <li><p><strong>Sensibilidad a hiperparámetros de LIME</strong> (ancho del kernel, nº de muestras): puede cambiar el ranking entre corridas; SHAP/TreeExplainer es determinístico.</p></li>
 </ol>
+<p>Limitación de la tabla anterior: es una sola observación de XGBoost, y <code class="docutils literal notranslate"><span class="pre">shap_value</span></code> está en escala de log-odds (margen de XGBoost) mientras que <code class="docutils literal notranslate"><span class="pre">lime_weight</span></code> está en escala de probabilidad, por lo que solo se pueden comparar signos y orden, no magnitudes.</p>
 </section>
 </section>
 </section>
@@ -743,15 +796,17 @@ well_classified: y_true=1, y_pred=1, proba=0.982
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#elegir-el-mejor-modelo-y-ajustar-su-pipeline">Elegir el mejor modelo y ajustar su pipeline</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-global-summary-plot">SHAP global (summary plot)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-local-una-observacion-bien-clasificada-y-una-con-error-alto">SHAP local: una observación bien clasificada y una con error alto</a></li>
@@ -773,7 +828,7 @@ well_classified: y_true=1, y_pred=1, proba=0.982
   <div class="footer-item">
     
 <p class="component-author">
-By Equipo del proyecto
+By Katherin Barrera López y Valeria Florez Sarmiento
 </p>
 
   </div>
@@ -783,7 +838,7 @@ By Equipo del proyecto
 
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>
@@ -807,8 +862,8 @@ By Equipo del proyecto
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

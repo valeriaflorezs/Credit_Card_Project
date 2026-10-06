@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>SVM + RBF acelerado por GPU (cuML/RAPIDS) &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
   
@@ -17,84 +16,80 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
-  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/07_svm_gpu_colab';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -102,7 +97,6 @@ const thebe_selector_output = ".output, .cell_output"
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -110,15 +104,59 @@ const thebe_selector_output = ".output, .cell_output"
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -129,7 +167,8 @@ const thebe_selector_output = ".output, .cell_output"
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -147,7 +186,7 @@ const thebe_selector_output = ".output, .cell_output"
     
   
 
-<a class="navbar-brand logo" href="../README.html">
+<a class="navbar-brand logo" href="../portada.html">
   
   
   
@@ -157,17 +196,25 @@ const thebe_selector_output = ".output, .cell_output"
     <p class="title logo__title">Default of Credit Card Clients — Pipeline de Clasificación</p>
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
-                <a class="reference internal" href="../README.html">
+                <a class="reference internal" href="../portada.html">
                     Default of Credit Card Clients
                 </a>
             </li>
         </ul>
         <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Introducción y marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
@@ -183,9 +230,14 @@ const thebe_selector_output = ".output, .cell_output"
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -204,9 +256,9 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -268,7 +320,7 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -282,27 +334,19 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -322,7 +366,7 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verificar-gpu-asignada">1. Verificar GPU asignada</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instalar-rapids-cuml">2. Instalar RAPIDS cuML</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-instalacion-alternativa-de-cuml-solo-si-la-instalacion-de-la-seccion-2-fallo">2b. Instalación alternativa de cuML (solo si la instalación de la sección 2 falló)</a></li>
@@ -353,13 +397,22 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="svm-rbf-acelerado-por-gpu-cuml-rapids">
-<h1>SVM + RBF acelerado por GPU (cuML/RAPIDS)<a class="headerlink" href="#svm-rbf-acelerado-por-gpu-cuml-rapids" title="Permalink to this heading">#</a></h1>
+<h1>SVM + RBF acelerado por GPU (cuML/RAPIDS)<a class="headerlink" href="#svm-rbf-acelerado-por-gpu-cuml-rapids" title="Link to this heading">#</a></h1>
 <p>Este notebook implementa un clasificador SVM con kernel RBF utilizando cuML de RAPIDS para aprovechar la aceleración por GPU. El kernel RBF permite modelar relaciones no lineales entre las variables y aplicar el modelo al problema de clasificación de tarjetas de crédito.</p>
+<p><strong>Diferencias con la corrida local</strong> (relevantes al comparar con <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>):</p>
+<ul class="simple">
+<li><p>Se usa <code class="docutils literal notranslate"><span class="pre">cuml.svm.SVC</span></code> en GPU (NVIDIA A100-40GB), no <code class="docutils literal notranslate"><span class="pre">sklearn.svm.SVC</span></code> (libsvm). El solver y la calibración de probabilidades (Platt) no son idénticos.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cache_size</span></code> es 2048 MiB aquí frente a 500 en local.</p></li>
+<li><p>Versiones: scikit-learn 1.6.1, numpy 2.0.2 y pandas 2.2.2 en Colab, frente a 1.9.1, 2.5.3 y 3.0.6 en local.</p></li>
+<li><p>No se guardan los índices de los folds. Con el mismo <code class="docutils literal notranslate"><span class="pre">random_state=42</span></code> y el mismo <code class="docutils literal notranslate"><span class="pre">dataset_final.csv</span></code> (misma forma y tamaño de archivo) los folds deberían coincidir, pero no se puede verificar fila a fila.</p></li>
+<li><p>Los tiempos (GPU) no son comparables con los de CPU.</p></li>
+<li><p>Las desviaciones estándar usan <code class="docutils literal notranslate"><span class="pre">np.std</span></code> (ddof=0); con 3 folds subestiman la dispersión.</p></li>
+</ul>
 <section id="verificar-gpu-asignada">
-<h2>1. Verificar GPU asignada<a class="headerlink" href="#verificar-gpu-asignada" title="Permalink to this heading">#</a></h2>
+<h2>1. Verificar GPU asignada<a class="headerlink" href="#verificar-gpu-asignada" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!nvidia-smi
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">nvidia</span><span class="o">-</span><span class="n">smi</span>
 </pre></div>
 </div>
 </div>
@@ -390,16 +443,16 @@ document.write(`
 </div>
 </section>
 <section id="instalar-rapids-cuml">
-<h2>2. Instalar RAPIDS cuML<a class="headerlink" href="#instalar-rapids-cuml" title="Permalink to this heading">#</a></h2>
+<h2>2. Instalar RAPIDS cuML<a class="headerlink" href="#instalar-rapids-cuml" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!git clone --depth 1 https://github.com/rapidsai/rapidsai-csp-utils.git
-!python rapidsai-csp-utils/colab/pip-install.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">git</span> <span class="n">clone</span> <span class="o">--</span><span class="n">depth</span> <span class="mi">1</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">rapidsai</span><span class="o">/</span><span class="n">rapidsai</span><span class="o">-</span><span class="n">csp</span><span class="o">-</span><span class="n">utils</span><span class="o">.</span><span class="n">git</span>
+<span class="err">!</span><span class="n">python</span> <span class="n">rapidsai</span><span class="o">-</span><span class="n">csp</span><span class="o">-</span><span class="n">utils</span><span class="o">/</span><span class="n">colab</span><span class="o">/</span><span class="n">pip</span><span class="o">-</span><span class="n">install</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cloning into &#39;rapidsai-csp-utils&#39;...
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cloning into 'rapidsai-csp-utils'...
 remote: Enumerating objects: 21, done.
 remote: Counting objects: 100% (21/21), done.
 remote: Compressing objects: 100% (19/19), done.
@@ -519,7 +572,7 @@ Installed 58 packages in 132ms
 
         Please do not run any further installation from the conda based installation methods, as they may cause issues!
 
-        Please ensure that you&#39;re pulling from the git repo to remain updated with the latest working install scripts.
+        Please ensure that you're pulling from the git repo to remain updated with the latest working install scripts.
 
         Troubleshooting:
             - If there is an installation failure, please check back on RAPIDSAI owned templates/notebooks to see how to update your personal files.
@@ -532,20 +585,20 @@ Installed 58 packages in 132ms
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="p">;</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;CUPY_ACCELERATORS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;CUPY_ACCELERATORS&#39;</span><span class="p">]))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="p">;</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'CUPY_ACCELERATORS'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'CUPY_ACCELERATORS'</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>''
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span># Optuna y DEAP no vienen con RAPIDS -- se instalan aparte.
-!pip install -q optuna deap
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Optuna y DEAP no vienen con RAPIDS -- se instalan aparte.</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="n">optuna</span> <span class="n">deap</span>
 </pre></div>
 </div>
 </div>
@@ -562,21 +615,21 @@ Installed 58 packages in 132ms
 </div>
 </div>
 <section id="b-instalacion-alternativa-de-cuml-solo-si-la-instalacion-de-la-seccion-2-fallo">
-<h3>2b. Instalación alternativa de cuML (solo si la instalación de la sección 2 falló)<a class="headerlink" href="#b-instalacion-alternativa-de-cuml-solo-si-la-instalacion-de-la-seccion-2-fallo" title="Permalink to this heading">#</a></h3>
+<h3>2b. Instalación alternativa de cuML (solo si la instalación de la sección 2 falló)<a class="headerlink" href="#b-instalacion-alternativa-de-cuml-solo-si-la-instalacion-de-la-seccion-2-fallo" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span># Deja UNA sola familia de paquetes (CUDA 12; los drivers de Colab con CUDA 13 también ejecutan wheels cu12).
-!pip uninstall -y -q cupy-cuda12x cupy-cuda13x cuml-cu12 cuml-cu13 cudf-cu12 cudf-cu13 libcuml-cu12 libcuml-cu13 rmm-cu12 rmm-cu13 raft-dask-cu12 pylibraft-cu12 pylibraft-cu13
-!pip install -q --extra-index-url=https://pypi.nvidia.com cuml-cu12
-!pip list 2&gt;/dev/null | grep -i -E &quot;cupy|cuml|cudf|rmm|raft&quot;
-print(&quot;
-Ahora: Entorno de ejecución -&gt; Reiniciar sesión, y seguir desde la celda de imports.&quot;)
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Deja UNA sola familia de paquetes (CUDA 12; los drivers de Colab con CUDA 13 también ejecutan wheels cu12).</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">uninstall</span> <span class="o">-</span><span class="n">y</span> <span class="o">-</span><span class="n">q</span> <span class="n">cupy</span><span class="o">-</span><span class="n">cuda12x</span> <span class="n">cupy</span><span class="o">-</span><span class="n">cuda13x</span> <span class="n">cuml</span><span class="o">-</span><span class="n">cu12</span> <span class="n">cuml</span><span class="o">-</span><span class="n">cu13</span> <span class="n">cudf</span><span class="o">-</span><span class="n">cu12</span> <span class="n">cudf</span><span class="o">-</span><span class="n">cu13</span> <span class="n">libcuml</span><span class="o">-</span><span class="n">cu12</span> <span class="n">libcuml</span><span class="o">-</span><span class="n">cu13</span> <span class="n">rmm</span><span class="o">-</span><span class="n">cu12</span> <span class="n">rmm</span><span class="o">-</span><span class="n">cu13</span> <span class="n">raft</span><span class="o">-</span><span class="n">dask</span><span class="o">-</span><span class="n">cu12</span> <span class="n">pylibraft</span><span class="o">-</span><span class="n">cu12</span> <span class="n">pylibraft</span><span class="o">-</span><span class="n">cu13</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="o">--</span><span class="n">extra</span><span class="o">-</span><span class="n">index</span><span class="o">-</span><span class="n">url</span><span class="o">=</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">pypi</span><span class="o">.</span><span class="n">nvidia</span><span class="o">.</span><span class="n">com</span> <span class="n">cuml</span><span class="o">-</span><span class="n">cu12</span>
+<span class="err">!</span><span class="n">pip</span> <span class="nb">list</span> <span class="mi">2</span><span class="o">&gt;/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">i</span> <span class="o">-</span><span class="n">E</span> <span class="s2">"cupy|cuml|cudf|rmm|raft"</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span>
+<span class="n">Ahora</span><span class="p">:</span> <span class="n">Entorno</span> <span class="n">de</span> <span class="n">ejecución</span> <span class="o">-&gt;</span> <span class="n">Reiniciar</span> <span class="n">sesión</span><span class="p">,</span> <span class="n">y</span> <span class="n">seguir</span> <span class="n">desde</span> <span class="n">la</span> <span class="n">celda</span> <span class="n">de</span> <span class="n">imports</span><span class="o">.</span><span class="s2">")</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">  File</span><span class="nn"> &quot;/tmp/ipykernel_767/2465210510.py&quot;</span><span class="gt">, line </span><span class="mi">5</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">  File</span><span class="nn"> "/tmp/ipykernel_767/2465210510.py"</span><span class="gt">, line </span><span class="mi">5</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span>
           <span class="o">^</span>
 <span class="ne">SyntaxError</span>: unterminated string literal (detected at line 5)
 </pre></div>
@@ -586,7 +639,7 @@ Ahora: Entorno de ejecución -&gt; Reiniciar sesión, y seguir desde la celda de
 </section>
 </section>
 <section id="imports-chequeo-de-versiones">
-<h2>3. Imports + chequeo de versiones<a class="headerlink" href="#imports-chequeo-de-versiones" title="Permalink to this heading">#</a></h2>
+<h2>3. Imports + chequeo de versiones<a class="headerlink" href="#imports-chequeo-de-versiones" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -617,17 +670,17 @@ Ahora: Entorno de ejecución -&gt; Reiniciar sesión, y seguir desde la celda de
 
 <span class="n">optuna</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">set_verbosity</span><span class="p">(</span><span class="n">optuna</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;cuml          :&quot;</span><span class="p">,</span> <span class="n">cuml</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;scikit-learn  :&quot;</span><span class="p">,</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;imbalanced-learn:&quot;</span><span class="p">,</span> <span class="n">imblearn</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;optuna        :&quot;</span><span class="p">,</span> <span class="n">optuna</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;deap          :&quot;</span><span class="p">,</span> <span class="n">deap</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;numpy         :&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pandas        :&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"cuml          :"</span><span class="p">,</span> <span class="n">cuml</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"scikit-learn  :"</span><span class="p">,</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"imbalanced-learn:"</span><span class="p">,</span> <span class="n">imblearn</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"optuna        :"</span><span class="p">,</span> <span class="n">optuna</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"deap          :"</span><span class="p">,</span> <span class="n">deap</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"numpy         :"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"pandas        :"</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Local (requirements.txt): scikit-learn==1.9.1, imbalanced-learn==0.14.2, &quot;</span>
-      <span class="s2">&quot;optuna==5.0.0, deap==1.4.3 -- comparar contra lo de arriba y anotar &quot;</span>
-      <span class="s2">&quot;cualquier diferencia relevante junto a los resultados.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Local (requirements.txt): scikit-learn==1.9.1, imbalanced-learn==0.14.2, "</span>
+      <span class="s2">"optuna==5.0.0, deap==1.4.3 -- comparar contra lo de arriba y anotar "</span>
+      <span class="s2">"cualquier diferencia relevante junto a los resultados."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -647,7 +700,7 @@ Local (requirements.txt): scikit-learn==1.9.1, imbalanced-learn==0.14.2, optuna=
 </div>
 </section>
 <section id="chequeo-de-compatibilidad-cuml-correr-antes-de-cualquier-combinacion-real">
-<h2>4. Chequeo de compatibilidad cuML (correr ANTES de cualquier combinación real)<a class="headerlink" href="#chequeo-de-compatibilidad-cuml-correr-antes-de-cualquier-combinacion-real" title="Permalink to this heading">#</a></h2>
+<h2>4. Chequeo de compatibilidad cuML (correr ANTES de cualquier combinación real)<a class="headerlink" href="#chequeo-de-compatibilidad-cuml-correr-antes-de-cualquier-combinacion-real" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_classification</span>
@@ -657,49 +710,49 @@ Local (requirements.txt): scikit-learn==1.9.1, imbalanced-learn==0.14.2, optuna=
 <span class="p">)</span>
 <span class="n">X_chk</span> <span class="o">=</span> <span class="n">X_chk</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Chequeo 1/3: SVC(probability=True).fit() + predict_proba()...&quot;</span><span class="p">)</span>
-<span class="n">clf_chk</span> <span class="o">=</span> <span class="n">cuSVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;rbf&quot;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s2">&quot;numpy&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Chequeo 1/3: SVC(probability=True).fit() + predict_proba()..."</span><span class="p">)</span>
+<span class="n">clf_chk</span> <span class="o">=</span> <span class="n">cuSVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">"rbf"</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s2">"numpy"</span><span class="p">)</span>
 <span class="n">clf_chk</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_chk</span><span class="p">,</span> <span class="n">y_chk</span><span class="p">)</span>
 <span class="n">proba_chk</span> <span class="o">=</span> <span class="n">clf_chk</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_chk</span><span class="p">)</span>
 <span class="n">pred_chk</span> <span class="o">=</span> <span class="n">clf_chk</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_chk</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">proba_chk</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;forma inesperada de predict_proba: </span><span class="si">{</span><span class="n">proba_chk</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">proba_chk</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">),</span> <span class="s2">&quot;las filas de predict_proba no suman 1&quot;</span>
-<span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">clf_chk</span><span class="o">.</span><span class="n">classes_</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;orden de clases inesperado: </span><span class="si">{</span><span class="n">clf_chk</span><span class="o">.</span><span class="n">classes_</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  OK -- predict_proba shape:&quot;</span><span class="p">,</span> <span class="n">proba_chk</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s2">&quot;| classes_:&quot;</span><span class="p">,</span> <span class="n">clf_chk</span><span class="o">.</span><span class="n">classes_</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">proba_chk</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="sa">f</span><span class="s2">"forma inesperada de predict_proba: </span><span class="si">{</span><span class="n">proba_chk</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">proba_chk</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">),</span> <span class="s2">"las filas de predict_proba no suman 1"</span>
+<span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">clf_chk</span><span class="o">.</span><span class="n">classes_</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="sa">f</span><span class="s2">"orden de clases inesperado: </span><span class="si">{</span><span class="n">clf_chk</span><span class="o">.</span><span class="n">classes_</span><span class="si">}</span><span class="s2">"</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  OK -- predict_proba shape:"</span><span class="p">,</span> <span class="n">proba_chk</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s2">"| classes_:"</span><span class="p">,</span> <span class="n">clf_chk</span><span class="o">.</span><span class="n">classes_</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Chequeo 2/3: class_weight=&#39;balanced&#39; (binario)...&quot;</span><span class="p">)</span>
-<span class="n">clf_bal</span> <span class="o">=</span> <span class="n">cuSVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;rbf&quot;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">class_weight</span><span class="o">=</span><span class="s2">&quot;balanced&quot;</span><span class="p">,</span>
-                 <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s2">&quot;numpy&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Chequeo 2/3: class_weight='balanced' (binario)..."</span><span class="p">)</span>
+<span class="n">clf_bal</span> <span class="o">=</span> <span class="n">cuSVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">"rbf"</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">class_weight</span><span class="o">=</span><span class="s2">"balanced"</span><span class="p">,</span>
+                 <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s2">"numpy"</span><span class="p">)</span>
 <span class="n">clf_bal</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_chk</span><span class="p">,</span> <span class="n">y_chk</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">clf_bal</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_chk</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  OK&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  OK"</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Chequeo 3/3: pipeline completo (preprocesamiento denso + SMOTE + cuML SVC) + CV manual...&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Chequeo 3/3: pipeline completo (preprocesamiento denso + SMOTE + cuML SVC) + CV manual..."</span><span class="p">)</span>
 <span class="n">ct_chk</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
     <span class="n">transformers</span><span class="o">=</span><span class="p">[],</span> <span class="n">remainder</span><span class="o">=</span><span class="n">StandardScaler</span><span class="p">()</span>
 <span class="p">)</span>
 <span class="n">pipe_chk</span> <span class="o">=</span> <span class="n">ImbPipeline</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[</span>
-    <span class="p">(</span><span class="s2">&quot;preprocessing&quot;</span><span class="p">,</span> <span class="n">ct_chk</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;smote&quot;</span><span class="p">,</span> <span class="n">SMOTE</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="n">cuSVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;rbf&quot;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s2">&quot;numpy&quot;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"preprocessing"</span><span class="p">,</span> <span class="n">ct_chk</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"smote"</span><span class="p">,</span> <span class="n">SMOTE</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"model"</span><span class="p">,</span> <span class="n">cuSVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">"rbf"</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s2">"numpy"</span><span class="p">)),</span>
 <span class="p">])</span>
 <span class="n">cv_chk</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">scorer_chk</span> <span class="o">=</span> <span class="n">get_scorer</span><span class="p">(</span><span class="s2">&quot;f1&quot;</span><span class="p">)</span>
+<span class="n">scorer_chk</span> <span class="o">=</span> <span class="n">get_scorer</span><span class="p">(</span><span class="s2">"f1"</span><span class="p">)</span>
 <span class="n">fold_scores_chk</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">tr_idx</span><span class="p">,</span> <span class="n">val_idx</span> <span class="ow">in</span> <span class="n">cv_chk</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X_chk</span><span class="p">,</span> <span class="n">y_chk</span><span class="p">):</span>
     <span class="n">pipe_chk</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_chk</span><span class="p">[</span><span class="n">tr_idx</span><span class="p">],</span> <span class="n">y_chk</span><span class="p">[</span><span class="n">tr_idx</span><span class="p">])</span>
     <span class="n">fold_scores_chk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scorer_chk</span><span class="p">(</span><span class="n">pipe_chk</span><span class="p">,</span> <span class="n">X_chk</span><span class="p">[</span><span class="n">val_idx</span><span class="p">],</span> <span class="n">y_chk</span><span class="p">[</span><span class="n">val_idx</span><span class="p">]))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  OK -- f1 por fold:&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">fold_scores_chk</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  OK -- f1 por fold:"</span><span class="p">,</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">fold_scores_chk</span><span class="p">])</span>
 
 <span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Los 3 chequeos pasaron. Es seguro continuar con las combinaciones reales.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Los 3 chequeos pasaron. Es seguro continuar con las combinaciones reales."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chequeo 1/3: SVC(probability=True).fit() + predict_proba()...
   OK -- predict_proba shape: (300, 2) | classes_: [0 1]
-Chequeo 2/3: class_weight=&#39;balanced&#39; (binario)...
+Chequeo 2/3: class_weight='balanced' (binario)...
   OK
 Chequeo 3/3: pipeline completo (preprocesamiento denso + SMOTE + cuML SVC) + CV manual...
   OK -- f1 por fold: [0.6786, 0.7442, 0.7742]
@@ -711,16 +764,16 @@ Los 3 chequeos pasaron. Es seguro continuar con las combinaciones reales.
 </div>
 </section>
 <section id="subir-dataset-final-csv">
-<h2>5. Subir <code class="docutils literal notranslate"><span class="pre">dataset_final.csv</span></code><a class="headerlink" href="#subir-dataset-final-csv" title="Permalink to this heading">#</a></h2>
+<h2>5. Subir <code class="docutils literal notranslate"><span class="pre">dataset_final.csv</span></code><a class="headerlink" href="#subir-dataset-final-csv" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">google.colab</span><span class="w"> </span><span class="kn">import</span> <span class="n">files</span>
 
 <span class="n">uploaded</span> <span class="o">=</span> <span class="n">files</span><span class="o">.</span><span class="n">upload</span><span class="p">()</span>
-<span class="k">assert</span> <span class="s2">&quot;dataset_final.csv&quot;</span> <span class="ow">in</span> <span class="n">uploaded</span><span class="p">,</span> <span class="p">(</span>
-    <span class="sa">f</span><span class="s2">&quot;Se esperaba un archivo llamado &#39;dataset_final.csv&#39;, se subio: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">uploaded</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">assert</span> <span class="s2">"dataset_final.csv"</span> <span class="ow">in</span> <span class="n">uploaded</span><span class="p">,</span> <span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"Se esperaba un archivo llamado 'dataset_final.csv', se subio: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">uploaded</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span>
 <span class="p">)</span>
-<span class="n">DATASET_PATH</span> <span class="o">=</span> <span class="s2">&quot;dataset_final.csv&quot;</span>
+<span class="n">DATASET_PATH</span> <span class="o">=</span> <span class="s2">"dataset_final.csv"</span>
 </pre></div>
 </div>
 </div>
@@ -912,18 +965,18 @@ scope.google.colab._files = {
 <span class="nn">/tmp/ipython-input-3375918583.py</span> in <span class="ni">&lt;cell line: 0&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> 
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">uploaded</span> <span class="o">=</span> <span class="n">files</span><span class="o">.</span><span class="n">upload</span><span class="p">()</span>
-<span class="ne">----&gt; </span><span class="mi">4</span> <span class="k">assert</span> <span class="s2">&quot;dataset_final.csv&quot;</span> <span class="ow">in</span> <span class="n">uploaded</span><span class="p">,</span> <span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="sa">f</span><span class="s2">&quot;Se esperaba un archivo llamado &#39;dataset_final.csv&#39;, se subio: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">uploaded</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="k">assert</span> <span class="s2">"dataset_final.csv"</span> <span class="ow">in</span> <span class="n">uploaded</span><span class="p">,</span> <span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="sa">f</span><span class="s2">"Se esperaba un archivo llamado 'dataset_final.csv', se subio: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">uploaded</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span>
 <span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="p">)</span>
 
-<span class="ne">AssertionError</span>: Se esperaba un archivo llamado &#39;dataset_final.csv&#39;, se subio: []
+<span class="ne">AssertionError</span>: Se esperaba un archivo llamado 'dataset_final.csv', se subio: []
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="p">;</span> <span class="n">DATASET_PATH</span> <span class="o">=</span> <span class="s1">&#39;dataset_final.csv&#39;</span><span class="p">;</span> <span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">DATASET_PATH</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">DATASET_PATH</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="p">;</span> <span class="n">DATASET_PATH</span> <span class="o">=</span> <span class="s1">'dataset_final.csv'</span><span class="p">;</span> <span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">DATASET_PATH</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">DATASET_PATH</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -935,30 +988,30 @@ scope.google.colab._files = {
 </div>
 </section>
 <section id="cargar-verificar-y-separar-x-y">
-<h2>6. Cargar, verificar y separar X/y<a class="headerlink" href="#cargar-verificar-y-separar-x-y" title="Permalink to this heading">#</a></h2>
+<h2>6. Cargar, verificar y separar X/y<a class="headerlink" href="#cargar-verificar-y-separar-x-y" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TARGET_COLUMN</span> <span class="o">=</span> <span class="s2">&quot;default_payment_next_month&quot;</span>
-<span class="n">CATEGORICAL_COLUMNS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SEX&quot;</span><span class="p">,</span> <span class="s2">&quot;EDUCATION&quot;</span><span class="p">,</span> <span class="s2">&quot;MARRIAGE&quot;</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TARGET_COLUMN</span> <span class="o">=</span> <span class="s2">"default_payment_next_month"</span>
+<span class="n">CATEGORICAL_COLUMNS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"SEX"</span><span class="p">,</span> <span class="s2">"EDUCATION"</span><span class="p">,</span> <span class="s2">"MARRIAGE"</span><span class="p">]</span>
 <span class="n">RANDOM_STATE</span> <span class="o">=</span> <span class="mi">42</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATASET_PATH</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset cargado: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">29965</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;forma inesperada: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> (se esperaba (29965, 21): dataset_final.csv de la Parte 5 del EDA)&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dataset cargado: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">29965</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span> <span class="sa">f</span><span class="s2">"forma inesperada: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> (se esperaba (29965, 21): dataset_final.csv de la Parte 5 del EDA)"</span>
 
 <span class="n">n_before</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="s2">"first"</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">n_removed</span> <span class="o">=</span> <span class="n">n_before</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Filas duplicadas eliminadas: </span><span class="si">{</span><span class="n">n_removed</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Filas duplicadas eliminadas: </span><span class="si">{</span><span class="n">n_removed</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">n_removed</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span>
-    <span class="sa">f</span><span class="s2">&quot;Se esperaban 0 filas duplicadas (el dataset ya viene deduplicado del EDA), se encontraron </span><span class="si">{</span><span class="n">n_removed</span><span class="si">}</span><span class="s2">. &quot;</span>
-    <span class="s2">&quot;Verificar que este sea el MISMO dataset_final.csv que el proyecto local -- si no, &quot;</span>
-    <span class="s2">&quot;los folds de este notebook NO van a coincidir con los de las corridas locales.&quot;</span>
+    <span class="sa">f</span><span class="s2">"Se esperaban 0 filas duplicadas (el dataset ya viene deduplicado del EDA), se encontraron </span><span class="si">{</span><span class="n">n_removed</span><span class="si">}</span><span class="s2">. "</span>
+    <span class="s2">"Verificar que este sea el MISMO dataset_final.csv que el proyecto local -- si no, "</span>
+    <span class="s2">"los folds de este notebook NO van a coincidir con los de las corridas locales."</span>
 <span class="p">)</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">TARGET_COLUMN</span><span class="p">])</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">TARGET_COLUMN</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;X: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, balance del target: </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"X: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, balance del target: </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
 <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
@@ -975,7 +1028,7 @@ X: (29965, 20), balance del target: {0: 0.7787, 1: 0.2213}
 </div>
 </section>
 <section id="configuracion-identica-a-src-config-py">
-<h2>7. Configuración (idéntica a <code class="docutils literal notranslate"><span class="pre">src/config.py</span></code>)<a class="headerlink" href="#configuracion-identica-a-src-config-py" title="Permalink to this heading">#</a></h2>
+<h2>7. Configuración (idéntica a <code class="docutils literal notranslate"><span class="pre">src/config.py</span></code>)<a class="headerlink" href="#configuracion-identica-a-src-config-py" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">N_OUTER_FOLDS</span> <span class="o">=</span> <span class="mi">3</span>
@@ -992,8 +1045,8 @@ X: (29965, 20), balance del target: {0: 0.7787, 1: 0.2213}
 <span class="n">GA_TOURNAMENT_SIZE</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">GA_ELITE_SIZE</span> <span class="o">=</span> <span class="mi">2</span>
 
-<span class="n">DEFAULT_SCORING</span> <span class="o">=</span> <span class="s2">&quot;f1&quot;</span>
-<span class="n">CORE_METRICS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span> <span class="s2">&quot;precision&quot;</span><span class="p">,</span> <span class="s2">&quot;recall&quot;</span><span class="p">,</span> <span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="s2">&quot;roc_auc&quot;</span><span class="p">)</span>
+<span class="n">DEFAULT_SCORING</span> <span class="o">=</span> <span class="s2">"f1"</span>
+<span class="n">CORE_METRICS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"accuracy"</span><span class="p">,</span> <span class="s2">"precision"</span><span class="p">,</span> <span class="s2">"recall"</span><span class="p">,</span> <span class="s2">"f1"</span><span class="p">,</span> <span class="s2">"roc_auc"</span><span class="p">)</span>
 
 <span class="c1"># Parametros del modelo SVM (fijos, no bajo busqueda): kernel RBF fijo</span>
 <span class="c1"># (requisito del curso), probability=True (necesario para roc_auc),</span>
@@ -1001,9 +1054,9 @@ X: (29965, 20), balance del target: {0: 0.7787, 1: 0.2213}
 <span class="c1"># solver SMO tarde indefinidamente en converger en combinaciones</span>
 <span class="c1"># patologicas de C/gamma -- ver models.py::_svm_factory).</span>
 <span class="n">SVM_MAX_ITER</span> <span class="o">=</span> <span class="mi">200_000</span>
-<span class="n">SVM_CACHE_SIZE_MIB</span> <span class="o">=</span> <span class="mi">2048</span>  <span class="c1"># generoso: T4 tiene 16GB: no es un hiperparametro bajo busqueda</span>
+<span class="n">SVM_CACHE_SIZE_MIB</span> <span class="o">=</span> <span class="mi">2048</span>  <span class="c1"># generoso: se usó una A100-40GB (40GB de memoria): no es un hiperparametro bajo busqueda</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Config OK&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Config OK"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1015,7 +1068,7 @@ X: (29965, 20), balance del target: {0: 0.7787, 1: 0.2213}
 </div>
 </section>
 <section id="espacio-de-busqueda-de-svm-identico-a-models-py-model-registry-svm">
-<h2>8. Espacio de búsqueda de SVM (idéntico a <code class="docutils literal notranslate"><span class="pre">models.py::MODEL_REGISTRY[&quot;svm&quot;]</span></code>)<a class="headerlink" href="#espacio-de-busqueda-de-svm-identico-a-models-py-model-registry-svm" title="Permalink to this heading">#</a></h2>
+<h2>8. Espacio de búsqueda de SVM (idéntico a <code class="docutils literal notranslate"><span class="pre">models.py::MODEL_REGISTRY[&quot;svm&quot;]</span></code>)<a class="headerlink" href="#espacio-de-busqueda-de-svm-identico-a-models-py-model-registry-svm" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
@@ -1030,16 +1083,16 @@ X: (29965, 20), balance del target: {0: 0.7787, 1: 0.2213}
 
 
 <span class="n">SVM_HYPERPARAMS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">HyperparamSpec</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1e2</span><span class="p">),</span>
-    <span class="n">HyperparamSpec</span><span class="p">(</span><span class="s2">&quot;gamma&quot;</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1e0</span><span class="p">),</span>
+    <span class="n">HyperparamSpec</span><span class="p">(</span><span class="s2">"C"</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1e2</span><span class="p">),</span>
+    <span class="n">HyperparamSpec</span><span class="p">(</span><span class="s2">"gamma"</span><span class="p">,</span> <span class="n">low</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1e0</span><span class="p">),</span>
 <span class="p">]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_param_grid</span><span class="p">(</span><span class="n">hyperparams</span><span class="o">=</span><span class="n">SVM_HYPERPARAMS</span><span class="p">,</span> <span class="n">n_points</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Igual a models.py::get_param_grid especializado a floats log=True.</span>
+<span class="w">    </span><span class="sd">'''Igual a models.py::get_param_grid especializado a floats log=True.</span>
 <span class="sd">    n_points=4 (igual que localmente: numeric_hp_count=2 &gt; 1, entonces</span>
 <span class="sd">    n_points = max(2, min(4, int(200 ** (1/2)))) = 4 -&gt; 4x4 = 16 combinaciones,</span>
-<span class="sd">    igual que grid_search en la corrida local).&#39;&#39;&#39;</span>
+<span class="sd">    igual que grid_search en la corrida local).'''</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">hp</span> <span class="ow">in</span> <span class="n">hyperparams</span><span class="p">:</span>
         <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">hp</span><span class="o">.</span><span class="n">low</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">hp</span><span class="o">.</span><span class="n">high</span><span class="p">),</span> <span class="n">num</span><span class="o">=</span><span class="n">n_points</span><span class="p">)</span>
@@ -1048,16 +1101,16 @@ X: (29965, 20), balance del target: {0: 0.7787, 1: 0.2213}
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_param_distributions</span><span class="p">(</span><span class="n">hyperparams</span><span class="o">=</span><span class="n">SVM_HYPERPARAMS</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Igual a models.py::get_param_distributions para floats log=True.&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">'''Igual a models.py::get_param_distributions para floats log=True.'''</span>
     <span class="k">return</span> <span class="p">{</span><span class="n">hp</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">loguniform</span><span class="p">(</span><span class="n">hp</span><span class="o">.</span><span class="n">low</span><span class="p">,</span> <span class="n">hp</span><span class="o">.</span><span class="n">high</span><span class="p">)</span> <span class="k">for</span> <span class="n">hp</span> <span class="ow">in</span> <span class="n">hyperparams</span><span class="p">}</span>
 
 
 <span class="n">SVM_PARAM_GRID</span> <span class="o">=</span> <span class="n">get_param_grid</span><span class="p">()</span>
 <span class="n">SVM_PARAM_DISTRIBUTIONS</span> <span class="o">=</span> <span class="n">get_param_distributions</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;param_grid (n_points=4):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"param_grid (n_points=4):"</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">SVM_PARAM_GRID</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">v</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total combinaciones grid_search: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ParameterGrid</span><span class="p">(</span><span class="n">SVM_PARAM_GRID</span><span class="p">)))</span><span class="si">}</span><span class="s2"> (se espera 16)&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">v</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total combinaciones grid_search: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ParameterGrid</span><span class="p">(</span><span class="n">SVM_PARAM_GRID</span><span class="p">)))</span><span class="si">}</span><span class="s2"> (se espera 16)"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1072,15 +1125,15 @@ Total combinaciones grid_search: 16 (se espera 16)
 </div>
 </section>
 <section id="preprocesamiento-identico-a-preprocessing-py-con-salida-densa">
-<h2>9. Preprocesamiento (idéntico a <code class="docutils literal notranslate"><span class="pre">preprocessing.py</span></code>, con salida densa)<a class="headerlink" href="#preprocesamiento-identico-a-preprocessing-py-con-salida-densa" title="Permalink to this heading">#</a></h2>
+<h2>9. Preprocesamiento (idéntico a <code class="docutils literal notranslate"><span class="pre">preprocessing.py</span></code>, con salida densa)<a class="headerlink" href="#preprocesamiento-identico-a-preprocessing-py-con-salida-densa" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_column_transformer</span><span class="p">(</span><span class="n">categorical_columns</span><span class="o">=</span><span class="n">CATEGORICAL_COLUMNS</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
         <span class="n">transformers</span><span class="o">=</span><span class="p">[</span>
             <span class="p">(</span>
-                <span class="s2">&quot;categorical&quot;</span><span class="p">,</span>
-                <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">handle_unknown</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="s2">&quot;if_binary&quot;</span><span class="p">,</span> <span class="n">sparse_output</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+                <span class="s2">"categorical"</span><span class="p">,</span>
+                <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">handle_unknown</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="s2">"if_binary"</span><span class="p">,</span> <span class="n">sparse_output</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
                 <span class="n">categorical_columns</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">],</span>
@@ -1092,14 +1145,14 @@ Total combinaciones grid_search: 16 (se espera 16)
 </div>
 </section>
 <section id="balanceo-identico-a-balancing-py-fabrica-del-modelo-cuml">
-<h2>10. Balanceo (idéntico a <code class="docutils literal notranslate"><span class="pre">balancing.py</span></code>) + fábrica del modelo cuML<a class="headerlink" href="#balanceo-identico-a-balancing-py-fabrica-del-modelo-cuml" title="Permalink to this heading">#</a></h2>
+<h2>10. Balanceo (idéntico a <code class="docutils literal notranslate"><span class="pre">balancing.py</span></code>) + fábrica del modelo cuML<a class="headerlink" href="#balanceo-identico-a-balancing-py-fabrica-del-modelo-cuml" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">BALANCING_TECHNIQUES</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;smote&quot;</span><span class="p">,</span> <span class="s2">&quot;adasyn&quot;</span><span class="p">,</span> <span class="s2">&quot;class_weight&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">BALANCING_TECHNIQUES</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"none"</span><span class="p">,</span> <span class="s2">"smote"</span><span class="p">,</span> <span class="s2">"adasyn"</span><span class="p">,</span> <span class="s2">"class_weight"</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_safe_k_neighbors</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">cv_n_splits</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Identico a balancing.py::_safe_k_neighbors.&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">'''Identico a balancing.py::_safe_k_neighbors.'''</span>
     <span class="n">n_minority</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
     <span class="k">if</span> <span class="n">cv_n_splits</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cv_n_splits</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">n_minority</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_minority</span> <span class="o">*</span> <span class="p">(</span><span class="n">cv_n_splits</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">cv_n_splits</span><span class="p">)</span>
@@ -1107,76 +1160,76 @@ Total combinaciones grid_search: 16 (se espera 16)
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_resampler</span><span class="p">(</span><span class="n">technique</span><span class="p">,</span> <span class="n">y_train</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">,</span> <span class="n">cv_n_splits</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Identico a balancing.py::get_resampler.&#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="n">technique</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;class_weight&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''Identico a balancing.py::get_resampler.'''</span>
+    <span class="k">if</span> <span class="n">technique</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"none"</span><span class="p">,</span> <span class="s2">"class_weight"</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="k">if</span> <span class="n">technique</span> <span class="o">==</span> <span class="s2">&quot;smote&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">technique</span> <span class="o">==</span> <span class="s2">"smote"</span><span class="p">:</span>
         <span class="n">k</span> <span class="o">=</span> <span class="n">_safe_k_neighbors</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">cv_n_splits</span><span class="o">=</span><span class="n">cv_n_splits</span><span class="p">)</span> <span class="k">if</span> <span class="n">y_train</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">5</span>
         <span class="k">return</span> <span class="n">SMOTE</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">k_neighbors</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">technique</span> <span class="o">==</span> <span class="s2">&quot;adasyn&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">technique</span> <span class="o">==</span> <span class="s2">"adasyn"</span><span class="p">:</span>
         <span class="n">k</span> <span class="o">=</span> <span class="n">_safe_k_neighbors</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">cv_n_splits</span><span class="o">=</span><span class="n">cv_n_splits</span><span class="p">)</span> <span class="k">if</span> <span class="n">y_train</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">5</span>
         <span class="k">return</span> <span class="n">ADASYN</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tecnica de balanceo desconocida: &#39;</span><span class="si">{</span><span class="n">technique</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Tecnica de balanceo desconocida: '</span><span class="si">{</span><span class="n">technique</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">svm_factory</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Equivalente cuML de models.py::_svm_factory. kernel=&#39;rbf&#39; fijo,</span>
+<span class="w">    </span><span class="sd">'''Equivalente cuML de models.py::_svm_factory. kernel='rbf' fijo,</span>
 <span class="sd">    probability=True (necesario para roc_auc), max_iter/cache_size iguales</span>
-<span class="sd">    en espiritu a la version CPU (ver aviso #5 sobre unidades de cache_size).&#39;&#39;&#39;</span>
+<span class="sd">    en espiritu a la version CPU (ver aviso #5 sobre unidades de cache_size).'''</span>
     <span class="k">return</span> <span class="n">cuSVC</span><span class="p">(</span>
-        <span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;rbf&quot;</span><span class="p">,</span>
+        <span class="n">kernel</span><span class="o">=</span><span class="s2">"rbf"</span><span class="p">,</span>
         <span class="n">probability</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">max_iter</span><span class="o">=</span><span class="n">SVM_MAX_ITER</span><span class="p">,</span>
         <span class="n">cache_size</span><span class="o">=</span><span class="n">SVM_CACHE_SIZE_MIB</span><span class="p">,</span>
         <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
-        <span class="n">output_type</span><span class="o">=</span><span class="s2">&quot;numpy&quot;</span><span class="p">,</span>
+        <span class="n">output_type</span><span class="o">=</span><span class="s2">"numpy"</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">build_pipeline</span><span class="p">(</span><span class="n">technique</span><span class="p">,</span> <span class="n">y_train</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cv_n_splits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">,</span> <span class="o">**</span><span class="n">model_kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Identico a balancing.py::build_pipeline, especializado a SVM+cuML.&#39;&#39;&#39;</span>
-    <span class="n">steps</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;preprocessing&quot;</span><span class="p">,</span> <span class="n">build_column_transformer</span><span class="p">())]</span>
+<span class="w">    </span><span class="sd">'''Identico a balancing.py::build_pipeline, especializado a SVM+cuML.'''</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"preprocessing"</span><span class="p">,</span> <span class="n">build_column_transformer</span><span class="p">())]</span>
 
     <span class="n">resampler</span> <span class="o">=</span> <span class="n">get_resampler</span><span class="p">(</span><span class="n">technique</span><span class="p">,</span> <span class="n">y_train</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">cv_n_splits</span><span class="o">=</span><span class="n">cv_n_splits</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">resampler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">technique</span><span class="p">,</span> <span class="n">resampler</span><span class="p">))</span>
 
     <span class="n">extra_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">model_kwargs</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">technique</span> <span class="o">==</span> <span class="s2">&quot;class_weight&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">technique</span> <span class="o">==</span> <span class="s2">"class_weight"</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">y_train</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;technique=&#39;class_weight&#39; requiere y_train.&quot;</span><span class="p">)</span>
-        <span class="n">extra_kwargs</span><span class="p">[</span><span class="s2">&quot;class_weight&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;balanced&quot;</span>  <span class="c1"># SVM: class_weight_param default (&quot;balanced&quot; nativo de SVC)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"technique='class_weight' requiere y_train."</span><span class="p">)</span>
+        <span class="n">extra_kwargs</span><span class="p">[</span><span class="s2">"class_weight"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"balanced"</span>  <span class="c1"># SVM: class_weight_param default ("balanced" nativo de SVC)</span>
 
     <span class="n">estimator</span> <span class="o">=</span> <span class="n">svm_factory</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_kwargs</span><span class="p">)</span>
-    <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="n">estimator</span><span class="p">))</span>
+    <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">"model"</span><span class="p">,</span> <span class="n">estimator</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">ImbPipeline</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="n">steps</span><span class="p">)</span>  <span class="c1"># sin memory=Memory(...): cache de joblib no aporta con GPU (el costo esta en el fit, no en recalcular SMOTE/ADASYN)</span>
 
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;build_pipeline OK -- ejemplo:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">build_pipeline</span><span class="p">(</span><span class="s2">&quot;smote&quot;</span><span class="p">,</span> <span class="n">y_train</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cv_n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"build_pipeline OK -- ejemplo:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">build_pipeline</span><span class="p">(</span><span class="s2">"smote"</span><span class="p">,</span> <span class="n">y_train</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cv_n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>build_pipeline OK -- ejemplo:
-Pipeline(steps=[(&#39;preprocessing&#39;,
+Pipeline(steps=[('preprocessing',
                  ColumnTransformer(remainder=StandardScaler(),
-                                   transformers=[(&#39;categorical&#39;,
-                                                  OneHotEncoder(drop=&#39;if_binary&#39;,
-                                                                handle_unknown=&#39;ignore&#39;,
+                                   transformers=[('categorical',
+                                                  OneHotEncoder(drop='if_binary',
+                                                                handle_unknown='ignore',
                                                                 sparse_output=False),
-                                                  [&#39;SEX&#39;, &#39;EDUCATION&#39;,
-                                                   &#39;MARRIAGE&#39;])])),
-                (&#39;smote&#39;, SMOTE(random_state=42)), (&#39;model&#39;, SVC())])
+                                                  ['SEX', 'EDUCATION',
+                                                   'MARRIAGE'])])),
+                ('smote', SMOTE(random_state=42)), ('model', SVC())])
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="los-4-metodos-de-optimizacion-identicos-a-optimization-py">
-<h2>11. Los 4 métodos de optimización (idénticos a <code class="docutils literal notranslate"><span class="pre">optimization.py</span></code>)<a class="headerlink" href="#los-4-metodos-de-optimizacion-identicos-a-optimization-py" title="Permalink to this heading">#</a></h2>
+<h2>11. Los 4 métodos de optimización (idénticos a <code class="docutils literal notranslate"><span class="pre">optimization.py</span></code>)<a class="headerlink" href="#los-4-metodos-de-optimizacion-identicos-a-optimization-py" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_n_splits</span><span class="p">(</span><span class="n">cv</span><span class="p">):</span>
@@ -1196,9 +1249,9 @@ Pipeline(steps=[(&#39;preprocessing&#39;,
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_manual_search</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">technique</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">scoring</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Mismo algoritmo que GridSearchCV/RandomizedSearchCV: evalua cada</span>
+<span class="w">    </span><span class="sd">'''Mismo algoritmo que GridSearchCV/RandomizedSearchCV: evalua cada</span>
 <span class="sd">    candidato con CV interna, se queda con el de mejor score promedio</span>
-<span class="sd">    (primer empate gana, igual que np.argmax), refit sobre todo (X, y).&#39;&#39;&#39;</span>
+<span class="sd">    (primer empate gana, igual que np.argmax), refit sobre todo (X, y).'''</span>
     <span class="n">best_score</span><span class="p">,</span> <span class="n">best_params</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
         <span class="n">score</span> <span class="o">=</span> <span class="n">_mean_cv_score</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">technique</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">scoring</span><span class="p">)</span>
@@ -1208,10 +1261,10 @@ Pipeline(steps=[(&#39;preprocessing&#39;,
     <span class="n">best_pipeline</span> <span class="o">=</span> <span class="n">build_pipeline</span><span class="p">(</span><span class="n">technique</span><span class="p">,</span> <span class="n">y_train</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cv_n_splits</span><span class="o">=</span><span class="n">_n_splits</span><span class="p">(</span><span class="n">cv</span><span class="p">),</span> <span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">,</span> <span class="o">**</span><span class="n">best_params</span><span class="p">)</span>
     <span class="n">best_pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;best_params&quot;</span><span class="p">:</span> <span class="n">best_params</span><span class="p">,</span>
-        <span class="s2">&quot;best_score&quot;</span><span class="p">:</span> <span class="n">best_score</span><span class="p">,</span>
-        <span class="s2">&quot;best_pipeline&quot;</span><span class="p">:</span> <span class="n">best_pipeline</span><span class="p">,</span>
-        <span class="s2">&quot;n_evaluations&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">),</span>
+        <span class="s2">"best_params"</span><span class="p">:</span> <span class="n">best_params</span><span class="p">,</span>
+        <span class="s2">"best_score"</span><span class="p">:</span> <span class="n">best_score</span><span class="p">,</span>
+        <span class="s2">"best_pipeline"</span><span class="p">:</span> <span class="n">best_pipeline</span><span class="p">,</span>
+        <span class="s2">"n_evaluations"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">),</span>
     <span class="p">}</span>
 
 
@@ -1229,13 +1282,13 @@ Pipeline(steps=[(&#39;preprocessing&#39;,
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">run_bayesian_search</span><span class="p">(</span><span class="n">technique</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">DEFAULT_SCORING</span><span class="p">,</span> <span class="n">n_trials</span><span class="o">=</span><span class="n">OPTUNA_N_TRIALS</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Transcripcion de optimization.py::run_bayesian_search.&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">'''Transcripcion de optimization.py::run_bayesian_search.'''</span>
     <span class="n">scorer</span> <span class="o">=</span> <span class="n">get_scorer</span><span class="p">(</span><span class="n">scoring</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">objective</span><span class="p">(</span><span class="n">trial</span><span class="p">):</span>
         <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">trial</span><span class="o">.</span><span class="n">suggest_float</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e2</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-            <span class="s2">&quot;gamma&quot;</span><span class="p">:</span> <span class="n">trial</span><span class="o">.</span><span class="n">suggest_float</span><span class="p">(</span><span class="s2">&quot;gamma&quot;</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e0</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="s2">"C"</span><span class="p">:</span> <span class="n">trial</span><span class="o">.</span><span class="n">suggest_float</span><span class="p">(</span><span class="s2">"C"</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e2</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="s2">"gamma"</span><span class="p">:</span> <span class="n">trial</span><span class="o">.</span><span class="n">suggest_float</span><span class="p">(</span><span class="s2">"gamma"</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e0</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
         <span class="p">}</span>
         <span class="n">fold_scores</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">train_idx</span><span class="p">,</span> <span class="n">val_idx</span> <span class="ow">in</span> <span class="n">cv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -1247,17 +1300,17 @@ Pipeline(steps=[(&#39;preprocessing&#39;,
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">fold_scores</span><span class="p">))</span>
 
     <span class="n">sampler</span> <span class="o">=</span> <span class="n">optuna</span><span class="o">.</span><span class="n">samplers</span><span class="o">.</span><span class="n">TPESampler</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
-    <span class="n">study</span> <span class="o">=</span> <span class="n">optuna</span><span class="o">.</span><span class="n">create_study</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s2">&quot;maximize&quot;</span><span class="p">,</span> <span class="n">sampler</span><span class="o">=</span><span class="n">sampler</span><span class="p">)</span>
+    <span class="n">study</span> <span class="o">=</span> <span class="n">optuna</span><span class="o">.</span><span class="n">create_study</span><span class="p">(</span><span class="n">direction</span><span class="o">=</span><span class="s2">"maximize"</span><span class="p">,</span> <span class="n">sampler</span><span class="o">=</span><span class="n">sampler</span><span class="p">)</span>
     <span class="n">study</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">n_trials</span><span class="o">=</span><span class="n">n_trials</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">show_progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="n">best_params</span> <span class="o">=</span> <span class="n">study</span><span class="o">.</span><span class="n">best_params</span>
     <span class="n">best_pipeline</span> <span class="o">=</span> <span class="n">build_pipeline</span><span class="p">(</span><span class="n">technique</span><span class="p">,</span> <span class="n">y_train</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cv_n_splits</span><span class="o">=</span><span class="n">_n_splits</span><span class="p">(</span><span class="n">cv</span><span class="p">),</span> <span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">,</span> <span class="o">**</span><span class="n">best_params</span><span class="p">)</span>
     <span class="n">best_pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;best_params&quot;</span><span class="p">:</span> <span class="n">best_params</span><span class="p">,</span>
-        <span class="s2">&quot;best_score&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">study</span><span class="o">.</span><span class="n">best_value</span><span class="p">),</span>
-        <span class="s2">&quot;best_pipeline&quot;</span><span class="p">:</span> <span class="n">best_pipeline</span><span class="p">,</span>
-        <span class="s2">&quot;n_evaluations&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">study</span><span class="o">.</span><span class="n">trials</span><span class="p">),</span>
+        <span class="s2">"best_params"</span><span class="p">:</span> <span class="n">best_params</span><span class="p">,</span>
+        <span class="s2">"best_score"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">study</span><span class="o">.</span><span class="n">best_value</span><span class="p">),</span>
+        <span class="s2">"best_pipeline"</span><span class="p">:</span> <span class="n">best_pipeline</span><span class="p">,</span>
+        <span class="s2">"n_evaluations"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">study</span><span class="o">.</span><span class="n">trials</span><span class="p">),</span>
     <span class="p">}</span>
 
 
@@ -1294,10 +1347,10 @@ Pipeline(steps=[(&#39;preprocessing&#39;,
 <span class="p">):</span>
     <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">RANDOM_STATE</span><span class="p">)</span>  <span class="c1"># DEAP usa el modulo `random` global, igual que localmente</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">creator</span><span class="p">,</span> <span class="s2">&quot;FitnessMax&quot;</span><span class="p">):</span>
-        <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;FitnessMax&quot;</span><span class="p">,</span> <span class="n">base</span><span class="o">.</span><span class="n">Fitness</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,))</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">creator</span><span class="p">,</span> <span class="s2">&quot;Individual&quot;</span><span class="p">):</span>
-        <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;Individual&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fitness</span><span class="o">=</span><span class="n">creator</span><span class="o">.</span><span class="n">FitnessMax</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">creator</span><span class="p">,</span> <span class="s2">"FitnessMax"</span><span class="p">):</span>
+        <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">"FitnessMax"</span><span class="p">,</span> <span class="n">base</span><span class="o">.</span><span class="n">Fitness</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">creator</span><span class="p">,</span> <span class="s2">"Individual"</span><span class="p">):</span>
+        <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">"Individual"</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fitness</span><span class="o">=</span><span class="n">creator</span><span class="o">.</span><span class="n">FitnessMax</span><span class="p">)</span>
 
     <span class="n">hyperparams</span> <span class="o">=</span> <span class="n">SVM_HYPERPARAMS</span>
     <span class="n">scorer</span> <span class="o">=</span> <span class="n">get_scorer</span><span class="p">(</span><span class="n">scoring</span><span class="p">)</span>
@@ -1320,12 +1373,12 @@ Pipeline(steps=[(&#39;preprocessing&#39;,
         <span class="k">return</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">fold_scores</span><span class="p">)),)</span>
 
     <span class="n">toolbox</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">Toolbox</span><span class="p">()</span>
-    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;individual&quot;</span><span class="p">,</span> <span class="n">_init_individual</span><span class="p">)</span>
-    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;population&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">.</span><span class="n">initRepeat</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">toolbox</span><span class="o">.</span><span class="n">individual</span><span class="p">)</span>
-    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;mate&quot;</span><span class="p">,</span> <span class="n">_cx_uniform</span><span class="p">,</span> <span class="n">indpb</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;mutate&quot;</span><span class="p">,</span> <span class="n">_mutate_individual</span><span class="p">,</span> <span class="n">hyperparams</span><span class="o">=</span><span class="n">hyperparams</span><span class="p">,</span> <span class="n">indpb</span><span class="o">=</span><span class="n">mut_indpb</span><span class="p">)</span>
-    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;select&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">.</span><span class="n">selTournament</span><span class="p">,</span> <span class="n">tournsize</span><span class="o">=</span><span class="n">tournament_size</span><span class="p">)</span>
-    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;evaluate&quot;</span><span class="p">,</span> <span class="n">_evaluate</span><span class="p">)</span>
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"individual"</span><span class="p">,</span> <span class="n">_init_individual</span><span class="p">)</span>
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"population"</span><span class="p">,</span> <span class="n">tools</span><span class="o">.</span><span class="n">initRepeat</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">toolbox</span><span class="o">.</span><span class="n">individual</span><span class="p">)</span>
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"mate"</span><span class="p">,</span> <span class="n">_cx_uniform</span><span class="p">,</span> <span class="n">indpb</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"mutate"</span><span class="p">,</span> <span class="n">_mutate_individual</span><span class="p">,</span> <span class="n">hyperparams</span><span class="o">=</span><span class="n">hyperparams</span><span class="p">,</span> <span class="n">indpb</span><span class="o">=</span><span class="n">mut_indpb</span><span class="p">)</span>
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"select"</span><span class="p">,</span> <span class="n">tools</span><span class="o">.</span><span class="n">selTournament</span><span class="p">,</span> <span class="n">tournsize</span><span class="o">=</span><span class="n">tournament_size</span><span class="p">)</span>
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"evaluate"</span><span class="p">,</span> <span class="n">_evaluate</span><span class="p">)</span>
 
     <span class="n">population</span> <span class="o">=</span> <span class="n">toolbox</span><span class="o">.</span><span class="n">population</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">population_size</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">fit</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="nb">map</span><span class="p">(</span><span class="n">toolbox</span><span class="o">.</span><span class="n">evaluate</span><span class="p">,</span> <span class="n">population</span><span class="p">)):</span>
@@ -1359,48 +1412,48 @@ Pipeline(steps=[(&#39;preprocessing&#39;,
     <span class="n">best_pipeline</span> <span class="o">=</span> <span class="n">build_pipeline</span><span class="p">(</span><span class="n">technique</span><span class="p">,</span> <span class="n">y_train</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cv_n_splits</span><span class="o">=</span><span class="n">_n_splits</span><span class="p">(</span><span class="n">cv</span><span class="p">),</span> <span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">,</span> <span class="o">**</span><span class="n">best_params</span><span class="p">)</span>
     <span class="n">best_pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;best_params&quot;</span><span class="p">:</span> <span class="n">best_params</span><span class="p">,</span>
-        <span class="s2">&quot;best_score&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">best_ind</span><span class="o">.</span><span class="n">fitness</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-        <span class="s2">&quot;best_pipeline&quot;</span><span class="p">:</span> <span class="n">best_pipeline</span><span class="p">,</span>
-        <span class="s2">&quot;n_evaluations&quot;</span><span class="p">:</span> <span class="n">n_evaluations</span><span class="p">,</span>
+        <span class="s2">"best_params"</span><span class="p">:</span> <span class="n">best_params</span><span class="p">,</span>
+        <span class="s2">"best_score"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">best_ind</span><span class="o">.</span><span class="n">fitness</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="s2">"best_pipeline"</span><span class="p">:</span> <span class="n">best_pipeline</span><span class="p">,</span>
+        <span class="s2">"n_evaluations"</span><span class="p">:</span> <span class="n">n_evaluations</span><span class="p">,</span>
     <span class="p">}</span>
 
 
 <span class="n">OPTIMIZATION_DISPATCH</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;grid_search&quot;</span><span class="p">:</span> <span class="n">run_grid_search</span><span class="p">,</span>
-    <span class="s2">&quot;random_search&quot;</span><span class="p">:</span> <span class="n">run_random_search</span><span class="p">,</span>
-    <span class="s2">&quot;bayesian_optuna&quot;</span><span class="p">:</span> <span class="n">run_bayesian_search</span><span class="p">,</span>
-    <span class="s2">&quot;genetic_deap&quot;</span><span class="p">:</span> <span class="n">run_genetic_search</span><span class="p">,</span>
+    <span class="s2">"grid_search"</span><span class="p">:</span> <span class="n">run_grid_search</span><span class="p">,</span>
+    <span class="s2">"random_search"</span><span class="p">:</span> <span class="n">run_random_search</span><span class="p">,</span>
+    <span class="s2">"bayesian_optuna"</span><span class="p">:</span> <span class="n">run_bayesian_search</span><span class="p">,</span>
+    <span class="s2">"genetic_deap"</span><span class="p">:</span> <span class="n">run_genetic_search</span><span class="p">,</span>
 <span class="p">}</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;4 metodos de optimizacion definidos:&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">OPTIMIZATION_DISPATCH</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"4 metodos de optimizacion definidos:"</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">OPTIMIZATION_DISPATCH</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4 metodos de optimizacion definidos: [&#39;grid_search&#39;, &#39;random_search&#39;, &#39;bayesian_optuna&#39;, &#39;genetic_deap&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4 metodos de optimizacion definidos: ['grid_search', 'random_search', 'bayesian_optuna', 'genetic_deap']
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="validacion-cruzada-anidada-identica-a-nested-cv-py">
-<h2>12. Validación cruzada anidada (idéntica a <code class="docutils literal notranslate"><span class="pre">nested_cv.py</span></code>)<a class="headerlink" href="#validacion-cruzada-anidada-identica-a-nested-cv-py" title="Permalink to this heading">#</a></h2>
+<h2>12. Validación cruzada anidada (idéntica a <code class="docutils literal notranslate"><span class="pre">nested_cv.py</span></code>)<a class="headerlink" href="#validacion-cruzada-anidada-identica-a-nested-cv-py" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_core_metrics</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Identico a nested_cv.py::compute_core_metrics.&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">'''Identico a nested_cv.py::compute_core_metrics.'''</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;accuracy&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)),</span>
-        <span class="s2">&quot;precision&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">precision_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
-        <span class="s2">&quot;recall&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">recall_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
-        <span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
-        <span class="s2">&quot;roc_auc&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">)),</span>
+        <span class="s2">"accuracy"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)),</span>
+        <span class="s2">"precision"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">precision_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
+        <span class="s2">"recall"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">recall_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
+        <span class="s2">"f1"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
+        <span class="s2">"roc_auc"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">)),</span>
     <span class="p">}</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">run_nested_cv</span><span class="p">(</span><span class="n">technique</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n_outer_folds</span><span class="o">=</span><span class="n">N_OUTER_FOLDS</span><span class="p">,</span> <span class="n">n_inner_folds</span><span class="o">=</span><span class="n">N_INNER_FOLDS</span><span class="p">,</span>
                    <span class="n">scoring</span><span class="o">=</span><span class="n">DEFAULT_SCORING</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;Identico a nested_cv.py::run_nested_cv, especializado a SVM+cuML.&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">'''Identico a nested_cv.py::run_nested_cv, especializado a SVM+cuML.'''</span>
     <span class="n">outer_cv</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">n_outer_folds</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
     <span class="n">inner_cv</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">n_inner_folds</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
 
@@ -1415,43 +1468,43 @@ Pipeline(steps=[(&#39;preprocessing&#39;,
         <span class="n">opt_result</span> <span class="o">=</span> <span class="n">OPTIMIZATION_DISPATCH</span><span class="p">[</span><span class="n">method</span><span class="p">](</span><span class="n">technique</span><span class="p">,</span> <span class="n">X_train_outer</span><span class="p">,</span> <span class="n">y_train_outer</span><span class="p">,</span> <span class="n">inner_cv</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">)</span>
         <span class="n">fit_time_seconds</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
 
-        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">opt_result</span><span class="p">[</span><span class="s2">&quot;best_pipeline&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_outer</span><span class="p">)</span>
-        <span class="n">y_proba</span> <span class="o">=</span> <span class="n">opt_result</span><span class="p">[</span><span class="s2">&quot;best_pipeline&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test_outer</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">opt_result</span><span class="p">[</span><span class="s2">"best_pipeline"</span><span class="p">]</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_outer</span><span class="p">)</span>
+        <span class="n">y_proba</span> <span class="o">=</span> <span class="n">opt_result</span><span class="p">[</span><span class="s2">"best_pipeline"</span><span class="p">]</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test_outer</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
         <span class="n">y_true</span> <span class="o">=</span> <span class="n">y_test_outer</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
 
         <span class="n">fold_results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s2">&quot;fold_index&quot;</span><span class="p">:</span> <span class="n">fold_index</span><span class="p">,</span>
-            <span class="s2">&quot;best_params&quot;</span><span class="p">:</span> <span class="n">opt_result</span><span class="p">[</span><span class="s2">&quot;best_params&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;metrics&quot;</span><span class="p">:</span> <span class="n">compute_core_metrics</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">),</span>
-            <span class="s2">&quot;fit_time_seconds&quot;</span><span class="p">:</span> <span class="n">fit_time_seconds</span><span class="p">,</span>
+            <span class="s2">"fold_index"</span><span class="p">:</span> <span class="n">fold_index</span><span class="p">,</span>
+            <span class="s2">"best_params"</span><span class="p">:</span> <span class="n">opt_result</span><span class="p">[</span><span class="s2">"best_params"</span><span class="p">],</span>
+            <span class="s2">"metrics"</span><span class="p">:</span> <span class="n">compute_core_metrics</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_proba</span><span class="p">),</span>
+            <span class="s2">"fit_time_seconds"</span><span class="p">:</span> <span class="n">fit_time_seconds</span><span class="p">,</span>
         <span class="p">})</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;    fold </span><span class="si">{</span><span class="n">fold_index</span><span class="si">}</span><span class="s2">: f1=</span><span class="si">{</span><span class="n">fold_results</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;metrics&#39;</span><span class="p">][</span><span class="s1">&#39;f1&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;best_params=</span><span class="si">{</span><span class="w"> </span><span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="w"> </span><span class="nb">round</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">opt_result</span><span class="p">[</span><span class="s1">&#39;best_params&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span><span class="w"> </span><span class="si">}</span><span class="s2"> &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">fit_time_seconds</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s)&quot;</span>
+            <span class="sa">f</span><span class="s2">"    fold </span><span class="si">{</span><span class="n">fold_index</span><span class="si">}</span><span class="s2">: f1=</span><span class="si">{</span><span class="n">fold_results</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">'metrics'</span><span class="p">][</span><span class="s1">'f1'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> "</span>
+            <span class="sa">f</span><span class="s2">"best_params=</span><span class="si">{</span><span class="w"> </span><span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="w"> </span><span class="nb">round</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">opt_result</span><span class="p">[</span><span class="s1">'best_params'</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span><span class="w"> </span><span class="si">}</span><span class="s2"> "</span>
+            <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">fit_time_seconds</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s)"</span>
         <span class="p">)</span>
 
     <span class="n">total_time_seconds</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t_start_total</span>
 
     <span class="n">row</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;svm&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;technique&quot;</span><span class="p">:</span> <span class="n">technique</span><span class="p">,</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
-        <span class="s2">&quot;total_time_seconds&quot;</span><span class="p">:</span> <span class="n">total_time_seconds</span><span class="p">,</span>
-        <span class="s2">&quot;n_outer_folds&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">fold_results</span><span class="p">),</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"svm"</span><span class="p">,</span>
+        <span class="s2">"technique"</span><span class="p">:</span> <span class="n">technique</span><span class="p">,</span>
+        <span class="s2">"method"</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
+        <span class="s2">"total_time_seconds"</span><span class="p">:</span> <span class="n">total_time_seconds</span><span class="p">,</span>
+        <span class="s2">"n_outer_folds"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">fold_results</span><span class="p">),</span>
     <span class="p">}</span>
     <span class="k">for</span> <span class="n">metric_name</span> <span class="ow">in</span> <span class="n">CORE_METRICS</span><span class="p">:</span>
-        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">fr</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="n">metric_name</span><span class="p">]</span> <span class="k">for</span> <span class="n">fr</span> <span class="ow">in</span> <span class="n">fold_results</span><span class="p">]</span>
-        <span class="n">row</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">_mean&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
-        <span class="n">row</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">_std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
-        <span class="n">row</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">_per_fold&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;best_params_per_fold&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">([</span><span class="n">fr</span><span class="p">[</span><span class="s2">&quot;best_params&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">fr</span> <span class="ow">in</span> <span class="n">fold_results</span><span class="p">])</span>
-    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;random_state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">random_state</span>
-    <span class="n">row</span><span class="p">[</span><span class="s2">&quot;n_inner_folds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_inner_folds</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">fr</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">][</span><span class="n">metric_name</span><span class="p">]</span> <span class="k">for</span> <span class="n">fr</span> <span class="ow">in</span> <span class="n">fold_results</span><span class="p">]</span>
+        <span class="n">row</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">_mean"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
+        <span class="n">row</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">_std"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
+        <span class="n">row</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">_per_fold"</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">row</span><span class="p">[</span><span class="s2">"best_params_per_fold"</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">([</span><span class="n">fr</span><span class="p">[</span><span class="s2">"best_params"</span><span class="p">]</span> <span class="k">for</span> <span class="n">fr</span> <span class="ow">in</span> <span class="n">fold_results</span><span class="p">])</span>
+    <span class="n">row</span><span class="p">[</span><span class="s2">"random_state"</span><span class="p">]</span> <span class="o">=</span> <span class="n">random_state</span>
+    <span class="n">row</span><span class="p">[</span><span class="s2">"n_inner_folds"</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_inner_folds</span>
     <span class="k">return</span> <span class="n">row</span>
 
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;run_nested_cv definido&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"run_nested_cv definido"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1463,7 +1516,7 @@ Pipeline(steps=[(&#39;preprocessing&#39;,
 </div>
 </section>
 <section id="seleccion-de-combinaciones-a-correr">
-<h2>13. Selección de combinaciones a correr<a class="headerlink" href="#seleccion-de-combinaciones-a-correr" title="Permalink to this heading">#</a></h2>
+<h2>13. Selección de combinaciones a correr<a class="headerlink" href="#seleccion-de-combinaciones-a-correr" title="Link to this heading">#</a></h2>
 <p>Por defecto corre las <strong>16 combinaciones</strong> de SVM (4 técnicas × 4 métodos): este
 modelo se corre solo en Colab, porque en CPU local representó ~90% del tiempo
 total de la corrida anterior (ver <code class="docutils literal notranslate"><span class="pre">EXPERIMENT_STATUS.md</span></code>). Las filas de los
@@ -1473,179 +1526,179 @@ para una segunda sesión las 4 de <code class="docutils literal notranslate"><sp
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ALL_SVM_COMBOS</span> <span class="o">=</span> <span class="p">[(</span><span class="n">t</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">BALANCING_TECHNIQUES</span>
-                  <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;grid_search&quot;</span><span class="p">,</span> <span class="s2">&quot;random_search&quot;</span><span class="p">,</span> <span class="s2">&quot;bayesian_optuna&quot;</span><span class="p">,</span> <span class="s2">&quot;genetic_deap&quot;</span><span class="p">)]</span>
+                  <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"grid_search"</span><span class="p">,</span> <span class="s2">"random_search"</span><span class="p">,</span> <span class="s2">"bayesian_optuna"</span><span class="p">,</span> <span class="s2">"genetic_deap"</span><span class="p">)]</span>
 <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">ALL_SVM_COMBOS</span><span class="p">)</span> <span class="o">==</span> <span class="mi">16</span>
 
 <span class="c1"># Editar esta lista para correr solo un subconjunto:</span>
 <span class="c1"># Primero las 12 combinaciones sin búsqueda genética; las 4 genéticas (las más largas) al final.</span>
-<span class="n">COMBOS_TO_RUN</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">ALL_SVM_COMBOS</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;genetic_deap&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">ALL_SVM_COMBOS</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;genetic_deap&quot;</span><span class="p">]</span>
+<span class="n">COMBOS_TO_RUN</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">ALL_SVM_COMBOS</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"genetic_deap"</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">ALL_SVM_COMBOS</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"genetic_deap"</span><span class="p">]</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;COMBOS_TO_RUN (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">COMBOS_TO_RUN</span><span class="p">)</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">COMBOS_TO_RUN</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"COMBOS_TO_RUN (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">COMBOS_TO_RUN</span><span class="p">)</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">COMBOS_TO_RUN</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>COMBOS_TO_RUN (16): [(&#39;none&#39;, &#39;grid_search&#39;), (&#39;none&#39;, &#39;random_search&#39;), (&#39;none&#39;, &#39;bayesian_optuna&#39;), (&#39;smote&#39;, &#39;grid_search&#39;), (&#39;smote&#39;, &#39;random_search&#39;), (&#39;smote&#39;, &#39;bayesian_optuna&#39;), (&#39;adasyn&#39;, &#39;grid_search&#39;), (&#39;adasyn&#39;, &#39;random_search&#39;), (&#39;adasyn&#39;, &#39;bayesian_optuna&#39;), (&#39;class_weight&#39;, &#39;grid_search&#39;), (&#39;class_weight&#39;, &#39;random_search&#39;), (&#39;class_weight&#39;, &#39;bayesian_optuna&#39;), (&#39;none&#39;, &#39;genetic_deap&#39;), (&#39;smote&#39;, &#39;genetic_deap&#39;), (&#39;adasyn&#39;, &#39;genetic_deap&#39;), (&#39;class_weight&#39;, &#39;genetic_deap&#39;)]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>COMBOS_TO_RUN (16): [('none', 'grid_search'), ('none', 'random_search'), ('none', 'bayesian_optuna'), ('smote', 'grid_search'), ('smote', 'random_search'), ('smote', 'bayesian_optuna'), ('adasyn', 'grid_search'), ('adasyn', 'random_search'), ('adasyn', 'bayesian_optuna'), ('class_weight', 'grid_search'), ('class_weight', 'random_search'), ('class_weight', 'bayesian_optuna'), ('none', 'genetic_deap'), ('smote', 'genetic_deap'), ('adasyn', 'genetic_deap'), ('class_weight', 'genetic_deap')]
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion">
-<h2>14. Ejecutar — guardado incremental (una fila apenas termina cada combinación)<a class="headerlink" href="#ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion" title="Permalink to this heading">#</a></h2>
+<h2>14. Ejecutar — guardado incremental (una fila apenas termina cada combinación)<a class="headerlink" href="#ejecutar-guardado-incremental-una-fila-apenas-termina-cada-combinacion" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Se guarda en Google Drive para no perder lo ya corrido si Colab recicla la sesión</span>
 <span class="c1"># (el disco local de Colab se borra al desconectarse). Si no se monta Drive, cae al disco local.</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">google.colab</span><span class="w"> </span><span class="kn">import</span> <span class="n">drive</span>
-    <span class="n">drive</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;/content/drive&quot;</span><span class="p">)</span>
-    <span class="n">OUT_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/content/drive/MyDrive/svm_resultados&quot;</span><span class="p">)</span>
+    <span class="n">drive</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">"/content/drive"</span><span class="p">)</span>
+    <span class="n">OUT_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"/content/drive/MyDrive/svm_resultados"</span><span class="p">)</span>
     <span class="n">OUT_DIR</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No se pudo montar Drive, se guarda en el disco local de Colab:&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
-    <span class="n">OUT_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-<span class="n">RESULTS_CSV_PATH</span> <span class="o">=</span> <span class="n">OUT_DIR</span> <span class="o">/</span> <span class="s2">&quot;svm_gpu_results.csv&quot;</span>
-<span class="n">ERRORS_LOG_PATH</span> <span class="o">=</span> <span class="n">OUT_DIR</span> <span class="o">/</span> <span class="s2">&quot;svm_gpu_errors_log.csv&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Resultados en:&quot;</span><span class="p">,</span> <span class="n">RESULTS_CSV_PATH</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"No se pudo montar Drive, se guarda en el disco local de Colab:"</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+    <span class="n">OUT_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+<span class="n">RESULTS_CSV_PATH</span> <span class="o">=</span> <span class="n">OUT_DIR</span> <span class="o">/</span> <span class="s2">"svm_gpu_results.csv"</span>
+<span class="n">ERRORS_LOG_PATH</span> <span class="o">=</span> <span class="n">OUT_DIR</span> <span class="o">/</span> <span class="s2">"svm_gpu_errors_log.csv"</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Resultados en:"</span><span class="p">,</span> <span class="n">RESULTS_CSV_PATH</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
 
 <span class="n">already_done</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">RESULTS_CSV_PATH</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
     <span class="n">existing</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">RESULTS_CSV_PATH</span><span class="p">)</span>
-    <span class="n">already_done</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">existing</span><span class="p">[</span><span class="s2">&quot;technique&quot;</span><span class="p">],</span> <span class="n">existing</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">already_done</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones ya en </span><span class="si">{</span><span class="n">RESULTS_CSV_PATH</span><span class="si">}</span><span class="s2">, se omiten.&quot;</span><span class="p">)</span>
+    <span class="n">already_done</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">existing</span><span class="p">[</span><span class="s2">"technique"</span><span class="p">],</span> <span class="n">existing</span><span class="p">[</span><span class="s2">"method"</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">already_done</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones ya en </span><span class="si">{</span><span class="n">RESULTS_CSV_PATH</span><span class="si">}</span><span class="s2">, se omiten."</span><span class="p">)</span>
 
 <span class="n">to_run</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">COMBOS_TO_RUN</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">already_done</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">to_run</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones a correr en esta sesion: </span><span class="si">{</span><span class="n">to_run</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">to_run</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones a correr en esta sesion: </span><span class="si">{</span><span class="n">to_run</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">technique</span><span class="p">,</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">to_run</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== svm / </span><span class="si">{</span><span class="n">technique</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2"> ===&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== svm / </span><span class="si">{</span><span class="n">technique</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2"> ==="</span><span class="p">)</span>
     <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">row</span> <span class="o">=</span> <span class="n">run_nested_cv</span><span class="p">(</span><span class="n">technique</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  ERROR tras </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s: </span><span class="si">{</span><span class="n">exc</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  ERROR tras </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s: </span><span class="si">{</span><span class="n">exc</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
         <span class="n">err_row</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([{</span>
-            <span class="s2">&quot;technique&quot;</span><span class="p">:</span> <span class="n">technique</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
-            <span class="s2">&quot;elapsed_seconds&quot;</span><span class="p">:</span> <span class="n">elapsed</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">repr</span><span class="p">(</span><span class="n">exc</span><span class="p">),</span> <span class="s2">&quot;traceback&quot;</span><span class="p">:</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">(),</span>
+            <span class="s2">"technique"</span><span class="p">:</span> <span class="n">technique</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
+            <span class="s2">"elapsed_seconds"</span><span class="p">:</span> <span class="n">elapsed</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">:</span> <span class="nb">repr</span><span class="p">(</span><span class="n">exc</span><span class="p">),</span> <span class="s2">"traceback"</span><span class="p">:</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">(),</span>
         <span class="p">}])</span>
-        <span class="n">err_row</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">ERRORS_LOG_PATH</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="ow">not</span> <span class="n">ERRORS_LOG_PATH</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">err_row</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">ERRORS_LOG_PATH</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"a"</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="ow">not</span> <span class="n">ERRORS_LOG_PATH</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">continue</span>
 
     <span class="n">row_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">row</span><span class="p">])</span>
-    <span class="n">row_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">RESULTS_CSV_PATH</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="ow">not</span> <span class="n">RESULTS_CSV_PATH</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">row_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">RESULTS_CSV_PATH</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"a"</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="ow">not</span> <span class="n">RESULTS_CSV_PATH</span><span class="o">.</span><span class="n">exists</span><span class="p">(),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;  OK svm/</span><span class="si">{</span><span class="n">technique</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2"> -- &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;f1=</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;f1_mean&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">+/-</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;f1_std&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;roc_auc=</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;roc_auc_mean&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">+/-</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;roc_auc_std&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;total_time_seconds&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s)&quot;</span>
+        <span class="sa">f</span><span class="s2">"  OK svm/</span><span class="si">{</span><span class="n">technique</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2"> -- "</span>
+        <span class="sa">f</span><span class="s2">"f1=</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'f1_mean'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">+/-</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'f1_std'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> "</span>
+        <span class="sa">f</span><span class="s2">"roc_auc=</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'roc_auc_mean'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">+/-</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'roc_auc_std'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> "</span>
+        <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'total_time_seconds'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s)"</span>
     <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Listo. Filas guardadas en:&quot;</span><span class="p">,</span> <span class="n">RESULTS_CSV_PATH</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Listo. Filas guardadas en:"</span><span class="p">,</span> <span class="n">RESULTS_CSV_PATH</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mounted at /content/drive
 Resultados en: /content/drive/MyDrive/svm_resultados/svm_gpu_results.csv
-16 combinaciones a correr en esta sesion: [(&#39;none&#39;, &#39;grid_search&#39;), (&#39;none&#39;, &#39;random_search&#39;), (&#39;none&#39;, &#39;bayesian_optuna&#39;), (&#39;smote&#39;, &#39;grid_search&#39;), (&#39;smote&#39;, &#39;random_search&#39;), (&#39;smote&#39;, &#39;bayesian_optuna&#39;), (&#39;adasyn&#39;, &#39;grid_search&#39;), (&#39;adasyn&#39;, &#39;random_search&#39;), (&#39;adasyn&#39;, &#39;bayesian_optuna&#39;), (&#39;class_weight&#39;, &#39;grid_search&#39;), (&#39;class_weight&#39;, &#39;random_search&#39;), (&#39;class_weight&#39;, &#39;bayesian_optuna&#39;), (&#39;none&#39;, &#39;genetic_deap&#39;), (&#39;smote&#39;, &#39;genetic_deap&#39;), (&#39;adasyn&#39;, &#39;genetic_deap&#39;), (&#39;class_weight&#39;, &#39;genetic_deap&#39;)]
+16 combinaciones a correr en esta sesion: [('none', 'grid_search'), ('none', 'random_search'), ('none', 'bayesian_optuna'), ('smote', 'grid_search'), ('smote', 'random_search'), ('smote', 'bayesian_optuna'), ('adasyn', 'grid_search'), ('adasyn', 'random_search'), ('adasyn', 'bayesian_optuna'), ('class_weight', 'grid_search'), ('class_weight', 'random_search'), ('class_weight', 'bayesian_optuna'), ('none', 'genetic_deap'), ('smote', 'genetic_deap'), ('adasyn', 'genetic_deap'), ('class_weight', 'genetic_deap')]
 
 === svm / none / grid_search ===
-    fold 0: f1=0.4378 best_params={&#39;C&#39;: np.float64(0.215443), &#39;gamma&#39;: np.float64(0.046416)} (81.1s)
-    fold 1: f1=0.4402 best_params={&#39;C&#39;: np.float64(0.215443), &#39;gamma&#39;: np.float64(0.046416)} (78.8s)
-    fold 2: f1=0.4405 best_params={&#39;C&#39;: np.float64(0.215443), &#39;gamma&#39;: np.float64(0.046416)} (80.2s)
+    fold 0: f1=0.4378 best_params={'C': np.float64(0.215443), 'gamma': np.float64(0.046416)} (81.1s)
+    fold 1: f1=0.4402 best_params={'C': np.float64(0.215443), 'gamma': np.float64(0.046416)} (78.8s)
+    fold 2: f1=0.4405 best_params={'C': np.float64(0.215443), 'gamma': np.float64(0.046416)} (80.2s)
   OK svm/none/grid_search -- f1=0.4395+/-0.0012 roc_auc=0.7199+/-0.0064 (240.4s)
 
 === svm / none / random_search ===
-    fold 0: f1=0.4266 best_params={&#39;C&#39;: 8.471801, &#39;gamma&#39;: 0.02481} (91.6s)
-    fold 1: f1=0.4465 best_params={&#39;C&#39;: 0.108423, &#39;gamma&#39;: 0.044678} (85.0s)
-    fold 2: f1=0.4363 best_params={&#39;C&#39;: 5.456725, &#39;gamma&#39;: 0.005762} (87.4s)
+    fold 0: f1=0.4266 best_params={'C': 8.471801, 'gamma': 0.02481} (91.6s)
+    fold 1: f1=0.4465 best_params={'C': 0.108423, 'gamma': 0.044678} (85.0s)
+    fold 2: f1=0.4363 best_params={'C': 5.456725, 'gamma': 0.005762} (87.4s)
   OK svm/none/random_search -- f1=0.4365+/-0.0081 roc_auc=0.7214+/-0.0060 (264.2s)
 
 === svm / none / bayesian_optuna ===
-    fold 0: f1=0.4360 best_params={&#39;C&#39;: 0.430558, &#39;gamma&#39;: 0.035778} (178.3s)
-    fold 1: f1=0.4376 best_params={&#39;C&#39;: 0.156283, &#39;gamma&#39;: 0.056814} (178.4s)
-    fold 2: f1=0.4398 best_params={&#39;C&#39;: 0.322411, &#39;gamma&#39;: 0.063427} (146.9s)
+    fold 0: f1=0.4360 best_params={'C': 0.430558, 'gamma': 0.035778} (178.3s)
+    fold 1: f1=0.4376 best_params={'C': 0.156283, 'gamma': 0.056814} (178.4s)
+    fold 2: f1=0.4398 best_params={'C': 0.322411, 'gamma': 0.063427} (146.9s)
   OK svm/none/bayesian_optuna -- f1=0.4378+/-0.0016 roc_auc=0.7198+/-0.0043 (503.9s)
 
 === svm / smote / grid_search ===
-    fold 0: f1=0.5445 best_params={&#39;C&#39;: np.float64(100.0), &#39;gamma&#39;: np.float64(0.002154)} (94.9s)
-    fold 1: f1=0.5304 best_params={&#39;C&#39;: np.float64(100.0), &#39;gamma&#39;: np.float64(0.002154)} (95.0s)
-    fold 2: f1=0.5389 best_params={&#39;C&#39;: np.float64(0.215443), &#39;gamma&#39;: np.float64(0.046416)} (89.2s)
+    fold 0: f1=0.5445 best_params={'C': np.float64(100.0), 'gamma': np.float64(0.002154)} (94.9s)
+    fold 1: f1=0.5304 best_params={'C': np.float64(100.0), 'gamma': np.float64(0.002154)} (95.0s)
+    fold 2: f1=0.5389 best_params={'C': np.float64(0.215443), 'gamma': np.float64(0.046416)} (89.2s)
   OK svm/smote/grid_search -- f1=0.5379+/-0.0058 roc_auc=0.7620+/-0.0084 (279.4s)
 
 === svm / smote / random_search ===
-    fold 0: f1=0.5420 best_params={&#39;C&#39;: 5.456725, &#39;gamma&#39;: 0.005762} (93.8s)
-    fold 1: f1=0.5291 best_params={&#39;C&#39;: 0.108423, &#39;gamma&#39;: 0.044678} (93.4s)
-    fold 2: f1=0.5394 best_params={&#39;C&#39;: 0.108423, &#39;gamma&#39;: 0.044678} (92.4s)
+    fold 0: f1=0.5420 best_params={'C': 5.456725, 'gamma': 0.005762} (93.8s)
+    fold 1: f1=0.5291 best_params={'C': 0.108423, 'gamma': 0.044678} (93.4s)
+    fold 2: f1=0.5394 best_params={'C': 0.108423, 'gamma': 0.044678} (92.4s)
   OK svm/smote/random_search -- f1=0.5368+/-0.0056 roc_auc=0.7662+/-0.0064 (279.8s)
 
 === svm / smote / bayesian_optuna ===
-    fold 0: f1=0.5429 best_params={&#39;C&#39;: 32.570777, &#39;gamma&#39;: 0.002958} (183.1s)
-    fold 1: f1=0.5308 best_params={&#39;C&#39;: 0.368901, &#39;gamma&#39;: 0.015678} (140.4s)
-    fold 2: f1=0.5412 best_params={&#39;C&#39;: 10.536033, &#39;gamma&#39;: 0.007991} (187.6s)
+    fold 0: f1=0.5429 best_params={'C': 32.570777, 'gamma': 0.002958} (183.1s)
+    fold 1: f1=0.5308 best_params={'C': 0.368901, 'gamma': 0.015678} (140.4s)
+    fold 2: f1=0.5412 best_params={'C': 10.536033, 'gamma': 0.007991} (187.6s)
   OK svm/smote/bayesian_optuna -- f1=0.5383+/-0.0053 roc_auc=0.7623+/-0.0049 (511.5s)
 
 === svm / adasyn / grid_search ===
-    fold 0: f1=0.5362 best_params={&#39;C&#39;: np.float64(100.0), &#39;gamma&#39;: np.float64(0.002154)} (96.7s)
-    fold 1: f1=0.5221 best_params={&#39;C&#39;: np.float64(100.0), &#39;gamma&#39;: np.float64(0.002154)} (97.0s)
-    fold 2: f1=0.5289 best_params={&#39;C&#39;: np.float64(0.215443), &#39;gamma&#39;: np.float64(0.046416)} (92.2s)
+    fold 0: f1=0.5362 best_params={'C': np.float64(100.0), 'gamma': np.float64(0.002154)} (96.7s)
+    fold 1: f1=0.5221 best_params={'C': np.float64(100.0), 'gamma': np.float64(0.002154)} (97.0s)
+    fold 2: f1=0.5289 best_params={'C': np.float64(0.215443), 'gamma': np.float64(0.046416)} (92.2s)
   OK svm/adasyn/grid_search -- f1=0.5290+/-0.0058 roc_auc=0.7633+/-0.0071 (286.2s)
 
 === svm / adasyn / random_search ===
-    fold 0: f1=0.5358 best_params={&#39;C&#39;: 5.456725, &#39;gamma&#39;: 0.005762} (97.3s)
-    fold 1: f1=0.5219 best_params={&#39;C&#39;: 5.456725, &#39;gamma&#39;: 0.005762} (96.6s)
-    fold 2: f1=0.5308 best_params={&#39;C&#39;: 5.456725, &#39;gamma&#39;: 0.005762} (96.5s)
+    fold 0: f1=0.5358 best_params={'C': 5.456725, 'gamma': 0.005762} (97.3s)
+    fold 1: f1=0.5219 best_params={'C': 5.456725, 'gamma': 0.005762} (96.6s)
+    fold 2: f1=0.5308 best_params={'C': 5.456725, 'gamma': 0.005762} (96.5s)
   OK svm/adasyn/random_search -- f1=0.5295+/-0.0058 roc_auc=0.7642+/-0.0058 (290.8s)
 
 === svm / adasyn / bayesian_optuna ===
-    fold 0: f1=0.5363 best_params={&#39;C&#39;: 58.173179, &#39;gamma&#39;: 0.002395} (170.4s)
-    fold 1: f1=0.5207 best_params={&#39;C&#39;: 7.941838, &#39;gamma&#39;: 0.003763} (154.7s)
-    fold 2: f1=0.5324 best_params={&#39;C&#39;: 32.570777, &#39;gamma&#39;: 0.002958} (166.8s)
+    fold 0: f1=0.5363 best_params={'C': 58.173179, 'gamma': 0.002395} (170.4s)
+    fold 1: f1=0.5207 best_params={'C': 7.941838, 'gamma': 0.003763} (154.7s)
+    fold 2: f1=0.5324 best_params={'C': 32.570777, 'gamma': 0.002958} (166.8s)
   OK svm/adasyn/bayesian_optuna -- f1=0.5298+/-0.0066 roc_auc=0.7626+/-0.0055 (492.2s)
 
 === svm / class_weight / grid_search ===
-    fold 0: f1=0.5398 best_params={&#39;C&#39;: np.float64(100.0), &#39;gamma&#39;: np.float64(0.002154)} (75.1s)
-    fold 1: f1=0.5318 best_params={&#39;C&#39;: np.float64(100.0), &#39;gamma&#39;: np.float64(0.002154)} (74.4s)
-    fold 2: f1=0.5431 best_params={&#39;C&#39;: np.float64(0.215443), &#39;gamma&#39;: np.float64(0.046416)} (70.5s)
+    fold 0: f1=0.5398 best_params={'C': np.float64(100.0), 'gamma': np.float64(0.002154)} (75.1s)
+    fold 1: f1=0.5318 best_params={'C': np.float64(100.0), 'gamma': np.float64(0.002154)} (74.4s)
+    fold 2: f1=0.5431 best_params={'C': np.float64(0.215443), 'gamma': np.float64(0.046416)} (70.5s)
   OK svm/class_weight/grid_search -- f1=0.5383+/-0.0047 roc_auc=0.7640+/-0.0091 (220.3s)
 
 === svm / class_weight / random_search ===
-    fold 0: f1=0.5409 best_params={&#39;C&#39;: 5.456725, &#39;gamma&#39;: 0.005762} (79.5s)
-    fold 1: f1=0.5312 best_params={&#39;C&#39;: 5.456725, &#39;gamma&#39;: 0.005762} (80.4s)
-    fold 2: f1=0.5396 best_params={&#39;C&#39;: 5.456725, &#39;gamma&#39;: 0.005762} (79.7s)
+    fold 0: f1=0.5409 best_params={'C': 5.456725, 'gamma': 0.005762} (79.5s)
+    fold 1: f1=0.5312 best_params={'C': 5.456725, 'gamma': 0.005762} (80.4s)
+    fold 2: f1=0.5396 best_params={'C': 5.456725, 'gamma': 0.005762} (79.7s)
   OK svm/class_weight/random_search -- f1=0.5372+/-0.0043 roc_auc=0.7638+/-0.0081 (239.9s)
 
 === svm / class_weight / bayesian_optuna ===
-    fold 0: f1=0.5406 best_params={&#39;C&#39;: 4.09877, &#39;gamma&#39;: 0.00664} (162.4s)
-    fold 1: f1=0.5303 best_params={&#39;C&#39;: 4.555327, &#39;gamma&#39;: 0.010897} (147.6s)
-    fold 2: f1=0.5443 best_params={&#39;C&#39;: 0.579423, &#39;gamma&#39;: 0.036036} (103.1s)
+    fold 0: f1=0.5406 best_params={'C': 4.09877, 'gamma': 0.00664} (162.4s)
+    fold 1: f1=0.5303 best_params={'C': 4.555327, 'gamma': 0.010897} (147.6s)
+    fold 2: f1=0.5443 best_params={'C': 0.579423, 'gamma': 0.036036} (103.1s)
   OK svm/class_weight/bayesian_optuna -- f1=0.5384+/-0.0059 roc_auc=0.7639+/-0.0091 (413.4s)
 
 === svm / none / genetic_deap ===
-    fold 0: f1=0.4337 best_params={&#39;C&#39;: 0.480272, &#39;gamma&#39;: 0.027714} (987.8s)
-    fold 1: f1=0.4460 best_params={&#39;C&#39;: 0.229616, &#39;gamma&#39;: 0.027714} (536.9s)
-    fold 2: f1=0.4372 best_params={&#39;C&#39;: 3.976837, &#39;gamma&#39;: 0.006378} (710.1s)
+    fold 0: f1=0.4337 best_params={'C': 0.480272, 'gamma': 0.027714} (987.8s)
+    fold 1: f1=0.4460 best_params={'C': 0.229616, 'gamma': 0.027714} (536.9s)
+    fold 2: f1=0.4372 best_params={'C': 3.976837, 'gamma': 0.006378} (710.1s)
   OK svm/none/genetic_deap -- f1=0.4390+/-0.0051 roc_auc=0.7207+/-0.0068 (2235.1s)
 
 === svm / smote / genetic_deap ===
-    fold 0: f1=0.5432 best_params={&#39;C&#39;: 100.0, &#39;gamma&#39;: 0.00222} (1074.0s)
-    fold 1: f1=0.5311 best_params={&#39;C&#39;: 0.227255, &#39;gamma&#39;: 0.022754} (565.1s)
-    fold 2: f1=0.5379 best_params={&#39;C&#39;: 3.976837, &#39;gamma&#39;: 0.009738} (583.9s)
+    fold 0: f1=0.5432 best_params={'C': 100.0, 'gamma': 0.00222} (1074.0s)
+    fold 1: f1=0.5311 best_params={'C': 0.227255, 'gamma': 0.022754} (565.1s)
+    fold 2: f1=0.5379 best_params={'C': 3.976837, 'gamma': 0.009738} (583.9s)
   OK svm/smote/genetic_deap -- f1=0.5374+/-0.0049 roc_auc=0.7632+/-0.0052 (2223.2s)
 
 === svm / adasyn / genetic_deap ===
-    fold 0: f1=0.5353 best_params={&#39;C&#39;: 67.429865, &#39;gamma&#39;: 0.001724} (894.9s)
-    fold 1: f1=0.5191 best_params={&#39;C&#39;: 0.395338, &#39;gamma&#39;: 0.022754} (559.8s)
-    fold 2: f1=0.5340 best_params={&#39;C&#39;: 0.227255, &#39;gamma&#39;: 0.022754} (556.7s)
+    fold 0: f1=0.5353 best_params={'C': 67.429865, 'gamma': 0.001724} (894.9s)
+    fold 1: f1=0.5191 best_params={'C': 0.395338, 'gamma': 0.022754} (559.8s)
+    fold 2: f1=0.5340 best_params={'C': 0.227255, 'gamma': 0.022754} (556.7s)
   OK svm/adasyn/genetic_deap -- f1=0.5295+/-0.0074 roc_auc=0.7659+/-0.0061 (2011.7s)
 
 === svm / class_weight / genetic_deap ===
-    fold 0: f1=0.5404 best_params={&#39;C&#39;: 0.399445, &#39;gamma&#39;: 0.022754} (478.5s)
-    fold 1: f1=0.5315 best_params={&#39;C&#39;: 66.73647, &#39;gamma&#39;: 0.003513} (976.3s)
-    fold 2: f1=0.5437 best_params={&#39;C&#39;: 3.976837, &#39;gamma&#39;: 0.017082} (489.7s)
+    fold 0: f1=0.5404 best_params={'C': 0.399445, 'gamma': 0.022754} (478.5s)
+    fold 1: f1=0.5315 best_params={'C': 66.73647, 'gamma': 0.003513} (976.3s)
+    fold 2: f1=0.5437 best_params={'C': 3.976837, 'gamma': 0.017082} (489.7s)
   OK svm/class_weight/genetic_deap -- f1=0.5385+/-0.0052 roc_auc=0.7635+/-0.0091 (1944.9s)
 
 Listo. Filas guardadas en: /content/drive/MyDrive/svm_resultados/svm_gpu_results.csv
@@ -1655,15 +1708,15 @@ Listo. Filas guardadas en: /content/drive/MyDrive/svm_resultados/svm_gpu_results
 </div>
 </section>
 <section id="resultado-final-descarga">
-<h2>15. Resultado final + descarga<a class="headerlink" href="#resultado-final-descarga" title="Permalink to this heading">#</a></h2>
+<h2>15. Resultado final + descarga<a class="headerlink" href="#resultado-final-descarga" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">final_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">RESULTS_CSV_PATH</span><span class="p">)</span> <span class="k">if</span> <span class="n">RESULTS_CSV_PATH</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
 <span class="n">display</span><span class="p">(</span><span class="n">final_results</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="n">ERRORS_LOG_PATH</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Hubo errores en algunas combinaciones -- revisar antes de dar por completo el batch:&quot;</span><span class="p">)</span>
-    <span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ERRORS_LOG_PATH</span><span class="p">)[[</span><span class="s2">&quot;technique&quot;</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="s2">&quot;elapsed_seconds&quot;</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">]])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Hubo errores en algunas combinaciones -- revisar antes de dar por completo el batch:"</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ERRORS_LOG_PATH</span><span class="p">)[[</span><span class="s2">"technique"</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">,</span> <span class="s2">"elapsed_seconds"</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">]])</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">google.colab</span><span class="w"> </span><span class="kn">import</span> <span class="n">files</span>
 <span class="n">files</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">RESULTS_CSV_PATH</span><span class="p">))</span>
@@ -2449,15 +2502,17 @@ Listo. Filas guardadas en: /content/drive/MyDrive/svm_resultados/svm_gpu_results
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verificar-gpu-asignada">1. Verificar GPU asignada</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instalar-rapids-cuml">2. Instalar RAPIDS cuML</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-instalacion-alternativa-de-cuml-solo-si-la-instalacion-de-la-seccion-2-fallo">2b. Instalación alternativa de cuML (solo si la instalación de la sección 2 falló)</a></li>
@@ -2490,7 +2545,7 @@ Listo. Filas guardadas en: /content/drive/MyDrive/svm_resultados/svm_gpu_results
   <div class="footer-item">
     
 <p class="component-author">
-By Equipo del proyecto
+By Katherin Barrera López y Valeria Florez Sarmiento
 </p>
 
   </div>
@@ -2500,7 +2555,7 @@ By Equipo del proyecto
 
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>
@@ -2524,8 +2579,8 @@ By Equipo del proyecto
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

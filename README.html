@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Default of Credit Card Clients &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
   
@@ -17,85 +16,80 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
-  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'README';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="EDA: Análisis Exploratorio de Datos" href="notebooks/00_eda.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -103,7 +97,6 @@ const thebe_selector_output = ".output, .cell_output"
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -111,15 +104,59 @@ const thebe_selector_output = ".output, .cell_output"
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -130,7 +167,8 @@ const thebe_selector_output = ".output, .cell_output"
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -148,7 +186,7 @@ const thebe_selector_output = ".output, .cell_output"
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="portada.html">
   
   
   
@@ -158,17 +196,25 @@ const thebe_selector_output = ".output, .cell_output"
     <p class="title logo__title">Default of Credit Card Clients — Pipeline de Clasificación</p>
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="portada.html">
                     Default of Credit Card Clients
                 </a>
             </li>
         </ul>
         <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduccion.html">Introducción y marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Setup Check</a></li>
@@ -184,9 +230,14 @@ const thebe_selector_output = ".output, .cell_output"
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -205,9 +256,9 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -269,7 +320,7 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -283,27 +334,19 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -323,7 +366,7 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inicio-rapido-requisitos-y-configuracion">Inicio Rápido (Requisitos y Configuración)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-repositorio">Estructura del Repositorio</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flujo-de-trabajo-del-proyecto">Flujo de Trabajo del Proyecto</a></li>
@@ -341,16 +384,17 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="default-of-credit-card-clients">
-<h1>Default of Credit Card Clients<a class="headerlink" href="#default-of-credit-card-clients" title="Permalink to this heading">#</a></h1>
+<h1>Default of Credit Card Clients<a class="headerlink" href="#default-of-credit-card-clients" title="Link to this heading">#</a></h1>
 <p><a class="reference external" href="https://www.python.org/"><img alt="Python 3.12" src="https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&amp;logo=python&amp;logoColor=white" /></a>
 <a class="reference external" href="https://www.anaconda.com/"><img alt="Conda" src="https://img.shields.io/badge/Environment-Conda-44A833?style=for-the-badge&amp;logo=anaconda&amp;logoColor=white" /></a>
-<span class="xref myst"><img alt="License" src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" /></span></p>
+<a class="reference internal" href="#LICENSE"><span class="xref myst"><img alt="License" src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" /></span></a></p>
 <blockquote>
-<div><p><strong>Resumen del Proyecto:</strong> Este proyecto desarrolla un flujo completo e integral de ciencia de datos y aprendizaje automático para predecir el riesgo de incumplimiento de pago (<em>default</em>) en clientes de tarjetas de crédito. A partir del análisis del conjunto de datos del repositorio UCI (30,000 registros), la solución abarca desde un pipeline riguroso de extracción, limpieza y transformación de datos (ETL) y un profundo análisis exploratorio (EDA) orientado a solucionar problemas críticos de desbalance de clases y multicolinealidad severa entre montos facturados, hasta un diseño experimental factorial exhaustivo de 112 configuraciones. La estrategia evalúa sistemáticamente algoritmos de clasificación, representaciones de variables, técnicas de balanceo y optimizaciones avanzadas (algoritmos genéticos y bayesianos), logrando elevar significativamente el <em>F1</em> de la clase minoritaria y reducir los falsos negativos frente al modelo de regresión logística base.</p>
+<div><p><strong>Resumen del Proyecto:</strong> Este proyecto desarrolla un flujo completo e integral de ciencia de datos y aprendizaje automático para predecir el riesgo de incumplimiento de pago (<em>default</em>) en clientes de tarjetas de crédito. A partir del conjunto de datos del repositorio UCI (30,000 registros; 29,965 y 21 columnas tras eliminar 35 duplicados exactos y transformar variables), la solución abarca un pipeline de extracción, limpieza y transformación de datos (ETL) y un análisis exploratorio (EDA) orientado al desbalance de clases (≈22 % de <em>default</em>) y a la multicolinealidad entre montos facturados, hasta un diseño experimental factorial de 112 configuraciones: 7 modelos × 4 técnicas de balanceo × 4 métodos de optimización, con validación cruzada anidada (3 folds externos × 3 internos). Seis modelos se ejecutan localmente (96 combinaciones) y SVM en Colab con GPU (16 combinaciones, ver la nota de comparabilidad en <code class="docutils literal notranslate"><span class="pre">05_results_analysis.ipynb</span></code>).</p>
+<p><strong>Resultados y alcance:</strong> el F1 de la clase minoritaria sube de ≈0.38 (regresión logística sin balanceo) a ≈0.52–0.55 con balanceo. Esa mejora proviene en buena parte del balanceo, que desplaza el umbral de decisión (el ROC-AUC casi no cambia entre técnicas); la comparación estadística entre las 112 combinaciones es descriptiva, porque con 3 folds el post-hoc de Nemenyi no puede declarar diferencias significativas.</p>
 </div></blockquote>
 <hr class="docutils" />
 <section id="inicio-rapido-requisitos-y-configuracion">
-<h2>Inicio Rápido (Requisitos y Configuración)<a class="headerlink" href="#inicio-rapido-requisitos-y-configuracion" title="Permalink to this heading">#</a></h2>
+<h2>Inicio Rápido (Requisitos y Configuración)<a class="headerlink" href="#inicio-rapido-requisitos-y-configuracion" title="Link to this heading">#</a></h2>
 <p>Asegúrate de contar con <strong>Anaconda</strong> o <strong>Miniconda</strong> instalado en tu equipo antes de comenzar.</p>
 <a href="https://www.anaconda.com/download/success?reg=skipped-miniconda" target="_blank">
   <img src="https://img.shields.io/badge/Descargar_Miniconda-44A833?style=for-the-badge&logo=anaconda&logoColor=white" alt="Descargar Miniconda" />
@@ -361,7 +405,7 @@ document.write(`
 <ol class="arabic">
 <li><p><strong>Abrir Anaconda Prompt</strong> desde el menú de inicio de tu sistema operativo.</p></li>
 <li><p><strong>Crear el entorno virtual</strong> con Python 3.12:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>credit_card_env<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>-y
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>creditcard<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12<span class="w"> </span>-y
 </pre></div>
 </div>
 </li>
@@ -369,7 +413,7 @@ document.write(`
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
 3. **Activar el entorno virtual**:
 ```bash
-conda activate credit_card_env
+conda activate creditcard
 
 </pre></div>
 </div>
@@ -383,7 +427,7 @@ Navega a la carpeta raíz del repositorio e instala las librerías necesarias:</
 </section>
 <hr class="docutils" />
 <section id="estructura-del-repositorio">
-<h2>Estructura del Repositorio<a class="headerlink" href="#estructura-del-repositorio" title="Permalink to this heading">#</a></h2>
+<h2>Estructura del Repositorio<a class="headerlink" href="#estructura-del-repositorio" title="Link to this heading">#</a></h2>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Credit_Card_Project/
 │
 ├── 📁 data/                  # Datos del proyecto
@@ -405,15 +449,46 @@ Navega a la carpeta raíz del repositorio e instala las librerías necesarias:</
 </section>
 <hr class="docutils" />
 <section id="flujo-de-trabajo-del-proyecto">
-<h2>Flujo de Trabajo del Proyecto<a class="headerlink" href="#flujo-de-trabajo-del-proyecto" title="Permalink to this heading">#</a></h2>
+<h2>Flujo de Trabajo del Proyecto<a class="headerlink" href="#flujo-de-trabajo-del-proyecto" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Notebook</p></th>
+<th class="head"><p>Contenido</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">00_eda.ipynb</span></code></p></td>
+<td><p>EDA y construcción de <code class="docutils literal notranslate"><span class="pre">data/processed/dataset_final.csv</span></code> (Parte 5)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">01_baseline_logistic.ipynb</span></code></p></td>
+<td><p>Baseline: regresión logística con partición 80/20</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">02_setup_check.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">03_pipeline_dev.ipynb</span></code></p></td>
+<td><p>Verificación del entorno y desarrollo del pipeline (datos sintéticos)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">04_run_experiments.ipynb</span></code></p></td>
+<td><p>Corrida de las combinaciones (6 modelos, local) → <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">07_svm_gpu_colab.ipynb</span></code></p></td>
+<td><p>SVM (16 combinaciones) en Colab con GPU → <code class="docutils literal notranslate"><span class="pre">results/svm_gpu_results_colab.csv</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">05_results_analysis.ipynb</span></code></p></td>
+<td><p>Tabla de las 112 combinaciones, métricas complementarias (ROC-AUC, PR-AUC; el F1 sigue siendo la principal), Friedman/Nemenyi, comparación por factor, DeLong, calibración y complejidad</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">06_interpretability.ipynb</span></code></p></td>
+<td><p>SHAP del Random Forest y comparación LIME vs. SHAP de XGBoost (una observación)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 <hr class="docutils" />
 <section id="guia-de-ejecucion">
-<h2>Guía de Ejecución<a class="headerlink" href="#guia-de-ejecucion" title="Permalink to this heading">#</a></h2>
+<h2>Guía de Ejecución<a class="headerlink" href="#guia-de-ejecucion" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p><strong>Activar el entorno virtual:</strong></p></li>
 </ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>credit_card_env
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>creditcard
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -421,20 +496,18 @@ Navega a la carpeta raíz del repositorio e instala las librerías necesarias:</
 </ol>
 <ul class="simple">
 <li><p>Abre la carpeta del proyecto en <strong>VS Code</strong>.</p></li>
-<li><p>Selecciona el intérprete de Python correspondiente al entorno <code class="docutils literal notranslate"><span class="pre">credit_card_env</span></code> (presiona <code class="docutils literal notranslate"><span class="pre">Ctrl</span> <span class="pre">+</span> <span class="pre">Shift</span> <span class="pre">+</span> <span class="pre">P</span></code> -&gt; <strong>Python: Select Interpreter</strong>).</p></li>
+<li><p>Selecciona el intérprete de Python correspondiente al entorno <code class="docutils literal notranslate"><span class="pre">creditcard</span></code> (presiona <code class="docutils literal notranslate"><span class="pre">Ctrl</span> <span class="pre">+</span> <span class="pre">Shift</span> <span class="pre">+</span> <span class="pre">P</span></code> -&gt; <strong>Python: Select Interpreter</strong>).</p></li>
 <li><p>Abre cualquier cuaderno dentro de la carpeta <code class="docutils literal notranslate"><span class="pre">notebooks/</span></code> y ejecútalo directamente.</p></li>
 </ul>
 </section>
 <hr class="docutils" />
 <section id="autoras">
-<h2>Autoras<a class="headerlink" href="#autoras" title="Permalink to this heading">#</a></h2>
+<h2>Autoras<a class="headerlink" href="#autoras" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><strong>Valeria Florez Sarmiento</strong></p></li>
 <li><p><strong>Katherin Barrera López</strong></p></li>
 </ul>
 </section>
-<div class="toctree-wrapper compound">
-</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -467,15 +540,6 @@ Navega a la carpeta raíz del repositorio e instala las librerías necesarias:</
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="right-next"
-       href="notebooks/00_eda.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">EDA: Análisis Exploratorio de Datos</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -483,15 +547,17 @@ Navega a la carpeta raíz del repositorio e instala las librerías necesarias:</
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inicio-rapido-requisitos-y-configuracion">Inicio Rápido (Requisitos y Configuración)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-repositorio">Estructura del Repositorio</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flujo-de-trabajo-del-proyecto">Flujo de Trabajo del Proyecto</a></li>
@@ -511,7 +577,7 @@ Navega a la carpeta raíz del repositorio e instala las librerías necesarias:</
   <div class="footer-item">
     
 <p class="component-author">
-By Equipo del proyecto
+By Katherin Barrera López y Valeria Florez Sarmiento
 </p>
 
   </div>
@@ -521,7 +587,7 @@ By Equipo del proyecto
 
   <p class="copyright">
     
-      © Copyright 2022.
+      © Copyright 2023.
       <br/>
     
   </p>
@@ -545,8 +611,8 @@ By Equipo del proyecto
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>
