@@ -23,9 +23,9 @@ seis meses) y una variable objetivo binaria: si el cliente incumplió el pago al
 
 Tres dificultades hacen que el problema no se resuelva con un modelo estándar:
 
-- **Desbalance de clases.** Solo ≈22 % de los clientes incumple. Un modelo entrenado sin ajustes favorece la
+- **Desbalance de clases.** Solo cerca del 22 % de los clientes incumple. Un modelo entrenado sin ajustes favorece la
   clase mayoritaria y puede mostrar un *accuracy* alto mientras detecta pocos casos de *default*. La regresión
-  logística base de este proyecto, por ejemplo, tiene un F1 de la clase minoritaria de ≈0.38.
+  logística base de este proyecto, por ejemplo, tiene un F1 de la clase minoritaria de cerca de 0.38.
 - **Calidad y estructura de los datos.** Hay duplicados exactos, categorías no documentadas en `EDUCATION` y
   `MARRIAGE`, códigos ambiguos en las variables `PAY_x`, distribuciones muy asimétricas y una multicolinealidad
   severa entre las seis variables `BILL_AMT`.
@@ -56,10 +56,10 @@ se pregunta:
 
 | | Hipótesis |
 |---|---|
-| H1 | El historial reciente de pagos (`PAY_0` … `PAY_6`) es el factor más fuertemente asociado al incumplimiento. |
+| H1 | El historial reciente de pagos (`PAY_0` a `PAY_6`) es el factor más fuertemente asociado al incumplimiento. |
 | H2 | Los clientes con menor límite de crédito (`LIMIT_BAL`) presentan una mayor tasa de *default*. |
 | H3 | Las variables demográficas (sexo, educación, estado civil, edad) se asocian con el *default*, pero con un tamaño de efecto pequeño. |
-| H4 | Los montos facturados mensuales (`BILL_AMT1–6`) están fuertemente correlacionados entre sí (multicolinealidad). |
+| H4 | Los montos facturados mensuales (`BILL_AMT1` a `BILL_AMT6`) están fuertemente correlacionados entre sí (multicolinealidad). |
 | H5 | La clase *default* es minoritaria, por lo que el problema presenta desbalance de clases. |
 
 ### Alcance y limitaciones
@@ -95,7 +95,7 @@ de crédito.
    multicolinealidad.
 4. Entrenar un modelo base (regresión logística) sobre una partición *train/test* aislada de fuga de
    información, y cuantificar su margen de mejora, en especial en falsos negativos y falsos positivos.
-5. Comparar 112 configuraciones (7 modelos × 4 técnicas de balanceo × 4 métodos de optimización) con
+5. Comparar 112 configuraciones (7 modelos x 4 técnicas de balanceo x 4 métodos de optimización) con
    validación cruzada anidada y el F1 de la clase *default* como métrica principal.
 6. Contrastar estadísticamente las configuraciones y analizar la calibración de probabilidades y el costo
    computacional.
@@ -132,8 +132,8 @@ alerta.
 
 **Asociación y comparación de grupos.** La prueba $\chi^2$ de independencia y la V de Cramér
 {cite:p}`cramer1946` miden la asociación entre variables categóricas. Para comparar grupos sin suponer
-normalidad se usan Mann–Whitney {cite:p}`mann1947` y Kruskal–Wallis {cite:p}`kruskal1952`, y la t de Welch
-para medias con varianzas distintas. Con $n \approx 30\,000$ casi cualquier diferencia resulta significativa,
+normalidad se usan Mann-Whitney {cite:p}`mann1947` y Kruskal-Wallis {cite:p}`kruskal1952`, y la t de Welch
+para medias con varianzas distintas. Con cerca de 30,000 clientes casi cualquier diferencia resulta significativa,
 así que se reporta también el tamaño del efecto.
 
 **Antecedentes.** Yeh y Lien {cite:p}`yeh2009` compararon seis técnicas de minería de datos (regresión
@@ -151,9 +151,9 @@ compara de manera sistemática algoritmos modernos, técnicas de balanceo y mét
 | `EDUCATION` | Categórica ordinal | 1 = posgrado, 2 = universidad, 3 = secundaria, 4 = otros (los códigos 0, 5 y 6 no documentados se reagrupan en "Otros"). |
 | `MARRIAGE` | Categórica | 1 = casado, 2 = soltero, 3 = otros (el código 0 se reagrupa en "Otros"). |
 | `AGE` | Numérica discreta | Edad en años. |
-| `PAY_0`, `PAY_2`–`PAY_6` | Ordinal | Estado de pago mensual, de septiembre (`PAY_0`) a abril (`PAY_6`). −2, −1 y 0 = sin atraso; 1 = un mes de atraso; y así hasta 8–9 meses. El dataset no incluye `PAY_1`. |
-| `BILL_AMT1`–`BILL_AMT6` | Numérica continua | Monto facturado de septiembre (1) a abril (6), en NT$. Puede ser negativo (saldo a favor). |
-| `PAY_AMT1`–`PAY_AMT6` | Numérica continua | Monto efectivamente pagado de septiembre (1) a abril (6), en NT$. |
+| `PAY_0`, `PAY_2` a `PAY_6` | Ordinal | Estado de pago mensual, de septiembre (`PAY_0`) a abril (`PAY_6`). -2, -1 y 0 = sin atraso; 1 = un mes de atraso; y así hasta 8 o 9 meses. El dataset no incluye `PAY_1`. |
+| `BILL_AMT1` a `BILL_AMT6` | Numérica continua | Monto facturado de septiembre (1) a abril (6), en NT$. Puede ser negativo (saldo a favor). |
+| `PAY_AMT1` a `PAY_AMT6` | Numérica continua | Monto efectivamente pagado de septiembre (1) a abril (6), en NT$. |
 | `default_payment_next_month` | Binaria (objetivo) | 1 = el cliente incumple el pago el mes siguiente (octubre de 2005); 0 = no incumple. |
 
 ## Metodología
@@ -162,7 +162,7 @@ compara de manera sistemática algoritmos modernos, técnicas de balanceo y mét
 
 *Default of Credit Card Clients Dataset* del repositorio UCI {cite:p}`uci`, publicado por Yeh y Lien
 {cite:p}`yeh2009`: 30,000 clientes, 23 variables predictoras y la variable objetivo
-`default_payment_next_month` (≈78 % clase 0, ≈22 % clase 1).
+`default_payment_next_month` (78 % clase 0, 22 % clase 1).
 
 ### ETL
 
@@ -171,9 +171,9 @@ compara de manera sistemática algoritmos modernos, técnicas de balanceo y mét
 - **Transform:** eliminación de 35 duplicados exactos (para que una fila no quede en entrenamiento y su copia en
   prueba); reagrupación de los códigos no documentados de `EDUCATION` y `MARRIAGE` en "Otros"; conservación de
   los códigos `-2`, `-1` y `0` de `PAY_x`, con su ambigüedad documentada como limitación; transformación
-  logarítmica con signo de `LIMIT_BAL` y `PAY_AMT1-6`; reemplazo de `BILL_AMT1-6` por su promedio, su
+  logarítmica con signo de `LIMIT_BAL` y `PAY_AMT1` a `PAY_AMT6`; reemplazo de `BILL_AMT1` a `BILL_AMT6` por su promedio, su
   tendencia y el número de meses con saldo a favor, para resolver la multicolinealidad.
-- **Load:** `dataset_final.csv` con 29,965 filas × 21 columnas. El escalado y los demás pasos que dependen de
+- **Load:** `dataset_final.csv` con 29,965 filas x 21 columnas. El escalado y los demás pasos que dependen de
   estadísticos de la muestra se aplican dentro de cada pipeline, después de la partición, para evitar fuga de
   información.
 
@@ -190,7 +190,7 @@ escalado, evaluada con *accuracy*, *log-loss*, ROC-AUC, matriz de confusión y r
 
 ### Diseño experimental
 
-Diseño factorial de **7 × 4 × 4 = 112 configuraciones**:
+Diseño factorial de **7 x 4 x 4 = 112 configuraciones**:
 
 | Factor | Niveles |
 |---|---|

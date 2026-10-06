@@ -431,9 +431,9 @@ predictoras (límite de crédito, datos demográficos, historial de pagos, monto
 seis meses) y una variable objetivo binaria: si el cliente incumplió el pago al mes siguiente.</p>
 <p>Tres dificultades hacen que el problema no se resuelva con un modelo estándar:</p>
 <ul class="simple">
-<li><p><strong>Desbalance de clases.</strong> Solo ≈22 % de los clientes incumple. Un modelo entrenado sin ajustes favorece la
+<li><p><strong>Desbalance de clases.</strong> Solo cerca del 22 % de los clientes incumple. Un modelo entrenado sin ajustes favorece la
 clase mayoritaria y puede mostrar un <em>accuracy</em> alto mientras detecta pocos casos de <em>default</em>. La regresión
-logística base de este proyecto, por ejemplo, tiene un F1 de la clase minoritaria de ≈0.38.</p></li>
+logística base de este proyecto, por ejemplo, tiene un F1 de la clase minoritaria de cerca de 0.38.</p></li>
 <li><p><strong>Calidad y estructura de los datos.</strong> Hay duplicados exactos, categorías no documentadas en <code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code> y
 <code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code>, códigos ambiguos en las variables <code class="docutils literal notranslate"><span class="pre">PAY_x</span></code>, distribuciones muy asimétricas y una multicolinealidad
 severa entre las seis variables <code class="docutils literal notranslate"><span class="pre">BILL_AMT</span></code>.</p></li>
@@ -470,7 +470,7 @@ riesgo de incumplimiento, y qué parte de la mejora se debe a cada decisión?</p
 </thead>
 <tbody>
 <tr class="row-even"><td><p>H1</p></td>
-<td><p>El historial reciente de pagos (<code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> … <code class="docutils literal notranslate"><span class="pre">PAY_6</span></code>) es el factor más fuertemente asociado al incumplimiento.</p></td>
+<td><p>El historial reciente de pagos (<code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> a <code class="docutils literal notranslate"><span class="pre">PAY_6</span></code>) es el factor más fuertemente asociado al incumplimiento.</p></td>
 </tr>
 <tr class="row-odd"><td><p>H2</p></td>
 <td><p>Los clientes con menor límite de crédito (<code class="docutils literal notranslate"><span class="pre">LIMIT_BAL</span></code>) presentan una mayor tasa de <em>default</em>.</p></td>
@@ -479,7 +479,7 @@ riesgo de incumplimiento, y qué parte de la mejora se debe a cada decisión?</p
 <td><p>Las variables demográficas (sexo, educación, estado civil, edad) se asocian con el <em>default</em>, pero con un tamaño de efecto pequeño.</p></td>
 </tr>
 <tr class="row-odd"><td><p>H4</p></td>
-<td><p>Los montos facturados mensuales (<code class="docutils literal notranslate"><span class="pre">BILL_AMT1–6</span></code>) están fuertemente correlacionados entre sí (multicolinealidad).</p></td>
+<td><p>Los montos facturados mensuales (<code class="docutils literal notranslate"><span class="pre">BILL_AMT1</span></code> a <code class="docutils literal notranslate"><span class="pre">BILL_AMT6</span></code>) están fuertemente correlacionados entre sí (multicolinealidad).</p></td>
 </tr>
 <tr class="row-even"><td><p>H5</p></td>
 <td><p>La clase <em>default</em> es minoritaria, por lo que el problema presenta desbalance de clases.</p></td>
@@ -525,7 +525,7 @@ de crédito.</p>
 multicolinealidad.</p></li>
 <li><p>Entrenar un modelo base (regresión logística) sobre una partición <em>train/test</em> aislada de fuga de
 información, y cuantificar su margen de mejora, en especial en falsos negativos y falsos positivos.</p></li>
-<li><p>Comparar 112 configuraciones (7 modelos × 4 técnicas de balanceo × 4 métodos de optimización) con
+<li><p>Comparar 112 configuraciones (7 modelos x 4 técnicas de balanceo x 4 métodos de optimización) con
 validación cruzada anidada y el F1 de la clase <em>default</em> como métrica principal.</p></li>
 <li><p>Contrastar estadísticamente las configuraciones y analizar la calibración de probabilidades y el costo
 computacional.</p></li>
@@ -558,8 +558,8 @@ multicolinealidad se mide con <span class="math notranslate nohighlight">\(VIF_j
 alerta.</p>
 <p><strong>Asociación y comparación de grupos.</strong> La prueba <span class="math notranslate nohighlight">\(\chi^2\)</span> de independencia y la V de Cramér
 <span class="bibtex-citation" id="id7">[<a class="reference internal" href="#id19" title="H. Cramér. Mathematical Methods of Statistics. Princeton University Press, 1946.">Cramer46</a>]</span> miden la asociación entre variables categóricas. Para comparar grupos sin suponer
-normalidad se usan Mann–Whitney <span class="bibtex-citation" id="id8">[<a class="reference internal" href="#id20" title="H. B. Mann and D. R. Whitney. On a test of whether one of two random variables is stochastically larger than the other. Annals of Mathematical Statistics, 18(1):50–60, 1947.">MW47</a>]</span> y Kruskal–Wallis <span class="bibtex-citation" id="id9">[<a class="reference internal" href="#id21" title="W. H. Kruskal and W. A. Wallis. Use of ranks in one-criterion variance analysis. Journal of the American Statistical Association, 47(260):583–621, 1952.">KW52</a>]</span>, y la t de Welch
-para medias con varianzas distintas. Con <span class="math notranslate nohighlight">\(n \approx 30\,000\)</span> casi cualquier diferencia resulta significativa,
+normalidad se usan Mann-Whitney <span class="bibtex-citation" id="id8">[<a class="reference internal" href="#id20" title="H. B. Mann and D. R. Whitney. On a test of whether one of two random variables is stochastically larger than the other. Annals of Mathematical Statistics, 18(1):50–60, 1947.">MW47</a>]</span> y Kruskal-Wallis <span class="bibtex-citation" id="id9">[<a class="reference internal" href="#id21" title="W. H. Kruskal and W. A. Wallis. Use of ranks in one-criterion variance analysis. Journal of the American Statistical Association, 47(260):583–621, 1952.">KW52</a>]</span>, y la t de Welch
+para medias con varianzas distintas. Con cerca de 30,000 clientes casi cualquier diferencia resulta significativa,
 así que se reporta también el tamaño del efecto.</p>
 <p><strong>Antecedentes.</strong> Yeh y Lien <span class="bibtex-citation" id="id10">[<a class="reference internal" href="#id14" title="I. C. Yeh and C. F. Lien. The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. Expert Systems with Applications, 36(2):2473–2480, 2009.">YL09</a>]</span> compararon seis técnicas de minería de datos (regresión
 logística, análisis discriminante, k vecinos, Naive Bayes, redes neuronales y árboles de clasificación) con
@@ -596,15 +596,15 @@ compara de manera sistemática algoritmos modernos, técnicas de balanceo y mét
 <td><p>Numérica discreta</p></td>
 <td><p>Edad en años.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PAY_0</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code>–<code class="docutils literal notranslate"><span class="pre">PAY_6</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PAY_0</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code> a <code class="docutils literal notranslate"><span class="pre">PAY_6</span></code></p></td>
 <td><p>Ordinal</p></td>
-<td><p>Estado de pago mensual, de septiembre (<code class="docutils literal notranslate"><span class="pre">PAY_0</span></code>) a abril (<code class="docutils literal notranslate"><span class="pre">PAY_6</span></code>). −2, −1 y 0 = sin atraso; 1 = un mes de atraso; y así hasta 8–9 meses. El dataset no incluye <code class="docutils literal notranslate"><span class="pre">PAY_1</span></code>.</p></td>
+<td><p>Estado de pago mensual, de septiembre (<code class="docutils literal notranslate"><span class="pre">PAY_0</span></code>) a abril (<code class="docutils literal notranslate"><span class="pre">PAY_6</span></code>). -2, -1 y 0 = sin atraso; 1 = un mes de atraso; y así hasta 8 o 9 meses. El dataset no incluye <code class="docutils literal notranslate"><span class="pre">PAY_1</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BILL_AMT1</span></code>–<code class="docutils literal notranslate"><span class="pre">BILL_AMT6</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BILL_AMT1</span></code> a <code class="docutils literal notranslate"><span class="pre">BILL_AMT6</span></code></p></td>
 <td><p>Numérica continua</p></td>
 <td><p>Monto facturado de septiembre (1) a abril (6), en NT$. Puede ser negativo (saldo a favor).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PAY_AMT1</span></code>–<code class="docutils literal notranslate"><span class="pre">PAY_AMT6</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PAY_AMT1</span></code> a <code class="docutils literal notranslate"><span class="pre">PAY_AMT6</span></code></p></td>
 <td><p>Numérica continua</p></td>
 <td><p>Monto efectivamente pagado de septiembre (1) a abril (6), en NT$.</p></td>
 </tr>
@@ -623,7 +623,7 @@ compara de manera sistemática algoritmos modernos, técnicas de balanceo y mét
 <h3>Datos<a class="headerlink" href="#datos" title="Link to this heading">#</a></h3>
 <p><em>Default of Credit Card Clients Dataset</em> del repositorio UCI <span class="bibtex-citation" id="id11">[<a class="reference internal" href="#id22" title="UCI Machine Learning Repository. Default of credit card clients dataset. University of California, Irvine, School of Information and Computer Sciences.">UCIMLRepository</a>]</span>, publicado por Yeh y Lien
 <span class="bibtex-citation" id="id12">[<a class="reference internal" href="#id14" title="I. C. Yeh and C. F. Lien. The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. Expert Systems with Applications, 36(2):2473–2480, 2009.">YL09</a>]</span>: 30,000 clientes, 23 variables predictoras y la variable objetivo
-<code class="docutils literal notranslate"><span class="pre">default_payment_next_month</span></code> (≈78 % clase 0, ≈22 % clase 1).</p>
+<code class="docutils literal notranslate"><span class="pre">default_payment_next_month</span></code> (78 % clase 0, 22 % clase 1).</p>
 </section>
 <section id="etl">
 <h3>ETL<a class="headerlink" href="#etl" title="Link to this heading">#</a></h3>
@@ -633,9 +633,9 @@ como índice, no como predictor.</p></li>
 <li><p><strong>Transform:</strong> eliminación de 35 duplicados exactos (para que una fila no quede en entrenamiento y su copia en
 prueba); reagrupación de los códigos no documentados de <code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code> y <code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code> en “Otros”; conservación de
 los códigos <code class="docutils literal notranslate"><span class="pre">-2</span></code>, <code class="docutils literal notranslate"><span class="pre">-1</span></code> y <code class="docutils literal notranslate"><span class="pre">0</span></code> de <code class="docutils literal notranslate"><span class="pre">PAY_x</span></code>, con su ambigüedad documentada como limitación; transformación
-logarítmica con signo de <code class="docutils literal notranslate"><span class="pre">LIMIT_BAL</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_AMT1-6</span></code>; reemplazo de <code class="docutils literal notranslate"><span class="pre">BILL_AMT1-6</span></code> por su promedio, su
+logarítmica con signo de <code class="docutils literal notranslate"><span class="pre">LIMIT_BAL</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_AMT1</span></code> a <code class="docutils literal notranslate"><span class="pre">PAY_AMT6</span></code>; reemplazo de <code class="docutils literal notranslate"><span class="pre">BILL_AMT1</span></code> a <code class="docutils literal notranslate"><span class="pre">BILL_AMT6</span></code> por su promedio, su
 tendencia y el número de meses con saldo a favor, para resolver la multicolinealidad.</p></li>
-<li><p><strong>Load:</strong> <code class="docutils literal notranslate"><span class="pre">dataset_final.csv</span></code> con 29,965 filas × 21 columnas. El escalado y los demás pasos que dependen de
+<li><p><strong>Load:</strong> <code class="docutils literal notranslate"><span class="pre">dataset_final.csv</span></code> con 29,965 filas x 21 columnas. El escalado y los demás pasos que dependen de
 estadísticos de la muestra se aplican dentro de cada pipeline, después de la partición, para evitar fuga de
 información.</p></li>
 </ul>
@@ -653,7 +653,7 @@ escalado, evaluada con <em>accuracy</em>, <em>log-loss</em>, ROC-AUC, matriz de 
 </section>
 <section id="diseno-experimental">
 <h3>Diseño experimental<a class="headerlink" href="#diseno-experimental" title="Link to this heading">#</a></h3>
-<p>Diseño factorial de <strong>7 × 4 × 4 = 112 configuraciones</strong>:</p>
+<p>Diseño factorial de <strong>7 x 4 x 4 = 112 configuraciones</strong>:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Factor</p></th>

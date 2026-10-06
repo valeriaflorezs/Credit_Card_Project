@@ -391,7 +391,7 @@
 <h2>Evaluación de preprocesamiento, análisis exploratorio y comparación sistemática de modelos para la predicción de incumplimiento de pago en tarjetas de crédito<a class="headerlink" href="#evaluacion-de-preprocesamiento-analisis-exploratorio-y-comparacion-sistematica-de-modelos-para-la-prediccion-de-incumplimiento-de-pago-en-tarjetas-de-credito" title="Link to this heading">#</a></h2>
 <p><strong>Autoras:</strong> Katherin Barrera López y Valeria Florez Sarmiento</p>
 <p>Departamento de Matemáticas, Física y Ciencia de Datos, Universidad del Norte, Barranquilla, Colombia</p>
-<p>Contacto: lkatherin&#64;uninorte.edu.co · florezvaleria&#64;uninorte.edu.co</p>
+<p>Contacto: lkatherin&#64;uninorte.edu.co y florezvaleria&#64;uninorte.edu.co</p>
 <p>Tablero interactivo del EDA: <a class="reference external" href="https://dash-credit-kv.onrender.com">https://dash-credit-kv.onrender.com</a></p>
 </section>
 <hr class="docutils" />
@@ -402,18 +402,18 @@ incumplimiento de pago (<em>default</em>) de clientes de tarjetas de crédito. P
 <em>Default of Credit Card Clients</em> del repositorio UCI (30,000 clientes de Taiwán, 2005; 29,965 registros y 21
 columnas tras eliminar 35 duplicados exactos y transformar variables) y recorre el proceso de extracción,
 limpieza y transformación (ETL), el análisis exploratorio (EDA) y la comparación sistemática de modelos.</p>
-<p>El EDA identificó un desbalance moderado de clases (≈22 % de <em>default</em>), categorías no documentadas en
+<p>El EDA identificó un desbalance moderado de clases (cerca del 22 % de <em>default</em>), categorías no documentadas en
 <code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code> y <code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code>, y una multicolinealidad severa entre los montos facturados, que se resumieron en
 tres variables derivadas. El estado de pago más reciente (<code class="docutils literal notranslate"><span class="pre">PAY_0</span></code>) resultó la señal individual más
 discriminante.</p>
-<p>La comparación de modelos se hizo con un diseño factorial de <strong>112 configuraciones</strong>: 7 modelos × 4 técnicas de
-balanceo × 4 métodos de optimización de hiperparámetros, evaluadas con validación cruzada anidada (3 folds
-externos × 3 internos) y con el F1 de la clase minoritaria como métrica principal.</p>
+<p>La comparación de modelos se hizo con un diseño factorial de <strong>112 configuraciones</strong>: 7 modelos x 4 técnicas de
+balanceo x 4 métodos de optimización de hiperparámetros, evaluadas con validación cruzada anidada (3 folds
+externos x 3 internos) y con el F1 de la clase minoritaria como métrica principal.</p>
 </section>
 <section id="resultados-principales">
 <h2>Resultados principales<a class="headerlink" href="#resultados-principales" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>El F1 de la clase <em>default</em> sube de ≈0.38 (regresión logística sin balanceo) a ≈0.52–0.55 con balanceo.</p></li>
+<li><p>El F1 de la clase <em>default</em> sube de cerca de 0.38 (regresión logística sin balanceo) a entre 0.52 y 0.55 con balanceo.</p></li>
 <li><p>Esa mejora proviene en buena parte del balanceo, que desplaza el umbral de decisión; el ROC-AUC casi no
 cambia entre técnicas.</p></li>
 <li><p>Con 3 folds, la prueba post-hoc de Nemenyi no puede declarar diferencias significativas entre las 112
