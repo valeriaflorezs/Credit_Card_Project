@@ -2,7 +2,19 @@
 
 Última revisión de este encabezado: 2026-10-05.
 
-## Correcciones del entregable 3 (2026-10-30)
+## Cambio a validación anidada 5 x 5 (2026-10-31)
+
+El docente pide al menos 5 folds. `src/config.py` ahora tiene `N_OUTER_FOLDS = 5` y `N_INNER_FOLDS = 5`, y la tabla maestra vigente es `results/experiments_master_5x5.csv` (todavía no existe: hay que correr las combinaciones). La corrida 3 x 3 queda como registro en `results/experiments_master.csv` y `results/svm_gpu_results_colab.csv`, y NO debe mezclarse con la nueva.
+
+Pasos pendientes, en orden:
+1. `notebooks/10_colab_5x5.ipynb` (varias sesiones de Colab, una por modelo o por técnica, con `colab_package.zip` en Drive) para los 6 modelos locales, y `notebooks/07_svm_gpu_colab.ipynb` (ya en 5 x 5, cuML en GPU) para SVM. Descargar los CSV a `results/` (el de SVM como `results/svm_gpu_results_colab_5x5.csv`).
+2. `python -m src.merge_session_results` para unir las sesiones en la tabla maestra 5 x 5.
+3. `python -m src.posthoc_metrics`, `python -m src.svm_comparability`, `python -m src.master_table`, `python -m src.anytime_study` y `python -m src.interpretability_multi`.
+4. Re-ejecutar los notebooks 05, 06, 08 y 09 y revisar los textos que citan cifras de 3 folds (Friedman, Nemenyi, rangos, SHAP, SVM, `correcciones.md`, README), porque las cifras cambiarán.
+
+Hasta entonces, los notebooks 05, 06, 08 y 09 y `correcciones.md` describen la corrida 3 x 3.
+
+## Correcciones del entregable 3 (2026-10-30, corrida 3 x 3)
 
 - `results/master_table_112.csv` y `results/best_per_model.csv` (generados con `python -m src.master_table`) son la tabla maestra consolidada y la selección por modelo. `experiments_master.csv` ya no está en `.gitignore`.
 - SVM: `results/svm_local_refit_check.csv` (`python -m src.svm_comparability`) reajusta en CPU las 16 filas de Colab con sus hiperparámetros; el F1 es 0.008 mayor en promedio (ver `notebooks/08_tabla_maestra_svm.ipynb`).

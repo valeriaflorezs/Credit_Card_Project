@@ -55,7 +55,7 @@ from src.complexity_analysis import recover_outer_fold
 from src.models import MODEL_REGISTRY
 from src.preprocessing import get_preprocessing_steps
 
-SVM_COLAB_PATH = config.RESULTS_DIR / "svm_gpu_results_colab.csv"
+SVM_COLAB_PATH = config.SVM_COLAB_PATH
 SVM_LOCAL_CHECK_PATH = config.RESULTS_DIR / "svm_local_refit_check.csv"
 COMBO_KEY = ["model", "technique", "method"]
 # El resumen del CSV de Colab se calculó sobre 3 folds; tolerancia con la que

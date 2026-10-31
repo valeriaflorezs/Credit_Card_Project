@@ -27,7 +27,7 @@ from src import config
 from src.stats_comparison import compute_critical_difference
 
 LOCAL_MASTER_PATH = config.EXPERIMENTS_MASTER_PATH
-SVM_COLAB_PATH = config.RESULTS_DIR / "svm_gpu_results_colab.csv"
+SVM_COLAB_PATH = config.SVM_COLAB_PATH
 POSTHOC_PATH = config.RESULTS_DIR / "experiments_posthoc_metrics.csv"
 SVM_LOCAL_CHECK_PATH = config.RESULTS_DIR / "svm_local_refit_check.csv"
 MASTER_112_PATH = config.RESULTS_DIR / "master_table_112.csv"
