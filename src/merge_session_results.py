@@ -1,6 +1,6 @@
 """Une los CSV por sesión de ``10_colab_5x5.ipynb`` en la tabla maestra 5 x 5.
 
-Cada sesión de Colab guarda ``experiments_5x5__<modelos>__<técnicas>.csv``. Se
+Cada sesión de Colab guarda ``experiments_5x5__<modelos>__<métodos>.csv``. Se
 copian esos archivos a ``results/`` (o a ``results/colab_5x5/``) y este script
 los concatena en ``config.EXPERIMENTS_MASTER_PATH``, verificando que todas las
 filas sean 5 x 5 con la misma semilla, que no haya combinaciones repetidas y
