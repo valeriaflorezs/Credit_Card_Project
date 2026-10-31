@@ -82,7 +82,29 @@ Credit_Card_Project/
 | `04_run_experiments.ipynb` | Corrida de las combinaciones (6 modelos, local) a `results/experiments_master.csv` |
 | `07_svm_gpu_colab.ipynb` | SVM (16 combinaciones) en Colab con GPU a `results/svm_gpu_results_colab.csv` |
 | `05_results_analysis.ipynb` | Tabla de las 112 combinaciones, métricas complementarias (ROC-AUC, PR-AUC; el F1 sigue siendo la principal), Friedman/Nemenyi, comparación por factor, DeLong, calibración y complejidad |
-| `06_interpretability.ipynb` | SHAP del Random Forest y comparación LIME vs. SHAP de XGBoost (una observación) |
+| `06_interpretability.ipynb` | SHAP del Random Forest (secciones 1 a 4, un fold) y, en las secciones 5 y 6, SHAP en los 3 folds y LIME vs. SHAP en 120 observaciones por modelo (Random Forest y XGBoost) |
+| `08_tabla_maestra_svm.ipynb` | Tabla maestra consolidada de las 112 combinaciones (`results/master_table_112.csv`), mejor combinación por modelo (`results/best_per_model.csv`) y comparabilidad del SVM de Colab (reajuste en CPU y sensibilidad de Friedman) |
+| `09_anytime_multifidelidad.ipynb` | Curvas anytime de los cuatro optimizadores y comparación con Hyperband (multi-fidelidad propia) |
+
+El capítulo `correcciones.md` reúne la tabla de trazabilidad de las observaciones del docente y la auditoría de fuga de información.
+
+Los estudios nuevos se reproducen con (entorno `creditcard`, desde la raíz):
+
+```bash
+python -m src.master_table
+```
+
+```bash
+python -m src.svm_comparability
+```
+
+```bash
+python -m src.anytime_study --models logistic_regression decision_tree xgboost --folds 0 1 2
+```
+
+```bash
+python -m src.interpretability_multi
+```
 
 ---
 

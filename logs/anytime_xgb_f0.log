@@ -1,0 +1,5 @@
+xgboost__class_weight__f0__s42__grid_search: inner=0.5404 outer_f1=0.5464 cost=518s
+xgboost__class_weight__f0__s42__random_search: inner=0.5419 outer_f1=0.5470 cost=150s
+xgboost__class_weight__f0__s42__bayesian_optuna: inner=0.5431 outer_f1=0.5528 cost=144s
+xgboost__class_weight__f0__s42__genetic_deap: inner=0.5434 outer_f1=0.5507 cost=484s
+xgboost__class_weight__f0__s42__hyperband: inner=0.5417 outer_f1=0.5507 cost=170s

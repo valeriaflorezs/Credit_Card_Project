@@ -24,6 +24,7 @@ de Optuna / cada individuo de DEAP construye su propio pipeline con
 from __future__ import annotations
 
 import random
+import time
 from dataclasses import dataclass, field
 from typing import Any, Callable
 
@@ -90,6 +91,38 @@ def _n_splits(cv: Any) -> int:
     if n is None:
         raise ValueError("El splitter de CV provisto no expone 'n_splits'.")
     return int(n)
+
+
+def build_trace(scores: list[float], durations: list[float]) -> pd.DataFrame:
+    """Historial de evaluaciones de UNA búsqueda, base de las curvas *anytime*.
+
+    Una fila por configuración evaluada, en el orden en que el método las
+    propuso: ``score`` (F1 medio de validación interna), ``cost_seconds``
+    (duración de esa evaluación) y sus acumulados. ``cum_cost_seconds`` es el
+    costo SECUENCIAL equivalente: no depende de ``n_jobs``, así que sirve
+    para comparar métodos aunque se hayan corrido con paralelismo distinto.
+    ``best_so_far`` es el mejor score visto hasta esa evaluación (curva
+    *anytime*: calidad del mejor candidato si la búsqueda se detuviera ahí).
+    """
+    trace = pd.DataFrame(
+        {
+            "eval": np.arange(1, len(scores) + 1),
+            "score": np.asarray(scores, dtype=float),
+            "cost_seconds": np.asarray(durations, dtype=float),
+        }
+    )
+    trace["best_so_far"] = trace["score"].cummax()
+    trace["cum_cost_seconds"] = trace["cost_seconds"].cumsum()
+    return trace
+
+
+def _trace_from_search_cv(search: Any, n_splits: int) -> pd.DataFrame:
+    """Trace de ``GridSearchCV``/``RandomizedSearchCV``: ``cv_results_`` ya
+    guarda el score y los tiempos medios por candidato (se multiplican por
+    ``n_splits`` para obtener el costo total de la evaluación)."""
+    res = search.cv_results_
+    durations = (np.asarray(res["mean_fit_time"]) + np.asarray(res["mean_score_time"])) * n_splits
+    return build_trace(list(res["mean_test_score"]), list(durations))
 
 
 # ---------------------------------------------------------------------------
@@ -166,7 +199,7 @@ def run_grid_search(
         best_score=float(search.best_score_),
         best_pipeline=search.best_estimator_,
         n_evaluations=len(search.cv_results_["params"]),
-        diagnostics={"param_grid": param_grid},
+        diagnostics={"param_grid": param_grid, "trace": _trace_from_search_cv(search, _n_splits(cv))},
     )
 
 
@@ -224,7 +257,7 @@ def run_random_search(
         best_score=float(search.best_score_),
         best_pipeline=search.best_estimator_,
         n_evaluations=len(search.cv_results_["params"]),
-        diagnostics={"n_iter": n_iter},
+        diagnostics={"n_iter": n_iter, "trace": _trace_from_search_cv(search, _n_splits(cv))},
     )
 
 
@@ -346,6 +379,10 @@ def run_bayesian_search(
             "acquisition": "Expected Improvement (EI), via razon de densidades l(x)/g(x)",
             "trade_off": "explotacion de regiones prometedoras, con arranque aleatorio inicial",
             "trials_dataframe": study.trials_dataframe(),
+            "trace": build_trace(
+                [t.value for t in study.trials],
+                [t.duration.total_seconds() for t in study.trials],
+            ),
         },
     )
 
@@ -524,6 +561,7 @@ def run_genetic_search(
         return {hp.name: gene for hp, gene in zip(hyperparams, individual)}
 
     def _evaluate(individual: list) -> tuple[float]:
+        t_start = time.perf_counter()
         params = _decode(individual)
         fold_scores = []
         for train_idx, val_idx in cv.split(X, y):
@@ -539,7 +577,15 @@ def run_genetic_search(
             )
             pipe.fit(X_tr, y_tr)
             fold_scores.append(scorer(pipe, X_val, y_val))
-        return (float(np.mean(fold_scores)),)
+        score = float(np.mean(fold_scores))
+        # Se registra (score, duración) en el orden de evaluación para el
+        # trace anytime; DEAP solo ve la tupla de fitness.
+        eval_log[id(individual)] = (score, time.perf_counter() - t_start)
+        return (score,)
+
+    eval_log: dict[int, tuple[float, float]] = {}
+    trace_scores: list[float] = []
+    trace_durations: list[float] = []
 
     toolbox = base.Toolbox()
     toolbox.register("individual", _init_individual)
@@ -566,10 +612,16 @@ def run_genetic_search(
         # libera el GIL durante el ajuste en C (libsvm), asi que threading
         # sigue dando paralelismo real. Ver EXPERIMENT_STATUS.md seccion 8n.
         if n_jobs == 1 or len(individuals) <= 1:
-            return list(map(toolbox.evaluate, individuals))
-        return Parallel(n_jobs=n_jobs, backend="threading")(
-            delayed(toolbox.evaluate)(ind) for ind in individuals
-        )
+            fits = list(map(toolbox.evaluate, individuals))
+        else:
+            fits = Parallel(n_jobs=n_jobs, backend="threading")(
+                delayed(toolbox.evaluate)(ind) for ind in individuals
+            )
+        for ind in individuals:
+            score, duration = eval_log.pop(id(ind))
+            trace_scores.append(score)
+            trace_durations.append(duration)
+        return fits
 
     population = toolbox.population(n=population_size)
     for ind, fit in zip(population, _map_evaluate(population)):
@@ -632,6 +684,7 @@ def run_genetic_search(
             "n_generations": n_generations,
             "diversity_history": diversity_history,
             "best_score_history": best_score_history,
+            "trace": build_trace(trace_scores, trace_durations),
         },
     )
 

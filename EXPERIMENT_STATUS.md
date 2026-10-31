@@ -2,6 +2,14 @@
 
 Última revisión de este encabezado: 2026-10-05.
 
+## Correcciones del entregable 3 (2026-10-30)
+
+- `results/master_table_112.csv` y `results/best_per_model.csv` (generados con `python -m src.master_table`) son la tabla maestra consolidada y la selección por modelo. `experiments_master.csv` ya no está en `.gitignore`.
+- SVM: `results/svm_local_refit_check.csv` (`python -m src.svm_comparability`) reajusta en CPU las 16 filas de Colab con sus hiperparámetros; el F1 es 0.008 mayor en promedio (ver `notebooks/08_tabla_maestra_svm.ipynb`).
+- Curvas anytime y Hyperband: `results/anytime/` (`python -m src.anytime_study`), `notebooks/09_anytime_multifidelidad.ipynb`.
+- SHAP en 3 folds y LIME vs. SHAP en 120 observaciones por modelo: `results/interpretability/` (`python -m src.interpretability_multi`), secciones 5 y 6 de `notebooks/06_interpretability.ipynb`.
+- Trazabilidad y auditoría de fuga: `correcciones.md`.
+
 ## Estado actual (corrida v2, dataset de 29,965 x 21)
 
 - `results/experiments_master.csv`: **96/96** combinaciones (6 modelos x 4 técnicas x 4 métodos), sin duplicados ni NaN; 3 folds externos x 3 internos, `random_state=42`.

@@ -1,0 +1,2 @@
+model,technique,fold,seed,method,n_evaluations,inner_best_score,outer_f1,outer_roc_auc,total_cost_seconds,wall_seconds,full_fidelity_equivalents
+xgboost,class_weight,2,42,grid_search,64,0.5368124435597023,0.5495849716033202,0.7798986350874785,520.655690908432,524.2186278000008,64.0

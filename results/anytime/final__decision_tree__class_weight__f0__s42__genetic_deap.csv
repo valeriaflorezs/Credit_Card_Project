@@ -1,0 +1,2 @@
+model,technique,fold,seed,method,n_evaluations,inner_best_score,outer_f1,outer_roc_auc,total_cost_seconds,wall_seconds,full_fidelity_equivalents
+decision_tree,class_weight,0,42,genetic_deap,121,0.5250206523002984,0.5258637517079836,0.7536154596520741,36.76800600014394,36.983106799947564,121.0

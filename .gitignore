@@ -3,11 +3,12 @@ data/processed/*.csv
 data/processed/*.parquet
 data/raw/
 
-# Resultados de experimentos y modelos serializados (pesados, regenerables)
-results/experiments_master.csv
+# Resultados: la tabla maestra (experiments_master.csv, master_table_112.csv),
+# las métricas complementarias, las figuras y los CSV de los estudios se
+# versionan a propósito (son el entregable verificable). Solo se ignoran los
+# temporales, la caché de joblib y los modelos serializados pesados.
 results/dev_pipeline_check.csv
-results/figures/*
-!results/figures/.gitkeep
+results/.joblib_cache/
 results/models/*.pkl
 
 # Entorno
@@ -25,3 +26,5 @@ _build/
 # OS
 .DS_Store
 Thumbs.db
+results/figures/obsoletas_dataset_v1/
+results/figures/dev_*

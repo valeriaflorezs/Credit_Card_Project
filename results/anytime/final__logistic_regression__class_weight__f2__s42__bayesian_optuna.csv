@@ -1,0 +1,2 @@
+model,technique,fold,seed,method,n_evaluations,inner_best_score,outer_f1,outer_roc_auc,total_cost_seconds,wall_seconds,full_fidelity_equivalents
+logistic_regression,class_weight,2,42,bayesian_optuna,30,0.5154601240760988,0.5250470809792843,0.7601528967304231,28.221451000000002,28.42044639994856,30.0
