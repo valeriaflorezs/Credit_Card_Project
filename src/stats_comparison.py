@@ -23,10 +23,11 @@ los resultados igual — es la validación cruzada con la que se generaron
 las 112 corridas — pero si Friedman NO resulta significativo, la
 conclusión correcta con tan pocos bloques es "no hay potencia suficiente
 para detectar diferencias", no necesariamente "los modelos son
-equivalentes". Con k=112 y N=3 la diferencia crítica de Nemenyi (≈115)
-supera incluso la máxima diferencia posible entre rangos promedio
-(k-1=111), así que el post-hoc NO puede declarar ningún par significativo:
-el ranking debe leerse como descriptivo. Además, los folds comparten datos
+equivalentes". Con k=112 y N=5 la diferencia crítica de Nemenyi (≈89)
+es menor que la máxima diferencia posible entre rangos promedio
+(k-1=111), así que el post-hoc solo puede declarar significativos los pares
+más alejados en el ranking; la mayoría de los pares sigue sin poder
+distinguirse y el ranking debe leerse sobre todo como descriptivo. Además, los folds comparten datos
 de entrenamiento y no son bloques independientes (Demšar 2006 supone
 datasets distintos), por lo que los p-valores son optimistas. Esta ambigüedad debe discutirse explícitamente en el
 reporte, no ocultarse.
@@ -174,8 +175,8 @@ def per_fold_std(master_table: pd.DataFrame, metric: str = "f1") -> pd.Series:
     """Desviación estándar entre folds con ``ddof=1`` (estimador muestral).
 
     Las columnas ``{metric}_std`` de la tabla maestra se guardaron con
-    ``np.std`` (``ddof=0``); con 3 folds eso subestima la dispersión por un
-    factor ``sqrt(2/3)`` ≈ 0.82. Esta función la recalcula desde
+    ``np.std`` (``ddof=0``); con 5 folds eso subestima la dispersión por un
+    factor ``sqrt(4/5)`` ≈ 0.89. Esta función la recalcula desde
     ``{metric}_per_fold``. Aun así, los folds comparten datos de
     entrenamiento, por lo que incluso esta cifra subestima la varianza real
     (Nadeau y Bengio, 2003).

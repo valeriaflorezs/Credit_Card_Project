@@ -11,7 +11,7 @@ la búsqueda:
    externo.
 2. Se reajusta, con el MISMO pipeline del resto del proyecto
    (``balancing.build_pipeline``: preprocesamiento + balanceo + ``SVC`` de
-   scikit-learn) sobre los MISMOS folds externos (``StratifiedKFold(3,
+   scikit-learn) sobre los MISMOS folds externos (``StratifiedKFold(5,
    shuffle=True, random_state=42)``), y se mide el F1 de prueba.
 3. Se compara con el F1 por fold que reportó Colab.
 
@@ -58,7 +58,7 @@ from src.preprocessing import get_preprocessing_steps
 SVM_COLAB_PATH = config.SVM_COLAB_PATH
 SVM_LOCAL_CHECK_PATH = config.RESULTS_DIR / "svm_local_refit_check.csv"
 COMBO_KEY = ["model", "technique", "method"]
-# El resumen del CSV de Colab se calculó sobre 3 folds; tolerancia con la que
+# El resumen del CSV de Colab se calculó sobre 5 folds externos; tolerancia con la que
 # se considera que el F1 coincide (la diferencia esperada entre solvers es de
 # orden 1e-3, mucho menor que la desviación entre folds, ~0.006).
 F1_TOLERANCE = 0.01

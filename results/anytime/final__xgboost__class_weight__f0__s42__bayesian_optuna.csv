@@ -1,0 +1,2 @@
+model,technique,fold,seed,method,n_evaluations,inner_best_score,outer_f1,outer_roc_auc,total_cost_seconds,wall_seconds,full_fidelity_equivalents
+xgboost,class_weight,0,42,bayesian_optuna,30,0.5464267714402379,0.5441941074523396,0.7861781689155364,359.52560199999994,364.4604954000097,30.0

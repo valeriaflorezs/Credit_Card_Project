@@ -1,0 +1,2 @@
+model,technique,fold,seed,method,n_evaluations,inner_best_score,outer_f1,outer_roc_auc,total_cost_seconds,wall_seconds,full_fidelity_equivalents
+decision_tree,class_weight,2,42,random_search,25,0.5233279600636722,0.5133689839572193,0.7488476905818944,37.93517327308655,38.39153790002456,25.0

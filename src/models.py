@@ -263,7 +263,7 @@ class CuMLSVC(BaseEstimator, ClassifierMixin):
 
     Solo se usa si ``SVM_BACKEND=cuml`` (Colab con GPU, ver ``_svm_factory``).
     Reusa el mismo pipeline, los mismos optimizadores y la misma validación
-    anidada que los demás modelos. Igual que en la corrida 3 x 3
+    anidada que los demás modelos. Igual que en la corrida anterior de 3 x 3
     (``07_svm_gpu_colab.ipynb``) se usa ``probability=True`` de cuML (Platt
     scaling propio de cuML, no el de libsvm), disponible hasta cuML 26.06.
     """
@@ -541,8 +541,8 @@ def get_param_grid(
         cartesiano de todos los hiperparámetros numéricos). Con
         ``n_points`` fijo en 4, un modelo con muchos hiperparámetros
         continuos explota combinatoriamente: XGBoost tiene 6, así que
-        4**6 = 4096 combinaciones, que bajo validación anidada (3 folds
-        externos x 3 internos) son ~37,000 ajustes de modelo para una
+        4**6 = 4096 combinaciones, que bajo validación anidada (5 folds
+        externos x 5 internos) son ~100,000 ajustes de modelo para una
         sola combinación (modelo, técnica, método) — varias horas de
         cómputo real. Cuando el número de hiperparámetros numéricos hace
         que ``n_points**k`` supere este límite, se reduce ``n_points``

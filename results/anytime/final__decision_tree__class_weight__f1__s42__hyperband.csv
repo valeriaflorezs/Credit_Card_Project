@@ -1,0 +1,2 @@
+model,technique,fold,seed,method,n_evaluations,inner_best_score,outer_f1,outer_roc_auc,total_cost_seconds,wall_seconds,full_fidelity_equivalents
+decision_tree,class_weight,1,42,hyperband,66,0.5226204805402103,0.5199634257848217,0.7510232785570261,33.79319339990616,34.02133989997674,39.198104226559266

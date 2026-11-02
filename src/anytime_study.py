@@ -4,7 +4,7 @@ La tabla maestra (``results/experiments_master.csv``) guarda solo el resultado
 final de cada búsqueda; no dice cuánto tardó en encontrar un buen candidato.
 Este estudio responde esa pregunta repitiendo, para un subconjunto de modelos
 baratos, la optimización de las partes de entrenamiento de los mismos folds
-externos del protocolo (``StratifiedKFold(3, shuffle=True, random_state=42)``)
+externos del protocolo (``StratifiedKFold(5, shuffle=True, random_state=42)``)
 con los presupuestos de ``config.py`` y registrando cada evaluación:
 
 - ``grid_search``, ``random_search``, ``bayesian_optuna``, ``genetic_deap``:

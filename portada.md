@@ -26,17 +26,18 @@ tres variables derivadas. El estado de pago más reciente (`PAY_0`) resultó la 
 discriminante.
 
 La comparación de modelos se hizo con un diseño factorial de **112 configuraciones**: 7 modelos x 4 técnicas de
-balanceo x 4 métodos de optimización de hiperparámetros, evaluadas con validación cruzada anidada (3 folds
-externos x 3 internos) y con el F1 de la clase minoritaria como métrica principal.
+balanceo x 4 métodos de optimización de hiperparámetros, evaluadas con validación cruzada anidada (5 folds
+externos x 5 internos) y con el F1 de la clase minoritaria como métrica principal.
 
 ## Resultados principales
 
 - El F1 de la clase *default* sube de cerca de 0.38 (regresión logística sin balanceo) a entre 0.52 y 0.55 con balanceo.
 - Esa mejora proviene en buena parte del balanceo, que desplaza el umbral de decisión; el ROC-AUC casi no
   cambia entre técnicas.
-- Con 3 folds, la prueba post-hoc de Nemenyi no puede declarar diferencias significativas entre las 112
-  combinaciones, por lo que la comparación estadística es descriptiva.
-- La interpretabilidad se aborda con SHAP (Random Forest) y una comparación LIME vs. SHAP (XGBoost).
+- Con 5 folds, la prueba post-hoc de Nemenyi solo separa combinaciones muy alejadas en el ranking (224 de
+  6,216 pares); entre las combinaciones de cabeza no hay diferencias significativas, por lo que esa comparación
+  es descriptiva.
+- La interpretabilidad se aborda con SHAP en los 5 folds (Random Forest y XGBoost) y una comparación LIME vs. SHAP.
 
 ## Contenido de este libro
 

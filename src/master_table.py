@@ -141,7 +141,7 @@ def select_best_per_model(master: pd.DataFrame) -> pd.DataFrame:
     ventaja sobre la segunda mejor del mismo modelo (en desviaciones
     estándar entre folds) y si la combinación entra en el conjunto de
     finalistas (a menos de la diferencia crítica de Nemenyi de la mejor
-    global). Con 3 folds, que entre en ese conjunto no prueba equivalencia:
+    global). Con 5 folds, que entre en ese conjunto no prueba equivalencia:
     refleja la poca potencia de la prueba.
     """
     cd = master.attrs.get("critical_difference", np.nan)
@@ -194,5 +194,5 @@ def save_master_tables() -> tuple[pd.DataFrame, pd.DataFrame]:
 if __name__ == "__main__":
     master, best = save_master_tables()
     print(f"{len(master)} combinaciones -> {MASTER_112_PATH}")
-    print(f"CD de Nemenyi (k={len(master)}, N=3): {master.attrs['critical_difference']:.2f}")
+    print(f"CD de Nemenyi (k={len(master)}, N={config.N_OUTER_FOLDS}): {master.attrs['critical_difference']:.2f}")
     print(best[["model", "technique", "method", "f1_mean_std", "within_nemenyi_cd_of_global_best"]].to_string())
