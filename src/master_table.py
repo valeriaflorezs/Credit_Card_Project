@@ -71,7 +71,8 @@ def build_master_table(
     si existe (ver ``svm_comparability``) y quedan vacías si no.
     """
     local = pd.read_csv(local_path)
-    local["source"] = "local_cpu_sklearn"
+    # En la corrida 5 x 5, KNN también corrió en la GPU de Colab (búsqueda de vecinos con cuML); el resto, en CPU.
+    local["source"] = np.where(local["model"] == "knn", "colab_gpu_cuml", "local_cpu_sklearn")
     svm = pd.read_csv(svm_path)
     svm["source"] = "colab_gpu_cuml"
     raw = pd.concat([local, svm], ignore_index=True)

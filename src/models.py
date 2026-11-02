@@ -20,11 +20,13 @@ escala logarítmica, tal como exige la guía del curso.
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from typing import Any, Callable
 
 import numpy as np
 from scipy.stats import loguniform, randint, uniform
+from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
@@ -222,6 +224,8 @@ def _knn_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
     # KNN no tiene componente aleatorio dado un dataset fijo: no acepta random_state.
     # BalancedKNeighborsClassifier es identico a KNeighborsClassifier cuando
     # class_weight=None (default) — ver definicion arriba.
+    if os.environ.get("KNN_BACKEND") == "cuml":  # búsqueda de vecinos en GPU (ver CuMLBalancedKNN)
+        return CuMLBalancedKNN(**kwargs)
     return BalancedKNeighborsClassifier(**kwargs)
 
 
@@ -242,16 +246,107 @@ def _random_forest_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
 
 
 def _xgboost_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
+    # XGB_DEVICE=cuda (variable de entorno) activa la GPU, como sugiere la guía
+    # del Entregable 2 (sección 4.3). Por defecto "cpu": la corrida local no cambia.
     return XGBClassifier(
         random_state=random_state,
         eval_metric="logloss",
         tree_method="hist",  # ver complexity_analysis.py: hist vs exact
+        device=os.environ.get("XGB_DEVICE", "cpu"),
         n_jobs=1,
         **kwargs,
     )
 
 
+class CuMLSVC(BaseEstimator, ClassifierMixin):
+    """SVM RBF de cuML (GPU) con la interfaz de scikit-learn.
+
+    Solo se usa si ``SVM_BACKEND=cuml`` (Colab con GPU, ver ``_svm_factory``).
+    Reusa el mismo pipeline, los mismos optimizadores y la misma validación
+    anidada que los demás modelos. Igual que en la corrida 3 x 3
+    (``07_svm_gpu_colab.ipynb``) se usa ``probability=True`` de cuML (Platt
+    scaling propio de cuML, no el de libsvm), disponible hasta cuML 26.06.
+    """
+
+    def __init__(self, C=1.0, gamma=0.1, class_weight=None, max_iter=200_000, cache_size=2048.0, random_state=None):
+        self.C = C
+        self.gamma = gamma
+        self.class_weight = class_weight
+        self.max_iter = max_iter
+        self.cache_size = cache_size
+        self.random_state = random_state
+
+    def fit(self, X, y):
+        from cuml.svm import SVC as _CuSVC
+
+        X = np.asarray(X, dtype=np.float32)
+        y = np.asarray(y)
+        self.classes_ = np.unique(y)
+        self._model = _CuSVC(
+            kernel="rbf", C=float(self.C), gamma=float(self.gamma), probability=True,
+            class_weight=self.class_weight, max_iter=self.max_iter, cache_size=self.cache_size,
+            random_state=self.random_state, output_type="numpy",
+        )
+        self._model.fit(X, y)
+        return self
+
+    def predict_proba(self, X):
+        return np.asarray(self._model.predict_proba(np.asarray(X, dtype=np.float32)))
+
+    def predict(self, X):
+        return np.asarray(self._model.predict(np.asarray(X, dtype=np.float32)))
+
+
+class CuMLBalancedKNN(BalancedKNeighborsClassifier):
+    """``BalancedKNeighborsClassifier`` con la búsqueda de vecinos en GPU (cuML).
+
+    La búsqueda exacta (fuerza bruta, distancia euclídea o Manhattan según ``p``)
+    se hace con ``cuml.neighbors.NearestNeighbors``; el voto (uniforme o por
+    distancia, con o sin pesos de clase) es el mismo de la clase base y se
+    calcula con numpy. Solo se usa con ``KNN_BACKEND=cuml`` (ver ``_knn_factory``).
+    Resultado esperado: el mismo que el de scikit-learn salvo desempates por la
+    precisión float32 de la GPU (ver la verificación en ``logs/colab``).
+    """
+
+    def fit(self, X, y):
+        from cuml.neighbors import NearestNeighbors
+
+        super().fit(X, y)
+        self._gpu_nn_ = NearestNeighbors(
+            n_neighbors=self.n_neighbors, metric="manhattan" if self.p == 1 else "euclidean",
+            algorithm="brute", output_type="numpy",
+        ).fit(np.asarray(X, dtype=np.float32))
+        self._y_idx_ = np.searchsorted(self.classes_, np.asarray(y))
+        return self
+
+    def predict_proba(self, X):
+        distances, indices = self._gpu_nn_.kneighbors(np.asarray(X, dtype=np.float32))
+        distances = np.asarray(distances, dtype=np.float64)
+        indices = np.asarray(indices)
+        labels = self._y_idx_[indices]
+        if self.weights == "distance":
+            zero = distances == 0
+            with np.errstate(divide="ignore"):
+                w = 1.0 / distances
+            has_zero = zero.any(axis=1)
+            w[has_zero] = zero[has_zero].astype(float)  # igual que scikit-learn: solo cuentan los vecinos a distancia 0
+        else:
+            w = np.ones_like(distances)
+        if self._balanced_class_weight_map_:
+            cw = np.array([self._balanced_class_weight_map_[c] for c in self.classes_])
+            w = w * cw[labels]
+        proba = np.zeros((X.shape[0], len(self.classes_)))
+        for k in range(len(self.classes_)):
+            proba[:, k] = np.where(labels == k, w, 0.0).sum(axis=1)
+        return proba / proba.sum(axis=1, keepdims=True)
+
+    def predict(self, X):
+        return self.classes_[np.argmax(self.predict_proba(X), axis=1)]
+
+
 def _svm_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
+    if os.environ.get("SVM_BACKEND") == "cuml":  # GPU en Colab (ver CuMLSVC)
+        return CuMLSVC(random_state=random_state, **kwargs)
     return SVC(
         random_state=random_state,
         probability=True,  # necesario para ROC/calibración; ver notes sobre costo

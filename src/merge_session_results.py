@@ -37,6 +37,13 @@ def merge_session_results() -> pd.DataFrame:
     assert (table["n_inner_folds"] == config.N_INNER_FOLDS).all(), "hay filas que no son de 5 folds internos"
     assert table["random_state"].nunique() == 1, "semillas distintas entre sesiones"
 
+    # SVM (cuML en GPU) va en su propio archivo: master_table lo trata aparte (tiempos no comparables, reajuste en CPU).
+    svm_rows = table[table["model"] == "svm"]
+    table = table[table["model"] != "svm"]
+    if len(svm_rows):
+        svm_rows.to_csv(config.SVM_COLAB_PATH, index=False)
+        print(f"{len(svm_rows)} filas de SVM guardadas en", config.SVM_COLAB_PATH)
+
     expected = {
         (spec.name, t, m)
         for spec, t, m in get_all_combinations([s for n, s in MODEL_REGISTRY.items() if n != "svm"])
