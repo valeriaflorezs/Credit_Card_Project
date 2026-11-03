@@ -215,6 +215,7 @@
         </ul>
         <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Introducción y marco del proyecto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../correcciones.html">Trazabilidad de correcciones</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
@@ -222,6 +223,9 @@
 <li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
 </ul>
 
     </div>
@@ -396,7 +400,10 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="svm-rbf-acelerado-por-gpu-cuml-rapids">
+  <blockquote>
+<div><p><strong>Nota (corrida vigente 5 x 5).</strong> Este notebook se ajustó a 5 x 5 y se usó también para KNN en GPU; las salidas guardadas que se ven abajo pueden ser de la corrida 3 x 3 inicial. Las referencias a GPU A100 corresponden a esa corrida; la 5 x 5 se hizo en una T4 (RAPIDS 26.06). La corrida vigente es 5 x 5 con los siete modelos: cinco (80 combinaciones) corrieron en la CPU local con <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.run_local_5x5</span></code> (resultado en <code class="docutils literal notranslate"><span class="pre">results/experiments_5x5__local.csv</span></code>), y SVM y KNN (32 combinaciones) en Colab con GPU T4 (<code class="docutils literal notranslate"><span class="pre">10_colab_5x5.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">07_svm_gpu_colab.ipynb</span></code>). Todo se unió con <code class="docutils literal notranslate"><span class="pre">src/merge_session_results.py</span></code> en <code class="docutils literal notranslate"><span class="pre">results/experiments_master_5x5.csv</span></code> y <code class="docutils literal notranslate"><span class="pre">results/svm_gpu_results_colab_5x5.csv</span></code>; los resultados 3 x 3 están en <code class="docutils literal notranslate"><span class="pre">results/legacy_3x3/</span></code>. Si hay cifras con 3 folds en las celdas guardadas, no son las vigentes.</p>
+</div></blockquote>
+<section class="tex2jax_ignore mathjax_ignore" id="svm-rbf-acelerado-por-gpu-cuml-rapids">
 <h1>SVM + RBF acelerado por GPU (cuML/RAPIDS)<a class="headerlink" href="#svm-rbf-acelerado-por-gpu-cuml-rapids" title="Link to this heading">#</a></h1>
 <p>Este notebook implementa un clasificador SVM con kernel RBF utilizando cuML de RAPIDS para aprovechar la aceleración por GPU. El kernel RBF permite modelar relaciones no lineales entre las variables y aplicar el modelo al problema de clasificación de tarjetas de crédito.</p>
 <p><strong>Diferencias con la corrida local</strong> (relevantes al comparar con <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>):</p>
@@ -408,6 +415,7 @@
 <li><p>Los tiempos (GPU) no son comparables con los de CPU.</p></li>
 <li><p>Las desviaciones estándar usan <code class="docutils literal notranslate"><span class="pre">np.std</span></code> (ddof=0); con 3 folds subestiman la dispersión.</p></li>
 </ul>
+<p><strong>Validación anidada 5 x 5</strong> (5 folds externos y 5 internos), igual que el resto de los modelos en <code class="docutils literal notranslate"><span class="pre">10_colab_5x5.ipynb</span></code>.</p>
 <section id="verificar-gpu-asignada">
 <h2>1. Verificar GPU asignada<a class="headerlink" href="#verificar-gpu-asignada" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
@@ -1031,8 +1039,8 @@ X: (29965, 20), balance del target: {0: 0.7787, 1: 0.2213}
 <h2>7. Configuración (idéntica a <code class="docutils literal notranslate"><span class="pre">src/config.py</span></code>)<a class="headerlink" href="#configuracion-identica-a-src-config-py" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">N_OUTER_FOLDS</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">N_INNER_FOLDS</span> <span class="o">=</span> <span class="mi">3</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">N_OUTER_FOLDS</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">N_INNER_FOLDS</span> <span class="o">=</span> <span class="mi">5</span>
 
 <span class="n">RANDOM_SEARCH_ITER</span> <span class="o">=</span> <span class="mi">25</span>
 <span class="n">OPTUNA_N_TRIALS</span> <span class="o">=</span> <span class="mi">30</span>

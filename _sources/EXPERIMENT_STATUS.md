@@ -2,6 +2,26 @@
 
 Última revisión de este encabezado: 2026-10-05.
 
+## Cambio a validación anidada 5 x 5 (2026-10-31, completado 2026-11-02)
+
+El docente pide al menos 5 folds. `src/config.py` tiene `N_OUTER_FOLDS = 5` y `N_INNER_FOLDS = 5`. La tabla maestra vigente es `results/experiments_master_5x5.csv` (96 filas) más `results/svm_gpu_results_colab_5x5.csv` (16 filas de SVM), y la consolida `results/master_table_112.csv`. La corrida 3 x 3 quedó como registro en `results/legacy_3x3/` y NO debe mezclarse con la nueva.
+
+Estado: **terminado**.
+- Corrida: 80 combinaciones (Naive Bayes, regresión logística, árbol, Random Forest y XGBoost) en la CPU local con `src/run_local_5x5.py`; KNN y SVM (32 combinaciones) en Colab con GPU T4 y cuML 26.06 (`10_colab_5x5.ipynb`, `07_svm_gpu_colab.ipynb`).
+- Unión y análisis: `merge_session_results`, `posthoc_metrics` (96/96), `svm_comparability` (16/16), `master_table`, `anytime_study` (45 corridas, folds 0 a 2 de 5) e `interpretability_multi` (5 folds, 200 observaciones por modelo).
+- Notebooks 05, 06, 08 y 09 reejecutados y con textos 5 x 5; también se actualizaron los textos de 02, 04, 07, 10, README, portada, introducción y `correcciones.md`.
+- Resultado principal: mejor combinación XGBoost con `class_weight` y `bayesian_optuna`, F1 0.5466; Friedman significativo y Nemenyi (CD 89.4) separa solo los extremos del ranking.
+- Diferencias de hardware: KNN en GPU difiere de scikit-learn hasta 0.0066 de F1 por fold; el F1 de SVM reajustado en CPU es 0.009 mayor en promedio. Los tiempos de SVM y KNN no son comparables.
+- Pendiente opcional: ajuste del umbral de decisión en el bucle interno (`src/threshold_tuning.py`); no se decidió.
+
+## Correcciones del entregable 3 (2026-10-30, hechas con la corrida 3 x 3 y reproducidas en 5 x 5)
+
+- `results/master_table_112.csv` y `results/best_per_model.csv` (generados con `python -m src.master_table`) son la tabla maestra consolidada y la selección por modelo. `experiments_master.csv` ya no está en `.gitignore`.
+- SVM: `results/svm_local_refit_check.csv` (`python -m src.svm_comparability`) reajusta en CPU las 16 filas de Colab con sus hiperparámetros; el F1 es 0.008 mayor en promedio (ver `notebooks/08_tabla_maestra_svm.ipynb`).
+- Curvas anytime y Hyperband: `results/anytime/` (`python -m src.anytime_study`), `notebooks/09_anytime_multifidelidad.ipynb`.
+- SHAP en 3 folds y LIME vs. SHAP en 120 observaciones por modelo: `results/interpretability/` (`python -m src.interpretability_multi`), secciones 5 y 6 de `notebooks/06_interpretability.ipynb`.
+- Trazabilidad y auditoría de fuga: `correcciones.md`.
+
 ## Estado actual (corrida v2, dataset de 29,965 x 21)
 
 - `results/experiments_master.csv`: **96/96** combinaciones (6 modelos x 4 técnicas x 4 métodos), sin duplicados ni NaN; 3 folds externos x 3 internos, `random_state=42`.

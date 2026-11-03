@@ -198,15 +198,15 @@ Diseño factorial de **7 x 4 x 4 = 112 configuraciones**:
 | Balanceo (4) | Sin balanceo, SMOTE, ADASYN, `class_weight` |
 | Optimización de hiperparámetros (4) | Grid search, random search, optimización bayesiana (Optuna), algoritmo genético (DEAP) |
 
-- **Validación:** validación cruzada anidada, con 3 folds externos para estimar el desempeño y 3 internos para
+- **Validación:** validación cruzada anidada, con 5 folds externos para estimar el desempeño y 5 internos para
   seleccionar hiperparámetros, y `random_state=42`.
 - **Métrica principal:** F1 de la clase *default*. Se reportan también precisión, *recall*, ROC-AUC y PR-AUC.
-- **Ejecución:** seis modelos (96 combinaciones) se corrieron localmente. SVM (16 combinaciones) se corrió en
-  Google Colab con GPU, con otro solver y otras versiones de librerías, por lo que no es estrictamente
-  comparable con el resto, en especial en tiempos.
+- **Ejecución:** cinco modelos (80 combinaciones) se corrieron localmente en CPU. SVM y KNN (32 combinaciones) se corrieron en
+  Google Colab con una GPU T4 (cuML), con otro solver y otras versiones de librerías, por lo que no son
+  estrictamente comparables con el resto, en especial en tiempos.
 - **Comparación estadística:** prueba de Friedman con post-hoc de Nemenyi, comparación por factor y prueba de
-  DeLong. Con solo 3 folds el post-hoc no puede declarar diferencias significativas, y la comparación se
-  interpreta de manera descriptiva.
+  DeLong. Con 5 folds el post-hoc de Nemenyi solo separa los extremos del ranking, sin ordenar las combinaciones
+  de cabeza, y la comparación entre ellas se interpreta de manera descriptiva.
 - **Calibración y complejidad:** curvas de calibración, error de calibración esperado (ECE) y costo
   computacional de cada configuración.
 

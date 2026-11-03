@@ -218,6 +218,7 @@
         </ul>
         <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="introduccion.html">Introducción y marco del proyecto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correcciones.html">Trazabilidad de correcciones</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Setup Check</a></li>
@@ -225,6 +226,9 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/04_run_experiments.html">04. Ejecutar experimentos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/05_results_analysis.html">05. Análisis de resultados</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="notebooks/08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
 </ul>
 
     </div>
@@ -407,8 +411,8 @@ limpieza y transformación (ETL), el análisis exploratorio (EDA) y la comparaci
 tres variables derivadas. El estado de pago más reciente (<code class="docutils literal notranslate"><span class="pre">PAY_0</span></code>) resultó la señal individual más
 discriminante.</p>
 <p>La comparación de modelos se hizo con un diseño factorial de <strong>112 configuraciones</strong>: 7 modelos x 4 técnicas de
-balanceo x 4 métodos de optimización de hiperparámetros, evaluadas con validación cruzada anidada (3 folds
-externos x 3 internos) y con el F1 de la clase minoritaria como métrica principal.</p>
+balanceo x 4 métodos de optimización de hiperparámetros, evaluadas con validación cruzada anidada (5 folds
+externos x 5 internos) y con el F1 de la clase minoritaria como métrica principal.</p>
 </section>
 <section id="resultados-principales">
 <h2>Resultados principales<a class="headerlink" href="#resultados-principales" title="Link to this heading">#</a></h2>
@@ -416,9 +420,10 @@ externos x 3 internos) y con el F1 de la clase minoritaria como métrica princip
 <li><p>El F1 de la clase <em>default</em> sube de cerca de 0.38 (regresión logística sin balanceo) a entre 0.52 y 0.55 con balanceo.</p></li>
 <li><p>Esa mejora proviene en buena parte del balanceo, que desplaza el umbral de decisión; el ROC-AUC casi no
 cambia entre técnicas.</p></li>
-<li><p>Con 3 folds, la prueba post-hoc de Nemenyi no puede declarar diferencias significativas entre las 112
-combinaciones, por lo que la comparación estadística es descriptiva.</p></li>
-<li><p>La interpretabilidad se aborda con SHAP (Random Forest) y una comparación LIME vs. SHAP (XGBoost).</p></li>
+<li><p>Con 5 folds, la prueba post-hoc de Nemenyi solo separa combinaciones muy alejadas en el ranking (224 de
+6,216 pares); entre las combinaciones de cabeza no hay diferencias significativas, por lo que esa comparación
+es descriptiva.</p></li>
+<li><p>La interpretabilidad se aborda con SHAP en los 5 folds (Random Forest y XGBoost) y una comparación LIME vs. SHAP.</p></li>
 </ul>
 </section>
 <section id="contenido-de-este-libro">

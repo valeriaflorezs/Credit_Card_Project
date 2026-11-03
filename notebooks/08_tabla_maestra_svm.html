@@ -1,0 +1,1774 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>08. Tabla maestra consolidada y comparabilidad del SVM &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/08_tabla_maestra_svm';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="09. Curvas anytime y multi-fidelidad" href="09_anytime_multifidelidad.html" />
+    <link rel="prev" title="06. Interpretabilidad (SHAP y LIME)" href="06_interpretability.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../portada.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Default of Credit Card Clients — Pipeline de Clasificación</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../portada.html">
+                    Default of Credit Card Clients
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Introducción y marco del proyecto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../correcciones.html">Trazabilidad de correcciones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/08_tabla_maestra_svm.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>08. Tabla maestra consolidada y comparabilidad del SVM</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-de-las-112-combinaciones">1. Tabla maestra de las 112 combinaciones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mejor-combinacion-por-modelo-y-motivo-de-la-seleccion">2. Mejor combinación por modelo y motivo de la selección</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#son-comparables-las-16-filas-de-svm">3. ¿Son comparables las 16 filas de SVM?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sensibilidad-de-la-comparacion-estadistica-al-tratamiento-de-svm">4. Sensibilidad de la comparación estadística al tratamiento de SVM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones">Limitaciones</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="tabla-maestra-consolidada-y-comparabilidad-del-svm">
+<h1>08. Tabla maestra consolidada y comparabilidad del SVM<a class="headerlink" href="#tabla-maestra-consolidada-y-comparabilidad-del-svm" title="Link to this heading">#</a></h1>
+<p>Este notebook corrige dos observaciones: la tabla maestra no se entregaba (<code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code> estaba en el <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> y no estaba en el repositorio) y las filas de SVM, corridas en Colab con <code class="docutils literal notranslate"><span class="pre">cuml.svm.SVC</span></code>, no eran comparables con las demás, que usan <code class="docutils literal notranslate"><span class="pre">sklearn.svm.SVC</span></code>. Los números de este notebook son los de la corrida 5 x 5 (5 folds externos x 5 internos). KNN también corrió en la GPU de Colab (cuML), y se documenta aparte su diferencia con scikit-learn.</p>
+<section id="tabla-maestra-de-las-112-combinaciones">
+<h2>1. Tabla maestra de las 112 combinaciones<a class="headerlink" href="#tabla-maestra-de-las-112-combinaciones" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">PROJECT_ROOT</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+<span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">PROJECT_ROOT</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">PROJECT_ROOT</span><span class="p">))</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src</span><span class="w"> </span><span class="kn">import</span> <span class="n">master_table</span> <span class="k">as</span> <span class="n">mt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats_comparison</span> <span class="k">as</span> <span class="n">sc</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.width"</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_columns"</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+
+<span class="n">master</span><span class="p">,</span> <span class="n">best</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">save_master_tables</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Tabla maestra: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">master</span><span class="p">)</span><span class="si">}</span><span class="s2"> filas -&gt; </span><span class="si">{</span><span class="n">mt</span><span class="o">.</span><span class="n">MASTER_112_PATH</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">PROJECT_ROOT</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Selección por modelo: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">best</span><span class="p">)</span><span class="si">}</span><span class="s2"> filas -&gt; </span><span class="si">{</span><span class="n">mt</span><span class="o">.</span><span class="n">BEST_PER_MODEL_PATH</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">PROJECT_ROOT</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Diferencia crítica de Nemenyi (k = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">master</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">N_OUTER_FOLDS</span><span class="si">}</span><span class="s2"> folds): </span><span class="si">{</span><span class="n">master</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'critical_difference'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">master</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">"model"</span><span class="p">,</span> <span class="s2">"source"</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\tqdm\auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tabla maestra: 112 filas -&gt; results\master_table_112.csv
+Selección por modelo: 7 filas -&gt; results\best_per_model.csv
+Diferencia crítica de Nemenyi (k = 112, 5 folds): 89.4
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>source</th>
+      <th>colab_gpu_cuml</th>
+      <th>local_cpu_sklearn</th>
+    </tr>
+    <tr>
+      <th>model</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>decision_tree</th>
+      <td>0</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>knn</th>
+      <td>16</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>logistic_regression</th>
+      <td>0</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>naive_bayes</th>
+      <td>0</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>random_forest</th>
+      <td>0</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>svm</th>
+      <td>16</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>xgboost</th>
+      <td>0</td>
+      <td>16</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>La tabla <code class="docutils literal notranslate"><span class="pre">results/master_table_112.csv</span></code> une las 96 filas de <code class="docutils literal notranslate"><span class="pre">results/experiments_master_5x5.csv</span></code> (80 de la CPU local y 16 de KNN en Colab), las 16 de SVM (<code class="docutils literal notranslate"><span class="pre">results/svm_gpu_results_colab_5x5.csv</span></code>) y las métricas complementarias (<code class="docutils literal notranslate"><span class="pre">experiments_posthoc_metrics.csv</span></code>). Cada fila trae el origen del cálculo (<code class="docutils literal notranslate"><span class="pre">source</span></code>), la semilla, el tiempo y las métricas por fold con su media y desviación estándar entre los 5 folds externos, <strong>con <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code> en todas</strong> (la tabla de la corrida 3 x 3 usaba <code class="docutils literal notranslate"><span class="pre">ddof=0</span></code>). También trae el rango medio de F1 entre las 112 combinaciones y si la combinación queda a menos de la diferencia crítica de Nemenyi (89.4) de la mejor. Los tiempos de SVM y de KNN son de GPU y se marcan con <code class="docutils literal notranslate"><span class="pre">time_comparable</span> <span class="pre">=</span> <span class="pre">False</span></code>. El PR-AUC de SVM viene del reajuste en CPU (ver la columna <code class="docutils literal notranslate"><span class="pre">pr_auc_source</span></code>), y el de KNN del reajuste con scikit-learn de <code class="docutils literal notranslate"><span class="pre">posthoc_metrics</span></code>. A continuación, las 15 primeras filas ordenadas por rango medio de F1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"model"</span><span class="p">,</span> <span class="s2">"technique"</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">,</span> <span class="s2">"source"</span><span class="p">,</span> <span class="s2">"random_state"</span><span class="p">,</span> <span class="s2">"total_time_seconds"</span><span class="p">,</span> <span class="s2">"time_comparable"</span><span class="p">,</span>
+           <span class="s2">"f1_mean"</span><span class="p">,</span> <span class="s2">"f1_std"</span><span class="p">,</span> <span class="s2">"precision_mean"</span><span class="p">,</span> <span class="s2">"recall_mean"</span><span class="p">,</span> <span class="s2">"roc_auc_mean"</span><span class="p">,</span> <span class="s2">"roc_auc_std"</span><span class="p">,</span> <span class="s2">"pr_auc_mean"</span><span class="p">,</span>
+           <span class="s2">"f1_avg_rank"</span><span class="p">,</span> <span class="s2">"within_nemenyi_cd_of_best"</span><span class="p">]</span>
+<span class="n">master</span><span class="p">[</span><span class="n">columns</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>model</th>
+      <th>technique</th>
+      <th>method</th>
+      <th>source</th>
+      <th>random_state</th>
+      <th>total_time_seconds</th>
+      <th>time_comparable</th>
+      <th>f1_mean</th>
+      <th>f1_std</th>
+      <th>precision_mean</th>
+      <th>recall_mean</th>
+      <th>roc_auc_mean</th>
+      <th>roc_auc_std</th>
+      <th>pr_auc_mean</th>
+      <th>f1_avg_rank</th>
+      <th>within_nemenyi_cd_of_best</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>xgboost</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>local_cpu_sklearn</td>
+      <td>42</td>
+      <td>309.6490</td>
+      <td>True</td>
+      <td>0.5466</td>
+      <td>0.0091</td>
+      <td>0.4927</td>
+      <td>0.6149</td>
+      <td>0.7828</td>
+      <td>0.0089</td>
+      <td>0.5567</td>
+      <td>2.4</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>local_cpu_sklearn</td>
+      <td>42</td>
+      <td>657.6279</td>
+      <td>True</td>
+      <td>0.5452</td>
+      <td>0.0077</td>
+      <td>0.4974</td>
+      <td>0.6041</td>
+      <td>0.7831</td>
+      <td>0.0095</td>
+      <td>0.5606</td>
+      <td>3.8</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>grid_search</td>
+      <td>local_cpu_sklearn</td>
+      <td>42</td>
+      <td>717.8981</td>
+      <td>True</td>
+      <td>0.5448</td>
+      <td>0.0095</td>
+      <td>0.4962</td>
+      <td>0.6039</td>
+      <td>0.7846</td>
+      <td>0.0089</td>
+      <td>0.5621</td>
+      <td>4.2</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>local_cpu_sklearn</td>
+      <td>42</td>
+      <td>1689.4361</td>
+      <td>True</td>
+      <td>0.5441</td>
+      <td>0.0080</td>
+      <td>0.4944</td>
+      <td>0.6053</td>
+      <td>0.7825</td>
+      <td>0.0092</td>
+      <td>0.5602</td>
+      <td>5.4</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>xgboost</td>
+      <td>class_weight</td>
+      <td>grid_search</td>
+      <td>local_cpu_sklearn</td>
+      <td>42</td>
+      <td>774.9741</td>
+      <td>True</td>
+      <td>0.5429</td>
+      <td>0.0086</td>
+      <td>0.4783</td>
+      <td>0.6278</td>
+      <td>0.7823</td>
+      <td>0.0093</td>
+      <td>0.5483</td>
+      <td>6.2</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>genetic_deap</td>
+      <td>local_cpu_sklearn</td>
+      <td>42</td>
+      <td>8300.8405</td>
+      <td>True</td>
+      <td>0.5434</td>
+      <td>0.0105</td>
+      <td>0.4971</td>
+      <td>0.5995</td>
+      <td>0.7822</td>
+      <td>0.0087</td>
+      <td>0.5606</td>
+      <td>6.4</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>xgboost</td>
+      <td>class_weight</td>
+      <td>genetic_deap</td>
+      <td>local_cpu_sklearn</td>
+      <td>42</td>
+      <td>1181.0180</td>
+      <td>True</td>
+      <td>0.5422</td>
+      <td>0.0111</td>
+      <td>0.4853</td>
+      <td>0.6148</td>
+      <td>0.7830</td>
+      <td>0.0091</td>
+      <td>0.5616</td>
+      <td>8.9</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>xgboost</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>local_cpu_sklearn</td>
+      <td>42</td>
+      <td>246.1009</td>
+      <td>True</td>
+      <td>0.5414</td>
+      <td>0.0107</td>
+      <td>0.4959</td>
+      <td>0.5968</td>
+      <td>0.7801</td>
+      <td>0.0095</td>
+      <td>0.5533</td>
+      <td>9.6</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>svm</td>
+      <td>smote</td>
+      <td>random_search</td>
+      <td>colab_gpu_cuml</td>
+      <td>42</td>
+      <td>1434.8477</td>
+      <td>False</td>
+      <td>0.5387</td>
+      <td>0.0048</td>
+      <td>0.4795</td>
+      <td>0.6148</td>
+      <td>0.7638</td>
+      <td>0.0096</td>
+      <td>0.5132</td>
+      <td>12.0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>svm</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>colab_gpu_cuml</td>
+      <td>42</td>
+      <td>1557.0969</td>
+      <td>False</td>
+      <td>0.5385</td>
+      <td>0.0077</td>
+      <td>0.4765</td>
+      <td>0.6192</td>
+      <td>0.7649</td>
+      <td>0.0096</td>
+      <td>0.5044</td>
+      <td>13.2</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>svm</td>
+      <td>class_weight</td>
+      <td>genetic_deap</td>
+      <td>colab_gpu_cuml</td>
+      <td>42</td>
+      <td>7402.4648</td>
+      <td>False</td>
+      <td>0.5386</td>
+      <td>0.0081</td>
+      <td>0.4769</td>
+      <td>0.6192</td>
+      <td>0.7647</td>
+      <td>0.0105</td>
+      <td>0.5068</td>
+      <td>13.4</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>svm</td>
+      <td>smote</td>
+      <td>bayesian_optuna</td>
+      <td>colab_gpu_cuml</td>
+      <td>42</td>
+      <td>2046.5623</td>
+      <td>False</td>
+      <td>0.5376</td>
+      <td>0.0058</td>
+      <td>0.4765</td>
+      <td>0.6170</td>
+      <td>0.7649</td>
+      <td>0.0092</td>
+      <td>0.5124</td>
+      <td>13.4</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>svm</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>colab_gpu_cuml</td>
+      <td>42</td>
+      <td>969.2329</td>
+      <td>False</td>
+      <td>0.5385</td>
+      <td>0.0079</td>
+      <td>0.4779</td>
+      <td>0.6169</td>
+      <td>0.7646</td>
+      <td>0.0101</td>
+      <td>0.5078</td>
+      <td>13.9</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>xgboost</td>
+      <td>smote</td>
+      <td>grid_search</td>
+      <td>local_cpu_sklearn</td>
+      <td>42</td>
+      <td>1496.5091</td>
+      <td>True</td>
+      <td>0.5370</td>
+      <td>0.0077</td>
+      <td>0.5671</td>
+      <td>0.5100</td>
+      <td>0.7764</td>
+      <td>0.0103</td>
+      <td>0.5430</td>
+      <td>14.8</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>svm</td>
+      <td>smote</td>
+      <td>genetic_deap</td>
+      <td>colab_gpu_cuml</td>
+      <td>42</td>
+      <td>6912.2106</td>
+      <td>False</td>
+      <td>0.5378</td>
+      <td>0.0075</td>
+      <td>0.4728</td>
+      <td>0.6237</td>
+      <td>0.7680</td>
+      <td>0.0094</td>
+      <td>0.5145</td>
+      <td>14.8</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Control de integridad: una fila por combinación, sin vacíos en las columnas clave.</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">master</span><span class="p">)</span> <span class="o">==</span> <span class="mi">112</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">master</span><span class="o">.</span><span class="n">duplicated</span><span class="p">([</span><span class="s2">"model"</span><span class="p">,</span> <span class="s2">"technique"</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">])</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">master</span><span class="p">[[</span><span class="s2">"f1_mean"</span><span class="p">,</span> <span class="s2">"f1_std"</span><span class="p">,</span> <span class="s2">"roc_auc_mean"</span><span class="p">,</span> <span class="s2">"total_time_seconds"</span><span class="p">]]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"OK: 112 combinaciones únicas; F1, ROC-AUC y tiempo completos."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Filas sin PR-AUC:"</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">master</span><span class="p">[</span><span class="s2">"pr_auc_mean"</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OK: 112 combinaciones únicas; F1, ROC-AUC y tiempo completos.
+Filas sin PR-AUC: 0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mejor-combinacion-por-modelo-y-motivo-de-la-seleccion">
+<h2>2. Mejor combinación por modelo y motivo de la selección<a class="headerlink" href="#mejor-combinacion-por-modelo-y-motivo-de-la-seleccion" title="Link to this heading">#</a></h2>
+<p>Para cada modelo se elige la combinación (técnica de balanceo y método de optimización) con mayor F1 medio en el bucle externo. La tabla se guarda en <code class="docutils literal notranslate"><span class="pre">results/best_per_model.csv</span></code>, con el motivo de cada selección. La columna <code class="docutils literal notranslate"><span class="pre">within_nemenyi_cd_of_global_best</span></code> indica si la combinación está dentro del conjunto de finalistas de la comparación de Friedman y Nemenyi (a menos de la diferencia crítica de la mejor global).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best</span><span class="p">[[</span><span class="s2">"model"</span><span class="p">,</span> <span class="s2">"technique"</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">,</span> <span class="s2">"f1_mean_std"</span><span class="p">,</span> <span class="s2">"roc_auc_mean_std"</span><span class="p">,</span> <span class="s2">"gap_to_runner_up"</span><span class="p">,</span>
+      <span class="s2">"runner_up"</span><span class="p">,</span> <span class="s2">"within_nemenyi_cd_of_global_best"</span><span class="p">,</span> <span class="s2">"is_global_best"</span><span class="p">,</span> <span class="s2">"source"</span><span class="p">]]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>model</th>
+      <th>technique</th>
+      <th>method</th>
+      <th>f1_mean_std</th>
+      <th>roc_auc_mean_std</th>
+      <th>gap_to_runner_up</th>
+      <th>runner_up</th>
+      <th>within_nemenyi_cd_of_global_best</th>
+      <th>is_global_best</th>
+      <th>source</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>xgboost</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.5466 ± 0.0091</td>
+      <td>0.7828 ± 0.0089</td>
+      <td>0.0037</td>
+      <td>class_weight|grid_search</td>
+      <td>True</td>
+      <td>True</td>
+      <td>local_cpu_sklearn</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5452 ± 0.0077</td>
+      <td>0.7831 ± 0.0095</td>
+      <td>0.0005</td>
+      <td>class_weight|grid_search</td>
+      <td>True</td>
+      <td>False</td>
+      <td>local_cpu_sklearn</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>svm</td>
+      <td>smote</td>
+      <td>random_search</td>
+      <td>0.5387 ± 0.0048</td>
+      <td>0.7638 ± 0.0096</td>
+      <td>0.0001</td>
+      <td>class_weight|genetic_deap</td>
+      <td>True</td>
+      <td>False</td>
+      <td>colab_gpu_cuml</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>knn</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5264 ± 0.0122</td>
+      <td>0.7629 ± 0.0081</td>
+      <td>0.0012</td>
+      <td>class_weight|grid_search</td>
+      <td>True</td>
+      <td>False</td>
+      <td>colab_gpu_cuml</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>decision_tree</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.5254 ± 0.0043</td>
+      <td>0.7569 ± 0.0101</td>
+      <td>0.0003</td>
+      <td>class_weight|genetic_deap</td>
+      <td>True</td>
+      <td>False</td>
+      <td>local_cpu_sklearn</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>logistic_regression</td>
+      <td>class_weight</td>
+      <td>genetic_deap</td>
+      <td>0.5182 ± 0.0104</td>
+      <td>0.7449 ± 0.0147</td>
+      <td>0.0017</td>
+      <td>class_weight|bayesian_optuna</td>
+      <td>True</td>
+      <td>False</td>
+      <td>local_cpu_sklearn</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>naive_bayes</td>
+      <td>smote</td>
+      <td>grid_search</td>
+      <td>0.4987 ± 0.0078</td>
+      <td>0.7454 ± 0.0115</td>
+      <td>0.0001</td>
+      <td>smote|bayesian_optuna</td>
+      <td>True</td>
+      <td>False</td>
+      <td>local_cpu_sklearn</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">best</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">'model'</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">'selection_reason'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>- xgboost: Mayor F1 medio externo entre las 16 combinaciones de xgboost; ventaja de 0.0037 sobre class_weight|grid_search (0.4 desviaciones estándar entre folds).
+- random_forest: Mayor F1 medio externo entre las 16 combinaciones de random_forest; ventaja de 0.0005 sobre class_weight|grid_search (0.1 desviaciones estándar entre folds).
+- svm: Mayor F1 medio externo entre las 16 combinaciones de svm; ventaja de 0.0001 sobre class_weight|genetic_deap (0.0 desviaciones estándar entre folds).
+- knn: Mayor F1 medio externo entre las 16 combinaciones de knn; ventaja de 0.0012 sobre class_weight|grid_search (0.1 desviaciones estándar entre folds).
+- decision_tree: Mayor F1 medio externo entre las 16 combinaciones de decision_tree; ventaja de 0.0003 sobre class_weight|genetic_deap (0.1 desviaciones estándar entre folds).
+- logistic_regression: Mayor F1 medio externo entre las 16 combinaciones de logistic_regression; ventaja de 0.0017 sobre class_weight|bayesian_optuna (0.2 desviaciones estándar entre folds).
+- naive_bayes: Mayor F1 medio externo entre las 16 combinaciones de naive_bayes; ventaja de 0.0001 sobre smote|bayesian_optuna (0.0 desviaciones estándar entre folds).
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Lectura.</strong></p>
+<ul class="simple">
+<li><p>La mejor combinación global es XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code> (F1 0.5466 ± 0.0091), seguida de Random Forest con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">random_search</span></code> (0.5452 ± 0.0077).</p></li>
+<li><p>Las siete combinaciones elegidas están dentro de la diferencia crítica de la mejor global. Esto <strong>no prueba equivalencia</strong>: la diferencia crítica es 89.4 y la máxima diferencia de rangos, 108.3, así que Nemenyi separa solo combinaciones muy alejadas en el ranking y no puede ordenar las cercanas a la mejor.</p></li>
+<li><p>La ventaja de cada combinación elegida sobre la segunda mejor de su mismo modelo es de entre 0.0001 y 0.0037 de F1, menor que la desviación entre folds. La elección dentro de cada modelo es prácticamente un desempate. En cinco de los siete modelos la técnica elegida es <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y en los otros dos es SMOTE.</p></li>
+</ul>
+</section>
+<section id="son-comparables-las-16-filas-de-svm">
+<h2>3. ¿Son comparables las 16 filas de SVM?<a class="headerlink" href="#son-comparables-las-16-filas-de-svm" title="Link to this heading">#</a></h2>
+<p>Repetir las búsquedas de SVM en CPU no es viable (en la corrida inicial 3 x 3, <code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> tardó más de 4 horas en la CPU local, y con 5 x 5 sería varias veces más). Lo que sí se puede verificar es la parte de la comparación que depende de la evaluación y no de la búsqueda:</p>
+<ol class="arabic simple">
+<li><p>Se toman los hiperparámetros que eligió el bucle interno de Colab en cada fold externo.</p></li>
+<li><p>Se reajusta, con el mismo pipeline del resto del proyecto (<code class="docutils literal notranslate"><span class="pre">balancing.build_pipeline</span></code>, con <code class="docutils literal notranslate"><span class="pre">sklearn.svm.SVC</span></code>), sobre los mismos folds externos, y se mide el F1 de prueba.</p></li>
+<li><p>Se compara con el F1 por fold que reportó Colab.</p></li>
+</ol>
+<p>Si los dos coinciden, las filas de SVM miden lo mismo que las demás. Lo que <strong>no</strong> se puede verificar con esto es que la búsqueda de cuML habría elegido los mismos hiperparámetros que la de libsvm, ni los tiempos.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">check</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">load_svm_check</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">check</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">check</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Falta el reajuste local de SVM: correr `python -m src.svm_comparability`."</span><span class="p">)</span>
+<span class="n">check</span> <span class="o">=</span> <span class="n">check</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">cmp</span> <span class="o">=</span> <span class="n">check</span><span class="p">[[</span><span class="s2">"technique"</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">,</span> <span class="s2">"f1_colab_mean"</span><span class="p">,</span> <span class="s2">"f1_local_mean"</span><span class="p">,</span> <span class="s2">"f1_max_abs_diff_per_fold"</span><span class="p">,</span>
+             <span class="s2">"roc_auc_max_abs_diff_per_fold"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">cmp</span><span class="p">[</span><span class="s2">"dif_media_f1 (local - colab)"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmp</span><span class="p">[</span><span class="s2">"f1_local_mean"</span><span class="p">]</span> <span class="o">-</span> <span class="n">cmp</span><span class="p">[</span><span class="s2">"f1_colab_mean"</span><span class="p">]</span>
+<span class="n">cmp</span> <span class="o">=</span> <span class="n">cmp</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">"technique"</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">cmp</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">diff</span> <span class="o">=</span> <span class="n">cmp</span><span class="p">[</span><span class="s2">"dif_media_f1 (local - colab)"</span><span class="p">]</span>
+<span class="n">by_tech</span> <span class="o">=</span> <span class="n">cmp</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"technique"</span><span class="p">)[</span><span class="s2">"dif_media_f1 (local - colab)"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Diferencia media de F1 (local - Colab), 16 filas: </span><span class="si">{</span><span class="n">diff</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2"> (mín </span><span class="si">{</span><span class="n">diff</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2">, máx </span><span class="si">{</span><span class="n">diff</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Por técnica:"</span><span class="p">,</span> <span class="n">by_tech</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Máxima diferencia absoluta por fold: </span><span class="si">{</span><span class="n">cmp</span><span class="p">[</span><span class="s1">'f1_max_abs_diff_per_fold'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Filas con diferencia por fold mayor que 0.01: </span><span class="si">{</span><span class="p">(</span><span class="n">cmp</span><span class="p">[</span><span class="s1">'f1_max_abs_diff_per_fold'</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.01</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2"> de 16"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mediana de la desviación estándar entre folds del F1 (resto de modelos): "</span>
+      <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">master</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master</span><span class="p">[</span><span class="s1">'model'</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">'svm'</span><span class="p">,</span><span class="w"> </span><span class="s1">'f1_std'</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>technique</th>
+      <th>method</th>
+      <th>f1_colab_mean</th>
+      <th>f1_local_mean</th>
+      <th>f1_max_abs_diff_per_fold</th>
+      <th>roc_auc_max_abs_diff_per_fold</th>
+      <th>dif_media_f1 (local - colab)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>adasyn</td>
+      <td>bayesian_optuna</td>
+      <td>0.5298</td>
+      <td>0.5390</td>
+      <td>0.0117</td>
+      <td>0.0008</td>
+      <td>0.0092</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>adasyn</td>
+      <td>genetic_deap</td>
+      <td>0.5301</td>
+      <td>0.5379</td>
+      <td>0.0134</td>
+      <td>0.0005</td>
+      <td>0.0079</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>adasyn</td>
+      <td>grid_search</td>
+      <td>0.5287</td>
+      <td>0.5342</td>
+      <td>0.0135</td>
+      <td>0.0010</td>
+      <td>0.0055</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>adasyn</td>
+      <td>random_search</td>
+      <td>0.5293</td>
+      <td>0.5384</td>
+      <td>0.0133</td>
+      <td>0.0008</td>
+      <td>0.0091</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.5385</td>
+      <td>0.5440</td>
+      <td>0.0088</td>
+      <td>0.0000</td>
+      <td>0.0056</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>class_weight</td>
+      <td>genetic_deap</td>
+      <td>0.5386</td>
+      <td>0.5446</td>
+      <td>0.0098</td>
+      <td>0.0009</td>
+      <td>0.0059</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>class_weight</td>
+      <td>grid_search</td>
+      <td>0.5372</td>
+      <td>0.5446</td>
+      <td>0.0115</td>
+      <td>0.0006</td>
+      <td>0.0074</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5385</td>
+      <td>0.5440</td>
+      <td>0.0086</td>
+      <td>0.0000</td>
+      <td>0.0055</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>none</td>
+      <td>bayesian_optuna</td>
+      <td>0.4446</td>
+      <td>0.4668</td>
+      <td>0.0264</td>
+      <td>0.0002</td>
+      <td>0.0221</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>none</td>
+      <td>genetic_deap</td>
+      <td>0.4390</td>
+      <td>0.4541</td>
+      <td>0.0237</td>
+      <td>0.0005</td>
+      <td>0.0152</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>none</td>
+      <td>grid_search</td>
+      <td>0.4373</td>
+      <td>0.4535</td>
+      <td>0.0250</td>
+      <td>0.0009</td>
+      <td>0.0162</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>none</td>
+      <td>random_search</td>
+      <td>0.4368</td>
+      <td>0.4523</td>
+      <td>0.0235</td>
+      <td>0.0004</td>
+      <td>0.0155</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>smote</td>
+      <td>bayesian_optuna</td>
+      <td>0.5376</td>
+      <td>0.5414</td>
+      <td>0.0074</td>
+      <td>0.0002</td>
+      <td>0.0039</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>smote</td>
+      <td>genetic_deap</td>
+      <td>0.5378</td>
+      <td>0.5423</td>
+      <td>0.0088</td>
+      <td>0.0000</td>
+      <td>0.0045</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>smote</td>
+      <td>grid_search</td>
+      <td>0.5340</td>
+      <td>0.5398</td>
+      <td>0.0084</td>
+      <td>0.0002</td>
+      <td>0.0058</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>smote</td>
+      <td>random_search</td>
+      <td>0.5387</td>
+      <td>0.5420</td>
+      <td>0.0085</td>
+      <td>0.0002</td>
+      <td>0.0033</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Diferencia media de F1 (local - Colab), 16 filas: +0.0089 (mín +0.0033, máx +0.0221)
+Por técnica: {'adasyn': 0.0079, 'class_weight': 0.0061, 'none': 0.0173, 'smote': 0.0044}
+Máxima diferencia absoluta por fold: 0.0264
+Filas con diferencia por fold mayor que 0.01: 9 de 16
+Mediana de la desviación estándar entre folds del F1 (resto de modelos): 0.0104
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Lectura.</strong></p>
+<ul class="simple">
+<li><p><strong>Las filas de SVM de Colab no reproducen exactamente el F1 de scikit-learn.</strong> Con los mismos hiperparámetros, los mismos folds y el mismo pipeline, el F1 reajustado en CPU es mayor en las 16 filas, en promedio en 0.009 (entre 0.003 y 0.022). La diferencia es mayor sin balanceo (0.017) y menor con SMOTE (0.004) y <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> (0.006). En 9 de las 16 filas hay al menos un fold con diferencia mayor que 0.01. La mediana de la desviación entre folds de los demás modelos es 0.010, de modo que la diferencia es algo menor que una desviación estándar.</p></li>
+<li><p>El ROC-AUC casi no cambia (diferencia máxima por fold de 0.001), así que el orden en que el modelo clasifica a los clientes es el mismo y la discrepancia viene del punto de corte de las predicciones. Es consistente con que el solver y la calibración de probabilidades de cuML no son idénticos a los de libsvm, pero es una hipótesis que no se verificó.</p></li>
+<li><p><strong>Conclusión:</strong> las filas de SVM de Colab no son estrictamente comparables en F1 con las demás, y el sesgo siempre va en contra de SVM. Los tiempos tampoco son comparables. Por eso el análisis siguiente se hace con tres versiones de la comparación.</p></li>
+<li><p><strong>KNN también corrió en la GPU de Colab (cuML).</strong> No se rehízo la búsqueda en CPU, pero <code class="docutils literal notranslate"><span class="pre">posthoc_metrics</span></code> reajustó con scikit-learn los hiperparámetros elegidos: las clases predichas coinciden en 99.98 % a 100 % de los casos y el F1 por fold difiere hasta 0.0066 respecto al de Colab (en las 96 filas no SVM, ese es el máximo). Las probabilidades difieren por precisión float32 y empates entre vecinos. Es una diferencia menor que la de SVM y no sistemática.</p></li>
+</ul>
+</section>
+<section id="sensibilidad-de-la-comparacion-estadistica-al-tratamiento-de-svm">
+<h2>4. Sensibilidad de la comparación estadística al tratamiento de SVM<a class="headerlink" href="#sensibilidad-de-la-comparacion-estadistica-al-tratamiento-de-svm" title="Link to this heading">#</a></h2>
+<p>Se repite la prueba de Friedman sobre el F1 por fold en tres escenarios: <strong>A</strong>, las 112 filas tal como se reportaron; <strong>B</strong>, solo las 96 combinaciones locales, sin SVM; <strong>C</strong>, las 112 filas con el F1 por fold de SVM reemplazado por el del reajuste en CPU. Si las conclusiones no cambian entre escenarios, no dependen del tratamiento de SVM.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">friedman_summary</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">build_performance_matrix_from_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">"f1"</span><span class="p">)</span>
+    <span class="n">fr</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">friedman_test</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+    <span class="n">cd</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">compute_critical_difference</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">fr</span><span class="p">[</span><span class="s2">"k_combinations"</span><span class="p">],</span> <span class="n">n_blocks</span><span class="o">=</span><span class="n">fr</span><span class="p">[</span><span class="s2">"n_blocks"</span><span class="p">])</span>
+    <span class="n">ranks</span> <span class="o">=</span> <span class="n">fr</span><span class="p">[</span><span class="s2">"avg_ranks"</span><span class="p">]</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="n">ranks</span><span class="o">.</span><span class="n">index</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">spread</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ranks</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">ranks</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"escenario"</span><span class="p">:</span> <span class="n">label</span><span class="p">,</span> <span class="s2">"combinaciones"</span><span class="p">:</span> <span class="n">fr</span><span class="p">[</span><span class="s2">"k_combinations"</span><span class="p">],</span>
+        <span class="s2">"chi2"</span><span class="p">:</span> <span class="n">fr</span><span class="p">[</span><span class="s2">"statistic"</span><span class="p">],</span> <span class="s2">"p"</span><span class="p">:</span> <span class="n">fr</span><span class="p">[</span><span class="s2">"p_value"</span><span class="p">],</span> <span class="s2">"CD Nemenyi"</span><span class="p">:</span> <span class="n">cd</span><span class="p">,</span>
+        <span class="s2">"máx. dif. de rangos"</span><span class="p">:</span> <span class="n">spread</span><span class="p">,</span> <span class="s2">"Nemenyi con potencia"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">spread</span> <span class="o">&gt;</span> <span class="n">cd</span><span class="p">),</span>
+        <span class="s2">"mejor"</span><span class="p">:</span> <span class="n">top</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">"2.º"</span><span class="p">:</span> <span class="n">top</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">"3.º"</span><span class="p">:</span> <span class="n">top</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+    <span class="p">},</span> <span class="n">ranks</span>
+
+
+<span class="c1"># A: las 112 filas tal como se reportaron (SVM de Colab).</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">master</span>
+<span class="c1"># B: solo las 96 combinaciones locales (sin SVM).</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">master</span><span class="p">[</span><span class="n">master</span><span class="p">[</span><span class="s2">"model"</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"svm"</span><span class="p">]</span>
+<span class="c1"># C: las 112 filas, con el F1 por fold de SVM reemplazado por el del reajuste en CPU.</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">master</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">is_svm</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="s2">"model"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"svm"</span>
+<span class="n">C</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">is_svm</span><span class="p">,</span> <span class="s2">"f1_per_fold"</span><span class="p">]</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">is_svm</span><span class="p">,</span> <span class="s2">"f1_cpu_refit_per_fold"</span><span class="p">]</span>
+<span class="n">C</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">is_svm</span><span class="p">,</span> <span class="s2">"f1_mean"</span><span class="p">]</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">is_svm</span><span class="p">,</span> <span class="s2">"f1_cpu_refit_mean"</span><span class="p">]</span>
+
+<span class="n">rows</span><span class="p">,</span> <span class="n">ranks_by_scenario</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">table</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">"A. 112 filas, SVM de Colab"</span><span class="p">,</span> <span class="n">A</span><span class="p">),</span> <span class="p">(</span><span class="s2">"B. 96 filas, sin SVM"</span><span class="p">,</span> <span class="n">B</span><span class="p">),</span> <span class="p">(</span><span class="s2">"C. 112 filas, SVM reajustado en CPU"</span><span class="p">,</span> <span class="n">C</span><span class="p">)]:</span>
+    <span class="n">summary</span><span class="p">,</span> <span class="n">ranks</span> <span class="o">=</span> <span class="n">friedman_summary</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+    <span class="n">ranks_by_scenario</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">ranks</span>
+<span class="n">sens</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"escenario"</span><span class="p">)</span>
+<span class="n">sens</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>combinaciones</th>
+      <th>chi2</th>
+      <th>p</th>
+      <th>CD Nemenyi</th>
+      <th>máx. dif. de rangos</th>
+      <th>Nemenyi con potencia</th>
+      <th>mejor</th>
+      <th>2.º</th>
+      <th>3.º</th>
+    </tr>
+    <tr>
+      <th>escenario</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>A. 112 filas, SVM de Colab</th>
+      <td>112</td>
+      <td>534.600162</td>
+      <td>1.123308e-56</td>
+      <td>89.372108</td>
+      <td>108.3</td>
+      <td>True</td>
+      <td>xgboost|class_weight|bayesian_optuna</td>
+      <td>random_forest|class_weight|random_search</td>
+      <td>random_forest|class_weight|grid_search</td>
+    </tr>
+    <tr>
+      <th>B. 96 filas, sin SVM</th>
+      <td>96</td>
+      <td>453.809081</td>
+      <td>3.363868e-48</td>
+      <td>75.490309</td>
+      <td>92.3</td>
+      <td>True</td>
+      <td>xgboost|class_weight|bayesian_optuna</td>
+      <td>random_forest|class_weight|random_search</td>
+      <td>random_forest|class_weight|grid_search</td>
+    </tr>
+    <tr>
+      <th>C. 112 filas, SVM reajustado en CPU</th>
+      <td>112</td>
+      <td>535.948560</td>
+      <td>6.562144e-57</td>
+      <td>89.372108</td>
+      <td>106.3</td>
+      <td>True</td>
+      <td>xgboost|class_weight|bayesian_optuna</td>
+      <td>random_forest|class_weight|random_search</td>
+      <td>svm|class_weight|grid_search</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ranking de las mejores combinaciones de cada modelo en cada escenario (mejor F1 medio por modelo).</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">best_by_model</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"model"</span><span class="p">)[</span><span class="s2">"f1_mean"</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">table</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"f1_mean"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)[[</span><span class="s2">"model"</span><span class="p">,</span> <span class="s2">"technique"</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">,</span> <span class="s2">"f1_mean"</span><span class="p">]]</span>
+
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">table</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">"A"</span><span class="p">,</span> <span class="n">A</span><span class="p">),</span> <span class="p">(</span><span class="s2">"B"</span><span class="p">,</span> <span class="n">B</span><span class="p">),</span> <span class="p">(</span><span class="s2">"C"</span><span class="p">,</span> <span class="n">C</span><span class="p">)]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Escenario </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">best_by_model</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Escenario A:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>model</th>
+      <th>technique</th>
+      <th>method</th>
+      <th>f1_mean</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>xgboost</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.5466</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5452</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>svm</td>
+      <td>smote</td>
+      <td>random_search</td>
+      <td>0.5387</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>knn</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5264</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>decision_tree</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.5254</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>logistic_regression</td>
+      <td>class_weight</td>
+      <td>genetic_deap</td>
+      <td>0.5182</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>naive_bayes</td>
+      <td>smote</td>
+      <td>grid_search</td>
+      <td>0.4987</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Escenario B:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>model</th>
+      <th>technique</th>
+      <th>method</th>
+      <th>f1_mean</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>xgboost</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.5466</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5452</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>knn</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5264</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>decision_tree</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.5254</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>logistic_regression</td>
+      <td>class_weight</td>
+      <td>genetic_deap</td>
+      <td>0.5182</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>naive_bayes</td>
+      <td>smote</td>
+      <td>grid_search</td>
+      <td>0.4987</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Escenario C:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>model</th>
+      <th>technique</th>
+      <th>method</th>
+      <th>f1_mean</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>xgboost</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.5466</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5452</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>svm</td>
+      <td>class_weight</td>
+      <td>grid_search</td>
+      <td>0.5446</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>knn</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5264</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>decision_tree</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.5254</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>logistic_regression</td>
+      <td>class_weight</td>
+      <td>genetic_deap</td>
+      <td>0.5182</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>naive_bayes</td>
+      <td>smote</td>
+      <td>grid_search</td>
+      <td>0.4987</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Lectura.</strong></p>
+<ul class="simple">
+<li><p><strong>La conclusión estadística no cambia.</strong> En los tres escenarios Friedman es significativo (<span class="math notranslate nohighlight">\(p&lt;10^{-47}\)</span>) y Nemenyi tiene algo de potencia: la máxima diferencia de rangos medios (108.3, 92.3 y 106.3) supera la diferencia crítica (89.4, 75.5 y 89.4), de modo que separa los extremos del ranking pero no las combinaciones de cabeza. Las dos primeras combinaciones son las mismas en los tres escenarios: XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>, y Random Forest con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">random_search</span></code>.</p></li>
+<li><p><strong>El ranking de modelos cambia solo en la posición de SVM.</strong> Con el SVM de Colab (escenario A), la mejor combinación de SVM tiene F1 0.5387 (SMOTE, <code class="docutils literal notranslate"><span class="pre">random_search</span></code>) y queda tercera entre los modelos. Con el reajuste en CPU (escenario C) sube a 0.5446 (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code> con <code class="docutils literal notranslate"><span class="pre">grid_search</span></code>), a 0.0020 de XGBoost (0.5466), y la tercera combinación del ranking global pasa de Random Forest con <code class="docutils literal notranslate"><span class="pre">grid_search</span></code> a SVM con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">grid_search</span></code>. Este cambio es desfavorable para la versión de Colab, que subestimaba a SVM, y se reporta así. XGBoost sigue siendo el mejor, y la diferencia con SVM está muy por debajo de la desviación entre folds.</p></li>
+<li><p>Sin SVM (escenario B) el orden de los otros seis modelos es el mismo que con SVM.</p></li>
+</ul>
+</section>
+<section id="limitaciones">
+<h2>Limitaciones<a class="headerlink" href="#limitaciones" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>El reajuste en CPU usa los hiperparámetros que eligió Colab. No demuestra que una búsqueda en CPU habría elegido lo mismo, así que el F1 reajustado es el de la mejor configuración encontrada por cuML evaluada con libsvm, no el de una búsqueda completa en CPU.</p></li>
+<li><p>El F1 reajustado se calculó con <code class="docutils literal notranslate"><span class="pre">probability=False</span></code> (las predicciones de <code class="docutils literal notranslate"><span class="pre">SVC</span></code> usan el signo de la función de decisión en ambos casos). El ROC-AUC y el PR-AUC de SVM en este reajuste salen de <code class="docutils literal notranslate"><span class="pre">decision_function</span></code> y no de <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>.</p></li>
+<li><p>En la tabla maestra se conservan los valores de Colab como fueron reportados (columnas <code class="docutils literal notranslate"><span class="pre">f1_*</span></code>) y el reajuste va aparte (<code class="docutils literal notranslate"><span class="pre">f1_cpu_refit_*</span></code>), para no reescribir resultados originales.</p></li>
+<li><p>Los tiempos de SVM y de KNN (GPU T4, otro hardware) no son comparables con los del resto (CPU local).</p></li>
+<li><p>Con 5 folds, la prueba de Nemenyi solo separa combinaciones muy alejadas en el ranking, y los intervalos de las métricas son anchos. La comparación entre las combinaciones de cabeza es descriptiva.</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="06_interpretability.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">06. Interpretabilidad (SHAP y LIME)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="09_anytime_multifidelidad.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">09. Curvas anytime y multi-fidelidad</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-de-las-112-combinaciones">1. Tabla maestra de las 112 combinaciones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mejor-combinacion-por-modelo-y-motivo-de-la-seleccion">2. Mejor combinación por modelo y motivo de la selección</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#son-comparables-las-16-filas-de-svm">3. ¿Son comparables las 16 filas de SVM?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sensibilidad-de-la-comparacion-estadistica-al-tratamiento-de-svm">4. Sensibilidad de la comparación estadística al tratamiento de SVM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones">Limitaciones</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Katherin Barrera López y Valeria Florez Sarmiento
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -215,6 +215,7 @@
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Introducción y marco del proyecto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../correcciones.html">Trazabilidad de correcciones</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
@@ -222,6 +223,9 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">04. Ejecutar experimentos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
 </ul>
 
     </div>
@@ -381,7 +385,10 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="ejecutar-experimentos">
+  <blockquote>
+<div><p><strong>Nota (corrida vigente 5 x 5).</strong> Este notebook conserva la corrida inicial 3 x 3 de seis modelos y sus salidas, como registro. La corrida vigente es 5 x 5 con los siete modelos: cinco (80 combinaciones) corrieron en la CPU local con <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.run_local_5x5</span></code> (resultado en <code class="docutils literal notranslate"><span class="pre">results/experiments_5x5__local.csv</span></code>), y SVM y KNN (32 combinaciones) en Colab con GPU T4 (<code class="docutils literal notranslate"><span class="pre">10_colab_5x5.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">07_svm_gpu_colab.ipynb</span></code>). Todo se unió con <code class="docutils literal notranslate"><span class="pre">src/merge_session_results.py</span></code> en <code class="docutils literal notranslate"><span class="pre">results/experiments_master_5x5.csv</span></code> y <code class="docutils literal notranslate"><span class="pre">results/svm_gpu_results_colab_5x5.csv</span></code>; los resultados 3 x 3 están en <code class="docutils literal notranslate"><span class="pre">results/legacy_3x3/</span></code>. Las cifras de este notebook NO son las vigentes.</p>
+</div></blockquote>
+<section class="tex2jax_ignore mathjax_ignore" id="ejecutar-experimentos">
 <h1>04. Ejecutar experimentos<a class="headerlink" href="#ejecutar-experimentos" title="Link to this heading">#</a></h1>
 <p>Se usaron 29,965 clientes y 20 variables predictoras, con 22.13 % de <em>default</em>. Ya no había duplicados por eliminar y se mantienen los 21 grupos con variables idénticas y etiqueta distinta (ruido del dataset). Se ejecutaron 96 combinaciones (6 modelos x 4 balanceos x 4 métodos de búsqueda de hiperparámetros) con validación cruzada anidada y el F1 como métrica de selección. La SVM se corrió aparte en Colab con GPU y completa las 112 combinaciones.</p>
 <ul class="simple">

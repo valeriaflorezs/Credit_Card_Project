@@ -4,9 +4,9 @@
 [![Conda](https://img.shields.io/badge/Environment-Conda-44A833?style=for-the-badge&logo=anaconda&logoColor=white)](https://www.anaconda.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-> **Resumen del Proyecto:** Este proyecto desarrolla un flujo completo e integral de ciencia de datos y aprendizaje automático para predecir el riesgo de incumplimiento de pago (*default*) en clientes de tarjetas de crédito. A partir del conjunto de datos del repositorio UCI (30,000 registros; 29,965 y 21 columnas tras eliminar 35 duplicados exactos y transformar variables), la solución abarca un pipeline de extracción, limpieza y transformación de datos (ETL) y un análisis exploratorio (EDA) orientado al desbalance de clases (cerca del 22 % de *default*) y a la multicolinealidad entre montos facturados, hasta un diseño experimental factorial de 112 configuraciones: 7 modelos x 4 técnicas de balanceo x 4 métodos de optimización, con validación cruzada anidada (3 folds externos x 3 internos). Seis modelos se ejecutan localmente (96 combinaciones) y SVM en Colab con GPU (16 combinaciones, ver la nota de comparabilidad en `05_results_analysis.ipynb`).
+> **Resumen del Proyecto:** Este proyecto desarrolla un flujo completo e integral de ciencia de datos y aprendizaje automático para predecir el riesgo de incumplimiento de pago (*default*) en clientes de tarjetas de crédito. A partir del conjunto de datos del repositorio UCI (30,000 registros; 29,965 y 21 columnas tras eliminar 35 duplicados exactos y transformar variables), la solución abarca un pipeline de extracción, limpieza y transformación de datos (ETL) y un análisis exploratorio (EDA) orientado al desbalance de clases (cerca del 22 % de *default*) y a la multicolinealidad entre montos facturados, hasta un diseño experimental factorial de 112 configuraciones: 7 modelos x 4 técnicas de balanceo x 4 métodos de optimización, con validación cruzada anidada (5 folds externos x 5 internos). Cinco modelos se ejecutan localmente en CPU (80 combinaciones) y SVM y KNN en Colab con GPU T4 (32 combinaciones, ver la nota de comparabilidad en `05_results_analysis.ipynb`).
 >
-> **Resultados y alcance:** el F1 de la clase minoritaria sube de cerca de 0.38 (regresión logística sin balanceo) a entre 0.52 y 0.55 con balanceo. Esa mejora proviene en buena parte del balanceo, que desplaza el umbral de decisión (el ROC-AUC casi no cambia entre técnicas); la comparación estadística entre las 112 combinaciones es descriptiva, porque con 3 folds el post-hoc de Nemenyi no puede declarar diferencias significativas.
+> **Resultados y alcance:** el F1 de la clase minoritaria sube de cerca de 0.38 (regresión logística sin balanceo) a entre 0.52 y 0.55 con balanceo. Esa mejora proviene en buena parte del balanceo, que desplaza el umbral de decisión (el ROC-AUC casi no cambia entre técnicas); la comparación estadística entre las 112 combinaciones es descriptiva, porque con 5 folds el post-hoc de Nemenyi solo separa combinaciones muy alejadas en el ranking y no ordena las de cabeza.
 
 ---
 
@@ -79,10 +79,32 @@ Credit_Card_Project/
 | `00_eda.ipynb` | EDA y construcción de `data/processed/dataset_final.csv` (Parte 5) |
 | `01_baseline_logistic.ipynb` | Baseline: regresión logística con partición 80/20 |
 | `02_setup_check.ipynb`, `03_pipeline_dev.ipynb` | Verificación del entorno y desarrollo del pipeline (datos sintéticos) |
-| `04_run_experiments.ipynb` | Corrida de las combinaciones (6 modelos, local) a `results/experiments_master.csv` |
-| `07_svm_gpu_colab.ipynb` | SVM (16 combinaciones) en Colab con GPU a `results/svm_gpu_results_colab.csv` |
+| `04_run_experiments.ipynb` | Corrida 3 x 3 inicial (6 modelos, local); la corrida vigente 5 x 5 se hizo con `src/run_local_5x5.py` y Colab (`10_colab_5x5.ipynb`) a `results/experiments_master_5x5.csv` |
+| `07_svm_gpu_colab.ipynb` | SVM (16 combinaciones, corrida 3 x 3 inicial) en Colab con GPU; la corrida 5 x 5 está en `results/svm_gpu_results_colab_5x5.csv` |
 | `05_results_analysis.ipynb` | Tabla de las 112 combinaciones, métricas complementarias (ROC-AUC, PR-AUC; el F1 sigue siendo la principal), Friedman/Nemenyi, comparación por factor, DeLong, calibración y complejidad |
-| `06_interpretability.ipynb` | SHAP del Random Forest y comparación LIME vs. SHAP de XGBoost (una observación) |
+| `06_interpretability.ipynb` | SHAP de XGBoost (secciones 1 a 4, un fold) y, en las secciones 5 y 6, SHAP en los 5 folds y LIME vs. SHAP en 200 observaciones por modelo (Random Forest y XGBoost) |
+| `08_tabla_maestra_svm.ipynb` | Tabla maestra consolidada de las 112 combinaciones (`results/master_table_112.csv`), mejor combinación por modelo (`results/best_per_model.csv`) y comparabilidad del SVM de Colab (reajuste en CPU y sensibilidad de Friedman) |
+| `09_anytime_multifidelidad.ipynb` | Curvas anytime de los cuatro optimizadores y comparación con Hyperband (multi-fidelidad propia) |
+
+El capítulo `correcciones.md` reúne la tabla de trazabilidad de las observaciones del docente y la auditoría de fuga de información.
+
+Los estudios nuevos se reproducen con (entorno `creditcard`, desde la raíz):
+
+```bash
+python -m src.master_table
+```
+
+```bash
+python -m src.svm_comparability
+```
+
+```bash
+python -m src.anytime_study --models logistic_regression decision_tree xgboost --folds 0 1 2
+```
+
+```bash
+python -m src.interpretability_multi
+```
 
 ---
 

@@ -64,6 +64,7 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="08. Tabla maestra consolidada y comparabilidad del SVM" href="08_tabla_maestra_svm.html" />
     <link rel="prev" title="05. Análisis de resultados" href="05_results_analysis.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -214,6 +215,7 @@
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Introducción y marco del proyecto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../correcciones.html">Trazabilidad de correcciones</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
@@ -221,6 +223,9 @@
 <li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">06. Interpretabilidad (SHAP y LIME)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
 </ul>
 
     </div>
@@ -366,6 +371,7 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">06. Interpretabilidad (SHAP y LIME)</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#elegir-el-mejor-modelo-y-ajustar-su-pipeline">Elegir el mejor modelo y ajustar su pipeline</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-global-summary-plot">SHAP global (summary plot)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-local-una-observacion-bien-clasificada-y-una-con-error-alto">SHAP local: una observación bien clasificada y una con error alto</a></li>
@@ -374,6 +380,14 @@
 </ul>
 </li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#correcciones-shap-y-lime-con-mas-de-un-fold-y-mas-de-una-observacion">Correcciones: SHAP y LIME con más de un fold y más de una observación</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-global-en-los-5-folds-externos">5. SHAP global en los 5 folds externos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lime-frente-a-shap-en-200-observaciones-por-modelo">6. LIME frente a SHAP en 200 observaciones por modelo</a></li>
+</ul>
+</li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -386,15 +400,16 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="interpretabilidad-shap-y-lime">
 <h1>06. Interpretabilidad (SHAP y LIME)<a class="headerlink" href="#interpretabilidad-shap-y-lime" title="Link to this heading">#</a></h1>
-<p>SHAP global (summary plot) y local (waterfall, 2 observaciones: una bien clasificada y una con error alto) para la combinación con mayor F1 medio en <code class="docutils literal notranslate"><span class="pre">05_results_analysis.ipynb</span></code> (Random Forest, <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code>), más una comparación LIME vs. SHAP para XGBoost sobre una sola observación.</p>
+<p>SHAP global (summary plot) y local (waterfall, 2 observaciones: una bien clasificada y una con error alto) para la combinación con mayor F1 medio en <code class="docutils literal notranslate"><span class="pre">05_results_analysis.ipynb</span></code> (XGBoost, <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>), más una comparación LIME vs. SHAP para XGBoost sobre una sola observación.</p>
 <p><strong>Alcance y limitaciones:</strong></p>
 <ul class="simple">
-<li><p>Es la interpretación de <strong>una</strong> combinación, en <strong>un</strong> fold externo (el de mayor F1, elegido a posteriori) y sobre 100 filas de su conjunto de prueba. No describe a todos los modelos ni es un resultado general del dataset.</p></li>
-<li><p>Las dos observaciones del waterfall son casos extremos (probabilidades 0.982 y 0.964), no representativos del conjunto.</p></li>
-<li><p>La comparación LIME vs. SHAP usa una sola observación de XGBoost (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>, mejor fold de ese modelo): ilustra el método, pero no permite concluir cuándo coinciden o divergen en general.</p></li>
+<li><p>Las secciones 1 a 4 interpretan <strong>una</strong> combinación (la de mayor F1 medio: XGBoost, <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>) en <strong>un</strong> fold externo (el de mayor F1, elegido a posteriori), sobre 100 filas, y comparan LIME con SHAP en <strong>una</strong> observación. Sirven para ilustrar el método, no para generalizar.</p></li>
+<li><p>Las secciones 5 y 6 corrigen eso: repiten el análisis en los <strong>5 folds externos</strong>, cada uno con el pipeline reajustado con los hiperparámetros que su propio bucle interno eligió, y comparan LIME con SHAP en <strong>200 observaciones por modelo</strong> (10 al azar de cada celda de la matriz de confusión por fold), para Random Forest y XGBoost.</p></li>
+<li><p>Las dos observaciones del waterfall de la sección 4 son casos extremos (probabilidades 0.954 y 0.952), no representativos del conjunto.</p></li>
+<li><p>Se interpretan dos de los siete modelos. Los demás no se explican.</p></li>
 <li><p>Con variables correlacionadas, SHAP reparte la importancia entre ellas de forma arbitraria. Y con modelos entrenados con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> o SMOTE las probabilidades no están calibradas: el valor base de 0.5 refleja el balanceo y no la prevalencia real (22 %), así que los aportes no se leen como cambios de riesgo reales.</p></li>
 </ul>
-<p>Trabaja desde <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code> (mismo patrón que <code class="docutils literal notranslate"><span class="pre">05_results_analysis.ipynb</span></code>), no depende de nada en memoria de notebooks anteriores.</p>
+<p>Trabaja desde <code class="docutils literal notranslate"><span class="pre">results/master_table_112.csv</span></code> y <code class="docutils literal notranslate"><span class="pre">results/best_per_model.csv</span></code> (ver <code class="docutils literal notranslate"><span class="pre">08_tabla_maestra_svm.ipynb</span></code>), no depende de nada en memoria de notebooks anteriores. Las secciones 5 y 6 leen los CSV que genera <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.interpretability_multi</span></code> (ver <code class="docutils literal notranslate"><span class="pre">src/interpretability_multi.py</span></code>).</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -438,6 +453,12 @@
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\tqdm\auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div>
+</div>
+</div>
 </div>
 <section id="elegir-el-mejor-modelo-y-ajustar-su-pipeline">
 <h2>Elegir el mejor modelo y ajustar su pipeline<a class="headerlink" href="#elegir-el-mejor-modelo-y-ajustar-su-pipeline" title="Link to this heading">#</a></h2>
@@ -474,8 +495,10 @@
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mejor modelo: random_forest | class_weight | genetic_deap (fold 2)
-Features post-transformación: 25
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mejor modelo: xgboost | class_weight | bayesian_optuna (fold 3)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Features post-transformación: 25
 </pre></div>
 </div>
 </div>
@@ -512,18 +535,18 @@ Features post-transformación: 25
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\valef\OneDrive\Desktop\Credit_Card_Project\src\interpretability.py:329: FutureWarning: The NumPy global RNG was seeded by calling `np.random.seed`. In a future version this function will no longer use the global RNG. Pass `rng` explicitly to opt-in to the new behaviour and silence this warning.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\src\interpretability.py:329: FutureWarning: The NumPy global RNG was seeded by calling `np.random.seed`. In a future version this function will no longer use the global RNG. Pass `rng` explicitly to opt-in to the new behaviour and silence this warning.
   shap.summary_plot(
 </pre></div>
 </div>
-<img alt="../_images/da5581c30a1496ca875f9fa3db06554122ec89a20fd2a241fe088a4fa395ae31.png" src="../_images/da5581c30a1496ca875f9fa3db06554122ec89a20fd2a241fe088a4fa395ae31.png" />
+<img alt="../_images/db4a60a9e62587317c422f7b66a929667679029ad702da49dac62aff2c1eea94.png" src="../_images/db4a60a9e62587317c422f7b66a929667679029ad702da49dac62aff2c1eea94.png" />
 </div>
 </div>
 <ul class="simple">
-<li><p><strong>El historial de pagos domina.</strong> <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> es la variable más importante, con una diferencia clara frente a las demás. Sus valores altos (meses de atraso) generan los aportes más grandes hacia <em>default</em>, de hasta cerca de +0.37. Le siguen <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_3</span></code>, y más abajo <code class="docutils literal notranslate"><span class="pre">PAY_4</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_5</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_6</span></code>. En todas ellas, más atraso aumenta el riesgo. Esto coincide con el EDA y, en parte, con la regresión logística base: allí <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> (+0.52) es el mayor coeficiente entre las variables numéricas, pero el mayor en valor absoluto es <code class="docutils literal notranslate"><span class="pre">EDUCATION_4</span></code> (-0.96). Además, coeficientes lineales y SHAP sobre un bosque no son directamente comparables.</p></li>
+<li><p><strong>El historial de pagos domina.</strong> <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> es la variable más importante, con una diferencia clara frente a las demás: sus valores altos (meses de atraso) generan los aportes más grandes hacia <em>default</em>, de más de +1 en log-odds. <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_3</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_4</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_5</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_6</span></code> siguen el mismo patrón: más atraso aumenta el riesgo. Esto coincide con el EDA y, en parte, con la regresión logística base: allí <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> (+0.52) es el mayor coeficiente entre las variables numéricas, pero el mayor en valor absoluto es <code class="docutils literal notranslate"><span class="pre">EDUCATION_4</span></code> (-0.96). Además, coeficientes lineales y SHAP sobre un modelo de árboles no son directamente comparables.</p></li>
 <li><p><strong>Mayor límite de crédito, menor riesgo.</strong> En <code class="docutils literal notranslate"><span class="pre">LIMIT_BAL_LOG</span></code> los valores altos (rojo) quedan a la izquierda, es decir, reducen la probabilidad de <em>default</em>. Esto es coherente con la diferencia de límites entre clientes con y sin <em>default</em> encontrada en el EDA.</p></li>
-<li><p><strong>Montos pagados.</strong> En las variables <code class="docutils literal notranslate"><span class="pre">PAY_AMT*_LOG</span></code>, los clientes que pagaron más (rojo) tienden a tener aportes negativos, o sea menor riesgo. Su efecto individual es pequeño.</p></li>
-<li><p><strong>Facturación.</strong> <code class="docutils literal notranslate"><span class="pre">BILL_AMT_MEAN_6M_LOG</span></code> aparece en quinto lugar y <code class="docutils literal notranslate"><span class="pre">BILL_AMT_TREND_6M_LOG</span></code> en un nivel más bajo, con un efecto moderado y menos claro que el de los pagos. Esto es consistente con el EDA, donde el monto facturado discriminaba poco entre clases.</p></li>
+<li><p><strong>Montos pagados.</strong> En las variables <code class="docutils literal notranslate"><span class="pre">PAY_AMT*_LOG</span></code>, los clientes que pagaron más (rojo) tienden a tener aportes negativos, o sea menor riesgo. Su efecto individual es moderado.</p></li>
+<li><p><strong>Facturación.</strong> <code class="docutils literal notranslate"><span class="pre">BILL_AMT_MEAN_6M_LOG</span></code> aparece en tercer lugar en este fold, con algunos aportes grandes hacia <em>default</em> (hasta cerca de +1.3) que no siguen un patrón tan claro como el de los pagos, y <code class="docutils literal notranslate"><span class="pre">BILL_AMT_TREND_6M_LOG</span></code> aparece más abajo. En el EDA el monto facturado discriminaba poco entre clases, y en la sección 5 se ve que su posición cambia entre folds.</p></li>
 </ul>
 </section>
 <section id="shap-local-una-observacion-bien-clasificada-y-una-con-error-alto">
@@ -559,34 +582,35 @@ Features post-transformación: 25
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{'well_classified': 2555, 'high_error': 3936}
-well_classified: y_true=1, y_pred=1, proba=0.982
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{'well_classified': 2512, 'high_error': 2900}
 </pre></div>
 </div>
-<img alt="../_images/cde4017441bfa78f70db3128206f37a8a0261035293d10c798ea26353d0552c0.png" src="../_images/cde4017441bfa78f70db3128206f37a8a0261035293d10c798ea26353d0552c0.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>high_error: y_true=0, y_pred=1, proba=0.964
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>well_classified: y_true=1, y_pred=1, proba=0.954
 </pre></div>
 </div>
-<img alt="../_images/309b4eac961e96996fd7947c9bec15b8bc392ce263f1f522d2262846d698c9a1.png" src="../_images/309b4eac961e96996fd7947c9bec15b8bc392ce263f1f522d2262846d698c9a1.png" />
+<img alt="../_images/ab07ee4d9074deadc1936684a03df5e1158ebcdb47a0b9d4b8284f444c9b877d.png" src="../_images/ab07ee4d9074deadc1936684a03df5e1158ebcdb47a0b9d4b8284f444c9b877d.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>high_error: y_true=0, y_pred=1, proba=0.952
+</pre></div>
+</div>
+<img alt="../_images/f2010471cb80cb6826bf2700a8e07d70d5fc23f24bdbc7c4ac62b81b203a1cad.png" src="../_images/f2010471cb80cb6826bf2700a8e07d70d5fc23f24bdbc7c4ac62b81b203a1cad.png" />
 </div>
 </div>
-<p>Se analizaron dos clientes del pliegue de prueba. El valor base del modelo es 0.5 y cada barra indica cuánto sube o baja la probabilidad predicha.</p>
-<p><strong>1. Cliente bien clasificado</strong> (<em>default</em> real = 1, predicho = 1, probabilidad = 0.982)</p>
+<p>Se analizaron dos clientes del fold de prueba (los aportes están en log-odds). El valor base del modelo es 0.5 de probabilidad y cada barra indica cuánto sube o baja el margen.</p>
+<p><strong>1. Cliente bien clasificado</strong> (<em>default</em> real = 1, predicho = 1, probabilidad = 0.954)</p>
 <ul class="simple">
-<li><p>Tiene un atraso de 2 meses en <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> y también en <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code> a <code class="docutils literal notranslate"><span class="pre">PAY_6</span></code>, es decir, atrasos en los seis meses.</p></li>
-<li><p>Las seis variables <code class="docutils literal notranslate"><span class="pre">PAY</span></code> suman cerca de +0.41, lo que explica casi todo el aumento de 0.5 a 0.982. El mayor aporte es el de <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> (+0.15).</p></li>
-<li><p>No registra pagos (<code class="docutils literal notranslate"><span class="pre">PAY_AMT_LOG</span> <span class="pre">=</span> <span class="pre">0</span></code>), lo que suma un poco más al riesgo.</p></li>
-<li><p>Su límite de crédito (<code class="docutils literal notranslate"><span class="pre">LIMIT_BAL_LOG</span></code> = 12.206, cercano a 200,000) es el único factor que lo reduce, y solo en -0.01.</p></li>
+<li><p>Tiene un atraso de 2 meses en <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> y también en <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code> a <code class="docutils literal notranslate"><span class="pre">PAY_6</span></code>, es decir, atrasos en los seis meses. <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> aporta +1.42 y <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code> a <code class="docutils literal notranslate"><span class="pre">PAY_6</span></code> suman otros +0.9 aproximadamente.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BILL_AMT_MEAN_6M_LOG</span></code> (12.6) aporta +1.07, casi tanto como <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code>.</p></li>
+<li><p>Su límite de crédito (<code class="docutils literal notranslate"><span class="pre">LIMIT_BAL_LOG</span></code> = 12.97) y los pagos de los meses 1 y 5 reducen el riesgo (-0.33, -0.14 y -0.20), pero no alcanzan a compensar.</p></li>
 </ul>
-<p>El modelo acierta con mucha seguridad porque todas las señales importantes apuntan en la misma dirección.</p>
-<p><strong>2. Cliente con error alto</strong> (<em>default</em> real = 0, predicho = 1, probabilidad = 0.964)</p>
+<p>El modelo acierta con mucha seguridad porque casi todas las señales importantes apuntan en la misma dirección.</p>
+<p><strong>2. Cliente con error alto</strong> (<em>default</em> real = 0, predicho = 1, probabilidad = 0.952)</p>
 <ul class="simple">
-<li><p>Es un falso positivo. Tiene atrasos en todos los meses (<code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> = 4, <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code> = 3, <code class="docutils literal notranslate"><span class="pre">PAY_3</span></code> = 2 y <code class="docutils literal notranslate"><span class="pre">PAY_4</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_5</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_6</span></code> = 7) y sin pagos registrados.</p></li>
-<li><p>Las seis variables <code class="docutils literal notranslate"><span class="pre">PAY</span></code> suman cerca de +0.37, con <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> como mayor aporte (+0.13). Según su historial, el modelo lo considera casi seguro de caer en <em>default</em>.</p></li>
-<li><p>Su historial es poco habitual: los atrasos pasan de 2 a 7 meses de un mes a otro. Esto podría indicar un registro atípico o con errores, pero con estos datos no se puede confirmar.</p></li>
+<li><p>Es un falso positivo. Tiene atrasos de 2 a 5 meses en todos los meses (<code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> = 3, <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code> = 5, <code class="docutils literal notranslate"><span class="pre">PAY_3</span></code> = 4, <code class="docutils literal notranslate"><span class="pre">PAY_4</span></code> = 3, <code class="docutils literal notranslate"><span class="pre">PAY_5</span></code> = 2) y pagos en cero en tres de los meses (<code class="docutils literal notranslate"><span class="pre">PAY_AMT1</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_AMT2</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_AMT4</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> aporta +1.27 y <code class="docutils literal notranslate"><span class="pre">BILL_AMT_MEAN_6M_LOG</span></code> +0.65. Según su historial, el modelo lo considera casi seguro de caer en <em>default</em>.</p></li>
+<li><p>Los atrasos saltan de unos meses a otros (de 5 a 4 a 3), un patrón poco habitual que podría indicar un registro atípico, pero con estos datos no se puede confirmar.</p></li>
 </ul>
 <p>El error no parece venir de una falla del modelo, sino de un cliente que, con ese historial, no incumplió. Esto es consistente con el ruido que ya se había detectado en el EDA: hay clientes con las mismas variables y etiquetas distintas, por lo que ningún modelo puede acertar en todos los casos.</p>
-<p>Ambos clientes son casos extremos (probabilidades 0.982 y 0.964), elegidos para ilustrar, y no representan el comportamiento típico del modelo. Como el modelo se entrenó con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>, esas probabilidades tampoco están calibradas.</p>
+<p>Ambos clientes son casos extremos (probabilidades 0.954 y 0.952), elegidos para ilustrar, y no representan el comportamiento típico del modelo. Como el modelo se entrenó con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>, esas probabilidades tampoco están calibradas.</p>
 </section>
 <section id="lime-vs-shap-especificamente-para-xgboost">
 <h2>LIME vs. SHAP (específicamente para XGBoost)<a class="headerlink" href="#lime-vs-shap-especificamente-para-xgboost" title="Link to this heading">#</a></h2>
@@ -642,7 +666,7 @@ well_classified: y_true=1, y_pred=1, proba=0.982
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Observación 'high_error' (XGBoost, class_weight, fold 2):
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Observación 'high_error' (XGBoost, class_weight, fold 3):
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -672,62 +696,62 @@ well_classified: y_true=1, y_pred=1, proba=0.982
     <tr>
       <th>0</th>
       <td>remainder__PAY_0</td>
-      <td>1.245319</td>
-      <td>0.091352</td>
+      <td>1.271134</td>
+      <td>0.151140</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>remainder__PAY_2</td>
-      <td>0.314957</td>
-      <td>0.043534</td>
+      <td>remainder__BILL_AMT_MEAN_6M_LOG</td>
+      <td>0.645500</td>
+      <td>0.069701</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>remainder__PAY_3</td>
-      <td>0.232570</td>
-      <td>0.071247</td>
+      <td>remainder__BILL_AMT_TREND_6M_LOG</td>
+      <td>0.279066</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>remainder__PAY_6</td>
-      <td>0.178103</td>
-      <td>0.034266</td>
+      <td>remainder__LIMIT_BAL_LOG</td>
+      <td>-0.233314</td>
+      <td>-0.090640</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>remainder__PAY_4</td>
-      <td>0.173505</td>
-      <td>0.056531</td>
+      <td>remainder__PAY_3</td>
+      <td>0.212533</td>
+      <td>0.085833</td>
     </tr>
     <tr>
       <th>5</th>
       <td>remainder__PAY_5</td>
-      <td>0.133808</td>
-      <td>0.025168</td>
+      <td>0.151020</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>remainder__BILL_AMT_TREND_6M_LOG</td>
-      <td>0.051481</td>
-      <td>0.021247</td>
+      <td>remainder__PAY_4</td>
+      <td>0.142220</td>
+      <td>0.048580</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>remainder__BILL_AMT_MEAN_6M_LOG</td>
-      <td>-0.048345</td>
-      <td>-0.025667</td>
+      <td>remainder__PAY_2</td>
+      <td>0.125343</td>
+      <td>0.053187</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>remainder__LIMIT_BAL_LOG</td>
-      <td>0.046637</td>
-      <td>NaN</td>
+      <td>remainder__PAY_AMT1_LOG</td>
+      <td>0.120100</td>
+      <td>0.047900</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>remainder__AGE</td>
-      <td>0.042024</td>
-      <td>NaN</td>
+      <td>remainder__PAY_AMT4_LOG</td>
+      <td>0.102073</td>
+      <td>0.027926</td>
     </tr>
   </tbody>
 </table>
@@ -746,7 +770,1064 @@ well_classified: y_true=1, y_pred=1, proba=0.982
 <li><p><strong>Sensibilidad a hiperparámetros de LIME</strong> (ancho del kernel, nº de muestras): puede cambiar el ranking entre corridas; SHAP/TreeExplainer es determinístico.</p></li>
 </ol>
 <p>Limitación de la tabla anterior: es una sola observación de XGBoost, y <code class="docutils literal notranslate"><span class="pre">shap_value</span></code> está en escala de log-odds (margen de XGBoost) mientras que <code class="docutils literal notranslate"><span class="pre">lime_weight</span></code> está en escala de probabilidad, por lo que solo se pueden comparar signos y orden, no magnitudes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src</span><span class="w"> </span><span class="kn">import</span> <span class="n">interpretability_multi</span> <span class="k">as</span> <span class="n">im</span>
+
+<span class="n">INTERP_DIR</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">RESULTS_DIR</span> <span class="o">/</span> <span class="s2">"interpretability"</span>
+<span class="n">MODELS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"random_forest"</span><span class="p">,</span> <span class="s2">"xgboost"</span><span class="p">)</span>
+<span class="n">importance</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">INTERP_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"shap_importance_by_fold_</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">.csv"</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">}</span>
+<span class="n">agreement</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">INTERP_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"lime_vs_shap_</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">.csv"</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">}</span>
+<span class="n">best_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">RESULTS_DIR</span> <span class="o">/</span> <span class="s2">"best_per_model.csv"</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"model"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">: combinación </span><span class="si">{</span><span class="n">best_table</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="s1">'technique'</span><span class="p">]</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">best_table</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="s1">'method'</span><span class="p">]</span><span class="si">}</span><span class="s2">; "</span>
+          <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">importance</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="s1">'n_explained'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> filas explicadas por fold, "</span>
+          <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">])</span><span class="si">}</span><span class="s2"> observaciones para LIME vs. SHAP"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>random_forest: combinación class_weight | random_search; 300 filas explicadas por fold, 200 observaciones para LIME vs. SHAP
+xgboost: combinación class_weight | bayesian_optuna; 300 filas explicadas por fold, 200 observaciones para LIME vs. SHAP
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">MODELS</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.5</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">MODELS</span><span class="p">),</span> <span class="mf">4.8</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">MODELS</span><span class="p">):</span>
+    <span class="n">imp</span> <span class="o">=</span> <span class="n">importance</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"feature"</span><span class="p">)[</span><span class="s2">"mean_abs_shap"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">pivot</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">"feature"</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">"fold"</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s2">"mean_abs_shap"</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">top</span><span class="p">]</span>
+    <span class="n">pivot</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Media de |SHAP| (escala del modelo)"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Fold externo"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">"x"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"Importancia global SHAP por fold externo (8 variables principales)"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">FIGURES_DIR</span> <span class="o">/</span> <span class="s2">"shap_importance_by_fold.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">:</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">importance_stability</span><span class="p">(</span><span class="n">importance</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">: Spearman medio entre folds = </span><span class="si">{</span><span class="n">st</span><span class="p">[</span><span class="s1">'spearman_mean_offdiag'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">; "</span>
+          <span class="sa">f</span><span class="s2">"Jaccard medio del top-5 = </span><span class="si">{</span><span class="n">st</span><span class="p">[</span><span class="s1">'topk_jaccard_mean_offdiag'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">; "</span>
+          <span class="sa">f</span><span class="s2">"siempre en el top-5: </span><span class="si">{</span><span class="n">st</span><span class="p">[</span><span class="s1">'topk_always'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="s2">"spearman"</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2ee0319aea44972f8b244c043658589560272d2ecf8a06e75f1a2e03ab27c057.png" src="../_images/2ee0319aea44972f8b244c043658589560272d2ecf8a06e75f1a2e03ab27c057.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>random_forest: Spearman medio entre folds = 0.963; Jaccard medio del top-5 = 0.767; siempre en el top-5: ['LIMIT_BAL_LOG', 'PAY_0', 'PAY_2', 'PAY_3']
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>fold</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+    </tr>
+    <tr>
+      <th>fold</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.000</td>
+      <td>0.955</td>
+      <td>0.995</td>
+      <td>0.959</td>
+      <td>0.965</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.955</td>
+      <td>1.000</td>
+      <td>0.946</td>
+      <td>0.946</td>
+      <td>0.974</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.995</td>
+      <td>0.946</td>
+      <td>1.000</td>
+      <td>0.961</td>
+      <td>0.962</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.959</td>
+      <td>0.946</td>
+      <td>0.961</td>
+      <td>1.000</td>
+      <td>0.965</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.965</td>
+      <td>0.974</td>
+      <td>0.962</td>
+      <td>0.965</td>
+      <td>1.000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>xgboost: Spearman medio entre folds = 0.919; Jaccard medio del top-5 = 0.652; siempre en el top-5: ['BILL_AMT_MEAN_6M_LOG', 'LIMIT_BAL_LOG', 'PAY_0']
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>fold</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+    </tr>
+    <tr>
+      <th>fold</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.000</td>
+      <td>0.925</td>
+      <td>0.920</td>
+      <td>0.907</td>
+      <td>0.905</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.925</td>
+      <td>1.000</td>
+      <td>0.914</td>
+      <td>0.925</td>
+      <td>0.953</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.920</td>
+      <td>0.914</td>
+      <td>1.000</td>
+      <td>0.940</td>
+      <td>0.896</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.907</td>
+      <td>0.925</td>
+      <td>0.940</td>
+      <td>1.000</td>
+      <td>0.904</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.905</td>
+      <td>0.953</td>
+      <td>0.896</td>
+      <td>0.904</td>
+      <td>1.000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">METRICS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"spearman_abs"</span><span class="p">:</span> <span class="s2">"Spearman de |atribución|"</span><span class="p">,</span>
+    <span class="s2">"top5_overlap"</span><span class="p">:</span> <span class="s2">"Solapamiento del top-5"</span><span class="p">,</span>
+    <span class="s2">"sign_agreement_topk"</span><span class="p">:</span> <span class="s2">"Acuerdo de signo (top-5 de SHAP)"</span><span class="p">,</span>
+    <span class="s2">"lime_seed_topk_overlap"</span><span class="p">:</span> <span class="s2">"Estabilidad de LIME entre semillas (top-5)"</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">MODELS</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">METRICS</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">METRICS</span><span class="p">),</span> <span class="mf">3.6</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">MODELS</span><span class="p">)),</span> <span class="n">sharey</span><span class="o">=</span><span class="s2">"col"</span><span class="p">)</span>
+<span class="n">order</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"TN"</span><span class="p">,</span> <span class="s2">"FP"</span><span class="p">,</span> <span class="s2">"FN"</span><span class="p">,</span> <span class="s2">"TP"</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">MODELS</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">METRICS</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="s2">"outcome"</span><span class="p">]</span> <span class="o">==</span> <span class="n">o</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">tick_labels</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">showmeans</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">"y"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Valor (0 a 1)"</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"Coincidencia entre LIME y SHAP por tipo de resultado de la observación"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.01</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">FIGURES_DIR</span> <span class="o">/</span> <span class="s2">"lime_vs_shap_agreement.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2"> (n = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">])</span><span class="si">}</span><span class="s2"> observaciones, 3 folds)"</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">summarize_agreement</span><span class="p">(</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3a8a8f55fa45f351070556d8ee81600bcc461e603f1c45dd6b4aba586447c4ad.png" src="../_images/3a8a8f55fa45f351070556d8ee81600bcc461e603f1c45dd6b4aba586447c4ad.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>random_forest (n = 200 observaciones, 3 folds)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="3" halign="left">spearman_abs</th>
+      <th colspan="3" halign="left">top5_overlap</th>
+      <th colspan="3" halign="left">sign_agreement_topk</th>
+      <th colspan="3" halign="left">lime_seed_topk_overlap</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>FN</th>
+      <td>0.497</td>
+      <td>0.130</td>
+      <td>0.515</td>
+      <td>0.664</td>
+      <td>0.148</td>
+      <td>0.6</td>
+      <td>0.995</td>
+      <td>0.035</td>
+      <td>1.0</td>
+      <td>0.811</td>
+      <td>0.102</td>
+      <td>0.833</td>
+    </tr>
+    <tr>
+      <th>FP</th>
+      <td>0.623</td>
+      <td>0.145</td>
+      <td>0.663</td>
+      <td>0.732</td>
+      <td>0.143</td>
+      <td>0.8</td>
+      <td>0.993</td>
+      <td>0.047</td>
+      <td>1.0</td>
+      <td>0.865</td>
+      <td>0.124</td>
+      <td>0.867</td>
+    </tr>
+    <tr>
+      <th>TN</th>
+      <td>0.498</td>
+      <td>0.136</td>
+      <td>0.515</td>
+      <td>0.676</td>
+      <td>0.133</td>
+      <td>0.6</td>
+      <td>0.986</td>
+      <td>0.056</td>
+      <td>1.0</td>
+      <td>0.819</td>
+      <td>0.117</td>
+      <td>0.833</td>
+    </tr>
+    <tr>
+      <th>TP</th>
+      <td>0.655</td>
+      <td>0.135</td>
+      <td>0.682</td>
+      <td>0.796</td>
+      <td>0.174</td>
+      <td>0.8</td>
+      <td>0.996</td>
+      <td>0.028</td>
+      <td>1.0</td>
+      <td>0.892</td>
+      <td>0.102</td>
+      <td>0.867</td>
+    </tr>
+    <tr>
+      <th>ALL</th>
+      <td>0.569</td>
+      <td>0.153</td>
+      <td>0.586</td>
+      <td>0.717</td>
+      <td>0.158</td>
+      <td>0.8</td>
+      <td>0.993</td>
+      <td>0.043</td>
+      <td>1.0</td>
+      <td>0.847</td>
+      <td>0.116</td>
+      <td>0.867</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>xgboost (n = 200 observaciones, 3 folds)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="3" halign="left">spearman_abs</th>
+      <th colspan="3" halign="left">top5_overlap</th>
+      <th colspan="3" halign="left">sign_agreement_topk</th>
+      <th colspan="3" halign="left">lime_seed_topk_overlap</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>FN</th>
+      <td>0.518</td>
+      <td>0.103</td>
+      <td>0.530</td>
+      <td>0.624</td>
+      <td>0.138</td>
+      <td>0.6</td>
+      <td>0.991</td>
+      <td>0.045</td>
+      <td>1.0</td>
+      <td>0.847</td>
+      <td>0.087</td>
+      <td>0.867</td>
+    </tr>
+    <tr>
+      <th>FP</th>
+      <td>0.539</td>
+      <td>0.146</td>
+      <td>0.564</td>
+      <td>0.648</td>
+      <td>0.164</td>
+      <td>0.6</td>
+      <td>0.995</td>
+      <td>0.035</td>
+      <td>1.0</td>
+      <td>0.904</td>
+      <td>0.087</td>
+      <td>0.867</td>
+    </tr>
+    <tr>
+      <th>TN</th>
+      <td>0.510</td>
+      <td>0.154</td>
+      <td>0.541</td>
+      <td>0.600</td>
+      <td>0.140</td>
+      <td>0.6</td>
+      <td>0.996</td>
+      <td>0.028</td>
+      <td>1.0</td>
+      <td>0.848</td>
+      <td>0.077</td>
+      <td>0.867</td>
+    </tr>
+    <tr>
+      <th>TP</th>
+      <td>0.565</td>
+      <td>0.140</td>
+      <td>0.598</td>
+      <td>0.656</td>
+      <td>0.146</td>
+      <td>0.6</td>
+      <td>1.000</td>
+      <td>0.000</td>
+      <td>1.0</td>
+      <td>0.915</td>
+      <td>0.076</td>
+      <td>0.867</td>
+    </tr>
+    <tr>
+      <th>ALL</th>
+      <td>0.533</td>
+      <td>0.138</td>
+      <td>0.555</td>
+      <td>0.632</td>
+      <td>0.148</td>
+      <td>0.6</td>
+      <td>0.995</td>
+      <td>0.032</td>
+      <td>1.0</td>
+      <td>0.878</td>
+      <td>0.087</td>
+      <td>0.867</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<!-- multi-fold -->
 </section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="correcciones-shap-y-lime-con-mas-de-un-fold-y-mas-de-una-observacion">
+<h1>Correcciones: SHAP y LIME con más de un fold y más de una observación<a class="headerlink" href="#correcciones-shap-y-lime-con-mas-de-un-fold-y-mas-de-una-observacion" title="Link to this heading">#</a></h1>
+<p>La versión anterior de este notebook explicaba un solo fold con 100 filas y comparaba LIME con SHAP en una sola observación. Con eso no se puede decir si la explicación es estable ni si los dos métodos coinciden en general. Las dos secciones siguientes responden esas dos preguntas con el código de <code class="docutils literal notranslate"><span class="pre">src/interpretability_multi.py</span></code>.</p>
+<p>Para cada modelo se toma su mejor combinación según <code class="docutils literal notranslate"><span class="pre">results/best_per_model.csv</span></code>: Random Forest con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">random_search</span></code>, y XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src</span><span class="w"> </span><span class="kn">import</span> <span class="n">interpretability_multi</span> <span class="k">as</span> <span class="n">im</span>
+
+<span class="n">INTERP_DIR</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">RESULTS_DIR</span> <span class="o">/</span> <span class="s2">"interpretability"</span>
+<span class="n">MODELS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"random_forest"</span><span class="p">,</span> <span class="s2">"xgboost"</span><span class="p">)</span>
+<span class="n">importance</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">INTERP_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"shap_importance_by_fold_</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">.csv"</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">}</span>
+<span class="n">agreement</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">INTERP_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"lime_vs_shap_</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">.csv"</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">}</span>
+<span class="n">best_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">RESULTS_DIR</span> <span class="o">/</span> <span class="s2">"best_per_model.csv"</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"model"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">: combinación </span><span class="si">{</span><span class="n">best_table</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="s1">'technique'</span><span class="p">]</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">best_table</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="s1">'method'</span><span class="p">]</span><span class="si">}</span><span class="s2">; "</span>
+          <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">importance</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="s1">'n_explained'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> filas explicadas por fold, "</span>
+          <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">])</span><span class="si">}</span><span class="s2"> observaciones para LIME vs. SHAP"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>random_forest: combinación class_weight | random_search; 300 filas explicadas por fold, 200 observaciones para LIME vs. SHAP
+xgboost: combinación class_weight | bayesian_optuna; 300 filas explicadas por fold, 200 observaciones para LIME vs. SHAP
+</pre></div>
+</div>
+</div>
+</div>
+<!-- multi-fold -->
+<section id="shap-global-en-los-5-folds-externos">
+<h2>5. SHAP global en los 5 folds externos<a class="headerlink" href="#shap-global-en-los-5-folds-externos" title="Link to this heading">#</a></h2>
+<p><strong>Procedimiento.</strong> En cada fold externo se reajusta el pipeline completo con los <code class="docutils literal notranslate"><span class="pre">best_params</span></code> que eligió el bucle interno de ese fold, y se calculan los valores SHAP (<code class="docutils literal notranslate"><span class="pre">TreeExplainer</span></code>, exacto) sobre 300 filas al azar del conjunto de prueba de ese mismo fold. La importancia de una variable es la media de |SHAP| sobre esas filas, y las columnas one-hot de <code class="docutils literal notranslate"><span class="pre">SEX</span></code>, <code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code> y <code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code> se suman de vuelta a su variable original. Después se mide qué tan parecido queda el ranking entre folds con la correlación de Spearman y con el solapamiento (Jaccard) del top 5.</p>
+<p>Las magnitudes de distintos folds no son estrictamente comparables, porque cada fold usa un modelo con hiperparámetros distintos. Por eso la estabilidad se juzga con el orden de las variables y no con el valor absoluto.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">MODELS</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.5</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">MODELS</span><span class="p">),</span> <span class="mf">4.8</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">MODELS</span><span class="p">):</span>
+    <span class="n">imp</span> <span class="o">=</span> <span class="n">importance</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"feature"</span><span class="p">)[</span><span class="s2">"mean_abs_shap"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">pivot</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">"feature"</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">"fold"</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s2">"mean_abs_shap"</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">top</span><span class="p">]</span>
+    <span class="n">pivot</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Media de |SHAP| (escala del modelo)"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Fold externo"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">"x"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"Importancia global SHAP por fold externo (8 variables principales)"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">FIGURES_DIR</span> <span class="o">/</span> <span class="s2">"shap_importance_by_fold.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">:</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">importance_stability</span><span class="p">(</span><span class="n">importance</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">: Spearman medio entre folds = </span><span class="si">{</span><span class="n">st</span><span class="p">[</span><span class="s1">'spearman_mean_offdiag'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">; "</span>
+          <span class="sa">f</span><span class="s2">"Jaccard medio del top-5 = </span><span class="si">{</span><span class="n">st</span><span class="p">[</span><span class="s1">'topk_jaccard_mean_offdiag'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">; "</span>
+          <span class="sa">f</span><span class="s2">"siempre en el top-5: </span><span class="si">{</span><span class="n">st</span><span class="p">[</span><span class="s1">'topk_always'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="s2">"spearman"</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2ee0319aea44972f8b244c043658589560272d2ecf8a06e75f1a2e03ab27c057.png" src="../_images/2ee0319aea44972f8b244c043658589560272d2ecf8a06e75f1a2e03ab27c057.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>random_forest: Spearman medio entre folds = 0.963; Jaccard medio del top-5 = 0.767; siempre en el top-5: ['LIMIT_BAL_LOG', 'PAY_0', 'PAY_2', 'PAY_3']
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>fold</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+    </tr>
+    <tr>
+      <th>fold</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.000</td>
+      <td>0.955</td>
+      <td>0.995</td>
+      <td>0.959</td>
+      <td>0.965</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.955</td>
+      <td>1.000</td>
+      <td>0.946</td>
+      <td>0.946</td>
+      <td>0.974</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.995</td>
+      <td>0.946</td>
+      <td>1.000</td>
+      <td>0.961</td>
+      <td>0.962</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.959</td>
+      <td>0.946</td>
+      <td>0.961</td>
+      <td>1.000</td>
+      <td>0.965</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.965</td>
+      <td>0.974</td>
+      <td>0.962</td>
+      <td>0.965</td>
+      <td>1.000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>xgboost: Spearman medio entre folds = 0.919; Jaccard medio del top-5 = 0.652; siempre en el top-5: ['BILL_AMT_MEAN_6M_LOG', 'LIMIT_BAL_LOG', 'PAY_0']
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>fold</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+    </tr>
+    <tr>
+      <th>fold</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.000</td>
+      <td>0.925</td>
+      <td>0.920</td>
+      <td>0.907</td>
+      <td>0.905</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.925</td>
+      <td>1.000</td>
+      <td>0.914</td>
+      <td>0.925</td>
+      <td>0.953</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.920</td>
+      <td>0.914</td>
+      <td>1.000</td>
+      <td>0.940</td>
+      <td>0.896</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.907</td>
+      <td>0.925</td>
+      <td>0.940</td>
+      <td>1.000</td>
+      <td>0.904</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.905</td>
+      <td>0.953</td>
+      <td>0.896</td>
+      <td>0.904</td>
+      <td>1.000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Lectura.</strong></p>
+<ul class="simple">
+<li><p><strong>Random Forest es estable.</strong> Las cuatro primeras variables son las mismas y en el mismo orden en los cinco folds (<code class="docutils literal notranslate"><span class="pre">PAY_0</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code>, <code class="docutils literal notranslate"><span class="pre">LIMIT_BAL_LOG</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_3</span></code>); solo la quinta cambia (<code class="docutils literal notranslate"><span class="pre">PAY_4</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_AMT*_LOG</span></code> o <code class="docutils literal notranslate"><span class="pre">BILL_AMT_MEAN_6M_LOG</span></code>). El Jaccard medio del top 5 es 0.77 y el Spearman medio sobre el ranking completo, 0.96. Los valores de <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> son casi iguales entre folds (0.073 a 0.081). La conclusión de la sección 3 (el historial de pagos domina) no depende del fold elegido.</p></li>
+<li><p><strong>XGBoost es estable en lo principal y menos en el resto.</strong> <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> es la primera variable en los cinco folds y <code class="docutils literal notranslate"><span class="pre">LIMIT_BAL_LOG</span></code> y <code class="docutils literal notranslate"><span class="pre">BILL_AMT_MEAN_6M_LOG</span></code> están siempre en el top 5. Pero el top 5 completo cambia entre folds (Jaccard medio 0.65): <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_3</span></code> salen del top 5 en algunos folds (por ejemplo el 2) y entran <code class="docutils literal notranslate"><span class="pre">PAY_AMT1_LOG</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_AMT2_LOG</span></code> o <code class="docutils literal notranslate"><span class="pre">PAY_AMT3_LOG</span></code>. El Spearman medio sobre todas las variables es de 0.92.</p></li>
+<li><p><strong>La magnitud de <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> en XGBoost varía entre folds</strong> (0.38 a 0.47 en log-odds). Es esperable, porque cada fold eligió hiperparámetros distintos, así que no conviene comparar magnitudes entre folds, solo el orden.</p></li>
+<li><p><strong>Qué se puede afirmar y qué no.</strong> El historial de pagos (<code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> primero, luego <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_3</span></code>) y el límite de crédito como segundo o tercer factor se sostienen en los cinco folds y en los dos modelos. El orden fino de las variables de montos (<code class="docutils literal notranslate"><span class="pre">PAY_AMT*_LOG</span></code>, <code class="docutils literal notranslate"><span class="pre">BILL_AMT_MEAN_6M_LOG</span></code>) no es estable en XGBoost y no debe interpretarse.</p></li>
+</ul>
+<!-- multi-fold -->
+</section>
+<section id="lime-frente-a-shap-en-200-observaciones-por-modelo">
+<h2>6. LIME frente a SHAP en 200 observaciones por modelo<a class="headerlink" href="#lime-frente-a-shap-en-200-observaciones-por-modelo" title="Link to this heading">#</a></h2>
+<p><strong>Procedimiento.</strong> En cada fold externo se toman 10 observaciones al azar de cada celda de la matriz de confusión (verdaderos negativos, falsos positivos, falsos negativos y verdaderos positivos), no solo los casos extremos. Para cada una se calcula el SHAP exacto y la explicación de LIME (10 variables, sobre el mismo espacio transformado que ve el modelo) y se mide:</p>
+<ul class="simple">
+<li><p><strong>Spearman de |atribución|:</strong> correlación entre el orden de importancia de SHAP y el de LIME sobre todas las variables (las que LIME no reporta valen 0).</p></li>
+<li><p><strong>Solapamiento del top 5:</strong> fracción de las 5 variables principales de SHAP que también están entre las 5 principales de LIME.</p></li>
+<li><p><strong>Acuerdo de signo:</strong> entre las variables del top 5 de SHAP que LIME también reporta, fracción en que ambos métodos coinciden en el signo del efecto.</p></li>
+<li><p><strong>Estabilidad de LIME entre semillas:</strong> LIME se corre con 3 semillas y se mide el solapamiento medio del top 5 entre pares de semillas. Sirve para saber cuánta divergencia con SHAP puede ser simple ruido de LIME.</p></li>
+</ul>
+<p>SHAP está en escala de log-odds (XGBoost) o de probabilidad (Random Forest) y LIME en escala de probabilidad, por eso solo se comparan orden y signo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">METRICS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"spearman_abs"</span><span class="p">:</span> <span class="s2">"Spearman de |atribución|"</span><span class="p">,</span>
+    <span class="s2">"top5_overlap"</span><span class="p">:</span> <span class="s2">"Solapamiento del top-5"</span><span class="p">,</span>
+    <span class="s2">"sign_agreement_topk"</span><span class="p">:</span> <span class="s2">"Acuerdo de signo (top-5 de SHAP)"</span><span class="p">,</span>
+    <span class="s2">"lime_seed_topk_overlap"</span><span class="p">:</span> <span class="s2">"Estabilidad de LIME entre semillas (top-5)"</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">MODELS</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">METRICS</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">METRICS</span><span class="p">),</span> <span class="mf">3.6</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">MODELS</span><span class="p">)),</span> <span class="n">sharey</span><span class="o">=</span><span class="s2">"col"</span><span class="p">)</span>
+<span class="n">order</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"TN"</span><span class="p">,</span> <span class="s2">"FP"</span><span class="p">,</span> <span class="s2">"FN"</span><span class="p">,</span> <span class="s2">"TP"</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">MODELS</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">METRICS</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="s2">"outcome"</span><span class="p">]</span> <span class="o">==</span> <span class="n">o</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">tick_labels</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">showmeans</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">"y"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Valor (0 a 1)"</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">"Coincidencia entre LIME y SHAP por tipo de resultado de la observación"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.01</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">FIGURES_DIR</span> <span class="o">/</span> <span class="s2">"lime_vs_shap_agreement.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2"> (n = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">])</span><span class="si">}</span><span class="s2"> observaciones, 3 folds)"</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">summarize_agreement</span><span class="p">(</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3a8a8f55fa45f351070556d8ee81600bcc461e603f1c45dd6b4aba586447c4ad.png" src="../_images/3a8a8f55fa45f351070556d8ee81600bcc461e603f1c45dd6b4aba586447c4ad.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>random_forest (n = 200 observaciones, 3 folds)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="3" halign="left">spearman_abs</th>
+      <th colspan="3" halign="left">top5_overlap</th>
+      <th colspan="3" halign="left">sign_agreement_topk</th>
+      <th colspan="3" halign="left">lime_seed_topk_overlap</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>FN</th>
+      <td>0.497</td>
+      <td>0.130</td>
+      <td>0.515</td>
+      <td>0.664</td>
+      <td>0.148</td>
+      <td>0.6</td>
+      <td>0.995</td>
+      <td>0.035</td>
+      <td>1.0</td>
+      <td>0.811</td>
+      <td>0.102</td>
+      <td>0.833</td>
+    </tr>
+    <tr>
+      <th>FP</th>
+      <td>0.623</td>
+      <td>0.145</td>
+      <td>0.663</td>
+      <td>0.732</td>
+      <td>0.143</td>
+      <td>0.8</td>
+      <td>0.993</td>
+      <td>0.047</td>
+      <td>1.0</td>
+      <td>0.865</td>
+      <td>0.124</td>
+      <td>0.867</td>
+    </tr>
+    <tr>
+      <th>TN</th>
+      <td>0.498</td>
+      <td>0.136</td>
+      <td>0.515</td>
+      <td>0.676</td>
+      <td>0.133</td>
+      <td>0.6</td>
+      <td>0.986</td>
+      <td>0.056</td>
+      <td>1.0</td>
+      <td>0.819</td>
+      <td>0.117</td>
+      <td>0.833</td>
+    </tr>
+    <tr>
+      <th>TP</th>
+      <td>0.655</td>
+      <td>0.135</td>
+      <td>0.682</td>
+      <td>0.796</td>
+      <td>0.174</td>
+      <td>0.8</td>
+      <td>0.996</td>
+      <td>0.028</td>
+      <td>1.0</td>
+      <td>0.892</td>
+      <td>0.102</td>
+      <td>0.867</td>
+    </tr>
+    <tr>
+      <th>ALL</th>
+      <td>0.569</td>
+      <td>0.153</td>
+      <td>0.586</td>
+      <td>0.717</td>
+      <td>0.158</td>
+      <td>0.8</td>
+      <td>0.993</td>
+      <td>0.043</td>
+      <td>1.0</td>
+      <td>0.847</td>
+      <td>0.116</td>
+      <td>0.867</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>xgboost (n = 200 observaciones, 3 folds)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="3" halign="left">spearman_abs</th>
+      <th colspan="3" halign="left">top5_overlap</th>
+      <th colspan="3" halign="left">sign_agreement_topk</th>
+      <th colspan="3" halign="left">lime_seed_topk_overlap</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>median</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>FN</th>
+      <td>0.518</td>
+      <td>0.103</td>
+      <td>0.530</td>
+      <td>0.624</td>
+      <td>0.138</td>
+      <td>0.6</td>
+      <td>0.991</td>
+      <td>0.045</td>
+      <td>1.0</td>
+      <td>0.847</td>
+      <td>0.087</td>
+      <td>0.867</td>
+    </tr>
+    <tr>
+      <th>FP</th>
+      <td>0.539</td>
+      <td>0.146</td>
+      <td>0.564</td>
+      <td>0.648</td>
+      <td>0.164</td>
+      <td>0.6</td>
+      <td>0.995</td>
+      <td>0.035</td>
+      <td>1.0</td>
+      <td>0.904</td>
+      <td>0.087</td>
+      <td>0.867</td>
+    </tr>
+    <tr>
+      <th>TN</th>
+      <td>0.510</td>
+      <td>0.154</td>
+      <td>0.541</td>
+      <td>0.600</td>
+      <td>0.140</td>
+      <td>0.6</td>
+      <td>0.996</td>
+      <td>0.028</td>
+      <td>1.0</td>
+      <td>0.848</td>
+      <td>0.077</td>
+      <td>0.867</td>
+    </tr>
+    <tr>
+      <th>TP</th>
+      <td>0.565</td>
+      <td>0.140</td>
+      <td>0.598</td>
+      <td>0.656</td>
+      <td>0.146</td>
+      <td>0.6</td>
+      <td>1.000</td>
+      <td>0.000</td>
+      <td>1.0</td>
+      <td>0.915</td>
+      <td>0.076</td>
+      <td>0.867</td>
+    </tr>
+    <tr>
+      <th>ALL</th>
+      <td>0.533</td>
+      <td>0.138</td>
+      <td>0.555</td>
+      <td>0.632</td>
+      <td>0.148</td>
+      <td>0.6</td>
+      <td>0.995</td>
+      <td>0.032</td>
+      <td>1.0</td>
+      <td>0.878</td>
+      <td>0.087</td>
+      <td>0.867</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Lectura</strong> (200 observaciones por modelo, 5 folds).</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Medida</p></th>
+<th class="head"><p>Random Forest</p></th>
+<th class="head"><p>XGBoost</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Spearman de |atribución|, media (desviación)</p></td>
+<td><p>0.569 (0.153)</p></td>
+<td><p>0.533 (0.138)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Solapamiento del top 5, media</p></td>
+<td><p>0.717</p></td>
+<td><p>0.632</p></td>
+</tr>
+<tr class="row-even"><td><p>Acuerdo de signo en el top 5, media</p></td>
+<td><p>0.993</p></td>
+<td><p>0.995</p></td>
+</tr>
+<tr class="row-odd"><td><p>Estabilidad de LIME entre semillas (top 5), media</p></td>
+<td><p>0.847</p></td>
+<td><p>0.878</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul class="simple">
+<li><p><strong>Coinciden casi siempre en la dirección del efecto.</strong> En el 97 % de las observaciones de Random Forest y el 98 % de las de XGBoost el acuerdo de signo es total, y el mínimo observado es 0.67 y 0.75 (una o dos variables de cinco en desacuerdo).</p></li>
+<li><p><strong>Coinciden menos en el orden.</strong> En promedio comparten entre 3 y 4 de las 5 variables principales (0.72 y 0.63), y la correlación de orden es moderada (cerca de 0.55). En 4.5 % (Random Forest) y 7 % (XGBoost) de las observaciones el Spearman es menor que 0.3, es decir, los dos métodos casi no se parecen.</p></li>
+<li><p><strong>Una parte de la divergencia es ruido de LIME, pero no toda.</strong> Entre semillas, LIME repite entre 4 y 5 de sus 5 variables principales (0.85 y 0.88). Como el solapamiento con SHAP (0.72 y 0.63) es menor que el de LIME consigo mismo, la diferencia entre métodos no se explica solo por la aleatoriedad de LIME.</p></li>
+<li><p><strong>Depende del tipo de observación.</strong> El Spearman es más alto en los verdaderos positivos (0.655 y 0.565) y más bajo en los falsos negativos y verdaderos negativos (0.50 en Random Forest y 0.51 a 0.52 en XGBoost). Con 50 observaciones por celda, esas diferencias son descriptivas.</p></li>
+<li><p><strong>Consistencia entre folds.</strong> El Spearman medio por fold va de 0.51 a 0.64 en Random Forest y de 0.45 a 0.60 en XGBoost: el patrón general se repite, pero con variación apreciable.</p></li>
+</ul>
+<p>Esto ya permite concluir algo que la observación única de la versión anterior no permitía: la discusión de la sección siguiente (cuándo divergen LIME y SHAP) se confirma como tendencia, no como anécdota.</p>
+<!-- multi-fold -->
+<p><strong>Limitaciones de las secciones 5 y 6.</strong></p>
+<ul class="simple">
+<li><p>Son dos modelos de siete y un solo conjunto de datos. Los demás modelos no se explican, y SVM queda fuera porque sus explicadores model-agnostic son demasiado costosos con este tamaño de datos.</p></li>
+<li><p>Los cinco folds son los mismos con los que se evaluó el modelo. Reportar cinco valores por medida (por fold) no es una prueba de hipótesis: la variación entre folds es una medida de estabilidad, no un intervalo de confianza.</p></li>
+<li><p>Las observaciones dentro de un mismo fold comparten modelo y datos de entrenamiento, así que no son independientes entre sí.</p></li>
+<li><p>200 observaciones por modelo son una muestra, no el conjunto de prueba completo: el SHAP global usa 300 filas por fold y LIME usa 40 por fold (10 por celda de la matriz de confusión).</p></li>
+<li><p>LIME depende de su configuración (kernel, número de perturbaciones, número de variables). Se usó la configuración por defecto de la librería, y los resultados podrían cambiar con otra.</p></li>
+<li><p>Con variables correlacionadas, ni SHAP ni LIME identifican causas: describen cómo usa el modelo sus entradas.</p></li>
+</ul>
 </section>
 </section>
 
@@ -789,6 +1870,15 @@ well_classified: y_true=1, y_pred=1, proba=0.982
         <p class="prev-next-title">05. Análisis de resultados</p>
       </div>
     </a>
+    <a class="right-next"
+       href="08_tabla_maestra_svm.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">08. Tabla maestra consolidada y comparabilidad del SVM</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -807,6 +1897,7 @@ well_classified: y_true=1, y_pred=1, proba=0.982
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">06. Interpretabilidad (SHAP y LIME)</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#elegir-el-mejor-modelo-y-ajustar-su-pipeline">Elegir el mejor modelo y ajustar su pipeline</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-global-summary-plot">SHAP global (summary plot)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-local-una-observacion-bien-clasificada-y-una-con-error-alto">SHAP local: una observación bien clasificada y una con error alto</a></li>
@@ -815,6 +1906,14 @@ well_classified: y_true=1, y_pred=1, proba=0.982
 </ul>
 </li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#correcciones-shap-y-lime-con-mas-de-un-fold-y-mas-de-una-observacion">Correcciones: SHAP y LIME con más de un fold y más de una observación</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-global-en-los-5-folds-externos">5. SHAP global en los 5 folds externos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lime-frente-a-shap-en-200-observaciones-por-modelo">6. LIME frente a SHAP en 200 observaciones por modelo</a></li>
+</ul>
+</li>
+</ul>
+
   </nav></div>
 
 </div></div>

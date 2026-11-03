@@ -217,6 +217,7 @@
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Introducción y marco del proyecto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../correcciones.html">Trazabilidad de correcciones</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
@@ -224,6 +225,9 @@
 <li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">05. Análisis de resultados</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
 </ul>
 
     </div>
@@ -393,7 +397,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="analisis-de-resultados">
 <h1>05. Análisis de resultados<a class="headerlink" href="#analisis-de-resultados" title="Link to this heading">#</a></h1>
-<p>Este informe ejecuta la fase de evaluación cuantitativa del pipeline experimental trabajando directamente sobre la tabla maestra sintetizada (<code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>+<code class="docutils literal notranslate"><span class="pre">results\svm_gpu_results_colab.csv</span></code>).</p>
+<p>Este informe ejecuta la fase de evaluación cuantitativa del pipeline experimental trabajando directamente sobre la tabla maestra sintetizada (<code class="docutils literal notranslate"><span class="pre">results/experiments_master_5x5.csv</span></code> (96 filas) + <code class="docutils literal notranslate"><span class="pre">results/svm_gpu_results_colab_5x5.csv</span></code> (16 filas de SVM), ambas de la validación anidada 5 x 5).</p>
 <section id="objetivo-prioritario">
 <h2>Objetivo prioritario:<a class="headerlink" href="#objetivo-prioritario" title="Link to this heading">#</a></h2>
 <p>Dado que la <strong>métrica clave definida para este problema es el <span class="math notranslate nohighlight">\(F_1\)</span>-score</strong>, la evaluación prioriza la maximización de la media armónica entre la Precisión (<span class="math notranslate nohighlight">\(\text{Precision}\)</span>) y la Sensibilidad (<span class="math notranslate nohighlight">\(\text{Recall}\)</span>). Esto es crítico en escenarios donde existe un desbalance de clases relevante y se busca un equilibrio óptimo entre minimizar los falsos negativos y controlar la tasa de falsos positivos, garantizando una detección robusta y confiable.</p>
@@ -449,19 +453,24 @@
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\tqdm\auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="cargar-datos-y-tabla-maestra">
 <h2>Cargar datos y tabla maestra<a class="headerlink" href="#cargar-datos-y-tabla-maestra" title="Link to this heading">#</a></h2>
 <p>Se carga el dataset procesado garantizando la reproducibilidad del orden de los datos y se consolida la tabla maestra combinada.</p>
-<p><strong>Nota de comparabilidad de las filas de SVM (Colab).</strong> Las 16 filas de <code class="docutils literal notranslate"><span class="pre">svm</span></code> provienen de <code class="docutils literal notranslate"><span class="pre">07_svm_gpu_colab.ipynb</span></code> y no son estrictamente comparables con las otras 96:</p>
+<p><strong>Nota de comparabilidad de las filas de SVM (Colab).</strong> Se verificó en <code class="docutils literal notranslate"><span class="pre">08_tabla_maestra_svm.ipynb</span></code>: al reajustar con <code class="docutils literal notranslate"><span class="pre">sklearn.svm.SVC</span></code> en CPU los hiperparámetros elegidos en Colab, el F1 sube entre unas milésimas y 0.02 según la combinación, así que las filas de Colab subestiman a SVM (ver el detalle en <code class="docutils literal notranslate"><span class="pre">08_tabla_maestra_svm.ipynb</span></code>). Las 16 filas de <code class="docutils literal notranslate"><span class="pre">svm</span></code> (y las 16 de <code class="docutils literal notranslate"><span class="pre">knn</span></code>, que también corrieron en Colab) no son estrictamente comparables con las 80 de la CPU local:</p>
 <ul class="simple">
-<li><p>Se usó <code class="docutils literal notranslate"><span class="pre">cuml.svm.SVC</span></code> en una GPU A100-40GB, no <code class="docutils literal notranslate"><span class="pre">sklearn.svm.SVC</span></code> (libsvm). El solver y la calibración de probabilidades (Platt) no son idénticos. Además, <code class="docutils literal notranslate"><span class="pre">cache_size</span></code> fue 2048 frente a 500 en local.</p></li>
-<li><p>Versiones en Colab: scikit-learn 1.6.1, numpy 2.0.2 y pandas 2.2.2. Local: 1.9.1, 2.5.3 y 3.0.6.</p></li>
-<li><p>No se guardan los índices de los folds. Con el mismo <code class="docutils literal notranslate"><span class="pre">random_state=42</span></code> y el mismo dataset (misma forma y tamaño de archivo) los folds deberían coincidir, pero no se puede verificar fila a fila.</p></li>
-<li><p>Los tiempos de SVM (GPU) no son comparables con los de los demás modelos (CPU).</p></li>
+<li><p>SVM usó <code class="docutils literal notranslate"><span class="pre">cuml.svm.SVC</span></code> y KNN la búsqueda de vecinos de cuML, en una GPU T4 de Colab (RAPIDS 26.06), no <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> en CPU. El solver y la calibración de probabilidades (Platt) de SVM no son idénticos; en KNN las predicciones de clase coinciden con las de scikit-learn en 99.98 % a 100 % de los casos, pero las probabilidades difieren por precisión float32 y empates (diferencia máxima de F1 por fold de unos 0.007).</p></li>
+<li><p>No se guardan los índices de los folds. Con el mismo <code class="docutils literal notranslate"><span class="pre">random_state=42</span></code> y el mismo dataset los folds deberían coincidir, pero no se puede verificar fila a fila.</p></li>
+<li><p>Los tiempos de SVM y de KNN (GPU, otro hardware) no son comparables con los de los demás modelos (CPU local).</p></li>
 <li><p>Las filas <code class="docutils literal notranslate"><span class="pre">knn|class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">naive_bayes|class_weight</span></code> usan wrappers propios (<code class="docutils literal notranslate"><span class="pre">models.py</span></code>), no el soporte nativo de scikit-learn.</p></li>
-<li><p>Las desviaciones estándar se calculan con <code class="docutils literal notranslate"><span class="pre">np.std</span></code> (ddof=0); con 3 folds subestiman la dispersión.</p></li>
+<li><p>Las desviaciones estándar de la tabla maestra se calculan con <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code> (5 folds externos).</p></li>
 </ul>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
@@ -483,7 +492,7 @@
 <span class="n">table_master</span> <span class="o">=</span> <span class="n">load_master_table</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">EXPERIMENTS_MASTER_PATH</span><span class="p">)</span>
 
 <span class="c1"># 2. Cargar la tabla adicional de SVM desde Colab</span>
-<span class="n">colab_csv_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">PROJECT_ROOT</span> <span class="o">/</span> <span class="s2">"results"</span> <span class="o">/</span> <span class="s2">"svm_gpu_results_colab.csv"</span>
+<span class="n">colab_csv_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">SVM_COLAB_PATH</span>  <span class="c1"># SVM 5 x 5 (cuML en GPU); la corrida 3 x 3 está en results/legacy_3x3/</span>
 
 <span class="k">if</span> <span class="n">colab_csv_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
     <span class="n">table_colab</span> <span class="o">=</span> <span class="n">load_master_table</span><span class="p">(</span><span class="n">colab_csv_path</span><span class="p">)</span>
@@ -555,59 +564,59 @@
   </thead>
   <tbody>
     <tr>
-      <th>79</th>
-      <td>random_forest</td>
+      <th>94</th>
+      <td>xgboost</td>
       <td>class_weight</td>
-      <td>genetic_deap</td>
-      <td>0.7776 ± 0.0053</td>
-      <td>0.498 ± 0.0098</td>
-      <td>0.6042 ± 0.0092</td>
-      <td>0.546 ± 0.0088</td>
-      <td>0.7813 ± 0.0056</td>
+      <td>bayesian_optuna</td>
+      <td>0.7743 ± 0.0072</td>
+      <td>0.4927 ± 0.0125</td>
+      <td>0.6149 ± 0.0252</td>
+      <td>0.5466 ± 0.0082</td>
+      <td>0.7828 ± 0.0079</td>
     </tr>
     <tr>
       <th>77</th>
       <td>random_forest</td>
       <td>class_weight</td>
       <td>random_search</td>
-      <td>0.7759 ± 0.007</td>
-      <td>0.4951 ± 0.0129</td>
-      <td>0.6071 ± 0.006</td>
-      <td>0.5453 ± 0.0088</td>
-      <td>0.782 ± 0.0045</td>
-    </tr>
-    <tr>
-      <th>62</th>
-      <td>xgboost</td>
-      <td>class_weight</td>
-      <td>bayesian_optuna</td>
-      <td>0.7726 ± 0.0094</td>
-      <td>0.4896 ± 0.0161</td>
-      <td>0.6154 ± 0.0089</td>
-      <td>0.5451 ± 0.0099</td>
-      <td>0.7817 ± 0.0041</td>
+      <td>0.7771 ± 0.0056</td>
+      <td>0.4974 ± 0.0104</td>
+      <td>0.6041 ± 0.0192</td>
+      <td>0.5452 ± 0.0069</td>
+      <td>0.7831 ± 0.0085</td>
     </tr>
     <tr>
       <th>76</th>
       <td>random_forest</td>
       <td>class_weight</td>
       <td>grid_search</td>
-      <td>0.7743 ± 0.004</td>
-      <td>0.492 ± 0.0072</td>
-      <td>0.6103 ± 0.0112</td>
-      <td>0.5448 ± 0.0074</td>
-      <td>0.7833 ± 0.0039</td>
+      <td>0.7767 ± 0.0048</td>
+      <td>0.4962 ± 0.0087</td>
+      <td>0.6039 ± 0.0113</td>
+      <td>0.5448 ± 0.0085</td>
+      <td>0.7846 ± 0.008</td>
     </tr>
     <tr>
       <th>78</th>
       <td>random_forest</td>
       <td>class_weight</td>
       <td>bayesian_optuna</td>
-      <td>0.7785 ± 0.0068</td>
-      <td>0.4998 ± 0.0126</td>
-      <td>0.598 ± 0.0035</td>
-      <td>0.5444 ± 0.0079</td>
-      <td>0.7804 ± 0.0055</td>
+      <td>0.7755 ± 0.0066</td>
+      <td>0.4944 ± 0.0116</td>
+      <td>0.6053 ± 0.0089</td>
+      <td>0.5441 ± 0.0072</td>
+      <td>0.7825 ± 0.0082</td>
+    </tr>
+    <tr>
+      <th>79</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>genetic_deap</td>
+      <td>0.777 ± 0.0068</td>
+      <td>0.4971 ± 0.0125</td>
+      <td>0.5995 ± 0.0123</td>
+      <td>0.5434 ± 0.0094</td>
+      <td>0.7822 ± 0.0078</td>
     </tr>
     <tr>
       <th>...</th>
@@ -621,59 +630,59 @@
       <td>...</td>
     </tr>
     <tr>
-      <th>82</th>
-      <td>knn</td>
+      <th>97</th>
+      <td>svm</td>
       <td>none</td>
-      <td>bayesian_optuna</td>
-      <td>0.8023 ± 0.0028</td>
-      <td>0.5924 ± 0.0134</td>
-      <td>0.3418 ± 0.0019</td>
-      <td>0.4334 ± 0.0038</td>
-      <td>0.7318 ± 0.0146</td>
+      <td>random_search</td>
+      <td>0.8163 ± 0.0029</td>
+      <td>0.6792 ± 0.0143</td>
+      <td>0.322 ± 0.0115</td>
+      <td>0.4368 ± 0.0118</td>
+      <td>0.7227 ± 0.0117</td>
     </tr>
     <tr>
-      <th>19</th>
-      <td>logistic_regression</td>
-      <td>none</td>
-      <td>genetic_deap</td>
-      <td>0.8071 ± 0.0017</td>
-      <td>0.6599 ± 0.0114</td>
-      <td>0.2647 ± 0.0024</td>
-      <td>0.3778 ± 0.0037</td>
-      <td>0.75 ± 0.0096</td>
-    </tr>
-    <tr>
-      <th>18</th>
+      <th>34</th>
       <td>logistic_regression</td>
       <td>none</td>
       <td>bayesian_optuna</td>
-      <td>0.8071 ± 0.0017</td>
-      <td>0.6597 ± 0.0113</td>
-      <td>0.2647 ± 0.0024</td>
-      <td>0.3778 ± 0.0037</td>
-      <td>0.75 ± 0.0096</td>
+      <td>0.8071 ± 0.0032</td>
+      <td>0.6595 ± 0.0116</td>
+      <td>0.265 ± 0.0192</td>
+      <td>0.3778 ± 0.0206</td>
+      <td>0.7496 ± 0.0122</td>
     </tr>
     <tr>
-      <th>16</th>
+      <th>32</th>
       <td>logistic_regression</td>
       <td>none</td>
       <td>grid_search</td>
-      <td>0.8071 ± 0.0017</td>
-      <td>0.6597 ± 0.0113</td>
-      <td>0.2647 ± 0.0024</td>
-      <td>0.3778 ± 0.0037</td>
-      <td>0.75 ± 0.0096</td>
+      <td>0.8071 ± 0.0032</td>
+      <td>0.6595 ± 0.0116</td>
+      <td>0.265 ± 0.0192</td>
+      <td>0.3778 ± 0.0206</td>
+      <td>0.7496 ± 0.0122</td>
     </tr>
     <tr>
-      <th>17</th>
+      <th>35</th>
+      <td>logistic_regression</td>
+      <td>none</td>
+      <td>genetic_deap</td>
+      <td>0.8071 ± 0.0032</td>
+      <td>0.6592 ± 0.0115</td>
+      <td>0.265 ± 0.0192</td>
+      <td>0.3777 ± 0.0206</td>
+      <td>0.7496 ± 0.0122</td>
+    </tr>
+    <tr>
+      <th>33</th>
       <td>logistic_regression</td>
       <td>none</td>
       <td>random_search</td>
-      <td>0.8071 ± 0.0017</td>
-      <td>0.6597 ± 0.0113</td>
-      <td>0.2647 ± 0.0024</td>
-      <td>0.3778 ± 0.0037</td>
-      <td>0.75 ± 0.0096</td>
+      <td>0.8071 ± 0.0032</td>
+      <td>0.6592 ± 0.0115</td>
+      <td>0.265 ± 0.0192</td>
+      <td>0.3777 ± 0.0206</td>
+      <td>0.7496 ± 0.0122</td>
     </tr>
   </tbody>
 </table>
@@ -683,16 +692,16 @@
 <p>Cambiando el parámetro de ranking a <strong><code class="docutils literal notranslate"><span class="pre">f1</span></code></strong>, la tabla posiciona en los primeros lugares los modelos con mejor balance armónico entre precisión y recall:</p>
 <p><strong>Hallazgos bajo F1 Score (descriptivos):</strong></p>
 <ul class="simple">
-<li><p>El modelo <strong><code class="docutils literal notranslate"><span class="pre">random_forest</span></code></strong> combinado con <strong><code class="docutils literal notranslate"><span class="pre">class_weight</span></code></strong> y optimizado mediante <strong><code class="docutils literal notranslate"><span class="pre">genetic_deap</span></code></strong> tiene el <strong>F1 Score medio más alto del experimento: <span class="math notranslate nohighlight">\(0.5460 \pm 0.0088\)</span></strong>.</p></li>
-<li><p>Le siguen <code class="docutils literal notranslate"><span class="pre">random_forest</span></code> con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> (<span class="math notranslate nohighlight">\(0.5453 \pm 0.0088\)</span> mediante <code class="docutils literal notranslate"><span class="pre">random_search</span></code>) y <strong><code class="docutils literal notranslate"><span class="pre">xgboost</span></code></strong> con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> (<span class="math notranslate nohighlight">\(0.5451 \pm 0.0099\)</span> mediante <code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>). Las diferencias con la primera (0.0006 y 0.0008) son mucho menores que la desviación estándar entre folds: 15 de las 112 combinaciones, incluida la primera, quedan a menos de una desviación estándar de ella (0.0088) y 6 a menos de 0.0016. El orden entre ellas es descriptivo y no indica una mejor configuración (ver comparación estadística más abajo).</p></li>
-<li><p>La aplicación de técnicas de balanceo como <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> aumenta el F1 Score frente a las configuraciones sin balanceo (<code class="docutils literal notranslate"><span class="pre">none</span></code>), que presentan un F1 menor por su baja sensibilidad: el recall medio por técnica pasa de 0.37 (<code class="docutils literal notranslate"><span class="pre">none</span></code>) a 0.61 (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>).</p></li>
-<li><p>Esa mejora viene en gran parte del balanceo y del umbral de decisión (0.5), no de una mejor capacidad para ordenar clientes. En regresión logística, el F1 pasa de 0.378 (<code class="docutils literal notranslate"><span class="pre">none</span></code>) a 0.515 (SMOTE o <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>) y el recall de 0.26 a 0.62, mientras que el ROC-AUC casi no cambia (0.750 sin balanceo, 0.747 a 0.750 con SMOTE o <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>). Entre todas las combinaciones, el ROC-AUC medio por técnica queda entre 0.751 y 0.762.</p></li>
+<li><p>El modelo <strong><code class="docutils literal notranslate"><span class="pre">xgboost</span></code></strong> combinado con <strong><code class="docutils literal notranslate"><span class="pre">class_weight</span></code></strong> y optimizado mediante <strong><code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code></strong> tiene el <strong>F1 Score medio más alto del experimento: <span class="math notranslate nohighlight">\(0.5466 \pm 0.0082\)</span></strong> (la tabla de arriba usa <code class="docutils literal notranslate"><span class="pre">ddof=0</span></code>; con <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code> es 0.0091).</p></li>
+<li><p>Le siguen <code class="docutils literal notranslate"><span class="pre">random_forest</span></code> con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> (<span class="math notranslate nohighlight">\(0.5452\)</span> mediante <code class="docutils literal notranslate"><span class="pre">random_search</span></code>, <span class="math notranslate nohighlight">\(0.5448\)</span> mediante <code class="docutils literal notranslate"><span class="pre">grid_search</span></code>). Las diferencias con la primera (0.0014 y 0.0018) son mucho menores que la desviación estándar entre folds (0.009): 14 de las 112 combinaciones quedan a menos de una desviación estándar de ella. El orden entre ellas es descriptivo y no indica una mejor configuración (ver comparación estadística más abajo).</p></li>
+<li><p>La aplicación de técnicas de balanceo como <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> aumenta el F1 Score frente a las configuraciones sin balanceo (<code class="docutils literal notranslate"><span class="pre">none</span></code>), que presentan un F1 menor por su baja sensibilidad: el recall medio por técnica pasa de 0.37 (<code class="docutils literal notranslate"><span class="pre">none</span></code>) a 0.61 (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>) sobre las 112 combinaciones.</p></li>
+<li><p>Esa mejora viene en gran parte del balanceo y del umbral de decisión (0.5), no de una mejor capacidad para ordenar clientes. En regresión logística, el F1 pasa de 0.378 (<code class="docutils literal notranslate"><span class="pre">none</span></code>) a 0.516 (SMOTE o <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>) y el recall de 0.27 a 0.62, mientras que el ROC-AUC casi no cambia (0.7496 sin balanceo, 0.748 con SMOTE o <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>). Entre todas las combinaciones, el ROC-AUC medio por técnica queda entre 0.752 y 0.763.</p></li>
 </ul>
 </section>
 <section id="metricas-complementarias-independientes-del-umbral">
 <h2>Métricas complementarias (independientes del umbral)<a class="headerlink" href="#metricas-complementarias-independientes-del-umbral" title="Link to this heading">#</a></h2>
-<p>El <span class="math notranslate nohighlight">\(F_1\)</span> sigue siendo la métrica principal: es la que optimizan los cuatro métodos de búsqueda y la que ordena todo el análisis. Se agregan, solo para reportar, el ROC-AUC y el PR-AUC (<em>average precision</em>), que miden qué tan bien ordena el modelo a los clientes sin depender del umbral de 0.5, y se recalcula la desviación estándar entre folds con <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code> (la columna <code class="docutils literal notranslate"><span class="pre">*_std</span></code> de la tabla maestra usa <code class="docutils literal notranslate"><span class="pre">ddof=0</span></code>).</p>
-<p>El PR-AUC no estaba en la corrida original. Se calcula a posteriori con <code class="docutils literal notranslate"><span class="pre">src/posthoc_metrics.py</span></code>, que reajusta cada pipeline con los hiperparámetros ya elegidos en cada fold externo (un <code class="docutils literal notranslate"><span class="pre">fit</span></code> por fold, sin nueva búsqueda) y comprueba que el <span class="math notranslate nohighlight">\(F_1\)</span> por fold coincide con el de la tabla maestra. <strong>No incluye SVM</strong>: sus filas vienen de cuML en GPU y reajustarlas con <code class="docutils literal notranslate"><span class="pre">sklearn.svm.SVC</span></code> daría otro modelo.</p>
+<p>El <span class="math notranslate nohighlight">\(F_1\)</span> sigue siendo la métrica principal: es la que optimizan los cuatro métodos de búsqueda y la que ordena todo el análisis. Se agregan, solo para reportar, el ROC-AUC y el PR-AUC (<em>average precision</em>), que miden qué tan bien ordena el modelo a los clientes sin depender del umbral de 0.5, y se recalcula la desviación estándar entre folds con <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code> (la columna <code class="docutils literal notranslate"><span class="pre">*_std</span></code> de la tabla maestra ya usa <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code>; aquí se recalcula como verificación).</p>
+<p>El PR-AUC no estaba en la corrida original. Se calcula a posteriori con <code class="docutils literal notranslate"><span class="pre">src/posthoc_metrics.py</span></code>, que reajusta cada pipeline con los hiperparámetros ya elegidos en cada fold externo (un <code class="docutils literal notranslate"><span class="pre">fit</span></code> por fold, sin nueva búsqueda) y comprueba que el <span class="math notranslate nohighlight">\(F_1\)</span> por fold coincide con el de la tabla maestra. <strong>No incluye SVM</strong>: sus filas vienen de cuML en GPU; su PR-AUC se obtiene en <code class="docutils literal notranslate"><span class="pre">08_tabla_maestra_svm.ipynb</span></code> reajustando con <code class="docutils literal notranslate"><span class="pre">sklearn.svm.SVC</span></code>. Las filas de KNN (GPU) sí se reajustan aquí con scikit-learn.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -730,7 +739,7 @@
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PR-AUC calculado para 96 combinaciones; diferencia máxima en F1 por fold frente a la tabla maestra: 0.00e+00
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PR-AUC calculado para 96 combinaciones; diferencia máxima en F1 por fold frente a la tabla maestra: 6.55e-03
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -764,40 +773,28 @@
   </thead>
   <tbody>
     <tr>
-      <th>79</th>
-      <td>random_forest</td>
+      <th>94</th>
+      <td>xgboost</td>
       <td>class_weight</td>
-      <td>genetic_deap</td>
-      <td>0.5460</td>
-      <td>0.0108</td>
-      <td>0.4980</td>
-      <td>0.6042</td>
-      <td>0.7813</td>
-      <td>0.5580</td>
+      <td>bayesian_optuna</td>
+      <td>0.5466</td>
+      <td>0.0091</td>
+      <td>0.4927</td>
+      <td>0.6149</td>
+      <td>0.7828</td>
+      <td>0.5567</td>
     </tr>
     <tr>
       <th>77</th>
       <td>random_forest</td>
       <td>class_weight</td>
       <td>random_search</td>
-      <td>0.5453</td>
-      <td>0.0108</td>
-      <td>0.4951</td>
-      <td>0.6071</td>
-      <td>0.7820</td>
-      <td>0.5573</td>
-    </tr>
-    <tr>
-      <th>62</th>
-      <td>xgboost</td>
-      <td>class_weight</td>
-      <td>bayesian_optuna</td>
-      <td>0.5451</td>
-      <td>0.0122</td>
-      <td>0.4896</td>
-      <td>0.6154</td>
-      <td>0.7817</td>
-      <td>0.5545</td>
+      <td>0.5452</td>
+      <td>0.0077</td>
+      <td>0.4974</td>
+      <td>0.6041</td>
+      <td>0.7831</td>
+      <td>0.5606</td>
     </tr>
     <tr>
       <th>76</th>
@@ -805,142 +802,154 @@
       <td>class_weight</td>
       <td>grid_search</td>
       <td>0.5448</td>
-      <td>0.0091</td>
-      <td>0.4920</td>
-      <td>0.6103</td>
-      <td>0.7833</td>
-      <td>0.5579</td>
+      <td>0.0095</td>
+      <td>0.4962</td>
+      <td>0.6039</td>
+      <td>0.7846</td>
+      <td>0.5621</td>
     </tr>
     <tr>
       <th>78</th>
       <td>random_forest</td>
       <td>class_weight</td>
       <td>bayesian_optuna</td>
-      <td>0.5444</td>
-      <td>0.0097</td>
-      <td>0.4998</td>
-      <td>0.5980</td>
-      <td>0.7804</td>
-      <td>0.5567</td>
+      <td>0.5441</td>
+      <td>0.0080</td>
+      <td>0.4944</td>
+      <td>0.6053</td>
+      <td>0.7825</td>
+      <td>0.5602</td>
     </tr>
     <tr>
-      <th>60</th>
+      <th>79</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>genetic_deap</td>
+      <td>0.5434</td>
+      <td>0.0105</td>
+      <td>0.4971</td>
+      <td>0.5995</td>
+      <td>0.7822</td>
+      <td>0.5606</td>
+    </tr>
+    <tr>
+      <th>92</th>
       <td>xgboost</td>
       <td>class_weight</td>
       <td>grid_search</td>
-      <td>0.5444</td>
-      <td>0.0064</td>
-      <td>0.4972</td>
-      <td>0.6042</td>
-      <td>0.7800</td>
-      <td>0.5500</td>
+      <td>0.5429</td>
+      <td>0.0086</td>
+      <td>0.4783</td>
+      <td>0.6278</td>
+      <td>0.7823</td>
+      <td>0.5483</td>
     </tr>
     <tr>
-      <th>63</th>
+      <th>95</th>
       <td>xgboost</td>
       <td>class_weight</td>
       <td>genetic_deap</td>
-      <td>0.5440</td>
-      <td>0.0127</td>
-      <td>0.4946</td>
-      <td>0.6048</td>
-      <td>0.7807</td>
-      <td>0.5576</td>
+      <td>0.5422</td>
+      <td>0.0111</td>
+      <td>0.4853</td>
+      <td>0.6148</td>
+      <td>0.7830</td>
+      <td>0.5616</td>
     </tr>
     <tr>
-      <th>61</th>
+      <th>93</th>
       <td>xgboost</td>
       <td>class_weight</td>
       <td>random_search</td>
-      <td>0.5438</td>
-      <td>0.0114</td>
-      <td>0.4964</td>
-      <td>0.6017</td>
-      <td>0.7802</td>
-      <td>0.5517</td>
+      <td>0.5414</td>
+      <td>0.0107</td>
+      <td>0.4959</td>
+      <td>0.5968</td>
+      <td>0.7801</td>
+      <td>0.5533</td>
+    </tr>
+    <tr>
+      <th>101</th>
+      <td>svm</td>
+      <td>smote</td>
+      <td>random_search</td>
+      <td>0.5387</td>
+      <td>0.0048</td>
+      <td>0.4795</td>
+      <td>0.6148</td>
+      <td>0.7638</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>111</th>
       <td>svm</td>
       <td>class_weight</td>
       <td>genetic_deap</td>
+      <td>0.5386</td>
+      <td>0.0081</td>
+      <td>0.4769</td>
+      <td>0.6192</td>
+      <td>0.7647</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>110</th>
+      <td>svm</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
       <td>0.5385</td>
-      <td>0.0063</td>
-      <td>0.4753</td>
-      <td>0.6214</td>
-      <td>0.7635</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>107</th>
-      <td>svm</td>
-      <td>class_weight</td>
-      <td>bayesian_optuna</td>
-      <td>0.5384</td>
-      <td>0.0072</td>
-      <td>0.4745</td>
-      <td>0.6228</td>
-      <td>0.7639</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>101</th>
-      <td>svm</td>
-      <td>smote</td>
-      <td>bayesian_optuna</td>
-      <td>0.5383</td>
-      <td>0.0065</td>
-      <td>0.4775</td>
-      <td>0.6172</td>
-      <td>0.7623</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>105</th>
-      <td>svm</td>
-      <td>class_weight</td>
-      <td>grid_search</td>
-      <td>0.5383</td>
-      <td>0.0058</td>
-      <td>0.4745</td>
-      <td>0.6228</td>
-      <td>0.7640</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>99</th>
-      <td>svm</td>
-      <td>smote</td>
-      <td>grid_search</td>
-      <td>0.5379</td>
-      <td>0.0071</td>
-      <td>0.4756</td>
-      <td>0.6202</td>
-      <td>0.7620</td>
+      <td>0.0077</td>
+      <td>0.4765</td>
+      <td>0.6192</td>
+      <td>0.7649</td>
       <td>NaN</td>
     </tr>
     <tr>
       <th>109</th>
       <td>svm</td>
-      <td>smote</td>
-      <td>genetic_deap</td>
-      <td>0.5374</td>
-      <td>0.0060</td>
-      <td>0.4763</td>
-      <td>0.6172</td>
-      <td>0.7632</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5385</td>
+      <td>0.0079</td>
+      <td>0.4779</td>
+      <td>0.6169</td>
+      <td>0.7646</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>106</th>
+      <th>103</th>
+      <td>svm</td>
+      <td>smote</td>
+      <td>genetic_deap</td>
+      <td>0.5378</td>
+      <td>0.0075</td>
+      <td>0.4728</td>
+      <td>0.6237</td>
+      <td>0.7680</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>102</th>
+      <td>svm</td>
+      <td>smote</td>
+      <td>bayesian_optuna</td>
+      <td>0.5376</td>
+      <td>0.0058</td>
+      <td>0.4765</td>
+      <td>0.6170</td>
+      <td>0.7649</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>108</th>
       <td>svm</td>
       <td>class_weight</td>
-      <td>random_search</td>
+      <td>grid_search</td>
       <td>0.5372</td>
-      <td>0.0052</td>
-      <td>0.4757</td>
-      <td>0.6173</td>
-      <td>0.7638</td>
+      <td>0.0069</td>
+      <td>0.4730</td>
+      <td>0.6225</td>
+      <td>0.7648</td>
       <td>NaN</td>
     </tr>
   </tbody>
@@ -984,41 +993,41 @@
   <tbody>
     <tr>
       <th>class_weight</th>
-      <td>0.5234</td>
-      <td>0.4603</td>
-      <td>0.6098</td>
-      <td>0.7614</td>
-      <td>0.5172</td>
+      <td>0.5243</td>
+      <td>0.4635</td>
+      <td>0.6065</td>
+      <td>0.7623</td>
+      <td>0.5190</td>
     </tr>
     <tr>
       <th>smote</th>
-      <td>0.5154</td>
-      <td>0.4914</td>
-      <td>0.5624</td>
-      <td>0.7540</td>
-      <td>0.5087</td>
+      <td>0.5166</td>
+      <td>0.4912</td>
+      <td>0.5643</td>
+      <td>0.7544</td>
+      <td>0.5096</td>
     </tr>
     <tr>
       <th>adasyn</th>
-      <td>0.5103</td>
-      <td>0.4809</td>
-      <td>0.5735</td>
-      <td>0.7493</td>
-      <td>0.5024</td>
+      <td>0.5098</td>
+      <td>0.4779</td>
+      <td>0.5767</td>
+      <td>0.7503</td>
+      <td>0.5031</td>
     </tr>
     <tr>
       <th>none</th>
-      <td>0.4557</td>
-      <td>0.6179</td>
-      <td>0.3768</td>
-      <td>0.7576</td>
-      <td>0.5135</td>
+      <td>0.4575</td>
+      <td>0.6206</td>
+      <td>0.3781</td>
+      <td>0.7585</td>
+      <td>0.5160</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<p><strong>Lectura.</strong> El <span class="math notranslate nohighlight">\(F_1\)</span> lo lideran Random Forest y XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> (0.544 a 0.546; desviación entre folds con <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code> de 0.006 a 0.013). Sobre las 96 combinaciones locales, el balanceo cambia el punto de operación más que la capacidad de ordenar: sin balanceo el ROC-AUC medio (0.758) es mayor que con SMOTE (0.754) o ADASYN (0.749), y su PR-AUC (0.514) es mayor que con SMOTE (0.509) o ADASYN (0.502); solo <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> mejora algo en ambos (0.761 y 0.517). Lo que sí cambia es el equilibrio entre recall y precisión al umbral de 0.5: el recall pasa de 0.377 (<code class="docutils literal notranslate"><span class="pre">none</span></code>) a 0.610 (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>) y la precisión baja de 0.618 a 0.460. Por eso la ganancia de <span class="math notranslate nohighlight">\(F_1\)</span> al balancear (de 0.456 a 0.523) viene en gran parte del umbral y no de un modelo que discrimine mejor, lo que es coherente con que el <span class="math notranslate nohighlight">\(F_1\)</span> siga siendo la métrica principal siempre que se lea así. Las diferencias de PR-AUC entre las ocho primeras combinaciones (0.550 a 0.558) son del orden de su variabilidad entre folds.</p>
+<p><strong>Lectura.</strong> El <span class="math notranslate nohighlight">\(F_1\)</span> lo lideran XGBoost y Random Forest con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> (0.543 a 0.547 las cinco primeras; desviación entre folds con <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code> de 0.008 a 0.011). Sobre las 96 combinaciones locales, el balanceo cambia el punto de operación más que la capacidad de ordenar: sin balanceo el ROC-AUC medio (0.759) es mayor que con SMOTE (0.754) o ADASYN (0.750), y su PR-AUC (0.516) es mayor que con SMOTE (0.510) o ADASYN (0.503); solo <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> mejora algo en ambos (0.762 y 0.519). Lo que sí cambia es el equilibrio entre recall y precisión al umbral de 0.5: el recall pasa de 0.378 (<code class="docutils literal notranslate"><span class="pre">none</span></code>) a 0.607 (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>) y la precisión baja de 0.621 a 0.464. Por eso la ganancia de <span class="math notranslate nohighlight">\(F_1\)</span> al balancear (de 0.458 a 0.524) viene en gran parte del umbral y no de un modelo que discrimine mejor, lo que es coherente con que el <span class="math notranslate nohighlight">\(F_1\)</span> siga siendo la métrica principal siempre que se lea así. Las diferencias de PR-AUC entre las ocho primeras combinaciones (0.548 a 0.562) son del orden de su variabilidad entre folds.</p>
 </section>
 <section id="cobertura-de-la-grilla-112-combinaciones-teoricas">
 <h2>Cobertura de la grilla: 112 combinaciones teóricas<a class="headerlink" href="#cobertura-de-la-grilla-112-combinaciones-teoricas" title="Link to this heading">#</a></h2>
@@ -1095,7 +1104,7 @@ Corrida    112
       <td>decision_tree</td>
       <td>adasyn</td>
       <td>bayesian_optuna</td>
-      <td>0.517838</td>
+      <td>0.516849</td>
       <td>Corrida</td>
     </tr>
     <tr>
@@ -1103,7 +1112,7 @@ Corrida    112
       <td>decision_tree</td>
       <td>adasyn</td>
       <td>genetic_deap</td>
-      <td>0.517838</td>
+      <td>0.516932</td>
       <td>Corrida</td>
     </tr>
     <tr>
@@ -1111,7 +1120,7 @@ Corrida    112
       <td>decision_tree</td>
       <td>adasyn</td>
       <td>grid_search</td>
-      <td>0.510033</td>
+      <td>0.510051</td>
       <td>Corrida</td>
     </tr>
     <tr>
@@ -1119,7 +1128,7 @@ Corrida    112
       <td>decision_tree</td>
       <td>adasyn</td>
       <td>random_search</td>
-      <td>0.517838</td>
+      <td>0.518904</td>
       <td>Corrida</td>
     </tr>
     <tr>
@@ -1127,7 +1136,7 @@ Corrida    112
       <td>decision_tree</td>
       <td>class_weight</td>
       <td>bayesian_optuna</td>
-      <td>0.516955</td>
+      <td>0.525433</td>
       <td>Corrida</td>
     </tr>
     <tr>
@@ -1143,7 +1152,7 @@ Corrida    112
       <td>xgboost</td>
       <td>none</td>
       <td>random_search</td>
-      <td>0.478821</td>
+      <td>0.477289</td>
       <td>Corrida</td>
     </tr>
     <tr>
@@ -1151,7 +1160,7 @@ Corrida    112
       <td>xgboost</td>
       <td>smote</td>
       <td>bayesian_optuna</td>
-      <td>0.519437</td>
+      <td>0.529489</td>
       <td>Corrida</td>
     </tr>
     <tr>
@@ -1159,7 +1168,7 @@ Corrida    112
       <td>xgboost</td>
       <td>smote</td>
       <td>genetic_deap</td>
-      <td>0.527377</td>
+      <td>0.534081</td>
       <td>Corrida</td>
     </tr>
     <tr>
@@ -1167,7 +1176,7 @@ Corrida    112
       <td>xgboost</td>
       <td>smote</td>
       <td>grid_search</td>
-      <td>0.534431</td>
+      <td>0.536973</td>
       <td>Corrida</td>
     </tr>
     <tr>
@@ -1175,7 +1184,7 @@ Corrida    112
       <td>xgboost</td>
       <td>smote</td>
       <td>random_search</td>
-      <td>0.526678</td>
+      <td>0.530435</td>
       <td>Corrida</td>
     </tr>
   </tbody>
@@ -1186,12 +1195,12 @@ Corrida    112
 </section>
 <section id="comparacion-estadistica-jerarquica">
 <h2>Comparación estadística jerárquica<a class="headerlink" href="#comparacion-estadistica-jerarquica" title="Link to this heading">#</a></h2>
-<p>Se aplica sobre las 112 combinaciones, con los 3 folds externos como bloques y el <span class="math notranslate nohighlight">\(F1\,Score\)</span> como métrica. Los resultados deben leerse como evidencia <strong>descriptiva</strong>, no inferencial (ver limitación común al final):</p>
+<p>Se aplica sobre las 112 combinaciones, con los 5 folds externos como bloques y el <span class="math notranslate nohighlight">\(F1\,Score\)</span> como métrica. Los resultados deben leerse como evidencia <strong>descriptiva</strong>, no inferencial (ver limitación común al final):</p>
 <ol class="arabic simple">
-<li><p><strong>Prueba ómnibus de Friedman:</strong> contrasta si todas las combinaciones son equivalentes en F1. Con <span class="math notranslate nohighlight">\(\chi^2 \approx 323\)</span> (<span class="math notranslate nohighlight">\(p \approx 10^{-22}\)</span>) solo indica que no todas son iguales; no dice cuáles difieren.</p></li>
-<li><p><strong>Nemenyi y diagrama de diferencia crítica (CD):</strong> con 112 combinaciones y 3 folds la diferencia crítica es 115.4, mayor que la máxima diferencia observada entre rangos medios (107.7). Ningún par (0 de 6,216) es significativo, de modo que el diagrama no separa grupos y el ranking de rangos es descriptivo.</p></li>
-<li><p><strong>DeLong (top 3 por F1):</strong> compara el AUC (no el F1) de las tres combinaciones con mejor rango en F1. Se calcula sobre predicciones <em>out-of-fold</em> agrupadas, que provienen de tres modelos distintos (uno por fold), por lo que el AUC agrupado no coincide con <code class="docutils literal notranslate"><span class="pre">roc_auc_mean</span></code> (por ejemplo, 0.7767 frente a 0.7817 en <code class="docutils literal notranslate"><span class="pre">xgboost|class_weight|bayesian_optuna</span></code>). Además, elegir las combinaciones por F1 y compararlas en AUC introduce un sesgo de selección.</p></li>
-<li><p><strong>Cliff’s Delta:</strong> con 3 folds hay solo 9 pares por comparación, de modo que el tamaño del efecto no es informativo.</p></li>
+<li><p><strong>Prueba ómnibus de Friedman:</strong> contrasta si todas las combinaciones son equivalentes en F1. Con <span class="math notranslate nohighlight">\(\chi^2 \approx 535\)</span> (<span class="math notranslate nohighlight">\(p \approx 10^{-52}\)</span>) solo indica que no todas son iguales; no dice cuáles difieren.</p></li>
+<li><p><strong>Nemenyi y diagrama de diferencia crítica (CD):</strong> con 112 combinaciones y 5 folds la diferencia crítica es 89.4, menor que la máxima diferencia observada entre rangos medios (108.3). Solo los pares más alejados se separan: 224 de 6,216 son significativos, y 90 combinaciones quedan a menos de una diferencia crítica de la primera. El diagrama separa los extremos del ranking, pero no ordena las combinaciones del grupo de cabeza.</p></li>
+<li><p><strong>DeLong (top 3 por F1):</strong> compara el AUC (no el F1) de las tres combinaciones con mejor rango en F1. Se calcula sobre predicciones <em>out-of-fold</em> agrupadas, que provienen de cinco modelos distintos (uno por fold), por lo que el AUC agrupado no coincide con <code class="docutils literal notranslate"><span class="pre">roc_auc_mean</span></code> (por ejemplo, 0.7819 frente a 0.7828 en <code class="docutils literal notranslate"><span class="pre">xgboost|class_weight|bayesian_optuna</span></code>). Además, elegir las combinaciones por F1 y compararlas en AUC introduce un sesgo de selección.</p></li>
+<li><p><strong>Cliff’s Delta:</strong> con 5 folds hay 25 pares por comparación, algo más que con 3 pero aún pocos para que el tamaño del efecto sea más que orientativo.</p></li>
 </ol>
 <p><strong>Limitación común:</strong> los conjuntos de entrenamiento de los folds se solapan, así que los folds no son bloques independientes y los p-valores resultan optimistas.</p>
 <div class="cell tag_hide-input docutils container">
@@ -1217,20 +1226,20 @@ Corrida    112
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Friedman: estadístico=323.1670, p=0.0000, significativo=True (alpha=0.05, 3 folds, 112 combinaciones; 41 con rango medio empatado, desempatadas por F1 medio)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Friedman: estadístico=534.6002, p=0.0000, significativo=True (alpha=0.05, 5 folds, 112 combinaciones; 21 con rango medio empatado, desempatadas por F1 medio)
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>random_forest|class_weight|genetic_deap       3.000000
-random_forest|class_weight|random_search      3.333333
-xgboost|class_weight|bayesian_optuna          4.000000
-random_forest|class_weight|grid_search        5.000000
-xgboost|class_weight|grid_search              5.000000
-                                               ...    
-knn|none|bayesian_optuna                    107.000000
-logistic_regression|none|genetic_deap       110.000000
-logistic_regression|none|bayesian_optuna    110.666667
-logistic_regression|none|grid_search        110.666667
-logistic_regression|none|random_search      110.666667
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>xgboost|class_weight|bayesian_optuna            2.4
+random_forest|class_weight|random_search        3.8
+random_forest|class_weight|grid_search          4.2
+random_forest|class_weight|bayesian_optuna      5.4
+xgboost|class_weight|grid_search                6.2
+                                              ...  
+svm|none|random_search                        107.0
+logistic_regression|none|bayesian_optuna      110.3
+logistic_regression|none|grid_search          110.3
+logistic_regression|none|genetic_deap         110.7
+logistic_regression|none|random_search        110.7
 Length: 112, dtype: float64
 </pre></div>
 </div>
@@ -1263,8 +1272,8 @@ Length: 112, dtype: float64
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Diferencia Crítica (CD): 115.3789
-Top-3 para DeLong: ['random_forest|class_weight|genetic_deap', 'random_forest|class_weight|random_search', 'xgboost|class_weight|bayesian_optuna']
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Diferencia Crítica (CD): 89.3721
+Top-3 para DeLong: ['xgboost|class_weight|bayesian_optuna', 'random_forest|class_weight|random_search', 'random_forest|class_weight|grid_search']
 
 DeLong (pares dentro del top, corrección Holm):
 </pre></div>
@@ -1300,35 +1309,35 @@ DeLong (pares dentro del top, corrección Holm):
   <tbody>
     <tr>
       <th>0</th>
-      <td>random_forest|class_weight|genetic_deap</td>
+      <td>xgboost|class_weight|bayesian_optuna</td>
       <td>random_forest|class_weight|random_search</td>
-      <td>0.781211</td>
-      <td>0.781621</td>
-      <td>-0.744815</td>
-      <td>0.456384</td>
-      <td>0.456384</td>
+      <td>0.781943</td>
+      <td>0.782426</td>
+      <td>-0.612590</td>
+      <td>0.540148</td>
+      <td>0.540148</td>
       <td>holm</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>random_forest|class_weight|genetic_deap</td>
       <td>xgboost|class_weight|bayesian_optuna</td>
-      <td>0.781211</td>
-      <td>0.776715</td>
-      <td>4.500524</td>
-      <td>0.000007</td>
-      <td>0.000014</td>
+      <td>random_forest|class_weight|grid_search</td>
+      <td>0.781943</td>
+      <td>0.784409</td>
+      <td>-2.756385</td>
+      <td>0.005844</td>
+      <td>0.011689</td>
       <td>holm</td>
     </tr>
     <tr>
       <th>2</th>
       <td>random_forest|class_weight|random_search</td>
-      <td>xgboost|class_weight|bayesian_optuna</td>
-      <td>0.781621</td>
-      <td>0.776715</td>
-      <td>4.679044</td>
-      <td>0.000003</td>
-      <td>0.000009</td>
+      <td>random_forest|class_weight|grid_search</td>
+      <td>0.782426</td>
+      <td>0.784409</td>
+      <td>-3.539512</td>
+      <td>0.000401</td>
+      <td>0.001203</td>
       <td>holm</td>
     </tr>
   </tbody>
@@ -1363,34 +1372,34 @@ DeLong (pares dentro del top, corrección Holm):
   <tbody>
     <tr>
       <th>0</th>
-      <td>random_forest|class_weight|genetic_deap</td>
+      <td>xgboost|class_weight|bayesian_optuna</td>
       <td>random_forest|class_weight|random_search</td>
-      <td>0.111111</td>
+      <td>0.04</td>
       <td>despreciable</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>random_forest|class_weight|genetic_deap</td>
       <td>xgboost|class_weight|bayesian_optuna</td>
-      <td>0.111111</td>
+      <td>random_forest|class_weight|grid_search</td>
+      <td>0.04</td>
       <td>despreciable</td>
     </tr>
     <tr>
       <th>2</th>
       <td>random_forest|class_weight|random_search</td>
-      <td>xgboost|class_weight|bayesian_optuna</td>
-      <td>0.111111</td>
+      <td>random_forest|class_weight|grid_search</td>
+      <td>-0.12</td>
       <td>despreciable</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<p><strong>Lectura de los resultados.</strong> El CD (115.4) supera la máxima diferencia de rangos medios (107.7), por lo que Nemenyi no declara significativo ningún par. En DeLong, las dos primeras combinaciones (Random Forest) no se distinguen (AUC agrupado 0.7812 y 0.7816; p ajustado = 0.46), y ambas resultan distintas de XGBoost (0.7767; p ajustado aprox. 1e-5). Esa diferencia de AUC es de 0.005 y proviene de predicciones agrupadas de modelos distintos sobre 29,965 clientes, donde una diferencia así puede ser significativa sin ser relevante en la práctica. El Cliff’s Delta es 0.11 (despreciable) en los tres pares, pero con 9 pares no es informativo. En conjunto no hay evidencia inferencial para preferir una combinación sobre otra dentro de este grupo.</p>
+<p><strong>Lectura de los resultados.</strong> El CD (89.4) es menor que la máxima diferencia de rangos medios (108.3), así que Nemenyi separa 224 de los 6,216 pares, todos entre combinaciones muy alejadas en el ranking; dentro del grupo de cabeza no hay separación. En DeLong, XGBoost y la primera de Random Forest no se distinguen (AUC agrupado 0.7819 y 0.7824; p ajustado = 0.54), pero la segunda de Random Forest (<code class="docutils literal notranslate"><span class="pre">grid_search</span></code>, 0.7844) resulta mayor que ambas (p ajustado 0.012 y 0.001). Esa diferencia de AUC es de unas 0.002 a 0.003 y proviene de predicciones agrupadas de modelos distintos sobre 29,965 clientes, donde una diferencia así puede ser significativa sin ser relevante en la práctica; además, el F1, que es la métrica de selección, ordena esas combinaciones al revés. El Cliff’s Delta es de 0.04, 0.04 y -0.12 (despreciable en los tres pares), con 25 pares. En conjunto no hay evidencia para preferir una combinación sobre otra dentro de este grupo.</p>
 </section>
 <section id="comparacion-por-factor-del-diseno-tecnica-metodo-de-optimizacion-modelo">
 <h2>Comparación por factor del diseño (técnica, método de optimización, modelo)<a class="headerlink" href="#comparacion-por-factor-del-diseno-tecnica-metodo-de-optimizacion-modelo" title="Link to this heading">#</a></h2>
-<p>Con las 112 combinaciones y 3 folds, Nemenyi no tiene potencia. Como el diseño es factorial, se contrasta cada factor por separado: los bloques son las combinaciones de los otros dos factores (por ejemplo, para la técnica de balanceo, los 28 pares modelo x método) y el valor es el <span class="math notranslate nohighlight">\(F_1\)</span> medio de los 3 folds. Es el análogo del diseño de Demšar (2006) con esas combinaciones como “conjuntos de datos”. Es un análisis <strong>exploratorio</strong>: los bloques no son independientes (comparten datos y folds, y los cuatro métodos de un mismo modelo se parecen mucho), así que los p-valores son optimistas.</p>
+<p>Con las 112 combinaciones y 5 folds, Nemenyi solo separa los extremos del ranking. Como el diseño es factorial, se contrasta cada factor por separado: los bloques son las combinaciones de los otros dos factores (por ejemplo, para la técnica de balanceo, los 28 pares modelo x método) y el valor es el <span class="math notranslate nohighlight">\(F_1\)</span> medio de los 5 folds. Es el análogo del diseño de Demšar (2006) con esas combinaciones como “conjuntos de datos”. Es un análisis <strong>exploratorio</strong>: los bloques no son independientes (comparten datos y folds, y los cuatro métodos de un mismo modelo se parecen mucho), así que los p-valores son optimistas.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1417,7 +1426,7 @@ DeLong (pares dentro del top, corrección Holm):
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[technique] bloques=28, niveles=4: Friedman chi2=59.78, p=6.54e-13; CD=0.886 (con potencia: True)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[technique] bloques=28, niveles=4: Friedman chi2=75.96, p=2.26e-16; CD=0.886 (con potencia: True)
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1450,22 +1459,22 @@ DeLong (pares dentro del top, corrección Holm):
   <tbody>
     <tr>
       <th>class_weight</th>
-      <td>0.5255</td>
-      <td>1.5357</td>
+      <td>0.5263</td>
+      <td>1.2500</td>
     </tr>
     <tr>
       <th>smote</th>
-      <td>0.5186</td>
-      <td>1.9286</td>
+      <td>0.5195</td>
+      <td>1.8214</td>
     </tr>
     <tr>
       <th>adasyn</th>
-      <td>0.5130</td>
-      <td>2.5357</td>
+      <td>0.5126</td>
+      <td>2.9286</td>
     </tr>
     <tr>
       <th>none</th>
-      <td>0.4532</td>
+      <td>0.4549</td>
       <td>4.0000</td>
     </tr>
   </tbody>
@@ -1501,34 +1510,34 @@ DeLong (pares dentro del top, corrección Holm):
     <tr>
       <th>adasyn</th>
       <td>1.0000</td>
-      <td>0.0196</td>
-      <td>0.0001</td>
-      <td>0.2930</td>
+      <td>0.0000</td>
+      <td>0.0103</td>
+      <td>0.0073</td>
     </tr>
     <tr>
       <th>class_weight</th>
-      <td>0.0196</td>
+      <td>0.0000</td>
       <td>1.0000</td>
       <td>0.0000</td>
-      <td>0.6656</td>
+      <td>0.3472</td>
     </tr>
     <tr>
       <th>none</th>
-      <td>0.0001</td>
+      <td>0.0103</td>
       <td>0.0000</td>
       <td>1.0000</td>
       <td>0.0000</td>
     </tr>
     <tr>
       <th>smote</th>
-      <td>0.2930</td>
-      <td>0.6656</td>
+      <td>0.0073</td>
+      <td>0.3472</td>
       <td>0.0000</td>
       <td>1.0000</td>
     </tr>
   </tbody>
 </table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[method] bloques=28, niveles=4: Friedman chi2=11.04, p=1.15e-02; CD=0.886 (con potencia: True)
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[method] bloques=28, niveles=4: Friedman chi2=6.77, p=7.96e-02; CD=0.886 (con potencia: True)
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1561,23 +1570,23 @@ DeLong (pares dentro del top, corrección Holm):
   <tbody>
     <tr>
       <th>genetic_deap</th>
-      <td>0.5032</td>
-      <td>2.0357</td>
+      <td>0.5040</td>
+      <td>2.0000</td>
+    </tr>
+    <tr>
+      <th>random_search</th>
+      <td>0.5035</td>
+      <td>2.5536</td>
     </tr>
     <tr>
       <th>bayesian_optuna</th>
-      <td>0.5025</td>
-      <td>2.1964</td>
+      <td>0.5036</td>
+      <td>2.5714</td>
     </tr>
     <tr>
       <th>grid_search</th>
       <td>0.5022</td>
-      <td>2.7857</td>
-    </tr>
-    <tr>
-      <th>random_search</th>
-      <td>0.5024</td>
-      <td>2.9821</td>
+      <td>2.8750</td>
     </tr>
   </tbody>
 </table>
@@ -1612,34 +1621,34 @@ DeLong (pares dentro del top, corrección Holm):
     <tr>
       <th>bayesian_optuna</th>
       <td>1.0000</td>
-      <td>0.9665</td>
-      <td>0.3195</td>
-      <td>0.1033</td>
+      <td>0.3472</td>
+      <td>0.8153</td>
+      <td>1.0000</td>
     </tr>
     <tr>
       <th>genetic_deap</th>
-      <td>0.9665</td>
+      <td>0.3472</td>
       <td>1.0000</td>
-      <td>0.1306</td>
-      <td>0.0310</td>
+      <td>0.0545</td>
+      <td>0.3761</td>
     </tr>
     <tr>
       <th>grid_search</th>
-      <td>0.3195</td>
-      <td>0.1306</td>
+      <td>0.8153</td>
+      <td>0.0545</td>
       <td>1.0000</td>
-      <td>0.9412</td>
+      <td>0.7879</td>
     </tr>
     <tr>
       <th>random_search</th>
-      <td>0.1033</td>
-      <td>0.0310</td>
-      <td>0.9412</td>
+      <td>1.0000</td>
+      <td>0.3761</td>
+      <td>0.7879</td>
       <td>1.0000</td>
     </tr>
   </tbody>
 </table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[model] bloques=16, niveles=7: Friedman chi2=50.73, p=3.35e-09; CD=2.252 (con potencia: True)
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[model] bloques=16, niveles=7: Friedman chi2=51.32, p=2.55e-09; CD=2.252 (con potencia: True)
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1672,38 +1681,38 @@ DeLong (pares dentro del top, corrección Holm):
   <tbody>
     <tr>
       <th>random_forest</th>
-      <td>0.5200</td>
-      <td>1.9375</td>
+      <td>0.5207</td>
+      <td>2.000</td>
     </tr>
     <tr>
       <th>xgboost</th>
-      <td>0.5185</td>
-      <td>2.3750</td>
+      <td>0.5202</td>
+      <td>2.250</td>
     </tr>
     <tr>
       <th>svm</th>
-      <td>0.5108</td>
-      <td>2.8750</td>
+      <td>0.5110</td>
+      <td>3.000</td>
     </tr>
     <tr>
       <th>decision_tree</th>
-      <td>0.5039</td>
-      <td>4.4375</td>
+      <td>0.5059</td>
+      <td>4.250</td>
     </tr>
     <tr>
       <th>naive_bayes</th>
-      <td>0.4966</td>
-      <td>5.2500</td>
+      <td>0.4962</td>
+      <td>5.250</td>
     </tr>
     <tr>
       <th>knn</th>
-      <td>0.4901</td>
-      <td>5.5625</td>
+      <td>0.4910</td>
+      <td>5.625</td>
     </tr>
     <tr>
       <th>logistic_regression</th>
-      <td>0.4782</td>
-      <td>5.5625</td>
+      <td>0.4781</td>
+      <td>5.625</td>
     </tr>
   </tbody>
 </table>
@@ -1741,71 +1750,71 @@ DeLong (pares dentro del top, corrección Holm):
     <tr>
       <th>decision_tree</th>
       <td>1.0000</td>
-      <td>0.7611</td>
-      <td>0.7611</td>
-      <td>0.9386</td>
-      <td>0.0184</td>
-      <td>0.3856</td>
-      <td>0.0981</td>
+      <td>0.5478</td>
+      <td>0.5478</td>
+      <td>0.8479</td>
+      <td>0.0503</td>
+      <td>0.6584</td>
+      <td>0.1203</td>
     </tr>
     <tr>
       <th>knn</th>
-      <td>0.7611</td>
+      <td>0.5478</td>
       <td>1.0000</td>
       <td>1.0000</td>
-      <td>0.9996</td>
+      <td>0.9990</td>
       <td>0.0000</td>
-      <td>0.0079</td>
-      <td>0.0006</td>
+      <td>0.0105</td>
+      <td>0.0002</td>
     </tr>
     <tr>
       <th>logistic_regression</th>
-      <td>0.7611</td>
+      <td>0.5478</td>
       <td>1.0000</td>
       <td>1.0000</td>
-      <td>0.9996</td>
+      <td>0.9990</td>
       <td>0.0000</td>
-      <td>0.0079</td>
-      <td>0.0006</td>
+      <td>0.0105</td>
+      <td>0.0002</td>
     </tr>
     <tr>
       <th>naive_bayes</th>
-      <td>0.9386</td>
-      <td>0.9996</td>
-      <td>0.9996</td>
+      <td>0.8479</td>
+      <td>0.9990</td>
+      <td>0.9990</td>
       <td>1.0000</td>
-      <td>0.0003</td>
-      <td>0.0309</td>
-      <td>0.0032</td>
+      <td>0.0004</td>
+      <td>0.0503</td>
+      <td>0.0017</td>
     </tr>
     <tr>
       <th>random_forest</th>
-      <td>0.0184</td>
+      <td>0.0503</td>
       <td>0.0000</td>
       <td>0.0000</td>
-      <td>0.0003</td>
+      <td>0.0004</td>
       <td>1.0000</td>
-      <td>0.8837</td>
-      <td>0.9976</td>
+      <td>0.8479</td>
+      <td>0.9999</td>
     </tr>
     <tr>
       <th>svm</th>
-      <td>0.3856</td>
-      <td>0.0079</td>
-      <td>0.0079</td>
-      <td>0.0309</td>
-      <td>0.8837</td>
+      <td>0.6584</td>
+      <td>0.0105</td>
+      <td>0.0105</td>
+      <td>0.0503</td>
+      <td>0.8479</td>
       <td>1.0000</td>
-      <td>0.9949</td>
+      <td>0.9580</td>
     </tr>
     <tr>
       <th>xgboost</th>
-      <td>0.0981</td>
-      <td>0.0006</td>
-      <td>0.0006</td>
-      <td>0.0032</td>
-      <td>0.9976</td>
-      <td>0.9949</td>
+      <td>0.1203</td>
+      <td>0.0002</td>
+      <td>0.0002</td>
+      <td>0.0017</td>
+      <td>0.9999</td>
+      <td>0.9580</td>
       <td>1.0000</td>
     </tr>
   </tbody>
@@ -1814,15 +1823,15 @@ DeLong (pares dentro del top, corrección Holm):
 </div>
 <p><strong>Lectura por factor</strong> (exploratoria; los bloques no son independientes).</p>
 <ul class="simple">
-<li><p><strong>Técnica de balanceo</strong> (28 bloques; <span class="math notranslate nohighlight">\(\chi^2=59.8\)</span>, <span class="math notranslate nohighlight">\(p\approx 7\cdot10^{-13}\)</span>; CD = 0.886). Sin balanceo el <span class="math notranslate nohighlight">\(F_1\)</span> medio es 0.453, frente a 0.526 (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>), 0.519 (SMOTE) y 0.513 (ADASYN); <code class="docutils literal notranslate"><span class="pre">none</span></code> es peor que las tres con <span class="math notranslate nohighlight">\(p\le 10^{-4}\)</span>. Entre las técnicas, <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> supera a ADASYN (<span class="math notranslate nohighlight">\(p=0.020\)</span>) y no se distingue de SMOTE (<span class="math notranslate nohighlight">\(p=0.67\)</span>); SMOTE y ADASYN tampoco se distinguen (<span class="math notranslate nohighlight">\(p=0.29\)</span>). Es el único factor donde la evidencia es clara y el efecto grande.</p></li>
-<li><p><strong>Método de optimización</strong> (28 bloques; <span class="math notranslate nohighlight">\(p=0.012\)</span>). Hay diferencia ómnibus, pero los <span class="math notranslate nohighlight">\(F_1\)</span> medios están entre 0.5022 y 0.5032 (una milésima), de modo que no es relevante en la práctica; el único par significativo es genético frente a búsqueda aleatoria (<span class="math notranslate nohighlight">\(p=0.031\)</span>). Los cuatro métodos son equivalentes para efectos prácticos, y el costo computacional es lo que debería decidir entre ellos.</p></li>
-<li><p><strong>Modelo</strong> (16 bloques; <span class="math notranslate nohighlight">\(p\approx 3\cdot10^{-9}\)</span>; CD = 2.25). Random Forest (0.520), XGBoost (0.5185) y SVM (0.511) forman el grupo superior y no se distinguen entre sí (<span class="math notranslate nohighlight">\(p\ge 0.88\)</span>). Random Forest supera a árbol de decisión (<span class="math notranslate nohighlight">\(p=0.018\)</span>), Naive Bayes, KNN y regresión logística (<span class="math notranslate nohighlight">\(p\le 3\cdot10^{-4}\)</span>); XGBoost supera a Naive Bayes, KNN y regresión logística, pero no al árbol (<span class="math notranslate nohighlight">\(p=0.098\)</span>); SVM supera a KNN y regresión logística (<span class="math notranslate nohighlight">\(p=0.008\)</span>). La regresión logística y KNN son los últimos (0.478 y 0.490).</p></li>
+<li><p><strong>Técnica de balanceo</strong> (28 bloques; <span class="math notranslate nohighlight">\(\chi^2=76.0\)</span>, <span class="math notranslate nohighlight">\(p\approx 2\cdot10^{-16}\)</span>; CD = 0.886). Sin balanceo el <span class="math notranslate nohighlight">\(F_1\)</span> medio es 0.455, frente a 0.526 (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>), 0.520 (SMOTE) y 0.513 (ADASYN); <code class="docutils literal notranslate"><span class="pre">none</span></code> es peor que las tres (<span class="math notranslate nohighlight">\(p\le 0.010\)</span>). Entre las técnicas, <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> supera a ADASYN (<span class="math notranslate nohighlight">\(p&lt;10^{-4}\)</span>) y no se distingue de SMOTE (<span class="math notranslate nohighlight">\(p=0.35\)</span>); SMOTE supera a ADASYN (<span class="math notranslate nohighlight">\(p=0.007\)</span>). Es el único factor donde la evidencia es clara y el efecto grande.</p></li>
+<li><p><strong>Método de optimización</strong> (28 bloques; <span class="math notranslate nohighlight">\(p=0.080\)</span>). No hay diferencia ómnibus significativa y los <span class="math notranslate nohighlight">\(F_1\)</span> medios están entre 0.5022 y 0.5040 (menos de dos milésimas); el par más cercano a la significancia es genético frente a búsqueda en grilla (<span class="math notranslate nohighlight">\(p=0.055\)</span>). Los cuatro métodos son equivalentes para efectos prácticos, y el costo computacional es lo que debería decidir entre ellos.</p></li>
+<li><p><strong>Modelo</strong> (16 bloques; <span class="math notranslate nohighlight">\(p\approx 3\cdot10^{-9}\)</span>; CD = 2.25). Random Forest (0.521), XGBoost (0.520) y SVM (0.511) forman el grupo superior y no se distinguen entre sí (<span class="math notranslate nohighlight">\(p\ge 0.85\)</span>). Random Forest supera a Naive Bayes, KNN y regresión logística (<span class="math notranslate nohighlight">\(p\le 4\cdot10^{-4}\)</span>) pero no al árbol de decisión (<span class="math notranslate nohighlight">\(p=0.050\)</span>); XGBoost supera a Naive Bayes, KNN y regresión logística (<span class="math notranslate nohighlight">\(p\le 0.002\)</span>), pero no al árbol (<span class="math notranslate nohighlight">\(p=0.12\)</span>); SVM supera a KNN y regresión logística (<span class="math notranslate nohighlight">\(p=0.011\)</span>). La regresión logística y KNN son los últimos (0.478 y 0.491).</p></li>
 </ul>
-<p>El ranking global de las 112 combinaciones sigue siendo descriptivo; estos tres contrastes son los que sí permiten afirmar algo sobre el diseño.</p>
+<p>El ranking global de las 112 combinaciones sigue siendo en buena parte descriptivo; estos tres contrastes son los que permiten afirmar algo sobre el diseño.</p>
 </section>
 <section id="combinacion-con-mayor-f1-medio-matriz-de-confusion-y-curva-roc">
 <h2>Combinación con mayor F1 medio: matriz de confusión y curva ROC<a class="headerlink" href="#combinacion-con-mayor-f1-medio-matriz-de-confusion-y-curva-roc" title="Link to this heading">#</a></h2>
-<p>Analizamos las predicciones <em>out-of-fold</em> de la combinación con mayor F1 medio (su ventaja sobre las siguientes no es estadísticamente distinguible, ver arriba). La matriz de confusión muestra cómo se reparten falsos positivos y falsos negativos con el umbral de 0.5; el AUC corresponde a las predicciones agrupadas de los tres modelos de los folds.</p>
+<p>Analizamos las predicciones <em>out-of-fold</em> de la combinación con mayor F1 medio (su ventaja sobre las siguientes no es estadísticamente distinguible, ver arriba). La matriz de confusión muestra cómo se reparten falsos positivos y falsos negativos con el umbral de 0.5; el AUC corresponde a las predicciones agrupadas de los cinco modelos de los folds.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1871,10 +1880,10 @@ DeLong (pares dentro del top, corrección Holm):
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mejor combinación según f1: random_forest | class_weight | genetic_deap
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mejor combinación según f1: xgboost | class_weight | bayesian_optuna
 </pre></div>
 </div>
-<img alt="../_images/1b3f161a0379bcfae04992dcc4394faaaf1f3383acf329cabd47a3752e45f590.png" src="../_images/1b3f161a0379bcfae04992dcc4394faaaf1f3383acf329cabd47a3752e45f590.png" />
+<img alt="../_images/4683ffadf15932ba6bcb4dc10a86bce2ae7f5a724813f3ac5d8d7191833b7d36.png" src="../_images/4683ffadf15932ba6bcb4dc10a86bce2ae7f5a724813f3ac5d8d7191833b7d36.png" />
 </div>
 </div>
 </section>
@@ -1883,7 +1892,7 @@ DeLong (pares dentro del top, corrección Holm):
 <p>Para operar el modelo ajustando umbrales de decisión (<em>decision thresholds</em>) que optimicen el F1 Score en producción, las probabilidades retornadas deben ser confiables:</p>
 <ul class="simple">
 <li><p><strong>Diagnóstico:</strong> Se evalúa si el modelo presenta un error de calibración inicial (<span class="math notranslate nohighlight">\(ECE &gt; 0.05\)</span>). Con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> o SMOTE un ECE alto es esperable aunque el modelo ordene bien, porque el balanceo desplaza la prevalencia efectiva (la <em>prior</em>) y las probabilidades sobrestiman la clase positiva.</p></li>
-<li><p><strong>Recalibración:</strong> Se aplica <strong>Recalibración Isotónica</strong> o Platt según corresponda, corrigiendo la curva de confiabilidad (<em>Reliability Diagram</em>). En la corrida el ECE bajó de 0.189 a 0.015, pero medido en un solo fold (el de F1 mediano), por lo que no garantiza calibración en general. Un umbral ajustado sobre probabilidades calibradas podría mejorar el F1, pero no se optimiza aquí.</p></li>
+<li><p><strong>Recalibración:</strong> Se aplica <strong>Recalibración Isotónica</strong> o Platt según corresponda, corrigiendo la curva de confiabilidad (<em>Reliability Diagram</em>). En la corrida el ECE bajó de 0.180 a 0.013, pero medido en un solo fold, por lo que no garantiza calibración en general. Un umbral ajustado sobre probabilidades calibradas podría mejorar el F1, pero no se optimiza aquí.</p></li>
 </ul>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
@@ -1933,11 +1942,11 @@ DeLong (pares dentro del top, corrección Holm):
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Brier: 0.1745  ECE: 0.1958  (calibración deficiente: True)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Brier: 0.1749  ECE: 0.1956  (calibración deficiente: True)
 </pre></div>
 </div>
-<img alt="../_images/a22d978bbd6de8d97db3119c2fd43944fc9d0b12474ba76be16c5b13d01dbcfd.png" src="../_images/a22d978bbd6de8d97db3119c2fd43944fc9d0b12474ba76be16c5b13d01dbcfd.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Recalibración (isotonic, fold 0): ECE 0.1904 -&gt; 0.0166 (mejora Brier: 0.0382)
+<img alt="../_images/e82d53d4d85930bc864418118b6d954b057493b2759d3f09a4b58f4f2490fa82.png" src="../_images/e82d53d4d85930bc864418118b6d954b057493b2759d3f09a4b58f4f2490fa82.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Recalibración (isotonic, fold 1): ECE 0.1797 -&gt; 0.0134 (mejora Brier: 0.0344)
 </pre></div>
 </div>
 </div>
@@ -1992,9 +2001,9 @@ DeLong (pares dentro del top, corrección Holm):
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Complejidad teórica (random_forest):
-  Train:      O(T·n·p·log n) — T árboles independientes, cada uno O(n·p·log n).
-  Inferencia: O(T·log n) por consulta (promedio sobre los T árboles).
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Complejidad teórica (xgboost):
+  Train:      O(T·n·p) con `tree_method='hist'` (histogramas: discretiza cada feature en ~256 bins, evaluando splits en O(n) por nivel) — bloque config del modelo. El método EXACTO (ordenar todas las features en cada split) es O(T·n·p·log n), notablemente más lento para n~30K.
+  Inferencia: O(T·log n) por consulta.
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -2027,13 +2036,13 @@ DeLong (pares dentro del top, corrección Holm):
   <tbody>
     <tr>
       <th>0</th>
-      <td>9.381728</td>
-      <td>23.744151</td>
-      <td>7.502861</td>
-      <td>8.005475</td>
-      <td>0.473531</td>
-      <td>0.549328</td>
-      <td>0.075797</td>
+      <td>0.569445</td>
+      <td>6.460618</td>
+      <td>4.849604</td>
+      <td>4.846134</td>
+      <td>0.44914</td>
+      <td>0.542847</td>
+      <td>0.093707</td>
     </tr>
   </tbody>
 </table>
@@ -2042,7 +2051,7 @@ DeLong (pares dentro del top, corrección Holm):
 </section>
 <section id="siguiente-paso">
 <h2>Siguiente Paso<a class="headerlink" href="#siguiente-paso" title="Link to this heading">#</a></h2>
-<p>Con la combinación de mayor F1 medio identificada (su ventaja sobre otras cercanas no es estadísticamente distinguible), avanzamos al notebook <code class="docutils literal notranslate"><span class="pre">06_interpretability.ipynb</span></code>: allí se interpreta con SHAP el Random Forest de esa combinación (100 observaciones de un fold) y se compara LIME frente a SHAP en una observación de XGBoost.</p>
+<p>Con la combinación de mayor F1 medio identificada (su ventaja sobre otras cercanas no es estadísticamente distinguible), avanzamos al notebook <code class="docutils literal notranslate"><span class="pre">06_interpretability.ipynb</span></code>: allí se interpreta con SHAP el Random Forest de esa combinación (100 observaciones de un fold en las secciones 1 a 4, y los 5 folds en la sección 5) y se compara LIME frente a SHAP en 120 observaciones por modelo (sección 6). La tabla maestra consolidada y la comparabilidad del SVM están en <code class="docutils literal notranslate"><span class="pre">08_tabla_maestra_svm.ipynb</span></code>, y las curvas anytime y la multi-fidelidad en <code class="docutils literal notranslate"><span class="pre">09_anytime_multifidelidad.ipynb</span></code>.</p>
 </section>
 </section>
 

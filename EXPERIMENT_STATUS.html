@@ -215,6 +215,7 @@
         </ul>
         <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="introduccion.html">Introducción y marco del proyecto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correcciones.html">Trazabilidad de correcciones</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Setup Check</a></li>
@@ -222,6 +223,9 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/04_run_experiments.html">04. Ejecutar experimentos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/05_results_analysis.html">05. Análisis de resultados</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="notebooks/08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
 </ul>
 
     </div>
@@ -367,6 +371,8 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cambio-a-validacion-anidada-5-x-5-2026-10-31-completado-2026-11-02">Cambio a validación anidada 5 x 5 (2026-10-31, completado 2026-11-02)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correcciones-del-entregable-3-2026-10-30-hechas-con-la-corrida-3-x-3-y-reproducidas-en-5-x-5">Correcciones del entregable 3 (2026-10-30, hechas con la corrida 3 x 3 y reproducidas en 5 x 5)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estado-actual-corrida-v2-dataset-de-29-965-x-21">Estado actual (corrida v2, dataset de 29,965 x 21)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#progreso-corrida-anterior-dataset-v1-100-112-combinaciones-guardadas-svm-none-genetic-deap-termino-ok-2026-09-23-aprox-17-07-con-el-fix-de-threading-15645-8s-aprox-4h21min">1. Progreso (corrida anterior, dataset v1): 100/112 combinaciones guardadas: <code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> terminó OK (2026-09-23 aprox. 17:07) con el fix de threading, 15645.8s (aprox. 4h21min)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-continuar">2. Cómo continuar</a></li>
@@ -417,6 +423,29 @@
   <section class="tex2jax_ignore mathjax_ignore" id="estado-de-la-corrida-de-experimentos-04-run-experiments-ipynb">
 <h1>Estado de la corrida de experimentos (04_run_experiments.ipynb)<a class="headerlink" href="#estado-de-la-corrida-de-experimentos-04-run-experiments-ipynb" title="Link to this heading">#</a></h1>
 <p>Última revisión de este encabezado: 2026-10-05.</p>
+<section id="cambio-a-validacion-anidada-5-x-5-2026-10-31-completado-2026-11-02">
+<h2>Cambio a validación anidada 5 x 5 (2026-10-31, completado 2026-11-02)<a class="headerlink" href="#cambio-a-validacion-anidada-5-x-5-2026-10-31-completado-2026-11-02" title="Link to this heading">#</a></h2>
+<p>El docente pide al menos 5 folds. <code class="docutils literal notranslate"><span class="pre">src/config.py</span></code> tiene <code class="docutils literal notranslate"><span class="pre">N_OUTER_FOLDS</span> <span class="pre">=</span> <span class="pre">5</span></code> y <code class="docutils literal notranslate"><span class="pre">N_INNER_FOLDS</span> <span class="pre">=</span> <span class="pre">5</span></code>. La tabla maestra vigente es <code class="docutils literal notranslate"><span class="pre">results/experiments_master_5x5.csv</span></code> (96 filas) más <code class="docutils literal notranslate"><span class="pre">results/svm_gpu_results_colab_5x5.csv</span></code> (16 filas de SVM), y la consolida <code class="docutils literal notranslate"><span class="pre">results/master_table_112.csv</span></code>. La corrida 3 x 3 quedó como registro en <code class="docutils literal notranslate"><span class="pre">results/legacy_3x3/</span></code> y NO debe mezclarse con la nueva.</p>
+<p>Estado: <strong>terminado</strong>.</p>
+<ul class="simple">
+<li><p>Corrida: 80 combinaciones (Naive Bayes, regresión logística, árbol, Random Forest y XGBoost) en la CPU local con <code class="docutils literal notranslate"><span class="pre">src/run_local_5x5.py</span></code>; KNN y SVM (32 combinaciones) en Colab con GPU T4 y cuML 26.06 (<code class="docutils literal notranslate"><span class="pre">10_colab_5x5.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">07_svm_gpu_colab.ipynb</span></code>).</p></li>
+<li><p>Unión y análisis: <code class="docutils literal notranslate"><span class="pre">merge_session_results</span></code>, <code class="docutils literal notranslate"><span class="pre">posthoc_metrics</span></code> (96/96), <code class="docutils literal notranslate"><span class="pre">svm_comparability</span></code> (16/16), <code class="docutils literal notranslate"><span class="pre">master_table</span></code>, <code class="docutils literal notranslate"><span class="pre">anytime_study</span></code> (45 corridas, folds 0 a 2 de 5) e <code class="docutils literal notranslate"><span class="pre">interpretability_multi</span></code> (5 folds, 200 observaciones por modelo).</p></li>
+<li><p>Notebooks 05, 06, 08 y 09 reejecutados y con textos 5 x 5; también se actualizaron los textos de 02, 04, 07, 10, README, portada, introducción y <code class="docutils literal notranslate"><span class="pre">correcciones.md</span></code>.</p></li>
+<li><p>Resultado principal: mejor combinación XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>, F1 0.5466; Friedman significativo y Nemenyi (CD 89.4) separa solo los extremos del ranking.</p></li>
+<li><p>Diferencias de hardware: KNN en GPU difiere de scikit-learn hasta 0.0066 de F1 por fold; el F1 de SVM reajustado en CPU es 0.009 mayor en promedio. Los tiempos de SVM y KNN no son comparables.</p></li>
+<li><p>Pendiente opcional: ajuste del umbral de decisión en el bucle interno (<code class="docutils literal notranslate"><span class="pre">src/threshold_tuning.py</span></code>); no se decidió.</p></li>
+</ul>
+</section>
+<section id="correcciones-del-entregable-3-2026-10-30-hechas-con-la-corrida-3-x-3-y-reproducidas-en-5-x-5">
+<h2>Correcciones del entregable 3 (2026-10-30, hechas con la corrida 3 x 3 y reproducidas en 5 x 5)<a class="headerlink" href="#correcciones-del-entregable-3-2026-10-30-hechas-con-la-corrida-3-x-3-y-reproducidas-en-5-x-5" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">results/master_table_112.csv</span></code> y <code class="docutils literal notranslate"><span class="pre">results/best_per_model.csv</span></code> (generados con <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.master_table</span></code>) son la tabla maestra consolidada y la selección por modelo. <code class="docutils literal notranslate"><span class="pre">experiments_master.csv</span></code> ya no está en <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code>.</p></li>
+<li><p>SVM: <code class="docutils literal notranslate"><span class="pre">results/svm_local_refit_check.csv</span></code> (<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.svm_comparability</span></code>) reajusta en CPU las 16 filas de Colab con sus hiperparámetros; el F1 es 0.008 mayor en promedio (ver <code class="docutils literal notranslate"><span class="pre">notebooks/08_tabla_maestra_svm.ipynb</span></code>).</p></li>
+<li><p>Curvas anytime y Hyperband: <code class="docutils literal notranslate"><span class="pre">results/anytime/</span></code> (<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.anytime_study</span></code>), <code class="docutils literal notranslate"><span class="pre">notebooks/09_anytime_multifidelidad.ipynb</span></code>.</p></li>
+<li><p>SHAP en 3 folds y LIME vs. SHAP en 120 observaciones por modelo: <code class="docutils literal notranslate"><span class="pre">results/interpretability/</span></code> (<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.interpretability_multi</span></code>), secciones 5 y 6 de <code class="docutils literal notranslate"><span class="pre">notebooks/06_interpretability.ipynb</span></code>.</p></li>
+<li><p>Trazabilidad y auditoría de fuga: <code class="docutils literal notranslate"><span class="pre">correcciones.md</span></code>.</p></li>
+</ul>
+</section>
 <section id="estado-actual-corrida-v2-dataset-de-29-965-x-21">
 <h2>Estado actual (corrida v2, dataset de 29,965 x 21)<a class="headerlink" href="#estado-actual-corrida-v2-dataset-de-29-965-x-21" title="Link to this heading">#</a></h2>
 <ul class="simple">
@@ -731,6 +760,8 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cambio-a-validacion-anidada-5-x-5-2026-10-31-completado-2026-11-02">Cambio a validación anidada 5 x 5 (2026-10-31, completado 2026-11-02)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correcciones-del-entregable-3-2026-10-30-hechas-con-la-corrida-3-x-3-y-reproducidas-en-5-x-5">Correcciones del entregable 3 (2026-10-30, hechas con la corrida 3 x 3 y reproducidas en 5 x 5)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estado-actual-corrida-v2-dataset-de-29-965-x-21">Estado actual (corrida v2, dataset de 29,965 x 21)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#progreso-corrida-anterior-dataset-v1-100-112-combinaciones-guardadas-svm-none-genetic-deap-termino-ok-2026-09-23-aprox-17-07-con-el-fix-de-threading-15645-8s-aprox-4h21min">1. Progreso (corrida anterior, dataset v1): 100/112 combinaciones guardadas: <code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> terminó OK (2026-09-23 aprox. 17:07) con el fix de threading, 15645.8s (aprox. 4h21min)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-continuar">2. Cómo continuar</a></li>
