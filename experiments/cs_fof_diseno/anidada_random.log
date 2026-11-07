@@ -1,0 +1,6 @@
+pliegue 1: F1 0.5483 AUC 0.7915 (interno 0.5513) 18.6 min {'eps': 0.33233042062267915, 'max_depth': 12, 'max_features': 'sqrt', 'min_samples_leaf': 23, 'n_estimators': 458}
+pliegue 2: F1 0.5453 AUC 0.7736 (interno 0.5514) 17.9 min {'eps': 0.0879892974968902, 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 23, 'n_estimators': 230}
+pliegue 3: F1 0.5416 AUC 0.7797 (interno 0.5517) 17.8 min {'eps': 0.045898241814956484, 'max_depth': 12, 'max_features': 'sqrt', 'min_samples_leaf': 33, 'n_estimators': 392}
+pliegue 4: F1 0.5592 AUC 0.7959 (interno 0.5446) 17.6 min {'eps': 0.2646573170201432, 'max_depth': 8, 'max_features': 'sqrt', 'min_samples_leaf': 14, 'n_estimators': 330}
+pliegue 5: F1 0.5415 AUC 0.7825 (interno 0.5523) 17.5 min {'eps': 0.061702174834031516, 'max_depth': 9, 'max_features': 'log2', 'min_samples_leaf': 40, 'n_estimators': 403}
+FINAL F1 0.5472 ± 0.0073 | AUC 0.7846 ± 0.0090

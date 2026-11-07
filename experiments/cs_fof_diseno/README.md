@@ -27,3 +27,19 @@ para la evaluación final 5 x 5 (`src/run_cs_fof_5x5.py`).
   depende de un ajuste fino de sus hiperparámetros.
 
 Para reproducir: `python experiments/cs_fof_diseno/diseno.py` (requiere el `.xls` en `data/raw/`).
+
+## Validación anidada 5 x 5 de referencia (búsqueda aleatoria, `class_weight`)
+
+Mismos 5 pliegues externos que la tabla maestra, 5 internos, 25 configuraciones, métrica F1.
+No reemplaza a `src/run_cs_fof_5x5.py` (que corre las 16 combinaciones), pero ya es comparable
+pliegue a pliegue con los modelos base:
+
+| Modelo | F1 (media ± d.e.) | AUC-ROC | Diferencia de F1 | Gana en | p Wilcoxon | δ de Cliff |
+|---|---|---|---|---|---|---|
+| **CS-FOF** (class_weight, aleatoria) | **0.5472 ± 0.0073** | **0.7846** | — | — | — | — |
+| XGBoost (class_weight, Optuna), mejor global | 0.5466 ± 0.0091 | 0.7828 | +0.0006 | 4 de 5 | 0.625 | +0.20 |
+| Random Forest (class_weight, aleatoria) | 0.5452 ± 0.0077 | 0.7831 | +0.0019 | 3 de 5 | 0.312 | +0.20 |
+| XGBoost (class_weight, aleatoria) | 0.5414 ± 0.0107 | 0.7801 | +0.0058 | 5 de 5 | 0.062 | +0.44 |
+
+CS-FOF queda primero en F1 medio y en AUC-ROC, pero con 5 pliegues las diferencias no son
+estadísticamente significativas (con n = 5, Wilcoxon bilateral no puede bajar de p = 0.0625).
