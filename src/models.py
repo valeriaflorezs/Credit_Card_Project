@@ -371,6 +371,16 @@ def _svm_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
     )
 
 
+
+def _cs_fof_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
+    # Modelo original (src/original_model.py). Reparte sus árboles en procesos
+    # (config.CSFOF_N_JOBS) porque, al ser numpy puro, los hilos de Optuna y del
+    # algoritmo genético no lo aceleran; ver src/run_cs_fof_5x5.py.
+    from src.config import CSFOF_N_JOBS
+    from src.original_model import CSFisherObliqueForest
+    return CSFisherObliqueForest(random_state=random_state, n_jobs=CSFOF_N_JOBS, **kwargs)
+
+
 MODEL_REGISTRY: dict[str, ModelSpec] = {
     "knn": ModelSpec(
         name="knn",
@@ -514,6 +524,29 @@ MODEL_REGISTRY: dict[str, ModelSpec] = {
             "PROJECT_BRIEF: correr en Colab si es necesario). "
             "complexity_analysis.py debe contrastar esto contra "
             "LinearSVC/SGDClassifier (O(n) vs. O(n^2)-O(n^3) del kernel completo)."
+        ),
+    ),
+    "cs_fof": ModelSpec(
+        name="cs_fof",
+        estimator_factory=_cs_fof_factory,
+        hyperparameters=[
+            HyperparamSpec("n_estimators", "int", low=100, high=500),
+            HyperparamSpec("max_depth", "int", low=6, high=14),
+            HyperparamSpec("min_samples_leaf", "int", low=10, high=60),
+            HyperparamSpec("max_features", "categorical", choices=["sqrt", "log2"]),
+            HyperparamSpec("eps", "float", low=1e-2, high=1e0, log=True),
+        ],
+        supports_class_weight=True,
+        class_weight_param="class_weight",  # 'balanced' -> costo del moroso c = n0/n1
+        requires_scaling=False,             # estandariza internamente para Fisher
+        grid_search_max_combinations=80,    # igual que random_forest -> 32 combinaciones
+        notes=(
+            "Modelo original: Cost-Sensitive Fisher Oblique Forest. Mismo presupuesto "
+            "de búsqueda que Random Forest. Rangos fijados con pruebas de diseño hechas "
+            "SOLO dentro del entrenamiento del pliegue externo 1 (validación interna de "
+            "3 pliegues): profundidades >= 14 o cortes oblicuos con p/2 variables bajaron "
+            "el F1 (sobreajuste); por eso max_depth <= 14 y el corte oblicuo usa las "
+            "mismas q variables que los cortes por ejes (n_oblique=1, n_bins=64 fijos)."
         ),
     ),
 }

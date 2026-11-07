@@ -1,0 +1,9 @@
+RF (mejores hiperparámetros pliegue 1)        F1 0.5450±0.0057  AUC 0.7797      4s
+XGBoost (mejores hiperparámetros pliegue 1)   F1 0.5412±0.0066  AUC 0.7752      1s
+V0 CS-FOF base                                F1 0.5493±0.0080  AUC 0.7808     15s
+V1 + oblicuo con p/2 variables                F1 0.5449±0.0085  AUC 0.7779     26s
+V2 + 2 candidatos oblicuos                    F1 0.5482±0.0086  AUC 0.7802     19s
+V3 + p/2 variables y 2 candidatos             F1 0.5429±0.0084  AUC 0.7764     36s
+V4 sin corte oblicuo (ablación)               F1 0.5452±0.0072  AUC 0.7789     10s
+V5 = V1 más profundo (d=14, h=10)             F1 0.5238±0.0067  AUC 0.7727     31s
+V6 = V1 con 128 bins                          F1 0.5458±0.0099  AUC 0.7780     27s
