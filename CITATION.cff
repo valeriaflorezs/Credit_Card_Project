@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "Si usa este software o sus resultados, por favor cítelo así."
+title: "Predicción del incumplimiento de pago en tarjetas de crédito con un bosque oblicuo de Fisher sensible al costo (CS-FOF)"
+type: software
+authors:
+  - family-names: "Flórez"
+    given-names: "Valeria"
+    email: "florezvaleria@uninorte.edu.co"
+    affiliation: "Universidad del Norte, Barranquilla, Colombia"
+  - family-names: "Barrera"
+    given-names: "Katherin"
+    email: "lkatherin@uninorte.edu.co"
+    affiliation: "Universidad del Norte, Barranquilla, Colombia"
+repository-code: "https://github.com/valeriaflorezs/Credit_Card_Project"
+license: MIT
+version: "3.0.0"
+date-released: "2026-11-08"
+keywords:
+  - credit risk
+  - credit card default
+  - oblique random forest
+  - Fisher discriminant
+  - cost-sensitive learning
+# Cuando Zenodo asigne el DOI a la release, agregarlo aquí:
+# doi: "10.5281/zenodo.XXXXXXX"
