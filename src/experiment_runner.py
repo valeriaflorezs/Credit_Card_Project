@@ -59,6 +59,8 @@ MODEL_COST_ORDER: tuple[str, ...] = (
     "logistic_regression",
     "decision_tree",
     "xgboost",
+    "lightgbm",
+    "catboost",
     "random_forest",
     "knn",
     "svm",
