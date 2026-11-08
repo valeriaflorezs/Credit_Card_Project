@@ -3,11 +3,11 @@ message: "Si usa este software o sus resultados, por favor cítelo así."
 title: "Predicción del incumplimiento de pago en tarjetas de crédito con un bosque oblicuo de Fisher sensible al costo (CS-FOF)"
 type: software
 authors:
-  - family-names: "Flórez"
+  - family-names: "Florez Sarmiento"
     given-names: "Valeria"
     email: "florezvaleria@uninorte.edu.co"
     affiliation: "Universidad del Norte, Barranquilla, Colombia"
-  - family-names: "Barrera"
+  - family-names: "Barrera López"
     given-names: "Katherin"
     email: "lkatherin@uninorte.edu.co"
     affiliation: "Universidad del Norte, Barranquilla, Colombia"

@@ -1,7 +1,7 @@
 # Ficha del modelo: CS-FOF
 
 **Cost-Sensitive Fisher Oblique Forest**, modelo original del Proyecto Final de Machine Learning
-(Universidad del Norte). Autoras: Valeria Flórez y Katherin Barrera. Versión 3.0.0, noviembre de 2026.
+(Universidad del Norte). Autoras: Valeria Florez Sarmiento y Katherin Barrera López. Versión 3.0.0, noviembre de 2026.
 
 ## Descripción
 Bosque aleatorio en el que cada nodo puede dividir a los clientes por una **combinación lineal de
