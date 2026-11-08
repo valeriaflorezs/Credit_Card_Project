@@ -4,6 +4,7 @@ Toda ruta de datos, nombre de columna target y parámetro de validación
 cruzada se define aquí — ningún otro módulo debe hardcodear estos valores.
 """
 
+import os
 from pathlib import Path
 
 # --- Reproducibilidad ---
@@ -90,6 +91,13 @@ GA_MUT_INDPB = 0.2        # prob. de mutar cada gen individual, dado que el indi
 # a pedido del usuario, aplicado para las combinaciones que faltan despues
 # de que termine la que esta en curso, no afecta el proceso ya vivo).
 OPTIMIZATION_N_JOBS = 10
+
+# --- Modelo original (CS-FOF) ---
+# Procesos para repartir los árboles de cada ajuste de CS-FOF. Los hilos de
+# OPTIMIZATION_N_JOBS no lo aceleran (numpy puro, no libera el GIL), así que
+# src/run_cs_fof_5x5.py evalúa un candidato a la vez y paraleliza los árboles.
+# 8 = núcleos físicos del Ryzen 7; no cambia los resultados, solo el tiempo.
+CSFOF_N_JOBS = int(os.environ.get("CSFOF_N_JOBS", 8))
 GA_TOURNAMENT_SIZE = 3
 GA_ELITE_SIZE = 2         # mejores individuos preservados sin cambios cada generación
 
