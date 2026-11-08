@@ -24,9 +24,11 @@ Uso (desde la raíz)::
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 import warnings
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -41,7 +43,8 @@ from src import config
 from src.balancing import compute_class_weight_kwargs
 from src.models import MODEL_REGISTRY, get_param_distributions
 
-SALIDA = config.RESULTS_DIR / "additional_datasets"
+# Carpeta de salida; se puede cambiar con la variable de entorno ADDITIONAL_DATASETS_DIR.
+SALIDA = Path(os.environ.get("ADDITIONAL_DATASETS_DIR", config.RESULTS_DIR / "additional_datasets"))
 CACHE = config.DATA_DIR / "external"
 MODELOS = ("naive_bayes", "logistic_regression", "decision_tree", "knn", "svm",
            "random_forest", "xgboost", "lightgbm", "catboost", "cs_fof")
