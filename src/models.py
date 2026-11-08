@@ -381,6 +381,31 @@ def _cs_fof_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
     return CSFisherObliqueForest(random_state=random_state, n_jobs=CSFOF_N_JOBS, **kwargs)
 
 
+
+def _lightgbm_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
+    # Método reciente de boosting (exigido por el Entregable 3). n_jobs=1 como
+    # XGBoost: el paralelismo va en las evaluaciones del optimizador.
+    # subsample_freq=1 hace que "subsample" se aplique en cada iteración.
+    from lightgbm import LGBMClassifier
+    return LGBMClassifier(random_state=random_state, n_jobs=1, subsample_freq=1, verbose=-1, **kwargs)
+
+
+def _catboost_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
+    # Método reciente de boosting (exigido por el Entregable 3). CatBoost no
+    # acepta class_weight="balanced": su equivalente es auto_class_weights=
+    # "Balanced" (peso n_neg/n_pos para la clase positiva, recalculado en cada fit).
+    from catboost import CatBoostClassifier
+    if kwargs.get("auto_class_weights") == "balanced":
+        kwargs["auto_class_weights"] = "Balanced"
+    return CatBoostClassifier(
+        random_seed=random_state,
+        thread_count=1,
+        verbose=0,
+        allow_writing_files=False,  # no crea la carpeta catboost_info/
+        **kwargs,
+    )
+
+
 MODEL_REGISTRY: dict[str, ModelSpec] = {
     "knn": ModelSpec(
         name="knn",
@@ -547,6 +572,48 @@ MODEL_REGISTRY: dict[str, ModelSpec] = {
             "3 pliegues): profundidades >= 14 o cortes oblicuos con p/2 variables bajaron "
             "el F1 (sobreajuste); por eso max_depth <= 14 y el corte oblicuo usa las "
             "mismas q variables que los cortes por ejes (n_oblique=1, n_bins=64 fijos)."
+        ),
+    ),
+    "lightgbm": ModelSpec(
+        name="lightgbm",
+        estimator_factory=_lightgbm_factory,
+        hyperparameters=[
+            HyperparamSpec("n_estimators", "int", low=100, high=500),
+            HyperparamSpec("num_leaves", "int", low=8, high=128),
+            HyperparamSpec("learning_rate", "float", low=1e-3, high=3e-1, log=True),
+            HyperparamSpec("subsample", "float", low=0.5, high=1.0),
+            HyperparamSpec("colsample_bytree", "float", low=0.5, high=1.0),
+            HyperparamSpec("reg_lambda", "float", low=1e-3, high=1e2, log=True),
+        ],
+        supports_class_weight=True,
+        class_weight_param="class_weight",
+        requires_scaling=False,
+        notes=(
+            "Método reciente del estado del arte (Ke et al., 2017), exigido por el "
+            "Entregable 3. Mismos 6 hiperparámetros y rangos que XGBoost, salvo "
+            "num_leaves en lugar de max_depth (LightGBM crece por hojas), para que "
+            "el presupuesto de búsqueda sea el mismo (malla de 64 combinaciones)."
+        ),
+    ),
+    "catboost": ModelSpec(
+        name="catboost",
+        estimator_factory=_catboost_factory,
+        hyperparameters=[
+            HyperparamSpec("iterations", "int", low=100, high=500),
+            HyperparamSpec("depth", "int", low=2, high=10),
+            HyperparamSpec("learning_rate", "float", low=1e-3, high=3e-1, log=True),
+            HyperparamSpec("l2_leaf_reg", "float", low=1e-2, high=1e2, log=True),
+            HyperparamSpec("random_strength", "float", low=1e-2, high=1e1, log=True),
+            HyperparamSpec("bagging_temperature", "float", low=0.0, high=1.0),
+        ],
+        supports_class_weight=True,
+        class_weight_param="auto_class_weights",  # la fábrica traduce "balanced" -> "Balanced"
+        requires_scaling=False,
+        notes=(
+            "Método reciente del estado del arte (Prokhorenkova et al., 2018), exigido "
+            "por el Entregable 3. Árboles simétricos y boosting ordenado. 6 "
+            "hiperparámetros, como XGBoost, para igualar el presupuesto de búsqueda. "
+            "depth se acota a 10 porque el costo de CatBoost crece como 2^depth."
         ),
     ),
 }
