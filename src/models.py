@@ -600,7 +600,7 @@ MODEL_REGISTRY: dict[str, ModelSpec] = {
         estimator_factory=_catboost_factory,
         hyperparameters=[
             HyperparamSpec("iterations", "int", low=100, high=500),
-            HyperparamSpec("depth", "int", low=2, high=10),
+            HyperparamSpec("depth", "int", low=2, high=8),
             HyperparamSpec("learning_rate", "float", low=1e-3, high=3e-1, log=True),
             HyperparamSpec("l2_leaf_reg", "float", low=1e-2, high=1e2, log=True),
             HyperparamSpec("random_strength", "float", low=1e-2, high=1e1, log=True),
@@ -613,7 +613,9 @@ MODEL_REGISTRY: dict[str, ModelSpec] = {
             "Método reciente del estado del arte (Prokhorenkova et al., 2018), exigido "
             "por el Entregable 3. Árboles simétricos y boosting ordenado. 6 "
             "hiperparámetros, como XGBoost, para igualar el presupuesto de búsqueda. "
-            "depth se acota a 10 porque el costo de CatBoost crece como 2^depth."
+            "depth se acota a 8 porque el costo de CatBoost crece como 2^depth: medido "
+            "sobre 19 000 filas y 500 iteraciones, depth=10 tarda 36 s por ajuste frente "
+            "a 5 s con depth=6 (valor por defecto de CatBoost)."
         ),
     ),
 }
