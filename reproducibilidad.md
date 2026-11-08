@@ -57,3 +57,9 @@ Firmado:
 |---|---|---|
 | Valeria Florez Sarmiento | | |
 | Katherin Barrera López | | |
+
+## Referencias del Entregable 3
+
+```{bibliography}
+:filter: cited and "introduccion" not in docnames
+```
