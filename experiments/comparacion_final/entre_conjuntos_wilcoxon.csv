@@ -1,0 +1,10 @@
+modelo,gana_cs_fof,p_wilcoxon,p_holm
+catboost,0,0.125,1.0
+decision_tree,4,0.125,1.0
+knn,3,0.25,1.0
+lightgbm,2,1.0,1.0
+logistic_regression,3,0.375,1.0
+naive_bayes,3,0.25,1.0
+random_forest,2,0.625,1.0
+svm,3,0.625,1.0
+xgboost,1,0.25,1.0

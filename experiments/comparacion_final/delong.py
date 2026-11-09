@@ -10,6 +10,8 @@ import datos  # usa data/raw/default_of_credit_card_clients.xls; Uso: python exp
 from scipy.stats import norm, chi2
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
+from lightgbm import LGBMClassifier
+from catboost import CatBoostClassifier
 from src.original_model import CSFisherObliqueForest
 X, y, cols, folds = datos.cargar()
 best = pd.read_csv("mejor_por_modelo.csv").set_index("model")
@@ -25,6 +27,9 @@ prob = {
  "xgboost": oof(lambda k, yt: XGBClassifier(random_state=42, eval_metric="logloss", tree_method="hist", n_jobs=4,
                                           scale_pos_weight=(yt == 0).sum() / (yt == 1).sum(), **P("xgboost")[k])),
  "random_forest": oof(lambda k, yt: RandomForestClassifier(class_weight="balanced", random_state=42, n_jobs=4, **P("random_forest")[k])),
+ "lightgbm": oof(lambda k, yt: LGBMClassifier(class_weight="balanced", random_state=42, n_jobs=4, subsample_freq=1, verbose=-1, **P("lightgbm")[k])),
+ "catboost": oof(lambda k, yt: CatBoostClassifier(auto_class_weights="Balanced", random_seed=42, thread_count=4, verbose=0,
+                                                 allow_writing_files=False, **P("catboost")[k])),
 }
 print(f"reajustes en {time.time()-t:.0f}s")
 def delong(y, a, b):
@@ -38,7 +43,7 @@ def delong(y, a, b):
     z = (A1 - A2) / np.sqrt(var); return A1, A2, z, 2 * norm.sf(abs(z))
 filas = []
 from sklearn.metrics import f1_score
-for rival in ["xgboost", "random_forest"]:
+for rival in ["catboost", "xgboost", "lightgbm", "random_forest"]:
     A1, A2, z, p = delong(y, prob["cs_fof"], prob[rival])
     ea, eb = (prob["cs_fof"] > 0.5) != y, (prob[rival] > 0.5) != y
     b_, c_ = int((ea & ~eb).sum()), int((~ea & eb).sum())

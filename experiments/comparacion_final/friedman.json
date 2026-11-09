@@ -1,15 +1,17 @@
 {
- "friedman_chi2": 32.93333333333334,
- "friedman_p": 2.7244350096316865e-05,
- "nemenyi_cd": 4.695416703894232,
+ "friedman_chi2": 40.28727272727275,
+ "friedman_p": 6.73981826564901e-06,
+ "nemenyi_cd": 6.057992834068874,
  "rangos": {
-  "cs_fof": 1.4,
-  "xgboost": 2.2,
-  "random_forest": 2.4,
-  "svm": 4.0,
-  "knn": 5.6,
-  "decision_tree": 5.6,
-  "logistic_regression": 6.8,
-  "naive_bayes": 8.0
+  "catboost": 2.0,
+  "cs_fof": 2.4,
+  "xgboost": 3.2,
+  "lightgbm": 3.8,
+  "random_forest": 3.6,
+  "svm": 6.0,
+  "knn": 7.6,
+  "decision_tree": 7.6,
+  "logistic_regression": 8.8,
+  "naive_bayes": 10.0
  }
 }

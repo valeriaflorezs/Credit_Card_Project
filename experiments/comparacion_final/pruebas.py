@@ -7,8 +7,7 @@ from scipy.stats import friedmanchisquare, wilcoxon, t as tdist, studentized_ran
 RAIZ = Path(__file__).resolve().parents[2]
 R = str(RAIZ / "results") + "/"
 os.chdir(Path(__file__).resolve().parent)  # las salidas quedan junto al script
-m = pd.concat([pd.read_csv(R + "experiments_master_5x5.csv"), pd.read_csv(R + "svm_gpu_results_colab_5x5.csv"),
-               pd.read_csv(R + "experiments_5x5__cs_fof.csv")], ignore_index=True)
+m = pd.read_csv(R + "master_table_e3.csv")  # 7 modelos base + CS-FOF + LightGBM + CatBoost
 m = m.dropna(subset=["f1_per_fold"])
 m["f1_mean"] = m.f1_per_fold.apply(lambda s: np.mean(json.loads(s)))
 best = m.loc[m.groupby("model").f1_mean.idxmax()].sort_values("f1_mean", ascending=False)
