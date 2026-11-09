@@ -32,22 +32,29 @@ Implementación propia con numpy: `src/original_model.py`. Artefacto: `artifacts
 ## Métricas (validación anidada 5 × 5, mismos pliegues para todos los modelos)
 | Modelo (mejor combinación) | F1 clase default | AUC-ROC |
 |---|---|---|
+| CatBoost (class_weight, búsqueda aleatoria) | 0.5480 ± 0.0088 | 0.7838 |
 | **CS-FOF** (class_weight, búsqueda aleatoria) | **0.5479 ± 0.0054** | **0.7847** |
 | XGBoost (class_weight, Optuna) | 0.5466 ± 0.0091 | 0.7828 |
+| LightGBM (class_weight, Optuna) | 0.5462 ± 0.0086 | 0.7843 |
 | Random Forest (class_weight, aleatoria) | 0.5452 ± 0.0077 | 0.7831 |
 
-Desviaciones con `ddof=1`. CS-FOF es significativamente mejor que SVM, KNN, árbol de decisión,
-regresión logística y Naive Bayes (t corregida de Nadeau–Bengio con Holm, p < 0.05), pero **no**
-que XGBoost ni Random Forest: solo McNemar es significativa frente a ellos.
+Desviaciones con `ddof=1`. CS-FOF es significativamente mejor que SVM, árbol de decisión, regresión
+logística y Naive Bayes (t corregida de Nadeau–Bengio con Holm, p < 0.05), pero **no** que CatBoost,
+XGBoost, LightGBM ni Random Forest. Probabilidades fuera de pliegue: Brier 0.168 y ECE 0.180, las
+mejores de los cinco modelos de la tabla.
+
+**Otros conjuntos de crédito** (F1, class_weight y búsqueda aleatoria): German 0.589 (CatBoost 0.605),
+Australian 0.874 (XGBoost 0.880) y Polish año 1 0.430 (CatBoost 0.733).
 
 ## Limitaciones
-- La ventaja sobre XGBoost es pequeña (+0.0014 de F1) y no significativa con 5 pliegues.
-- Por tiempo de cómputo no se completaron: el algoritmo genético de CS-FOF, las técnicas
-  `none`, `smote` y `adasyn` de CS-FOF, los conjuntos de datos adicionales y los estudios de robustez.
-- Entrenar con pesos de costo **sobreestima** la probabilidad de incumplimiento: las probabilidades
-  no están calibradas. Si se usan como probabilidades reales, recalibrar (Platt o isotónica).
-- Implementación en Python puro: entrenar es más lento que con librerías en C (unos 14 s por
-  ajuste en un Ryzen 7 con 8 procesos).
+- No es superior al mejor modelo de referencia y no es consistente en otros conjuntos: con desbalance
+  extremo (Polish, 4 % de positivos) rinde mucho menos que los métodos de *boosting*.
+- Solo se evaluó con la técnica de pesos de clase.
+- Entrenar con pesos de costo **sobreestima** la probabilidad de incumplimiento (probabilidad media
+  0.40 frente a una tasa real de 0.22). Si se usan como probabilidades reales, recalibrar (Platt o
+  isotónica).
+- Implementación en Python puro: entrenar es más lento que con librerías en C (unos 13 s por ajuste
+  con 4 procesos, frente a 1–3 s de Random Forest y los métodos de *boosting*).
 
 ## Riesgos y consideraciones éticas
 - **Sesgo:** las tasas de incumplimiento difieren por sexo y nivel educativo en los datos; el modelo

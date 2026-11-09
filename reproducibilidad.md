@@ -29,13 +29,19 @@
 * - Hardware
   - Windows, AMD Ryzen 7, 16 GB de RAM, sin GPU (modelos de árboles, CS-FOF y boosting); Google Colab con GPU T4 (SVM y KNN)
 * - Tiempo de cómputo de CS-FOF
-  - Malla 2.7 h, aleatoria 2.5 h y Optuna 2.5 h (5 × 5, 8 procesos)
+  - Malla 2.7 h, aleatoria 2.5 h, Optuna 2.5 h y genético 9.6 h (5 × 5, 8 procesos)
 * - Pruebas automáticas
   - `python -m pytest tests/ -q` (14 pruebas) en GitHub Actions en cada *push*
 * - Modelo final
   - `python -m src.train_cs_fof_artifact` → `artifacts/cs_fof.joblib` y `artifacts/metadata.json`
 * - Corridas
   - `python -u -m src.run_cs_fof_5x5 class_weight` y `python -u -m src.run_boosting_recientes_5x5 --tecnicas class_weight --metodos grid_search random_search bayesian_optuna`
+* - Conjuntos adicionales
+  - `python -u -m src.run_additional_datasets` (descarga German, Australian y Polish con `ucimlrepo`)
+* - Tabla maestra y pruebas
+  - `python -m src.build_master_table_e3`, luego `python experiments/comparacion_final/pruebas.py`, `delong.py` y `entre_conjuntos.py`
+* - Robustez (exploratoria)
+  - `python experiments/robustez/robustez.py` (calibración, ruido y tamaño de muestra; ~1 h en 4 núcleos)
 ```
 
 ## Declaración de autoría y uso de herramientas

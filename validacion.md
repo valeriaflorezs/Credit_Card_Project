@@ -5,8 +5,9 @@
 Todos los modelos se evalúan con la misma validación cruzada anidada estratificada (5 pliegues externos ×
 5 internos, semilla 42), el mismo preprocesamiento y el mismo presupuesto de búsqueda
 (`experiments/protocolo.md`). La métrica principal es el F1 de la clase *default*. Las desviaciones
-estándar usan `ddof=1`. Las cifras de esta sección se reproducen con
-`experiments/comparacion_final/pruebas.py` y `experiments/comparacion_final/delong.py`.
+estándar usan `ddof=1`. Se comparan los 7 modelos base, dos métodos recientes del estado del arte
+(LightGBM y CatBoost) y CS-FOF. Las cifras se reproducen con `experiments/comparacion_final/pruebas.py`
+y `experiments/comparacion_final/delong.py`.
 
 ## Resultados
 
@@ -19,6 +20,11 @@ estándar usan `ddof=1`. Las cifras de esta sección se reproducen con
   - Búsqueda
   - F1 (media ± d.e.)
   - AUC-ROC
+* - CatBoost
+  - class_weight
+  - aleatoria
+  - 0.5480 ± 0.0088
+  - 0.7838
 * - **CS-FOF**
   - class_weight
   - aleatoria
@@ -29,6 +35,11 @@ estándar usan `ddof=1`. Las cifras de esta sección se reproducen con
   - Optuna
   - 0.5466 ± 0.0091
   - 0.7828
+* - LightGBM
+  - class_weight
+  - Optuna
+  - 0.5462 ± 0.0086
+  - 0.7843
 * - Random Forest
   - class_weight
   - aleatoria
@@ -61,23 +72,19 @@ estándar usan `ddof=1`. Las cifras de esta sección se reproducen con
   - 0.7454
 ```
 
-```{note}
-LightGBM y CatBoost (métodos recientes del estado del arte) se agregan a esta tabla cuando termine su
-corrida (`src/run_boosting_recientes_5x5.py`).
-```
-
-CS-FOF obtiene el mayor F1 medio y el mayor AUC-ROC, con la menor variabilidad entre los tres mejores
-modelos. Las otras dos combinaciones de CS-FOF también quedan cerca: malla 0.5468 ± 0.0088 y Optuna
-0.5456 ± 0.0079.
+CS-FOF queda prácticamente empatado con CatBoost en F1 (diferencia de 0.0001), con el mayor AUC-ROC y la
+menor variabilidad entre los cinco mejores modelos. Sus cuatro métodos de búsqueda dan resultados
+cercanos: aleatoria 0.5479, genético 0.5476, malla 0.5468 y Optuna 0.5456.
 
 ## Pruebas de hipótesis
 
-**Friedman y Nemenyi.** Sobre la mejor combinación de los 8 modelos, la prueba de Friedman rechaza la
-igualdad de desempeño ($\chi^2=32.93$, $p=2.7\times10^{-5}$). CS-FOF tiene el mejor rango medio (1.4),
-seguido de XGBoost (2.2) y Random Forest (2.4). Con 5 pliegues la diferencia crítica de Nemenyi es
-4.70, de modo que la prueba solo separa a CS-FOF de la regresión logística y de Naive Bayes.
+**Friedman y Nemenyi.** Sobre la mejor combinación de los 10 modelos, la prueba de Friedman rechaza la
+igualdad de desempeño ($\chi^2=40.29$, $p=6.7\times10^{-6}$). Los mejores rangos medios son CatBoost
+(2.0), CS-FOF (2.4), XGBoost (3.2), Random Forest (3.6) y LightGBM (3.8). Con 5 pliegues y 10 modelos
+la diferencia crítica de Nemenyi es 6.06, así que la prueba solo separa a los mejores de los modelos
+clásicos más débiles.
 
-```{list-table} CS-FOF frente a la mejor combinación de cada modelo. p-valores ajustados con Holm.
+```{list-table} CS-FOF frente a la mejor combinación de cada modelo. p-valores ajustados con Holm (9 comparaciones).
 :header-rows: 1
 :name: tab-pruebas
 
@@ -87,47 +94,59 @@ seguido de XGBoost (2.2) y Random Forest (2.4). Con 5 pliegues la diferencia cr�
   - p Nadeau–Bengio (Holm)
   - p Wilcoxon (Holm)
   - δ de Cliff
+* - CatBoost
+  - −0.0001
+  - 2 de 5
+  - 1.000
+  - 1.000
+  - −0.04
 * - XGBoost
   - +0.0014
   - 4 de 5
-  - 0.627
-  - 0.438
+  - 1.000
+  - 1.000
   - 0.36
+* - LightGBM
+  - +0.0018
+  - 3 de 5
+  - 1.000
+  - 1.000
+  - 0.12
 * - Random Forest
   - +0.0027
   - 4 de 5
-  - 0.619
-  - 0.438
+  - 1.000
+  - 0.750
   - 0.36
 * - SVM
   - +0.0092
   - 5 de 5
-  - **0.010**
-  - 0.438
+  - **0.014**
+  - 0.563
   - 0.76
 * - KNN
   - +0.0216
   - 5 de 5
-  - **0.034**
-  - 0.438
+  - 0.056
+  - 0.563
   - 0.92
 * - Árbol de decisión
   - +0.0225
   - 5 de 5
   - **0.003**
-  - 0.438
+  - 0.563
   - 1.00
 * - Regresión logística
   - +0.0297
   - 5 de 5
-  - **0.010**
-  - 0.438
+  - **0.014**
+  - 0.563
   - 1.00
 * - Naive Bayes
   - +0.0493
   - 5 de 5
   - **< 0.001**
-  - 0.438
+  - 0.563
   - 1.00
 ```
 
@@ -145,10 +164,20 @@ obtener predicciones fuera de pliegue de los 29 965 clientes.
   - p DeLong
   - Solo falla CS-FOF / solo falla el rival
   - p McNemar
+* - CatBoost
+  - 0.7833 / 0.7843
+  - 0.273
+  - 429 / 936
+  - < 0.001
 * - XGBoost
   - 0.7833 / 0.7827
   - 0.561
   - 434 / 827
+  - < 0.001
+* - LightGBM
+  - 0.7833 / 0.7725
+  - < 0.001 (ver nota)
+  - 345 / 782
   - < 0.001
 * - Random Forest
   - 0.7833 / 0.7822
@@ -157,12 +186,22 @@ obtener predicciones fuera de pliegue de los 29 965 clientes.
   - < 0.001
 ```
 
+```{note}
+El AUC de LightGBM reajustado (0.7725) queda por debajo del de su validación anidada (0.7843). La
+diferencia viene del reajuste, no del modelo, así que el resultado de DeLong contra LightGBM no se usa
+como evidencia de superioridad.
+```
+
+McNemar es significativa contra todos porque CS-FOF comete menos errores exclusivos, pero esto refleja
+sobre todo que sus probabilidades están mejor calibradas alrededor del umbral 0.5 (capítulo de
+evaluación ampliada), no un mejor ordenamiento de los clientes.
+
 ## Veredicto de superioridad
 
 Según la definición operativa del Entregable 3 (sección 6.4), **CS-FOF no es superior de forma
-estadísticamente significativa al mejor modelo de referencia**. Su F1 medio es el mayor, pero frente a
-XGBoost y Random Forest solo la prueba de McNemar es significativa; Nadeau–Bengio, Wilcoxon y DeLong no
-lo son, y el tamaño del efecto es pequeño (δ = 0.36). Además, no se ejecutaron los conjuntos de datos
-adicionales. Sí es significativamente mejor que SVM, KNN, árbol de decisión, regresión logística y
-Naive Bayes, con tamaños de efecto grandes. En términos prácticos, CS-FOF comete casi la mitad de errores
-exclusivos que XGBoost (434 frente a 827) con una variabilidad entre pliegues menor.
+estadísticamente significativa al mejor modelo de referencia** (CatBoost): frente a CatBoost, XGBoost,
+LightGBM y Random Forest, Nadeau–Bengio, Wilcoxon y DeLong no son significativas y el tamaño del efecto
+es despreciable o pequeño. En los tres conjuntos de datos adicionales tampoco es consistente (capítulo
+de evaluación ampliada). Sí es significativamente mejor que SVM, árbol de decisión, regresión logística
+y Naive Bayes con tamaños de efecto grandes, y empata con el mejor método del estado del arte en el
+problema principal con la menor variabilidad entre pliegues.

@@ -30,7 +30,7 @@
 |---|---|---|
 | 7 modelos base (Entregable 2) | none, class_weight, smote, adasyn | malla, aleatoria, Optuna, genético |
 | LightGBM, CatBoost | class_weight | malla, aleatoria, Optuna |
-| CS-FOF | class_weight | malla, aleatoria, Optuna |
+| CS-FOF | class_weight | malla, aleatoria, Optuna, genético |
 
 Mismo presupuesto por método para todos: malla de hasta 200 combinaciones (32 para Random Forest y
 CS-FOF; 64 para XGBoost, LightGBM y CatBoost), 25 configuraciones aleatorias, 30 pruebas de Optuna
@@ -59,3 +59,18 @@ Mismas particiones, semillas y presupuesto: (a) sin corte oblicuo; (b) sin costo
 | LightGBM y CatBoost con 16 combinaciones | Solo class_weight sin el genético | Mismo motivo |
 | 3 conjuntos de datos adicionales y estudios de robustez | No ejecutados | Mismo motivo |
 | Ablación con validación anidada 5 × 5 | Solo en el pliegue 1 (pruebas de diseño) | Mismo motivo |
+
+### Actualización del 9 de noviembre de 2026
+
+Con el plazo extendido al 15 de noviembre se ejecutó parte de lo pendiente. Se registra aquí, sin
+modificar la tabla anterior:
+
+| Pendiente | Estado | Nota |
+|---|---|---|
+| Genético de CS-FOF | Ejecutado | F1 0.5476; no cambia la mejor combinación (aleatoria, 0.5479) |
+| LightGBM y CatBoost | class_weight con malla, aleatoria y Optuna | El genético y las otras técnicas quedan en curso; si terminan, se agregan sin cambiar el criterio |
+| Conjuntos adicionales | German Credit, Australian Credit Approval y Polish Companies Bankruptcy (solo año 1) | Give Me Some Credit se reemplazó por Polish porque solo está en Kaggle y se pidió un conjunto del repositorio UCI. Se usó un solo año de Polish (7 027 empresas) para que la validación anidada de CS-FOF fuera viable. Los 10 modelos usan class_weight y búsqueda aleatoria de 25 configuraciones (`src/run_additional_datasets.py`) |
+| Estudios de robustez | Ruido en etiquetas, tamaño de muestra y calibración (**exploratorios**) | Con los hiperparámetros elegidos en cada pliegue, sin búsqueda nueva (`experiments/robustez/`) |
+| Validación externa repetida | No ejecutada | No cambia el veredicto: con F1 casi idéntico al de CatBoost, más repeticiones no producirían superioridad |
+| Ablación con validación anidada | Sigue solo en el pliegue 1 | — |
+| DeLong y McNemar | Contra CatBoost, XGBoost, LightGBM y Random Forest | Se amplió de los dos mejores modelos base a los cuatro mejores rivales |
