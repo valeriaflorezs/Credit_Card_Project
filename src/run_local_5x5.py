@@ -1,7 +1,7 @@
 """Corrida local 5 x 5 de los modelos que se evalúan en CPU.
 
 Orden de costo: Naive Bayes, regresión logística, árbol de decisión y Random
-Forest (XGBoost, SVM y KNN se corren en Colab, ver ``notebooks/10_colab_5x5.ipynb``
+Forest (XGBoost, SVM y KNN se corren en Colab, ver ``notebooks/12_colab_5x5.ipynb``
 y ``notebooks/07_svm_gpu_colab.ipynb``). Reanudable: ``resume=True`` salta lo ya
 guardado en ``results/experiments_5x5__local.csv``.
 

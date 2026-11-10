@@ -10,7 +10,7 @@ Colab: sesiones manejadas con logs/colab/sync_loop.sh (latido, descarga de CSV, 
 
 SI SE ACABAN LOS TOKENS (como continuar):
 1. Local: python -u -m src.run_local_5x5 y despues python -u -m src.run_local_5x5 xgboost (reanuda solo).
-2. Colab: logs/colab/setup_session.sh svm|knn crea la T4, instala RAPIDS y lanza la corrida; o notebooks/10_colab_5x5.ipynb.
+2. Colab: logs/colab/setup_session.sh svm|knn crea la T4, instala RAPIDS y lanza la corrida; o notebooks/12_colab_5x5.ipynb.
 3. Al terminar: python -m src.merge_session_results y ver EXPERIMENT_STATUS.md (pasos pendientes).
 
 PAUSA (2026-11-01, noche): las 112 combinaciones 5 x 5 estan completas y unidas. Los resultados de 3 x 3 se movieron a results/legacy_3x3/ para que ningun script reanude con datos viejos.
