@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>11. Modelo original (CS-FOF) y métodos recientes &#8212; Predicción de incumplimiento de pago en tarjetas de crédito</title>
+    <title>10. Modelo original (CS-FOF) y métodos recientes &#8212; Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</title>
   
   
   
@@ -37,6 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/dash_theme.css?v=16a22a96" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
@@ -62,7 +63,7 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/11_modelo_original_cs_fof';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/10_modelo_original_cs_fof';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -194,7 +195,7 @@
   
   
   
-    <p class="title logo__title">Predicción de incumplimiento de pago en tarjetas de crédito</p>
+    <p class="title logo__title">Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -210,7 +211,7 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../portada.html">
-                    Evaluación de preprocesamiento, análisis exploratorio y comparación sistemática de modelos para la predicción de incumplimiento de pago en tarjetas de crédito
+                    Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning
                 </a>
             </li>
         </ul>
@@ -226,7 +227,7 @@
 
 <li class="toctree-l1"><a class="reference internal" href="08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">11. Modelo original (CS-FOF) y métodos recientes</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">10. Modelo original (CS-FOF) y métodos recientes</a></li>
 </ul>
 
     </div>
@@ -286,7 +287,7 @@
       
       
       
-      <li><a href="../_sources/notebooks/11_modelo_original_cs_fof.ipynb" target="_blank"
+      <li><a href="../_sources/notebooks/10_modelo_original_cs_fof.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -362,7 +363,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>11. Modelo original (CS-FOF) y métodos recientes</h1>
+    <h1>10. Modelo original (CS-FOF) y métodos recientes</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -390,7 +391,7 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="modelo-original-cs-fof-y-metodos-recientes">
-<h1>11. Modelo original (CS-FOF) y métodos recientes<a class="headerlink" href="#modelo-original-cs-fof-y-metodos-recientes" title="Link to this heading">#</a></h1>
+<h1>10. Modelo original (CS-FOF) y métodos recientes<a class="headerlink" href="#modelo-original-cs-fof-y-metodos-recientes" title="Link to this heading">#</a></h1>
 <p>Las 112 combinaciones de los notebooks 04 a 09 son los modelos tradicionales y fijan el punto de comparación: su mejor F1 medio (validación anidada 5 x 5) es el de <strong>XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y optimización bayesiana, 0.5466</strong>. Este notebook responde una sola pregunta: <strong>¿existe un modelo que supere ese F1?</strong></p>
 <p>Para responderla se agregan tres modelos con el mismo protocolo (mismos 5 folds externos y 5 internos, semilla 42, F1 de la clase <em>default</em> como métrica):</p>
 <ul class="simple">
@@ -1110,7 +1111,7 @@ By Katherin Barrera López y Valeria Florez Sarmiento
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2026.
       <br/>
     
   </p>

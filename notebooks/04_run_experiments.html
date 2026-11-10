@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>04. Ejecutar experimentos &#8212; Predicción de incumplimiento de pago en tarjetas de crédito</title>
+    <title>04. Ejecutar experimentos &#8212; Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</title>
   
   
   
@@ -37,6 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/dash_theme.css?v=16a22a96" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
@@ -193,7 +194,7 @@
   
   
   
-    <p class="title logo__title">Predicción de incumplimiento de pago en tarjetas de crédito</p>
+    <p class="title logo__title">Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -209,7 +210,7 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../portada.html">
-                    Evaluación de preprocesamiento, análisis exploratorio y comparación sistemática de modelos para la predicción de incumplimiento de pago en tarjetas de crédito
+                    Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning
                 </a>
             </li>
         </ul>
@@ -225,7 +226,7 @@
 
 <li class="toctree-l1"><a class="reference internal" href="08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
-<li class="toctree-l1"><a class="reference internal" href="11_modelo_original_cs_fof.html">11. Modelo original (CS-FOF) y métodos recientes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
 </ul>
 
     </div>
@@ -386,7 +387,7 @@
                 <article class="bd-article">
                   
   <blockquote>
-<div><p><strong>Nota (corrida vigente 5 x 5).</strong> Este notebook conserva la corrida inicial 3 x 3 de seis modelos y sus salidas, como registro. La corrida vigente es 5 x 5 con los siete modelos: cinco (80 combinaciones) corrieron en la CPU local con <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.run_local_5x5</span></code> (resultado en <code class="docutils literal notranslate"><span class="pre">results/experiments_5x5__local.csv</span></code>), y SVM y KNN (32 combinaciones) en Colab con GPU T4 (<code class="docutils literal notranslate"><span class="pre">10_colab_5x5.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">07_svm_gpu_colab.ipynb</span></code>). Todo se unió con <code class="docutils literal notranslate"><span class="pre">src/merge_session_results.py</span></code> en <code class="docutils literal notranslate"><span class="pre">results/experiments_master_5x5.csv</span></code> y <code class="docutils literal notranslate"><span class="pre">results/svm_gpu_results_colab_5x5.csv</span></code>; los resultados 3 x 3 están en <code class="docutils literal notranslate"><span class="pre">results/legacy_3x3/</span></code>. Las cifras de este notebook NO son las vigentes.</p>
+<div><p><strong>Nota (corrida vigente 5 x 5).</strong> Este notebook conserva la corrida inicial 3 x 3 de seis modelos y sus salidas, como registro. La corrida vigente es 5 x 5 con los siete modelos: cinco (80 combinaciones) corrieron en la CPU local con <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.run_local_5x5</span></code> (resultado en <code class="docutils literal notranslate"><span class="pre">results/experiments_5x5__local.csv</span></code>), y SVM y KNN (32 combinaciones) en Colab con GPU T4 (<code class="docutils literal notranslate"><span class="pre">12_colab_5x5.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">07_svm_gpu_colab.ipynb</span></code>). Todo se unió con <code class="docutils literal notranslate"><span class="pre">src/merge_session_results.py</span></code> en <code class="docutils literal notranslate"><span class="pre">results/experiments_master_5x5.csv</span></code> y <code class="docutils literal notranslate"><span class="pre">results/svm_gpu_results_colab_5x5.csv</span></code>; los resultados 3 x 3 están en <code class="docutils literal notranslate"><span class="pre">results/legacy_3x3/</span></code>. Las cifras de este notebook NO son las vigentes.</p>
 </div></blockquote>
 <section class="tex2jax_ignore mathjax_ignore" id="ejecutar-experimentos">
 <h1>04. Ejecutar experimentos<a class="headerlink" href="#ejecutar-experimentos" title="Link to this heading">#</a></h1>
@@ -963,7 +964,7 @@ By Katherin Barrera López y Valeria Florez Sarmiento
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2026.
       <br/>
     
   </p>
