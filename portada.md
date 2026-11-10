@@ -1,4 +1,4 @@
-# Evaluación de preprocesamiento, análisis exploratorio y comparación sistemática de modelos para la predicción de incumplimiento de pago en tarjetas de crédito
+# Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning
 
 **Autoras:** Katherin Barrera López y Valeria Florez Sarmiento
 
@@ -10,33 +10,22 @@ Tablero interactivo del EDA: <https://dash-credit-kv.onrender.com>
 
 ---
 
-## Resumen del proyecto
+## Resumen
 
-Este trabajo presenta un flujo completo de aprendizaje automático para la predicción del incumplimiento de pago
-(*default*) de clientes de tarjetas de crédito, a partir del conjunto de datos público *Default of Credit Card
-Clients* del repositorio UCI, compuesto originalmente por 30,000 observaciones y 23 variables predictoras. El estudio
-integra el proceso de extracción, transformación y carga (ETL), un análisis exploratorio de datos (EDA) y una
-evaluación sistemática de modelos de clasificación.
+El incumplimiento de pago en tarjetas de crédito genera pérdidas, costos de cobranza y exigencias de capital para las
+entidades financieras; anticiparlo permite ajustar cupos, priorizar la cobranza y reducir la exposición al riesgo. En
+el conjunto de datos de clientes de Taiwán se han usado modelos estadísticos, ensambles de árboles, remuestreo y redes
+profundas; sus resultados son muy similares, las redes pierden interpretabilidad y los árboles solo dividen el espacio
+en paralelo a los ejes. Se propone el *Cost-Sensitive Fisher Oblique Forest* (CS-FOF), un bosque aleatorio
+implementado desde cero cuyos nodos pueden cortar por la dirección discriminante de Fisher ponderada por el costo del
+incumplimiento; se basa en los árboles oblicuos y se evalúa con validación cruzada anidada y pruebas de hipótesis. En
+un experimento piloto, CS-FOF obtuvo el mayor F1 de la clase *default* entre seis modelos (0.547 frente a 0.546, una
+mejora relativa de 0.3%) con un AUC-ROC de 0.780; se espera que la validación final confirme esta ventaja de forma
+significativa. El aporte es un clasificador interpretable y no neuronal que lleva los cortes oblicuos al riesgo
+crediticio, con garantías teóricas sobre la calidad de cada partición.
 
-El EDA incluyó estadística descriptiva, diagnóstico de valores faltantes y duplicados, análisis de la forma de las
-distribuciones, detección de valores atípicos, comparación formal de grupos con pruebas no paramétricas y de
-independencia, y evaluación de multicolinealidad con correlaciones y el Factor de Inflación de la Varianza (VIF).
-Se eliminaron 35 registros duplicados exactos (quedaron 29,965), se encontraron categorías no oficiales en
-`EDUCATION` y `MARRIAGE`, y se halló una multicolinealidad severa entre las variables de facturación mensual, que se
-resumieron en tres variables derivadas. La variable `PAY_0` destacó como la señal individual más discriminante. La
-variable objetivo presenta un desbalance moderado: 77.9 % sin *default* y 22.1 % con *default*.
-
-Como línea base se entrenó una regresión logística con partición estratificada 80/20, cuyo F1 para la clase
-*default* es de cerca de 0.38. Después se evaluaron 112 configuraciones mediante un diseño factorial (7 modelos por 4
-técnicas de balanceo por 4 métodos de optimización de hiperparámetros), con validación cruzada anidada (5 folds
-externos por 5 internos) y el F1 de la clase *default* como métrica principal. La mejor configuración fue XGBoost con
-ponderación de clases y optimización bayesiana (F1 medio de 0.547), seguida de cerca por Random Forest con
-ponderación de clases.
-Con ese F1 como referencia, el proyecto propone además un modelo original (un bosque aleatorio con cortes oblicuos
-sensibles al costo) y lo contrasta con dos métodos recientes de boosting.
-
-**Palabras clave:** aprendizaje automático, análisis exploratorio de datos, preprocesamiento, clasificación binaria,
-riesgo crediticio, desbalance de clases, validación cruzada anidada, optimización de hiperparámetros, F1-score.
+**Palabras clave:** riesgo crediticio, incumplimiento de pago, tarjetas de crédito, árboles de decisión oblicuos,
+bosques aleatorios, discriminante de Fisher, aprendizaje sensible al costo, desbalance de clases.
 
 ### Resultados en cifras
 
