@@ -85,11 +85,13 @@ Credit_Card_Project/
 | `06_interpretability.ipynb` | SHAP de XGBoost (secciones 1 a 4, un fold) y, en las secciones 5 y 6, SHAP en los 5 folds y LIME vs. SHAP en 200 observaciones por modelo (Random Forest y XGBoost) |
 | `08_tabla_maestra_svm.ipynb` | Tabla maestra consolidada de las 112 combinaciones (`results/master_table_112.csv`), mejor combinación por modelo (`results/best_per_model.csv`) y comparabilidad del SVM de Colab (reajuste en CPU y sensibilidad de Friedman) |
 | `09_anytime_multifidelidad.ipynb` | Curvas anytime de los cuatro optimizadores y comparación con Hyperband (multi-fidelidad propia) |
+| `11_modelo_original_cs_fof.ipynb` | Modelo original CS-FOF, LightGBM y CatBoost frente al mejor F1 de las 112 combinaciones |
 
 Los estudios nuevos se reproducen con (entorno `creditcard`, desde la raíz):
 
 ```bash
 python -m src.master_table
+python -m src.build_master_table_e3   # une las 112 con CS-FOF, LightGBM y CatBoost (141 filas)
 ```
 
 ```bash

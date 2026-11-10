@@ -328,6 +328,8 @@ SHAP sobre el Random Forest y comparación LIME vs. SHAP para XGBoost sobre una 
 | `04_run_experiments` | Corrida de las combinaciones |
 | `05_results_analysis` | Resultados, comparación estadística, calibración y complejidad |
 | `06_interpretability` | SHAP y LIME |
+| `08_tabla_maestra_svm`, `09_anytime_multifidelidad` | Tabla maestra, comparabilidad del SVM, curvas anytime y multi-fidelidad |
+| `11_modelo_original_cs_fof` | Modelo original CS-FOF, LightGBM y CatBoost frente a las 112 combinaciones |
 
 ## Referencias
 

@@ -11,3 +11,4 @@ chapters:
   - file: notebooks/06_interpretability
   - file: notebooks/08_tabla_maestra_svm
   - file: notebooks/09_anytime_multifidelidad
+  - file: notebooks/11_modelo_original_cs_fof

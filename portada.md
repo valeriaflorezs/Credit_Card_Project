@@ -63,3 +63,4 @@ riesgo crediticio, desbalance de clases, validación cruzada anidada, optimizaci
 4. **Pipeline y experimentos:** desarrollo del pipeline y corrida de las combinaciones.
 5. **Análisis de resultados:** tabla de las 112 combinaciones, comparación estadística, calibración y complejidad.
 6. **Interpretabilidad:** SHAP y LIME.
+7. **Modelo original:** CS-FOF, LightGBM y CatBoost frente al mejor F1 de las 112 combinaciones.
