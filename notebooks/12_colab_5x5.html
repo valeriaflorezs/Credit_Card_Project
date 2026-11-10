@@ -415,7 +415,12 @@
 <p>Es seguro volver a ejecutar una sesión que se cortó: <code class="docutils literal notranslate"><span class="pre">resume=True</span></code> salta lo ya guardado.</p>
 <p><strong>SVM.</strong> Con CPU de Colab no es viable (en la corrida local de 3 x 3 una sola combinación tardó más de 4 horas). Para SVM se usa <code class="docutils literal notranslate"><span class="pre">07_svm_gpu_colab.ipynb</span></code> (cuML en GPU), ya ajustado a 5 x 5, y después se mide su diferencia con scikit-learn con <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.svm_comparability</span></code>.</p>
 <p><strong>Antes de empezar.</strong> En Drive, carpeta <code class="docutils literal notranslate"><span class="pre">MyDrive/credit_card/</span></code>, subir <code class="docutils literal notranslate"><span class="pre">colab_package.zip</span></code> (contiene <code class="docutils literal notranslate"><span class="pre">src/</span></code>, <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> y <code class="docutils literal notranslate"><span class="pre">data/processed/dataset_final.csv</span></code>).</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parámetros de ESTA sesión: cambiar solo MODELS y METHODS (ver la tabla de arriba).</span>
 <span class="n">MODELS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"naive_bayes"</span><span class="p">,</span> <span class="s2">"logistic_regression"</span><span class="p">,</span> <span class="s2">"decision_tree"</span><span class="p">,</span> <span class="s2">"xgboost"</span><span class="p">]</span>
@@ -426,8 +431,14 @@
 </pre></div>
 </div>
 </div>
+</details>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">zipfile</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
@@ -448,8 +459,14 @@
 </pre></div>
 </div>
 </div>
+</details>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span> <span class="mi">2</span><span class="o">&gt;&amp;</span><span class="mi">1</span> <span class="o">|</span> <span class="n">tail</span> <span class="o">-</span><span class="mi">3</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sklearn</span><span class="o">,</span><span class="w"> </span><span class="nn">imblearn</span><span class="o">,</span><span class="w"> </span><span class="nn">xgboost</span><span class="o">,</span><span class="w"> </span><span class="nn">optuna</span><span class="o">,</span><span class="w"> </span><span class="nn">deap</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span>
@@ -459,8 +476,14 @@
 </pre></div>
 </div>
 </div>
+</details>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">src</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
@@ -482,8 +505,14 @@
 </pre></div>
 </div>
 </div>
+</details>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">MODEL_REGISTRY</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">]</span>
 <span class="n">tag</span> <span class="o">=</span> <span class="s2">"-"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">MODELS</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"__"</span> <span class="o">+</span> <span class="s2">"-"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">METHODS</span><span class="p">)</span>
@@ -502,8 +531,14 @@
 </pre></div>
 </div>
 </div>
+</details>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">run_experiments</span><span class="p">(</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
@@ -516,10 +551,16 @@
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <section id="resultado-de-esta-sesion">
 <h2>Resultado de esta sesión<a class="headerlink" href="#resultado-de-esta-sesion" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">CHECKPOINT</span><span class="p">)</span>
@@ -528,6 +569,7 @@
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 </section>
 <section id="despues-de-que-terminen-todas-las-sesiones">

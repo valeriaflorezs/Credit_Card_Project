@@ -422,7 +422,12 @@ G = 1 - p_0^2 - p_1^2, \qquad
 \Delta G(\text{elegido}) \;\ge\; \max_j \Delta G(\text{recto}_j).
 \]</div>
 <p>Esto no garantiza que el bosque completo prediga mejor en clientes nuevos; eso solo lo pueden decir las pruebas de las secciones 3 y 4.</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
@@ -449,6 +454,7 @@ G = 1 - p_0^2 - p_1^2, \qquad
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filas: 141 | {'tradicional': 112, 'nuevo': 29}
 model
@@ -470,7 +476,12 @@ cs_fof                  4
 <section id="mejor-combinacion-de-cada-modelo">
 <h2>2. Mejor combinación de cada modelo<a class="headerlink" href="#mejor-combinacion-de-cada-modelo" title="Link to this heading">#</a></h2>
 <p>Para cada modelo se toma la combinación (técnica de balanceo y método de optimización) con mayor F1 medio en los 5 folds externos. La desviación estándar usa <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code>.</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mejores</span> <span class="o">=</span> <span class="p">(</span><span class="n">tabla</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tabla</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"model"</span><span class="p">)[</span><span class="s2">"f1_mean"</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()]</span>
            <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"f1_mean"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -482,6 +493,7 @@ cs_fof                  4
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output text_html"><div>
 <style scoped>
@@ -648,7 +660,12 @@ cs_fof                  4
 </table>
 </div></div></div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trad</span> <span class="o">=</span> <span class="n">tabla</span><span class="p">[</span><span class="n">tabla</span><span class="p">[</span><span class="s2">"grupo"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"tradicional"</span><span class="p">]</span>
 <span class="n">ref</span> <span class="o">=</span> <span class="n">trad</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">trad</span><span class="p">[</span><span class="s2">"f1_mean"</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()]</span>
@@ -661,6 +678,7 @@ cs_fof                  4
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mejor de las 112 combinaciones: xgboost / class_weight / bayesian_optuna
 F1 medio = 0.5466 (desv. 0.0091)
@@ -716,7 +734,12 @@ F1 medio = 0.5466 (desv. 0.0091)
 </table>
 </div></div></div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">4.6</span><span class="p">))</span>
 <span class="n">colores</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"#C9930C"</span> <span class="k">if</span> <span class="n">g</span> <span class="o">==</span> <span class="s2">"nuevo"</span> <span class="k">else</span> <span class="s2">"#1B3071"</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">mejores</span><span class="p">[</span><span class="s2">"grupo"</span><span class="p">]]</span>
@@ -731,6 +754,7 @@ F1 medio = 0.5466 (desv. 0.0091)
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <img alt="../_images/670bec985b184f1d671aae05e5d2332f7d2523e95d44519750987942d61262b4.png" src="../_images/670bec985b184f1d671aae05e5d2332f7d2523e95d44519750987942d61262b4.png" />
 </div>
@@ -745,7 +769,12 @@ F1 medio = 0.5466 (desv. 0.0091)
 t = \frac{\bar d}{\sqrt{\left(\dfrac{1}{k} + \dfrac{n_2}{n_1}\right) s_d^2}} .
 \]</div>
 <p>También se reporta el Wilcoxon por pares (con 5 folds su valor mínimo posible es 0.0625) y el delta de Cliff como tamaño de efecto. Ambos <span class="math notranslate nohighlight">\(p\)</span>-valores se corrigen con Holm.</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cmp_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">COMP</span> <span class="o">/</span> <span class="s2">"cs_fof_vs_modelos.csv"</span><span class="p">)</span>
 <span class="n">cmp_</span> <span class="o">=</span> <span class="n">cmp_</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">"modelo"</span><span class="p">:</span> <span class="s2">"rival"</span><span class="p">,</span> <span class="s2">"dif_f1"</span><span class="p">:</span> <span class="s2">"F1 CS-FOF menos rival"</span><span class="p">,</span> <span class="s2">"gana"</span><span class="p">:</span> <span class="s2">"folds que gana CS-FOF (de 5)"</span><span class="p">,</span>
@@ -755,6 +784,7 @@ t = \frac{\bar d}{\sqrt{\left(\dfrac{1}{k} + \dfrac{n_2}{n_1}\right) s_d^2}} .
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output text_html"><div>
 <style scoped>
@@ -887,7 +917,12 @@ t = \frac{\bar d}{\sqrt{\left(\dfrac{1}{k} + \dfrac{n_2}{n_1}\right) s_d^2}} .
 \[
 \mathrm{CD} = q_\alpha \sqrt{\frac{k(k+1)}{6N}}, \qquad k = 10 \text{ modelos},\; N = 5 \text{ folds}.
 \]</div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fr</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">COMP</span> <span class="o">/</span> <span class="s2">"friedman.json"</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Friedman: chi2 = </span><span class="si">{</span><span class="n">fr</span><span class="p">[</span><span class="s1">'friedman_chi2'</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, p = </span><span class="si">{</span><span class="n">fr</span><span class="p">[</span><span class="s1">'friedman_p'</span><span class="p">]</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -909,6 +944,7 @@ t = \frac{\bar d}{\sqrt{\left(\dfrac{1}{k} + \dfrac{n_2}{n_1}\right) s_d^2}} .
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Friedman: chi2 = 40.29, p = 6.74e-06
 Diferencia crítica de Nemenyi (CD) = 6.06
@@ -925,7 +961,12 @@ Diferencia crítica de Nemenyi (CD) = 6.06
 <section id="comparacion-sobre-las-mismas-predicciones-delong-y-mcnemar">
 <h2>5. Comparación sobre las mismas predicciones: DeLong y McNemar<a class="headerlink" href="#comparacion-sobre-las-mismas-predicciones-delong-y-mcnemar" title="Link to this heading">#</a></h2>
 <p>Con las probabilidades fuera de muestra (<em>out-of-fold</em>) de cada modelo se comparan sus AUC con la prueba de DeLong y sus aciertos con McNemar (sobre los clientes en que solo uno de los dos falla). Con unos 30,000 clientes, McNemar detecta diferencias minúsculas en los aciertos, por lo que se interpreta junto con el tamaño de la diferencia de F1 de la sección anterior.</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">COMP</span> <span class="o">/</span> <span class="s2">"delong_mcnemar.csv"</span><span class="p">)</span>
 <span class="n">dm</span><span class="p">[[</span><span class="s2">"rival"</span><span class="p">,</span> <span class="s2">"auc_cs_fof"</span><span class="p">,</span> <span class="s2">"auc_rival"</span><span class="p">,</span> <span class="s2">"delong_p"</span><span class="p">,</span> <span class="s2">"mcnemar_solo_cs_fof_falla"</span><span class="p">,</span>
@@ -933,6 +974,7 @@ Diferencia crítica de Nemenyi (CD) = 6.06
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output text_html"><div>
 <style scoped>
