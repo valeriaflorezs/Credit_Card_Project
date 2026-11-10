@@ -347,7 +347,7 @@ sistemática algoritmos modernos, técnicas de balanceo y métodos de optimizaci
   los códigos `-2`, `-1` y `0` de `PAY_x`, con su ambigüedad documentada como limitación; transformación
   logarítmica con signo de `LIMIT_BAL` y `PAY_AMT1` a `PAY_AMT6`; reemplazo de `BILL_AMT1` a `BILL_AMT6` por su promedio, su
   tendencia y el número de meses con saldo a favor, para resolver la multicolinealidad.
-- **Load:** `dataset_final.csv` con 29,965 filas x 21 columnas. El escalado y los demás pasos que dependen de
+- **Load:** conjunto de datos final con 29,965 filas x 21 columnas. El escalado y los demás pasos que dependen de
   estadísticos de la muestra se aplican dentro de cada pipeline, después de la partición, para evitar fuga de
   información.
 
@@ -399,14 +399,16 @@ SHAP sobre el Random Forest y comparación LIME vs. SHAP para XGBoost sobre una 
 
 | Capítulo | Contenido |
 |---|---|
-| `00_eda` | EDA y construcción del dataset final |
-| `01_baseline_logistic` | Modelo base de regresión logística |
-| `02_setup_check`, `03_pipeline_dev` | Verificación del entorno y desarrollo del pipeline |
-| `04_run_experiments` | Corrida de las combinaciones |
-| `05_results_analysis` | Resultados, comparación estadística, calibración y complejidad |
-| `06_interpretability` | SHAP y LIME |
-| `08_tabla_maestra_svm`, `09_anytime_multifidelidad` | Tabla maestra, comparabilidad del SVM, curvas anytime y multi-fidelidad |
-| `10_modelo_original_cs_fof` | Modelo original CS-FOF, LightGBM y CatBoost frente a las 112 combinaciones |
+| 00. EDA | Análisis exploratorio y construcción del conjunto de datos final |
+| 01. Modelo base | Regresión logística con partición 80/20 |
+| 02. Verificación del protocolo | Protocolo experimental: semilla y validación cruzada anidada |
+| 03. Desarrollo del pipeline | Prueba del pipeline completo con datos sintéticos |
+| 04. Experimentos | Corrida de las combinaciones |
+| 05. Análisis de resultados | Resultados, comparación estadística, calibración y complejidad |
+| 06. Interpretabilidad | SHAP y LIME |
+| 08. Tabla maestra | Tabla maestra, comparabilidad del SVM |
+| 09. Curvas anytime | Curvas anytime y multi-fidelidad |
+| 10. Modelo original | CS-FOF, LightGBM y CatBoost frente a las 112 combinaciones |
 
 ## Referencias
 
