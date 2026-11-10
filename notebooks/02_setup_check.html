@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>02. Setup Check &#8212; Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</title>
+    <title>02. Verificación del protocolo experimental &#8212; Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</title>
   
   
   
@@ -214,7 +214,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">02. Setup Check</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
@@ -356,7 +356,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>02. Setup Check</h1>
+    <h1>02. Verificación del protocolo experimental</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -370,9 +370,9 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="setup-check">
-<h1>02. Setup Check<a class="headerlink" href="#setup-check" title="Link to this heading">#</a></h1>
-<p>Comprueba que el proyecto esté bien configurado antes de correr los experimentos. La configuración usa semilla aleatoria 42 (para que los resultados se puedan reproducir) y validación cruzada anidada con 5 pliegues externos y 5 internos, y la variable objetivo es <code class="docutils literal notranslate"><span class="pre">default_payment_next_month</span></code>. Se probó la separación de variables y objetivo con un conjunto sintético de 5,000 filas (22.46 % de clase positiva) y se confirmó que el objetivo es binario. Finalmente, se verificó que el dataset real procesado (29,965 filas y 21 columnas) está disponible y contiene el objetivo y las columnas categóricas definidas en la configuración.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="verificacion-del-protocolo-experimental">
+<h1>02. Verificación del protocolo experimental<a class="headerlink" href="#verificacion-del-protocolo-experimental" title="Link to this heading">#</a></h1>
+<p>El protocolo usa semilla aleatoria 42 (para que los resultados se puedan reproducir) y validación cruzada anidada con 5 pliegues externos y 5 internos, y la variable objetivo es <code class="docutils literal notranslate"><span class="pre">default_payment_next_month</span></code>. Se probó la separación de variables y objetivo con un conjunto sintético de 5,000 filas (22.46 % de clase positiva) y se confirmó que el objetivo es binario. Finalmente, se verificó que el conjunto de datos real procesado (29,965 filas y 21 columnas) contiene el objetivo y las columnas categóricas definidas en el protocolo.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">

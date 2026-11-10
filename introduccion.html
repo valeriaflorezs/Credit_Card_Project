@@ -220,7 +220,7 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Setup Check</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/04_run_experiments.html">04. Ejecutar experimentos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/05_results_analysis.html">05. Análisis de resultados</a></li>
@@ -818,7 +818,7 @@ prueba); reagrupación de los códigos no documentados de <code class="docutils 
 los códigos <code class="docutils literal notranslate"><span class="pre">-2</span></code>, <code class="docutils literal notranslate"><span class="pre">-1</span></code> y <code class="docutils literal notranslate"><span class="pre">0</span></code> de <code class="docutils literal notranslate"><span class="pre">PAY_x</span></code>, con su ambigüedad documentada como limitación; transformación
 logarítmica con signo de <code class="docutils literal notranslate"><span class="pre">LIMIT_BAL</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_AMT1</span></code> a <code class="docutils literal notranslate"><span class="pre">PAY_AMT6</span></code>; reemplazo de <code class="docutils literal notranslate"><span class="pre">BILL_AMT1</span></code> a <code class="docutils literal notranslate"><span class="pre">BILL_AMT6</span></code> por su promedio, su
 tendencia y el número de meses con saldo a favor, para resolver la multicolinealidad.</p></li>
-<li><p><strong>Load:</strong> <code class="docutils literal notranslate"><span class="pre">dataset_final.csv</span></code> con 29,965 filas x 21 columnas. El escalado y los demás pasos que dependen de
+<li><p><strong>Load:</strong> conjunto de datos final con 29,965 filas x 21 columnas. El escalado y los demás pasos que dependen de
 estadísticos de la muestra se aplican dentro de cada pipeline, después de la partición, para evitar fuga de
 información.</p></li>
 </ul>
@@ -891,29 +891,35 @@ métodos recientes de boosting (LightGBM y CatBoost) bajo el mismo protocolo de 
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">00_eda</span></code></p></td>
-<td><p>EDA y construcción del dataset final</p></td>
+<tr class="row-even"><td><p>00. EDA</p></td>
+<td><p>Análisis exploratorio y construcción del conjunto de datos final</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">01_baseline_logistic</span></code></p></td>
-<td><p>Modelo base de regresión logística</p></td>
+<tr class="row-odd"><td><p>01. Modelo base</p></td>
+<td><p>Regresión logística con partición 80/20</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">02_setup_check</span></code>, <code class="docutils literal notranslate"><span class="pre">03_pipeline_dev</span></code></p></td>
-<td><p>Verificación del entorno y desarrollo del pipeline</p></td>
+<tr class="row-even"><td><p>02. Verificación del protocolo</p></td>
+<td><p>Protocolo experimental: semilla y validación cruzada anidada</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">04_run_experiments</span></code></p></td>
+<tr class="row-odd"><td><p>03. Desarrollo del pipeline</p></td>
+<td><p>Prueba del pipeline completo con datos sintéticos</p></td>
+</tr>
+<tr class="row-even"><td><p>04. Experimentos</p></td>
 <td><p>Corrida de las combinaciones</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">05_results_analysis</span></code></p></td>
+<tr class="row-odd"><td><p>05. Análisis de resultados</p></td>
 <td><p>Resultados, comparación estadística, calibración y complejidad</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">06_interpretability</span></code></p></td>
+<tr class="row-even"><td><p>06. Interpretabilidad</p></td>
 <td><p>SHAP y LIME</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">08_tabla_maestra_svm</span></code>, <code class="docutils literal notranslate"><span class="pre">09_anytime_multifidelidad</span></code></p></td>
-<td><p>Tabla maestra, comparabilidad del SVM, curvas anytime y multi-fidelidad</p></td>
+<tr class="row-odd"><td><p>08. Tabla maestra</p></td>
+<td><p>Tabla maestra, comparabilidad del SVM</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">10_modelo_original_cs_fof</span></code></p></td>
-<td><p>Modelo original CS-FOF, LightGBM y CatBoost frente a las 112 combinaciones</p></td>
+<tr class="row-even"><td><p>09. Curvas anytime</p></td>
+<td><p>Curvas anytime y multi-fidelidad</p></td>
+</tr>
+<tr class="row-odd"><td><p>10. Modelo original</p></td>
+<td><p>CS-FOF, LightGBM y CatBoost frente a las 112 combinaciones</p></td>
 </tr>
 </tbody>
 </table>

@@ -218,7 +218,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
-<li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">04. Ejecutar experimentos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
@@ -387,7 +387,7 @@
                 <article class="bd-article">
                   
   <blockquote>
-<div><p><strong>Nota (corrida vigente 5 x 5).</strong> Este notebook conserva la corrida inicial 3 x 3 de seis modelos y sus salidas, como registro. La corrida vigente es 5 x 5 con los siete modelos: cinco (80 combinaciones) corrieron en la CPU local con <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.run_local_5x5</span></code> (resultado en <code class="docutils literal notranslate"><span class="pre">results/experiments_5x5__local.csv</span></code>), y SVM y KNN (32 combinaciones) en Colab con GPU T4 (<code class="docutils literal notranslate"><span class="pre">12_colab_5x5.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">07_svm_gpu_colab.ipynb</span></code>). Todo se unió con <code class="docutils literal notranslate"><span class="pre">src/merge_session_results.py</span></code> en <code class="docutils literal notranslate"><span class="pre">results/experiments_master_5x5.csv</span></code> y <code class="docutils literal notranslate"><span class="pre">results/svm_gpu_results_colab_5x5.csv</span></code>; los resultados 3 x 3 están en <code class="docutils literal notranslate"><span class="pre">results/legacy_3x3/</span></code>. Las cifras de este notebook NO son las vigentes.</p>
+<div><p><strong>Nota (corrida vigente 5 x 5).</strong> Este capítulo conserva la corrida inicial 3 x 3 de seis modelos y sus salidas, como registro. La corrida vigente es 5 x 5 con los siete modelos: cinco (80 combinaciones) se ejecutaron en CPU local, y SVM y KNN (32 combinaciones) en Colab con GPU T4. Las cifras de este capítulo NO son las vigentes; las vigentes están en los capítulos siguientes.</p>
 </div></blockquote>
 <section class="tex2jax_ignore mathjax_ignore" id="ejecutar-experimentos">
 <h1>04. Ejecutar experimentos<a class="headerlink" href="#ejecutar-experimentos" title="Link to this heading">#</a></h1>
@@ -397,7 +397,7 @@
 <li><p><strong>El método de búsqueda importa poco en F1, pero mucho en tiempo.</strong> Con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> las diferencias entre métodos son menores que la desviación estándar. En cambio, el algoritmo genético tardó mucho más: 2,432 s frente a 178 s con búsqueda en malla en Random Forest, y hasta 10,880 s en KNN sin balanceo.</p></li>
 <li><p><strong>Combinación con mayor F1 medio:</strong> Random Forest con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y búsqueda genética, con F1 de 0.5460 (desviación 0.0088). La diferencia con las siguientes es menor que la dispersión entre folds: de las 96 combinaciones de esta corrida, 8 (incluida esta) quedan a menos de una desviación estándar (0.0088) y 6 a menos de 0.0016 de F1; con la SVM, 15 de 112 quedan dentro de una desviación estándar. No hay base para declarar una única mejor configuración.</p></li>
 </ul>
-<p>Las salidas guardadas de este notebook muestran solo las 40 combinaciones corridas en la última sesión (<code class="docutils literal notranslate"><span class="pre">resume=True</span></code> omite las otras 56); las cifras de arriba salen del CSV completo. La tabla completa y la comparación estadística están en <code class="docutils literal notranslate"><span class="pre">05_results_analysis.ipynb</span></code>.</p>
+<p>Las salidas guardadas de este capítulo muestran solo las 40 combinaciones ejecutadas en la última sesión; las cifras de arriba corresponden a las 96. La tabla completa y la comparación estadística están en el capítulo 05.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -554,8 +554,7 @@ Orden por costo computacional: ('naive_bayes', 'logistic_regression', 'decision_
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] 56 combinaciones ya en C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\results\experiments_master.csv o C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\results\skipped_timeout_log.csv, se omiten (resume=True).
-[experiment_runner] 40 combinaciones a ejecutar.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] 40 combinaciones a ejecutar.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/grid_search: f1=0.5366±0.0091 (459.6s)
@@ -678,7 +677,6 @@ Orden por costo computacional: ('naive_bayes', 'logistic_regression', 'decision_
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/genetic_deap: f1=0.5238±0.0039 (3995.8s)
 
 40 combinaciones nuevas corridas en esta sesion.
-96 filas totales en la tabla maestra (C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\results\experiments_master.csv).
 </pre></div>
 </div>
 </div>
@@ -686,7 +684,7 @@ Orden por costo computacional: ('naive_bayes', 'logistic_regression', 'decision_
 </section>
 <section id="resultado">
 <h2>Resultado<a class="headerlink" href="#resultado" title="Link to this heading">#</a></h2>
-<p>Tabla de métricas (media y desviación estándar del outer loop, nunca un valor puntual), ordenada por la métrica principal de validación (ver <code class="docutils literal notranslate"><span class="pre">config.DEFAULT_SCORING</span></code> y la justificación en <code class="docutils literal notranslate"><span class="pre">evaluation.py</span></code>).</p>
+<p>Tabla de métricas (media y desviación estándar del outer loop, nunca un valor puntual), ordenada por la métrica principal de validación.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -857,7 +855,7 @@ Orden por costo computacional: ('naive_bayes', 'logistic_regression', 'decision_
 <p>96 rows × 8 columns</p>
 </div></div></div>
 </div>
-<p>Continuar en <code class="docutils literal notranslate"><span class="pre">05_results_analysis.ipynb</span></code>: funciona directamente desde <code class="docutils literal notranslate"><span class="pre">results/experiments_master.csv</span></code>, en una sesión nueva, sin necesitar nada de este notebook en memoria.</p>
+<p>El análisis de resultados continúa en el capítulo 05.</p>
 </section>
 </section>
 

@@ -218,7 +218,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
-<li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
@@ -393,7 +393,7 @@
 <p>La tabla maestra guarda el resultado final de cada búsqueda, pero no dice qué tan rápido encontró un buen candidato. Este notebook lo estudia de dos maneras:</p>
 <ol class="arabic simple">
 <li><p><strong>Curvas anytime</strong> de los cuatro optimizadores del proyecto (grid, random, bayesiana con TPE y genético con DEAP): calidad del mejor candidato encontrado si la búsqueda se detuviera en cada punto, medida en número de evaluaciones y en costo de cómputo.</p></li>
-<li><p><strong>Multi-fidelidad</strong>: se implementó Hyperband desde cero (<code class="docutils literal notranslate"><span class="pre">src/multifidelity.py</span></code>), usando como fidelidad la fracción de filas de entrenamiento, y se compara con Random Search sobre el mismo espacio de búsqueda.</p></li>
+<li><p><strong>Multi-fidelidad</strong>: se implementó Hyperband desde cero, usando como fidelidad la fracción de filas de entrenamiento, y se compara con Random Search sobre el mismo espacio de búsqueda.</p></li>
 </ol>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
@@ -496,11 +496,11 @@
 </table>
 </div></div></div>
 </div>
-<p><strong>Diseño del estudio</strong> (<code class="docutils literal notranslate"><span class="pre">src/anytime_study.py</span></code>).</p>
+<p><strong>Diseño del estudio.</strong></p>
 <ul class="simple">
 <li><p>Tres modelos: regresión logística, árbol de decisión y XGBoost, con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>. Se eligieron los más baratos de cada familia para poder repetir las búsquedas completas; no se corrió con Random Forest, KNN, Naive Bayes ni SVM.</p></li>
 <li><p>Los <strong>3 primeros de los 5 folds externos</strong> del protocolo (<code class="docutils literal notranslate"><span class="pre">StratifiedKFold(5,</span> <span class="pre">shuffle=True,</span> <span class="pre">random_state=42)</span></code>, folds 0, 1 y 2) y los mismos 5 folds internos. Se usa un subconjunto de folds de forma deliberada: repetir las búsquedas completas en los 5 folds multiplicaría el costo (XGBoost con grid o genético supera los 1000 s por corrida). La optimización solo ve el fold de entrenamiento externo. El fold de prueba se usa una sola vez al final, para el F1 externo del candidato elegido.</p></li>
-<li><p>Los presupuestos son los de <code class="docutils literal notranslate"><span class="pre">src/config.py</span></code>: Random 25 configuraciones, TPE 30 ensayos, genético con población 16 y 10 generaciones (el número de evaluaciones distintas es menor, porque los individuos que no cambian no se reevalúan) y grid con la grilla de cada modelo (8, 128 y 64 puntos). Hyperband usa <code class="docutils literal notranslate"><span class="pre">eta</span> <span class="pre">=</span> <span class="pre">3</span></code>, fidelidad mínima 1/9 y 3 repeticiones del ciclo de brackets.</p></li>
+<li><p>Los presupuestos son los del resto del proyecto: Random 25 configuraciones, TPE 30 ensayos, genético con población 16 y 10 generaciones (el número de evaluaciones distintas es menor, porque los individuos que no cambian no se reevalúan) y grid con la grilla de cada modelo (8, 128 y 64 puntos). Hyperband usa <code class="docutils literal notranslate"><span class="pre">eta</span> <span class="pre">=</span> <span class="pre">3</span></code>, fidelidad mínima 1/9 y 3 repeticiones del ciclo de brackets.</p></li>
 <li><p>Una sola semilla (42). Las 45 corridas son 3 modelos por 3 folds por 5 métodos.</p></li>
 <li><p><strong>Costo.</strong> Se mide como la suma de las duraciones de cada evaluación (costo secuencial equivalente), que no depende del paralelismo.</p></li>
 <li><p><strong>Arrepentimiento.</strong> Para cada modelo y fold, diferencia entre el mejor score interno visto por cualquier método a fidelidad completa y el mejor score del método hasta ese punto. Los scores son de validación interna, la misma que ve el optimizador.</p></li>
@@ -581,7 +581,6 @@
 <img alt="../_images/3a21d6d882b37f208314dae381fe3b2a80f9da4ffc8d0a75b825d12226679e7d.png" src="../_images/3a21d6d882b37f208314dae381fe3b2a80f9da4ffc8d0a75b825d12226679e7d.png" />
 </div>
 </div>
-<p><strong>Lectura.</strong></p>
 <ul class="simple">
 <li><p><strong>Regresión logística.</strong> Todos los métodos llegan casi de inmediato a un arrepentimiento cercano a cero, porque el espacio de búsqueda es pequeño y la superficie es plana. Solo grid parte de un punto muy malo (cerca de 0.37), porque sus primeras configuraciones son malas, y lo corrige en dos evaluaciones.</p></li>
 <li><p><strong>Árbol de decisión.</strong> Aquí hay diferencias. TPE es el que más rápido baja en pocas evaluaciones (de 0.034 a 0.006 en dos). Random y el genético empiezan peor (0.053 y 0.09) y necesitan unas 4 o 5 evaluaciones. <strong>Grid no llega nunca</strong>: su arrepentimiento se queda en cerca de 0.016 porque su grilla fija no contiene configuraciones tan buenas como las que encuentran los otros métodos, y es la única búsqueda que termina claramente por debajo de las demás en F1 externo (0.510 contra 0.520 a 0.525).</p></li>
@@ -630,7 +629,7 @@
 <img alt="../_images/847059238fc527b8fd67dca4e727ca584862312c1d4449b15e05db816ab670f0.png" src="../_images/847059238fc527b8fd67dca4e727ca584862312c1d4449b15e05db816ab670f0.png" />
 </div>
 </div>
-<p><strong>Lectura.</strong> Al medir el costo en segundos el panorama cambia respecto al número de evaluaciones.</p>
+<p>Al medir el costo en segundos el panorama cambia respecto al número de evaluaciones.</p>
 <ul class="simple">
 <li><p>El genético es el que más evaluaciones usa (entre 106 y 123), y en XGBoost su costo (1,443 s) es unas 2.5 veces el de Random (574 s) y 3.2 veces el de TPE (449 s) para un F1 externo igual (0.540 contra 0.538 y 0.542). Grid en XGBoost cuesta 1,182 s y tampoco mejora nada (0.540).</p></li>
 <li><p>TPE y Hyperband son las opciones más baratas en XGBoost (449 y 482 s) con F1 externo de 0.542 y 0.543, es decir, con un tercio del costo del genético y el mismo desempeño. Random queda en un punto intermedio.</p></li>
@@ -886,7 +885,7 @@
 </table>
 </div></div></div>
 </div>
-<p><strong>Lectura.</strong> La columna <code class="docutils literal notranslate"><span class="pre">costo_hasta_objetivo_s</span></code> es la mediana del costo acumulado hasta quedar a menos de 0.002 de F1 interno de la referencia, y <code class="docutils literal notranslate"><span class="pre">corridas_que_llegan</span></code> dice en cuántos de los 3 folds se logra (cuando es 0 la mediana está vacía). Ninguna corrida de grid llega en el árbol de decisión, y en XGBoost llega en 2 de 3 folds (504 s). En XGBoost, el genético llega en 162 s (3 de 3), Random en 170 s (2 de 3), TPE en 262 s (3 de 3) e Hyperband en 385 s (3 de 3). Con 3 folds estos tiempos son indicativos, no concluyentes.</p>
+<p>La columna <code class="docutils literal notranslate"><span class="pre">costo_hasta_objetivo_s</span></code> es la mediana del costo acumulado hasta quedar a menos de 0.002 de F1 interno de la referencia, y <code class="docutils literal notranslate"><span class="pre">corridas_que_llegan</span></code> dice en cuántos de los 3 folds se logra (cuando es 0 la mediana está vacía). Ninguna corrida de grid llega en el árbol de decisión, y en XGBoost llega en 2 de 3 folds (504 s). En XGBoost, el genético llega en 162 s (3 de 3), Random en 170 s (2 de 3), TPE en 262 s (3 de 3) e Hyperband en 385 s (3 de 3). Con 3 folds estos tiempos son indicativos, no concluyentes.</p>
 <p>El F1 externo medio es prácticamente el mismo entre métodos dentro de cada modelo (por ejemplo, en XGBoost va de 0.538 a 0.543, con desviación entre folds de 0.003 a 0.010). Se confirma, sobre un fold de prueba que no usó la optimización, que el método de búsqueda no cambia el desempeño final.</p>
 </section>
 <section id="multi-fidelidad-hyperband-frente-a-random-search-con-un-costo-comparable">
@@ -1063,7 +1062,6 @@ Razón de costo media: 1.12
 </div>
 </div>
 </div>
-<p><strong>Lectura.</strong></p>
 <ul class="simple">
 <li><p>Hyperband obtuvo un F1 externo medio 0.0022 mayor que Random Search (desviación entre corridas 0.0051, n = 9 pares modelo-fold). Fue mayor o igual en 7 de las 9 corridas y menor en dos. La diferencia es mucho menor que la desviación del F1 entre folds (0.003 a 0.013), así que no se puede decir que sea una mejora real, y las 9 corridas no son independientes (comparten datos).</p></li>
 <li><p><strong>El costo no fue igual.</strong> Hyperband costó en promedio 1.12 veces lo que Random, con un rango de 0.49 a 1.49 (en un fold de XGBoost costó la mitad, y en la regresión logística hasta 1.49 veces). Una evaluación con 1/9 de las filas cuesta bastante más de 1/9 de una completa: hay costos fijos de preprocesamiento y de ajuste que no se reducen con los datos. Además, los costos medidos son ruidosos por el paralelismo entre procesos. Por eso la comparación es a costo comparable y no idéntico, y la ventaja de 0.0022 no puede atribuirse con seguridad a la multi-fidelidad.</p></li>

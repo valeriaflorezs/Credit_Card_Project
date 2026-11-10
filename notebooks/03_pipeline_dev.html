@@ -66,7 +66,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="04. Ejecutar experimentos" href="04_run_experiments.html" />
-    <link rel="prev" title="02. Setup Check" href="02_setup_check.html" />
+    <link rel="prev" title="02. Verificación del protocolo experimental" href="02_setup_check.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -218,7 +218,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
-<li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">03. Desarrollo y prueba del pipeline completo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
@@ -372,17 +372,17 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datos-sinteticos-bloque-1">1. Datos sintéticos (bloque 1)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datos-sinteticos">1. Datos sintéticos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocesamiento-encoding-scaling-condicional">2. Preprocesamiento: encoding + scaling condicional</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#balanceo-compatibilidad-por-modelo-bloque-3">3. Balanceo: compatibilidad por modelo (bloque 3)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-base-y-espacios-de-busqueda-bloque-2">4. Modelos base y espacios de búsqueda (bloque 2)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizacion-los-4-metodos-en-miniatura-bloque-4">5. Optimización: los 4 métodos, en miniatura (bloque 4)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-cruzada-anidada-inner-vs-outer-bloque-5">6. Validación cruzada anidada: inner vs. outer (bloque 5)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orquestador-unas-pocas-combinaciones-bloque-6">7. Orquestador: unas pocas combinaciones (bloque 6)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complejidad-computacional-estandar-vs-optimizado-bloque-7">8. Complejidad computacional: estándar vs. optimizado (bloque 7)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-y-calibracion-bloque-8">9. Evaluación y calibración (bloque 8)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad-shap-rapido-bloque-9">10. Interpretabilidad: SHAP rápido (bloque 9)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-estadistica-jerarquica-bloque-10-mini">11. Comparación estadística jerárquica (bloque 10, mini)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#balanceo-compatibilidad-por-modelo">3. Balanceo: compatibilidad por modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-base-y-espacios-de-busqueda">4. Modelos base y espacios de búsqueda</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizacion-los-4-metodos-en-miniatura">5. Optimización: los 4 métodos, en miniatura</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-cruzada-anidada-inner-vs-outer">6. Validación cruzada anidada: inner vs. outer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orquestador-unas-pocas-combinaciones">7. Orquestador: unas pocas combinaciones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complejidad-computacional-estandar-vs-optimizado">8. Complejidad computacional: estándar vs. optimizado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-y-calibracion">9. Evaluación y calibración</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad-shap-rapido">10. Interpretabilidad: SHAP rápido</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-estadistica-jerarquica">11. Comparación estadística jerárquica</a></li>
 </ul>
             </nav>
         </div>
@@ -436,8 +436,8 @@
 </div>
 </details>
 </div>
-<section id="datos-sinteticos-bloque-1">
-<h2>1. Datos sintéticos (bloque 1)<a class="headerlink" href="#datos-sinteticos-bloque-1" title="Link to this heading">#</a></h2>
+<section id="datos-sinteticos">
+<h2>1. Datos sintéticos<a class="headerlink" href="#datos-sinteticos" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -486,8 +486,8 @@ Balance del target: {0: 0.766, 1: 0.234}
 </div>
 </div>
 </section>
-<section id="balanceo-compatibilidad-por-modelo-bloque-3">
-<h2>3. Balanceo: compatibilidad por modelo (bloque 3)<a class="headerlink" href="#balanceo-compatibilidad-por-modelo-bloque-3" title="Link to this heading">#</a></h2>
+<section id="balanceo-compatibilidad-por-modelo">
+<h2>3. Balanceo: compatibilidad por modelo<a class="headerlink" href="#balanceo-compatibilidad-por-modelo" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -529,8 +529,8 @@ Balance del target: {0: 0.766, 1: 0.234}
 </div>
 </div>
 </section>
-<section id="modelos-base-y-espacios-de-busqueda-bloque-2">
-<h2>4. Modelos base y espacios de búsqueda (bloque 2)<a class="headerlink" href="#modelos-base-y-espacios-de-busqueda-bloque-2" title="Link to this heading">#</a></h2>
+<section id="modelos-base-y-espacios-de-busqueda">
+<h2>4. Modelos base y espacios de búsqueda<a class="headerlink" href="#modelos-base-y-espacios-de-busqueda" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -552,8 +552,8 @@ param_grid (decision_tree): {'max_depth': [2, 11, 21, 30], 'min_samples_split': 
 </div>
 </div>
 </section>
-<section id="optimizacion-los-4-metodos-en-miniatura-bloque-4">
-<h2>5. Optimización: los 4 métodos, en miniatura (bloque 4)<a class="headerlink" href="#optimizacion-los-4-metodos-en-miniatura-bloque-4" title="Link to this heading">#</a></h2>
+<section id="optimizacion-los-4-metodos-en-miniatura">
+<h2>5. Optimización: los 4 métodos, en miniatura<a class="headerlink" href="#optimizacion-los-4-metodos-en-miniatura" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -617,8 +617,8 @@ param_grid (decision_tree): {'max_depth': [2, 11, 21, 30], 'min_samples_split': 
 </div>
 </div>
 </section>
-<section id="validacion-cruzada-anidada-inner-vs-outer-bloque-5">
-<h2>6. Validación cruzada anidada: inner vs. outer (bloque 5)<a class="headerlink" href="#validacion-cruzada-anidada-inner-vs-outer-bloque-5" title="Link to this heading">#</a></h2>
+<section id="validacion-cruzada-anidada-inner-vs-outer">
+<h2>6. Validación cruzada anidada: inner vs. outer<a class="headerlink" href="#validacion-cruzada-anidada-inner-vs-outer" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -649,8 +649,8 @@ metrics_summary: {'accuracy': (0.72, 0.028), 'precision': (0.4379, 0.0358), 'rec
 </div>
 </div>
 </section>
-<section id="orquestador-unas-pocas-combinaciones-bloque-6">
-<h2>7. Orquestador: unas pocas combinaciones (bloque 6)<a class="headerlink" href="#orquestador-unas-pocas-combinaciones-bloque-6" title="Link to this heading">#</a></h2>
+<section id="orquestador-unas-pocas-combinaciones">
+<h2>7. Orquestador: unas pocas combinaciones<a class="headerlink" href="#orquestador-unas-pocas-combinaciones" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -754,8 +754,8 @@ metrics_summary: {'accuracy': (0.72, 0.028), 'precision': (0.4379, 0.0358), 'rec
 </div></div></div>
 </div>
 </section>
-<section id="complejidad-computacional-estandar-vs-optimizado-bloque-7">
-<h2>8. Complejidad computacional: estándar vs. optimizado (bloque 7)<a class="headerlink" href="#complejidad-computacional-estandar-vs-optimizado-bloque-7" title="Link to this heading">#</a></h2>
+<section id="complejidad-computacional-estandar-vs-optimizado">
+<h2>8. Complejidad computacional: estándar vs. optimizado<a class="headerlink" href="#complejidad-computacional-estandar-vs-optimizado" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -782,8 +782,8 @@ metrics_summary: {'accuracy': (0.72, 0.028), 'precision': (0.4379, 0.0358), 'rec
 </div>
 </div>
 </section>
-<section id="evaluacion-y-calibracion-bloque-8">
-<h2>9. Evaluación y calibración (bloque 8)<a class="headerlink" href="#evaluacion-y-calibracion-bloque-8" title="Link to this heading">#</a></h2>
+<section id="evaluacion-y-calibracion">
+<h2>9. Evaluación y calibración<a class="headerlink" href="#evaluacion-y-calibracion" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -810,8 +810,8 @@ Brier: 0.2087  ECE: 0.2208  (deficiente: True)
 </div>
 </div>
 </section>
-<section id="interpretabilidad-shap-rapido-bloque-9">
-<h2>10. Interpretabilidad: SHAP rápido (bloque 9)<a class="headerlink" href="#interpretabilidad-shap-rapido-bloque-9" title="Link to this heading">#</a></h2>
+<section id="interpretabilidad-shap-rapido">
+<h2>10. Interpretabilidad: SHAP rápido<a class="headerlink" href="#interpretabilidad-shap-rapido" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -841,8 +841,8 @@ Brier: 0.2087  ECE: 0.2208  (deficiente: True)
 </div>
 </div>
 </section>
-<section id="comparacion-estadistica-jerarquica-bloque-10-mini">
-<h2>11. Comparación estadística jerárquica (bloque 10, mini)<a class="headerlink" href="#comparacion-estadistica-jerarquica-bloque-10-mini" title="Link to this heading">#</a></h2>
+<section id="comparacion-estadistica-jerarquica">
+<h2>11. Comparación estadística jerárquica<a class="headerlink" href="#comparacion-estadistica-jerarquica" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -906,7 +906,7 @@ Friedman no significativo (p=0.7530 &gt;= alpha=0.05): no se reporta evidencia d
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">02. Setup Check</p>
+        <p class="prev-next-title">02. Verificación del protocolo experimental</p>
       </div>
     </a>
     <a class="right-next"
@@ -936,17 +936,17 @@ Friedman no significativo (p=0.7530 &gt;= alpha=0.05): no se reporta evidencia d
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datos-sinteticos-bloque-1">1. Datos sintéticos (bloque 1)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datos-sinteticos">1. Datos sintéticos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocesamiento-encoding-scaling-condicional">2. Preprocesamiento: encoding + scaling condicional</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#balanceo-compatibilidad-por-modelo-bloque-3">3. Balanceo: compatibilidad por modelo (bloque 3)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-base-y-espacios-de-busqueda-bloque-2">4. Modelos base y espacios de búsqueda (bloque 2)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizacion-los-4-metodos-en-miniatura-bloque-4">5. Optimización: los 4 métodos, en miniatura (bloque 4)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-cruzada-anidada-inner-vs-outer-bloque-5">6. Validación cruzada anidada: inner vs. outer (bloque 5)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orquestador-unas-pocas-combinaciones-bloque-6">7. Orquestador: unas pocas combinaciones (bloque 6)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complejidad-computacional-estandar-vs-optimizado-bloque-7">8. Complejidad computacional: estándar vs. optimizado (bloque 7)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-y-calibracion-bloque-8">9. Evaluación y calibración (bloque 8)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad-shap-rapido-bloque-9">10. Interpretabilidad: SHAP rápido (bloque 9)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-estadistica-jerarquica-bloque-10-mini">11. Comparación estadística jerárquica (bloque 10, mini)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#balanceo-compatibilidad-por-modelo">3. Balanceo: compatibilidad por modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-base-y-espacios-de-busqueda">4. Modelos base y espacios de búsqueda</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizacion-los-4-metodos-en-miniatura">5. Optimización: los 4 métodos, en miniatura</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-cruzada-anidada-inner-vs-outer">6. Validación cruzada anidada: inner vs. outer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#orquestador-unas-pocas-combinaciones">7. Orquestador: unas pocas combinaciones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complejidad-computacional-estandar-vs-optimizado">8. Complejidad computacional: estándar vs. optimizado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-y-calibracion">9. Evaluación y calibración</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad-shap-rapido">10. Interpretabilidad: SHAP rápido</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-estadistica-jerarquica">11. Comparación estadística jerárquica</a></li>
 </ul>
   </nav></div>
 

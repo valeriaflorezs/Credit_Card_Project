@@ -218,7 +218,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
-<li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
@@ -401,7 +401,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="interpretabilidad-shap-y-lime">
 <h1>06. Interpretabilidad (SHAP y LIME)<a class="headerlink" href="#interpretabilidad-shap-y-lime" title="Link to this heading">#</a></h1>
-<p>SHAP global (summary plot) y local (waterfall, 2 observaciones: una bien clasificada y una con error alto) para la combinación con mayor F1 medio en <code class="docutils literal notranslate"><span class="pre">05_results_analysis.ipynb</span></code> (XGBoost, <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>), más una comparación LIME vs. SHAP para XGBoost sobre una sola observación.</p>
+<p>SHAP global (summary plot) y local (waterfall, 2 observaciones: una bien clasificada y una con error alto) para la combinación con mayor F1 medio del capítulo 05 (XGBoost, <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>), más una comparación LIME vs. SHAP para XGBoost sobre una sola observación.</p>
 <p><strong>Alcance y limitaciones:</strong></p>
 <ul class="simple">
 <li><p>Las secciones 1 a 4 interpretan <strong>una</strong> combinación (la de mayor F1 medio: XGBoost, <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>, <code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>) en <strong>un</strong> fold externo (el de mayor F1, elegido a posteriori), sobre 100 filas, y comparan LIME con SHAP en <strong>una</strong> observación. Sirven para ilustrar el método, no para generalizar.</p></li>
@@ -410,7 +410,6 @@
 <li><p>Se interpretan dos de los siete modelos. Los demás no se explican.</p></li>
 <li><p>Con variables correlacionadas, SHAP reparte la importancia entre ellas de forma arbitraria. Y con modelos entrenados con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> o SMOTE las probabilidades no están calibradas: el valor base de 0.5 refleja el balanceo y no la prevalencia real (22 %), así que los aportes no se leen como cambios de riesgo reales.</p></li>
 </ul>
-<p>Trabaja desde <code class="docutils literal notranslate"><span class="pre">results/master_table_112.csv</span></code> y <code class="docutils literal notranslate"><span class="pre">results/best_per_model.csv</span></code> (ver <code class="docutils literal notranslate"><span class="pre">08_tabla_maestra_svm.ipynb</span></code>), no depende de nada en memoria de notebooks anteriores. Las secciones 5 y 6 leen los CSV que genera <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.interpretability_multi</span></code> (ver <code class="docutils literal notranslate"><span class="pre">src/interpretability_multi.py</span></code>).</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -457,7 +456,7 @@
 </div>
 <section id="elegir-el-mejor-modelo-y-ajustar-su-pipeline">
 <h2>Elegir el mejor modelo y ajustar su pipeline<a class="headerlink" href="#elegir-el-mejor-modelo-y-ajustar-su-pipeline" title="Link to this heading">#</a></h2>
-<p>El fold externo usado es el de mejor desempeño (<code class="docutils literal notranslate"><span class="pre">{metric}_per_fold</span></code>, ver columna persistida por <code class="docutils literal notranslate"><span class="pre">nested_cv.py</span></code>); SHAP/LIME se calculan sobre ESE fold de prueba.</p>
+<p>El fold externo usado es el de mejor desempeño; SHAP/LIME se calculan sobre ESE fold de prueba.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -501,7 +500,7 @@
 </section>
 <section id="shap-global-summary-plot">
 <h2>SHAP global (summary plot)<a class="headerlink" href="#shap-global-summary-plot" title="Link to this heading">#</a></h2>
-<p>Sobre una muestra del fold de prueba (ver <code class="docutils literal notranslate"><span class="pre">interpretability.DEFAULT_N_EXPLAIN</span></code>, limitado por costo computacional para modelos no basados en árboles). Las columnas one-hot de <code class="docutils literal notranslate"><span class="pre">SEX</span></code>/<code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code>/<code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code> se agregan de vuelta a la variable categórica original.</p>
+<p>Sobre una muestra del fold de prueba (limitada por costo computacional para modelos no basados en árboles). Las columnas one-hot de <code class="docutils literal notranslate"><span class="pre">SEX</span></code>/<code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code>/<code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code> se agregan de vuelta a la variable categórica original.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1275,8 +1274,8 @@ xgboost: combinación class_weight | bayesian_optuna; 300 filas explicadas por f
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="shap-y-lime-con-mas-de-un-fold-y-mas-de-una-observacion">
 <h1>SHAP y LIME con más de un fold y más de una observación<a class="headerlink" href="#shap-y-lime-con-mas-de-un-fold-y-mas-de-una-observacion" title="Link to this heading">#</a></h1>
-<p>Explicar un solo fold con 100 filas y comparar LIME con SHAP en una sola observación no permite decir si la explicación es estable ni si los dos métodos coinciden en general. Las dos secciones siguientes responden esas dos preguntas con el código de <code class="docutils literal notranslate"><span class="pre">src/interpretability_multi.py</span></code>.</p>
-<p>Para cada modelo se toma su mejor combinación según <code class="docutils literal notranslate"><span class="pre">results/best_per_model.csv</span></code>: Random Forest con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">random_search</span></code>, y XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>.</p>
+<p>Explicar un solo fold con 100 filas y comparar LIME con SHAP en una sola observación no permite decir si la explicación es estable ni si los dos métodos coinciden en general. Las dos secciones siguientes responden esas dos preguntas.</p>
+<p>Para cada modelo se toma su mejor combinación según la selección del capítulo 08: Random Forest con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">random_search</span></code>, y XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1312,7 +1311,7 @@ xgboost: combinación class_weight | bayesian_optuna; 300 filas explicadas por f
 <!-- multi-fold -->
 <section id="shap-global-en-los-5-folds-externos">
 <h2>5. SHAP global en los 5 folds externos<a class="headerlink" href="#shap-global-en-los-5-folds-externos" title="Link to this heading">#</a></h2>
-<p><strong>Procedimiento.</strong> En cada fold externo se reajusta el pipeline completo con los <code class="docutils literal notranslate"><span class="pre">best_params</span></code> que eligió el bucle interno de ese fold, y se calculan los valores SHAP (<code class="docutils literal notranslate"><span class="pre">TreeExplainer</span></code>, exacto) sobre 300 filas al azar del conjunto de prueba de ese mismo fold. La importancia de una variable es la media de |SHAP| sobre esas filas, y las columnas one-hot de <code class="docutils literal notranslate"><span class="pre">SEX</span></code>, <code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code> y <code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code> se suman de vuelta a su variable original. Después se mide qué tan parecido queda el ranking entre folds con la correlación de Spearman y con el solapamiento (Jaccard) del top 5.</p>
+<p>En cada fold externo se reajusta el pipeline completo con los <code class="docutils literal notranslate"><span class="pre">best_params</span></code> que eligió el bucle interno de ese fold, y se calculan los valores SHAP (<code class="docutils literal notranslate"><span class="pre">TreeExplainer</span></code>, exacto) sobre 300 filas al azar del conjunto de prueba de ese mismo fold. La importancia de una variable es la media de |SHAP| sobre esas filas, y las columnas one-hot de <code class="docutils literal notranslate"><span class="pre">SEX</span></code>, <code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code> y <code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code> se suman de vuelta a su variable original. Después se mide qué tan parecido queda el ranking entre folds con la correlación de Spearman y con el solapamiento (Jaccard) del top 5.</p>
 <p>Las magnitudes de distintos folds no son estrictamente comparables, porque cada fold usa un modelo con hiperparámetros distintos. Por eso la estabilidad se juzga con el orden de las variables y no con el valor absoluto.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
@@ -1509,7 +1508,6 @@ xgboost: combinación class_weight | bayesian_optuna; 300 filas explicadas por f
 </table>
 </div></div></div>
 </div>
-<p><strong>Lectura.</strong></p>
 <ul class="simple">
 <li><p><strong>Random Forest es estable.</strong> Las cuatro primeras variables son las mismas y en el mismo orden en los cinco folds (<code class="docutils literal notranslate"><span class="pre">PAY_0</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code>, <code class="docutils literal notranslate"><span class="pre">LIMIT_BAL_LOG</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_3</span></code>); solo la quinta cambia (<code class="docutils literal notranslate"><span class="pre">PAY_4</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_AMT*_LOG</span></code> o <code class="docutils literal notranslate"><span class="pre">BILL_AMT_MEAN_6M_LOG</span></code>). El Jaccard medio del top 5 es 0.77 y el Spearman medio sobre el ranking completo, 0.96. Los valores de <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> son casi iguales entre folds (0.073 a 0.081). La conclusión de la sección 3 (el historial de pagos domina) no depende del fold elegido.</p></li>
 <li><p><strong>XGBoost es estable en lo principal y menos en el resto.</strong> <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> es la primera variable en los cinco folds y <code class="docutils literal notranslate"><span class="pre">LIMIT_BAL_LOG</span></code> y <code class="docutils literal notranslate"><span class="pre">BILL_AMT_MEAN_6M_LOG</span></code> están siempre en el top 5. Pero el top 5 completo cambia entre folds (Jaccard medio 0.65): <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_3</span></code> salen del top 5 en algunos folds (por ejemplo el 2) y entran <code class="docutils literal notranslate"><span class="pre">PAY_AMT1_LOG</span></code>, <code class="docutils literal notranslate"><span class="pre">PAY_AMT2_LOG</span></code> o <code class="docutils literal notranslate"><span class="pre">PAY_AMT3_LOG</span></code>. El Spearman medio sobre todas las variables es de 0.92.</p></li>
@@ -1520,7 +1518,7 @@ xgboost: combinación class_weight | bayesian_optuna; 300 filas explicadas por f
 </section>
 <section id="lime-frente-a-shap-en-200-observaciones-por-modelo">
 <h2>6. LIME frente a SHAP en 200 observaciones por modelo<a class="headerlink" href="#lime-frente-a-shap-en-200-observaciones-por-modelo" title="Link to this heading">#</a></h2>
-<p><strong>Procedimiento.</strong> En cada fold externo se toman 10 observaciones al azar de cada celda de la matriz de confusión (verdaderos negativos, falsos positivos, falsos negativos y verdaderos positivos), no solo los casos extremos. Para cada una se calcula el SHAP exacto y la explicación de LIME (10 variables, sobre el mismo espacio transformado que ve el modelo) y se mide:</p>
+<p>En cada fold externo se toman 10 observaciones al azar de cada celda de la matriz de confusión (verdaderos negativos, falsos positivos, falsos negativos y verdaderos positivos), no solo los casos extremos. Para cada una se calcula el SHAP exacto y la explicación de LIME (10 variables, sobre el mismo espacio transformado que ve el modelo) y se mide:</p>
 <ul class="simple">
 <li><p><strong>Spearman de |atribución|:</strong> correlación entre el orden de importancia de SHAP y el de LIME sobre todas las variables (las que LIME no reporta valen 0).</p></li>
 <li><p><strong>Solapamiento del top 5:</strong> fracción de las 5 variables principales de SHAP que también están entre las 5 principales de LIME.</p></li>
@@ -1809,7 +1807,7 @@ xgboost: combinación class_weight | bayesian_optuna; 300 filas explicadas por f
 </table>
 </div></div></div>
 </div>
-<p><strong>Lectura</strong> (200 observaciones por modelo, 5 folds).</p>
+<p>Resultados con 200 observaciones por modelo y 5 folds.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Medida</p></th>
@@ -1846,7 +1844,7 @@ xgboost: combinación class_weight | bayesian_optuna; 300 filas explicadas por f
 </ul>
 <p>Esto ya permite concluir algo que la observación única de la versión anterior no permitía: la discusión de la sección siguiente (cuándo divergen LIME y SHAP) se confirma como tendencia, no como anécdota.</p>
 <!-- multi-fold -->
-<p><strong>Limitaciones de las secciones 5 y 6.</strong></p>
+<p>Limitaciones de las secciones 5 y 6.</p>
 <ul class="simple">
 <li><p>Son dos modelos de siete y un solo conjunto de datos. Los demás modelos no se explican, y SVM queda fuera porque sus explicadores model-agnostic son demasiado costosos con este tamaño de datos.</p></li>
 <li><p>Los cinco folds son los mismos con los que se evaluó el modelo. Reportar cinco valores por medida (por fold) no es una prueba de hipótesis: la variación entre folds es una medida de estabilidad, no un intervalo de confianza.</p></li>

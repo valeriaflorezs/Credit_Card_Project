@@ -219,7 +219,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
-<li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
@@ -392,13 +392,13 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="modelo-original-cs-fof-y-metodos-recientes">
 <h1>10. Modelo original (CS-FOF) y métodos recientes<a class="headerlink" href="#modelo-original-cs-fof-y-metodos-recientes" title="Link to this heading">#</a></h1>
-<p>Las 112 combinaciones de los notebooks 04 a 09 son los modelos tradicionales y fijan el punto de comparación: su mejor F1 medio (validación anidada 5 x 5) es el de <strong>XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y optimización bayesiana, 0.5466</strong>. Este notebook responde una sola pregunta: <strong>¿existe un modelo que supere ese F1?</strong></p>
+<p>Las 112 combinaciones de los capítulos 04 a 09 son los modelos tradicionales y fijan el punto de comparación: su mejor F1 medio (validación anidada 5 x 5) es el de <strong>XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y optimización bayesiana, 0.5466</strong>. Este notebook responde una sola pregunta: <strong>¿existe un modelo que supere ese F1?</strong></p>
 <p>Para responderla se agregan tres modelos con el mismo protocolo (mismos 5 folds externos y 5 internos, semilla 42, F1 de la clase <em>default</em> como métrica):</p>
 <ul class="simple">
-<li><p><strong>CS-FOF</strong> (<em>Cost-Sensitive Fisher Oblique Forest</em>), el modelo original del proyecto, programado desde cero con <code class="docutils literal notranslate"><span class="pre">numpy</span></code> en <code class="docutils literal notranslate"><span class="pre">src/original_model.py</span></code>.</p></li>
+<li><p><strong>CS-FOF</strong> (<em>Cost-Sensitive Fisher Oblique Forest</em>), el modelo original del proyecto, programado desde cero con <code class="docutils literal notranslate"><span class="pre">numpy</span></code>.</p></li>
 <li><p><strong>LightGBM</strong> y <strong>CatBoost</strong>, dos métodos recientes de boosting, como referencia del estado del arte.</p></li>
 </ul>
-<p>Los resultados son parciales, porque las corridas de los modelos nuevos todavía no terminan. Provienen de <code class="docutils literal notranslate"><span class="pre">results/experiments_5x5__cs_fof.csv</span></code> (4 combinaciones) y <code class="docutils literal notranslate"><span class="pre">results/experiments_5x5__boosting_recientes.csv</span></code> (25 combinaciones: 16 de LightGBM y 9 de CatBoost, sin ADASYN), unidos a las 112 en <code class="docutils literal notranslate"><span class="pre">results/master_table_e3.csv</span></code> (141 filas).</p>
+<p>Los resultados son parciales, porque las corridas de los modelos nuevos todavía no terminan. Hasta ahora se cuenta con 4 combinaciones de CS-FOF y 25 de los métodos de boosting (16 de LightGBM y 9 de CatBoost, sin ADASYN), que se unen a las 112 para un total de 141 combinaciones.</p>
 <section id="la-idea-de-cs-fof">
 <h2>1. La idea de CS-FOF<a class="headerlink" href="#la-idea-de-cs-fof" title="Link to this heading">#</a></h2>
 <p>Un árbol clásico corta sobre una sola variable a la vez. Pero el riesgo de <em>default</em> depende de combinaciones (por ejemplo, del límite de crédito junto con lo pagado el mes anterior), de modo que la frontera es oblicua. En cada nodo, CS-FOF compara dos tipos de corte y se queda con el mejor:</p>
@@ -759,7 +759,7 @@ F1 medio = 0.5466 (desv. 0.0091)
 <img alt="../_images/670bec985b184f1d671aae05e5d2332f7d2523e95d44519750987942d61262b4.png" src="../_images/670bec985b184f1d671aae05e5d2332f7d2523e95d44519750987942d61262b4.png" />
 </div>
 </div>
-<p><strong>Lectura.</strong> CatBoost (0.5480) y CS-FOF (0.5479) superan al mejor de las 112 por 0.0015 y 0.0014 de F1, y LightGBM (0.5462) queda 0.0004 por debajo. Las tres diferencias son de milésimas, mucho menores que la desviación entre folds (cerca de 0.009).</p>
+<p>CatBoost (0.5480) y CS-FOF (0.5479) superan al mejor de las 112 por 0.0015 y 0.0014 de F1, y LightGBM (0.5462) queda 0.0004 por debajo. Las tres diferencias son de milésimas, mucho menores que la desviación entre folds (cerca de 0.009).</p>
 </section>
 <section id="la-diferencia-de-cs-fof-es-significativa">
 <h2>3. ¿La diferencia de CS-FOF es significativa?<a class="headerlink" href="#la-diferencia-de-cs-fof-es-significativa" title="Link to this heading">#</a></h2>
@@ -908,7 +908,7 @@ t = \frac{\bar d}{\sqrt{\left(\dfrac{1}{k} + \dfrac{n_2}{n_1}\right) s_d^2}} .
 </table>
 </div></div></div>
 </div>
-<p><strong>Lectura.</strong> Frente a CatBoost, XGBoost, LightGBM y Random Forest las diferencias son menores a 0.003 de F1 y ningún <span class="math notranslate nohighlight">\(p\)</span>-valor corregido es significativo: no hay evidencia de que CS-FOF sea mejor, ni peor, que ellos. En cambio, supera a SVM, KNN, árbol de decisión, regresión logística y Naive Bayes (diferencias de 0.009 a 0.049 de F1 y <span class="math notranslate nohighlight">\(p\)</span> de Nadeau-Bengio con Holm menor a 0.06 en los cinco, y delta de Cliff de 0.76 a 1). El Wilcoxon con 5 folds no alcanza a ser significativo en ningún caso.</p>
+<p>Frente a CatBoost, XGBoost, LightGBM y Random Forest las diferencias son menores a 0.003 de F1 y ningún <span class="math notranslate nohighlight">\(p\)</span>-valor corregido es significativo: no hay evidencia de que CS-FOF sea mejor, ni peor, que ellos. En cambio, supera a SVM, KNN, árbol de decisión, regresión logística y Naive Bayes (diferencias de 0.009 a 0.049 de F1 y <span class="math notranslate nohighlight">\(p\)</span> de Nadeau-Bengio con Holm menor a 0.06 en los cinco, y delta de Cliff de 0.76 a 1). El Wilcoxon con 5 folds no alcanza a ser significativo en ningún caso.</p>
 </section>
 <section id="ranking-global-friedman-y-nemenyi">
 <h2>4. Ranking global: Friedman y Nemenyi<a class="headerlink" href="#ranking-global-friedman-y-nemenyi" title="Link to this heading">#</a></h2>
@@ -956,7 +956,7 @@ Diferencia crítica de Nemenyi (CD) = 6.06
 </div>
 </div>
 </div>
-<p><strong>Lectura.</strong> Friedman es significativo, pero Nemenyi con solo 5 folds es poco potente: solo separa de la cabeza a regresión logística y Naive Bayes. CatBoost, CS-FOF, XGBoost, Random Forest y LightGBM ocupan los cinco primeros rangos, pero entre ellos (y aun frente a SVM, KNN y el árbol de decisión) el orden no es estadísticamente interpretable. Se lee como una comparación descriptiva.</p>
+<p>Friedman es significativo, pero Nemenyi con solo 5 folds es poco potente: solo separa de la cabeza a regresión logística y Naive Bayes. CatBoost, CS-FOF, XGBoost, Random Forest y LightGBM ocupan los cinco primeros rangos, pero entre ellos (y aun frente a SVM, KNN y el árbol de decisión) el orden no es estadísticamente interpretable. Se lee como una comparación descriptiva.</p>
 </section>
 <section id="comparacion-sobre-las-mismas-predicciones-delong-y-mcnemar">
 <h2>5. Comparación sobre las mismas predicciones: DeLong y McNemar<a class="headerlink" href="#comparacion-sobre-las-mismas-predicciones-delong-y-mcnemar" title="Link to this heading">#</a></h2>
@@ -1053,12 +1053,12 @@ Diferencia crítica de Nemenyi (CD) = 6.06
 </table>
 </div></div></div>
 </div>
-<p><strong>Lectura.</strong> El AUC de CS-FOF es indistinguible del de CatBoost, XGBoost y Random Forest (DeLong con <span class="math notranslate nohighlight">\(p &gt; 0.1\)</span>) y mayor que el de LightGBM (DeLong con <span class="math notranslate nohighlight">\(p &lt; 0.001\)</span>). McNemar sí marca diferencias en los aciertos individuales, pero esas diferencias se compensan: el F1 fuera de muestra de CS-FOF y de cada rival difiere en menos de 0.003.</p>
+<p>El AUC de CS-FOF es indistinguible del de CatBoost, XGBoost y Random Forest (DeLong con <span class="math notranslate nohighlight">\(p &gt; 0.1\)</span>) y mayor que el de LightGBM (DeLong con <span class="math notranslate nohighlight">\(p &lt; 0.001\)</span>). McNemar sí marca diferencias en los aciertos individuales, pero esas diferencias se compensan: el F1 fuera de muestra de CS-FOF y de cada rival difiere en menos de 0.003.</p>
 </section>
 <section id="conclusion-parcial">
 <h2>6. Conclusión (parcial)<a class="headerlink" href="#conclusion-parcial" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>Respuesta a la pregunta con los resultados disponibles.</strong> Ningún modelo nuevo supera de forma significativa al mejor de las 112 combinaciones. El mayor F1 medio es de CatBoost (0.5480), seguido de CS-FOF (0.5479); frente al mejor tradicional (XGBoost, 0.5466) la ventaja es de 0.001 a 0.002, menor que la desviación entre folds.</p></li>
+<li><p>Ningún modelo nuevo supera de forma significativa al mejor de las 112 combinaciones. El mayor F1 medio es de CatBoost (0.5480), seguido de CS-FOF (0.5479); frente al mejor tradicional (XGBoost, 0.5466) la ventaja es de 0.001 a 0.002, menor que la desviación entre folds.</p></li>
 <li><p><strong>CS-FOF</strong> es competitivo, con el mayor ROC-AUC medio y la menor variación entre folds entre los cinco primeros, pero empata estadísticamente con CatBoost, XGBoost, LightGBM y Random Forest.</p></li>
 <li><p><strong>Estado de las corridas.</strong> Los resultados son parciales: las corridas de los modelos nuevos todavía no terminan (hasta ahora CS-FOF con 4 combinaciones, LightGBM con 16 y CatBoost con 9 de 16). Esta sección y las tablas se actualizan cuando se completen.</p></li>
 <li><p><strong>Limitación metodológica.</strong> Con 5 folds las pruebas tienen poca potencia, así que la comparación entre los modelos de cabeza es descriptiva.</p></li>

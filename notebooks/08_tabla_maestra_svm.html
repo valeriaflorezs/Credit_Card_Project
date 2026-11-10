@@ -220,7 +220,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
-<li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
@@ -392,7 +392,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="tabla-maestra-consolidada-y-comparabilidad-del-svm">
 <h1>08. Tabla maestra consolidada y comparabilidad del SVM<a class="headerlink" href="#tabla-maestra-consolidada-y-comparabilidad-del-svm" title="Link to this heading">#</a></h1>
-<p>Este notebook consolida la tabla maestra de resultados (<code class="docutils literal notranslate"><span class="pre">results/master_table_112.csv</span></code>) y verifica la comparabilidad de las filas de SVM, corridas en Colab con <code class="docutils literal notranslate"><span class="pre">cuml.svm.SVC</span></code>, frente a las demás, que usan <code class="docutils literal notranslate"><span class="pre">sklearn.svm.SVC</span></code>. Los números de este notebook son los de la corrida 5 x 5 (5 folds externos x 5 internos). KNN también corrió en la GPU de Colab (cuML), y se documenta aparte su diferencia con scikit-learn.</p>
+<p>Este notebook consolida la tabla maestra de resultados y verifica la comparabilidad de las filas de SVM, corridas en Colab con <code class="docutils literal notranslate"><span class="pre">cuml.svm.SVC</span></code>, frente a las demás, que usan <code class="docutils literal notranslate"><span class="pre">sklearn.svm.SVC</span></code>. Los números de este notebook son los de la corrida 5 x 5 (5 folds externos x 5 internos). KNN también corrió en la GPU de Colab (cuML), y se documenta aparte su diferencia con scikit-learn.</p>
 <section id="tabla-maestra-de-las-112-combinaciones">
 <h2>1. Tabla maestra de las 112 combinaciones<a class="headerlink" href="#tabla-maestra-de-las-112-combinaciones" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
@@ -431,9 +431,7 @@
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tabla maestra: 112 filas -&gt; results\master_table_112.csv
-Selección por modelo: 7 filas -&gt; results\best_per_model.csv
-Diferencia crítica de Nemenyi (k = 112, 5 folds): 89.4
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Diferencia crítica de Nemenyi (k = 112, 5 folds): 89.4
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -503,7 +501,7 @@ Diferencia crítica de Nemenyi (k = 112, 5 folds): 89.4
 </table>
 </div></div></div>
 </div>
-<p>La tabla <code class="docutils literal notranslate"><span class="pre">results/master_table_112.csv</span></code> une las 96 filas de <code class="docutils literal notranslate"><span class="pre">results/experiments_master_5x5.csv</span></code> (80 de la CPU local y 16 de KNN en Colab), las 16 de SVM (<code class="docutils literal notranslate"><span class="pre">results/svm_gpu_results_colab_5x5.csv</span></code>) y las métricas complementarias (<code class="docutils literal notranslate"><span class="pre">experiments_posthoc_metrics.csv</span></code>). Cada fila trae el origen del cálculo (<code class="docutils literal notranslate"><span class="pre">source</span></code>), la semilla, el tiempo y las métricas por fold con su media y desviación estándar entre los 5 folds externos, <strong>con <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code> en todas</strong> (la tabla de la corrida 3 x 3 usaba <code class="docutils literal notranslate"><span class="pre">ddof=0</span></code>). También trae el rango medio de F1 entre las 112 combinaciones y si la combinación queda a menos de la diferencia crítica de Nemenyi (89.4) de la mejor. Los tiempos de SVM y de KNN son de GPU y se marcan con <code class="docutils literal notranslate"><span class="pre">time_comparable</span> <span class="pre">=</span> <span class="pre">False</span></code>. El PR-AUC de SVM viene del reajuste en CPU (ver la columna <code class="docutils literal notranslate"><span class="pre">pr_auc_source</span></code>), y el de KNN del reajuste con scikit-learn de <code class="docutils literal notranslate"><span class="pre">posthoc_metrics</span></code>. A continuación, las 15 primeras filas ordenadas por rango medio de F1.</p>
+<p>La tabla maestra une las 96 filas de la validación anidada 5 x 5 (80 de la CPU local y 16 de KNN en Colab), las 16 de SVM y las métricas complementarias. Cada fila trae el origen del cálculo, la semilla, el tiempo y las métricas por fold con su media y desviación estándar entre los 5 folds externos, <strong>con <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code> en todas</strong> (la tabla de la corrida 3 x 3 usaba <code class="docutils literal notranslate"><span class="pre">ddof=0</span></code>). También trae el rango medio de F1 entre las 112 combinaciones y si la combinación queda a menos de la diferencia crítica de Nemenyi (89.4) de la mejor. Los tiempos de SVM y de KNN son de GPU y se marcan como no comparables. El PR-AUC de SVM viene del reajuste en CPU, y el de KNN del reajuste con scikit-learn. A continuación, las 15 primeras filas ordenadas por rango medio de F1.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -872,7 +870,7 @@ Filas sin PR-AUC: 0
 </section>
 <section id="mejor-combinacion-por-modelo-y-motivo-de-la-seleccion">
 <h2>2. Mejor combinación por modelo y motivo de la selección<a class="headerlink" href="#mejor-combinacion-por-modelo-y-motivo-de-la-seleccion" title="Link to this heading">#</a></h2>
-<p>Para cada modelo se elige la combinación (técnica de balanceo y método de optimización) con mayor F1 medio en el bucle externo. La tabla se guarda en <code class="docutils literal notranslate"><span class="pre">results/best_per_model.csv</span></code>, con el motivo de cada selección. La columna <code class="docutils literal notranslate"><span class="pre">within_nemenyi_cd_of_global_best</span></code> indica si la combinación está dentro del conjunto de finalistas de la comparación de Friedman y Nemenyi (a menos de la diferencia crítica de la mejor global).</p>
+<p>Para cada modelo se elige la combinación (técnica de balanceo y método de optimización) con mayor F1 medio en el bucle externo. Se registra el motivo de cada selección y si la combinación está dentro del conjunto de finalistas de la comparación de Friedman y Nemenyi (a menos de la diferencia crítica de la mejor global).</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1038,7 +1036,6 @@ Filas sin PR-AUC: 0
 </div>
 </div>
 </div>
-<p><strong>Lectura.</strong></p>
 <ul class="simple">
 <li><p>La mejor combinación global es XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code> (F1 0.5466 ± 0.0091), seguida de Random Forest con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">random_search</span></code> (0.5452 ± 0.0077).</p></li>
 <li><p>Las siete combinaciones elegidas están dentro de la diferencia crítica de la mejor global. Esto <strong>no prueba equivalencia</strong>: la diferencia crítica es 89.4 y la máxima diferencia de rangos, 108.3, así que Nemenyi separa solo combinaciones muy alejadas en el ranking y no puede ordenar las cercanas a la mejor.</p></li>
@@ -1050,7 +1047,7 @@ Filas sin PR-AUC: 0
 <p>Repetir las búsquedas de SVM en CPU no es viable (en la corrida inicial 3 x 3, <code class="docutils literal notranslate"><span class="pre">svm/none/genetic_deap</span></code> tardó más de 4 horas en la CPU local, y con 5 x 5 sería varias veces más). Lo que sí se puede verificar es la parte de la comparación que depende de la evaluación y no de la búsqueda:</p>
 <ol class="arabic simple">
 <li><p>Se toman los hiperparámetros que eligió el bucle interno de Colab en cada fold externo.</p></li>
-<li><p>Se reajusta, con el mismo pipeline del resto del proyecto (<code class="docutils literal notranslate"><span class="pre">balancing.build_pipeline</span></code>, con <code class="docutils literal notranslate"><span class="pre">sklearn.svm.SVC</span></code>), sobre los mismos folds externos, y se mide el F1 de prueba.</p></li>
+<li><p>Se reajusta, con el mismo pipeline del resto del proyecto (con <code class="docutils literal notranslate"><span class="pre">sklearn.svm.SVC</span></code>), sobre los mismos folds externos, y se mide el F1 de prueba.</p></li>
 <li><p>Se compara con el F1 por fold que reportó Colab.</p></li>
 </ol>
 <p>Si los dos coinciden, las filas de SVM miden lo mismo que las demás. Lo que <strong>no</strong> se puede verificar con esto es que la búsqueda de cuML habría elegido los mismos hiperparámetros que la de libsvm, ni los tiempos.</p>
@@ -1283,12 +1280,11 @@ Mediana de la desviación estándar entre folds del F1 (resto de modelos): 0.010
 </div>
 </div>
 </div>
-<p><strong>Lectura.</strong></p>
 <ul class="simple">
 <li><p><strong>Las filas de SVM de Colab no reproducen exactamente el F1 de scikit-learn.</strong> Con los mismos hiperparámetros, los mismos folds y el mismo pipeline, el F1 reajustado en CPU es mayor en las 16 filas, en promedio en 0.009 (entre 0.003 y 0.022). La diferencia es mayor sin balanceo (0.017) y menor con SMOTE (0.004) y <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> (0.006). En 9 de las 16 filas hay al menos un fold con diferencia mayor que 0.01. La mediana de la desviación entre folds de los demás modelos es 0.010, de modo que la diferencia es algo menor que una desviación estándar.</p></li>
 <li><p>El ROC-AUC casi no cambia (diferencia máxima por fold de 0.001), así que el orden en que el modelo clasifica a los clientes es el mismo y la discrepancia viene del punto de corte de las predicciones. Es consistente con que el solver y la calibración de probabilidades de cuML no son idénticos a los de libsvm, pero es una hipótesis que no se verificó.</p></li>
-<li><p><strong>Conclusión:</strong> las filas de SVM de Colab no son estrictamente comparables en F1 con las demás, y el sesgo siempre va en contra de SVM. Los tiempos tampoco son comparables. Por eso el análisis siguiente se hace con tres versiones de la comparación.</p></li>
-<li><p><strong>KNN también corrió en la GPU de Colab (cuML).</strong> No se rehízo la búsqueda en CPU, pero <code class="docutils literal notranslate"><span class="pre">posthoc_metrics</span></code> reajustó con scikit-learn los hiperparámetros elegidos: las clases predichas coinciden en 99.98 % a 100 % de los casos y el F1 por fold difiere hasta 0.0066 respecto al de Colab (en las 96 filas no SVM, ese es el máximo). Las probabilidades difieren por precisión float32 y empates entre vecinos. Es una diferencia menor que la de SVM y no sistemática.</p></li>
+<li><p>Las filas de SVM de Colab no son estrictamente comparables en F1 con las demás, y el sesgo siempre va en contra de SVM. Los tiempos tampoco son comparables. Por eso el análisis siguiente se hace con tres versiones de la comparación.</p></li>
+<li><p><strong>KNN también corrió en la GPU de Colab (cuML).</strong> No se rehízo la búsqueda en CPU, pero se reajustaron con scikit-learn los hiperparámetros elegidos: las clases predichas coinciden en 99.98 % a 100 % de los casos y el F1 por fold difiere hasta 0.0066 respecto al de Colab (en las 96 filas no SVM, ese es el máximo). Las probabilidades difieren por precisión float32 y empates entre vecinos. Es una diferencia menor que la de SVM y no sistemática.</p></li>
 </ul>
 </section>
 <section id="sensibilidad-de-la-comparacion-estadistica-al-tratamiento-de-svm">
@@ -1672,7 +1668,6 @@ Mediana de la desviación estándar entre folds del F1 (resto de modelos): 0.010
 </table>
 </div></div></div>
 </div>
-<p><strong>Lectura.</strong></p>
 <ul class="simple">
 <li><p><strong>La conclusión estadística no cambia.</strong> En los tres escenarios Friedman es significativo (<span class="math notranslate nohighlight">\(p&lt;10^{-47}\)</span>) y Nemenyi tiene algo de potencia: la máxima diferencia de rangos medios (108.3, 92.3 y 106.3) supera la diferencia crítica (89.4, 75.5 y 89.4), de modo que separa los extremos del ranking pero no las combinaciones de cabeza. Las dos primeras combinaciones son las mismas en los tres escenarios: XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">bayesian_optuna</span></code>, y Random Forest con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">random_search</span></code>.</p></li>
 <li><p><strong>El ranking de modelos cambia solo en la posición de SVM.</strong> Con el SVM de Colab (escenario A), la mejor combinación de SVM tiene F1 0.5387 (SMOTE, <code class="docutils literal notranslate"><span class="pre">random_search</span></code>) y queda tercera entre los modelos. Con el reajuste en CPU (escenario C) sube a 0.5446 (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code> con <code class="docutils literal notranslate"><span class="pre">grid_search</span></code>), a 0.0020 de XGBoost (0.5466), y la tercera combinación del ranking global pasa de Random Forest con <code class="docutils literal notranslate"><span class="pre">grid_search</span></code> a SVM con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">grid_search</span></code>. Este cambio es desfavorable para la versión de Colab, que subestimaba a SVM, y se reporta así. XGBoost sigue siendo el mejor, y la diferencia con SVM está muy por debajo de la desviación entre folds.</p></li>
