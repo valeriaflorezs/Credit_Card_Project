@@ -206,8 +206,16 @@ $$
 
 con $V < 0.1$ como efecto pequeño. Para comparar grupos sin suponer normalidad se usan Mann-Whitney
 {cite:p}`mann1947` (dos grupos) y Kruskal-Wallis {cite:p}`kruskal1952` (tres o más), y la t de Welch para medias con
-varianzas distintas. Con cerca de 30,000 observaciones casi cualquier diferencia resulta significativa, por lo que
-se reporta el tamaño del efecto y no solo el $p$-valor.
+varianzas distintas. Con $R_g$ la suma de rangos del grupo $g$, $n_g$ su tamaño y $N$ el total de observaciones:
+
+$$
+U_1 = R_1 - \frac{n_1 (n_1 + 1)}{2}, \qquad
+H = \frac{12}{N(N+1)} \sum_{g} \frac{R_g^2}{n_g} - 3(N+1), \qquad
+t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}} .
+$$
+
+Con cerca de 30,000 observaciones casi cualquier diferencia resulta significativa, por lo que se reporta el tamaño
+del efecto y no solo el $p$-valor.
 
 ### Calibración de probabilidades
 
@@ -298,6 +306,13 @@ Diseño factorial de **7 x 4 x 4 = 112 configuraciones**:
   de cabeza, y la comparación entre ellas se interpreta de manera descriptiva.
 - **Calibración y complejidad:** curvas de calibración, error de calibración esperado (ECE) y costo
   computacional de cada configuración.
+
+### Modelo original y métodos recientes
+
+Las 112 configuraciones anteriores son los modelos tradicionales y fijan el punto de comparación: su mejor F1 medio
+es 0.547 (XGBoost con `class_weight` y optimización bayesiana). Con ese valor como referencia se busca un modelo que
+lo supere: un bosque aleatorio propio con cortes oblicuos sensibles al costo (CS-FOF), contrastado además con dos
+métodos recientes de boosting (LightGBM y CatBoost) bajo el mismo protocolo de validación anidada 5 x 5.
 
 ### Interpretabilidad
 

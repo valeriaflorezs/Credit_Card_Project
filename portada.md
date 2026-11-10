@@ -32,6 +32,8 @@ técnicas de balanceo por 4 métodos de optimización de hiperparámetros), con 
 externos por 5 internos) y el F1 de la clase *default* como métrica principal. La mejor configuración fue XGBoost con
 ponderación de clases y optimización bayesiana (F1 medio de 0.547), seguida de cerca por Random Forest con
 ponderación de clases.
+Con ese F1 como referencia, el proyecto propone además un modelo original (un bosque aleatorio con cortes oblicuos
+sensibles al costo) y lo contrasta con dos métodos recientes de boosting.
 
 **Palabras clave:** aprendizaje automático, análisis exploratorio de datos, preprocesamiento, clasificación binaria,
 riesgo crediticio, desbalance de clases, validación cruzada anidada, optimización de hiperparámetros, F1-score.
