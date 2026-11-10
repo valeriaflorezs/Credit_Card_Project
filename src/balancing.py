@@ -4,13 +4,13 @@
 - ``"smote"``: oversampling sintético de la clase minoritaria.
 - ``"adasyn"``: oversampling adaptativo (más síntesis donde la clasificación
   es más difícil).
-- ``"class_weight"``: no resamplea los datos — pondera la función de
+- ``"class_weight"``: no resamplea los datos, pondera la función de
   pérdida del modelo (ver ``models.py::ModelSpec.supports_class_weight``).
 
 **Regla crítica (evita data leakage):** SMOTE y ADASYN se envuelven en
 ``imblearn.pipeline.Pipeline`` (nunca ``sklearn.pipeline.Pipeline``), de
 forma que el resampling se ajusta y aplica ÚNICAMENTE sobre el fold de
-ENTRENAMIENTO en cada iteración de validación cruzada — ``imblearn``
+ENTRENAMIENTO en cada iteración de validación cruzada, ``imblearn``
 garantiza que los pasos de resampling se omiten automáticamente durante
 ``.predict()``/``.predict_proba()``, por lo que el fold de
 validación/test nunca se ve alterado.
@@ -18,11 +18,11 @@ validación/test nunca se ve alterado.
 **Nota sobre 'class_weight' en XGBoost:** a diferencia de scikit-learn
 (donde ``class_weight='balanced'`` se recalcula automáticamente dentro de
 cada llamada a ``fit()``, por lo que no hay riesgo de leakage ni siquiera
-dentro de un ``GridSearchCV``), XGBoost no tiene ``class_weight`` — usa
+dentro de un ``GridSearchCV``), XGBoost no tiene ``class_weight``, usa
 ``scale_pos_weight``, un hiperparámetro fijo que debe conocerse ANTES de
 llamar a ``fit()``. Por eso ``build_pipeline`` recibe ``y_train`` y calcula
 ``scale_pos_weight`` una vez, a partir de esos datos de entrenamiento
-(nunca del fold de validación/test — no hay leakage). La simplificación
+(nunca del fold de validación/test, no hay leakage). La simplificación
 consciente aquí es que ese valor queda fijo para todos los folds internos
 que se deriven de ese ``y_train`` (ej. las particiones del inner loop
 dentro de un mismo outer fold): recalcularlo por cada fold interno
@@ -54,7 +54,7 @@ BALANCING_TECHNIQUES: tuple[str, ...] = ("none", "smote", "adasyn", "class_weigh
 # indexado por el contenido de X/y de entrada. Sin esto, GridSearchCV/
 # RandomizedSearchCV/Optuna/DEAP repiten el resampling una vez por cada
 # combinación de hiperparámetros evaluada, aunque el resampling no dependa
-# de esos hiperparámetros (solo del fold de entrenamiento y la técnica) —
+# de esos hiperparámetros (solo del fold de entrenamiento y la técnica) -
 # con 64 combinaciones de grid_search eso es 64x cómputo redundante de
 # SMOTE/ADASYN. El cache es compartido entre modelos/métodos: dos
 # combinaciones distintas que reciban el mismo fold de entrenamiento (ej.
@@ -67,7 +67,7 @@ def is_compatible(spec: ModelSpec, technique: str) -> bool:
     """Indica si una técnica de balanceo aplica a un modelo dado.
 
     ``"class_weight"`` requiere que el modelo soporte ponderación de clases
-    (ver ``ModelSpec.supports_class_weight`` — KNN y Naive Bayes no la
+    (ver ``ModelSpec.supports_class_weight``, KNN y Naive Bayes no la
     soportan). Las demás técnicas (``none``, ``smote``, ``adasyn``) actúan
     sobre los datos de entrada y son compatibles con cualquier modelo.
 
@@ -157,7 +157,7 @@ def compute_class_weight_kwargs(spec: ModelSpec, y_train: pd.Series | np.ndarray
     """Calcula el kwarg de balanceo por peso de clase para un modelo dado.
 
     La mayoría de modelos aceptan directamente ``class_weight='balanced'``,
-    que scikit-learn recalcula automáticamente dentro de cada ``fit()`` —
+    que scikit-learn recalcula automáticamente dentro de cada ``fit()`` -
     sin riesgo de leakage. XGBoost no tiene ``class_weight``: en su lugar
     se calcula ``scale_pos_weight = n_negativos / n_positivos`` sobre
     ``y_train`` (ver limitación documentada en el docstring del módulo).
@@ -202,7 +202,7 @@ def build_pipeline(
     ``sklearn.pipeline.Pipeline``): si ``technique`` es ``"smote"`` o
     ``"adasyn"``, el resampling se ajusta y aplica ÚNICAMENTE sobre los
     datos que se le pasen a ``.fit()`` en cada iteración de validación
-    cruzada — nunca sobre el fold de validación/test evaluado con
+    cruzada, nunca sobre el fold de validación/test evaluado con
     ``.predict()``/``.predict_proba()``.
 
     Parameters
@@ -211,7 +211,7 @@ def build_pipeline(
         Especificación del modelo base (ver ``models.py``).
     technique : {"none", "smote", "adasyn", "class_weight"}
         Técnica de balanceo a aplicar. Debe ser compatible con ``spec``
-        (ver ``is_compatible``) — de lo contrario se lanza ``ValueError``.
+        (ver ``is_compatible``), de lo contrario se lanza ``ValueError``.
     y_train : array-like, optional
         Fold de entrenamiento actual. Requerido para ``"class_weight"``
         (para calcular el peso) y recomendado para ``"smote"``/``"adasyn"``
@@ -223,7 +223,7 @@ def build_pipeline(
     cv_n_splits : int, optional
         Pasar cuando este pipeline se reutilizará dentro de una búsqueda
         (``GridSearchCV``/``RandomizedSearchCV``, ver ``optimization.py``)
-        que particiona ``y_train`` en folds internos más pequeños — ajusta
+        que particiona ``y_train`` en folds internos más pequeños, ajusta
         ``k_neighbors`` de SMOTE/ADASYN de forma conservadora (ver
         ``get_resampler``/``_safe_k_neighbors``).
     **model_kwargs

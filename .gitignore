@@ -1,4 +1,4 @@
-# Datos reales sensibles — nunca versionar
+# Datos reales sensibles, nunca versionar
 data/processed/*.csv
 data/processed/*.parquet
 data/raw/

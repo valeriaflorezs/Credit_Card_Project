@@ -10,7 +10,7 @@ a un CSV que se escribe de forma incremental rompería la reanudación).
 
 Para cada fila de la tabla maestra se REAJUSTA el pipeline con los
 ``best_params`` ya guardados de cada fold externo (un ``fit`` por fold, no
-una búsqueda — ver ``evaluation.regenerate_outof_fold_predictions``) y se
+una búsqueda, ver ``evaluation.regenerate_outof_fold_predictions``) y se
 calculan las métricas por fold. Como control, se compara el F1 por fold
 recalculado contra el de la tabla (``f1_check_max_abs_diff``): si difieren
 de forma apreciable, el reajuste no reproduce el modelo evaluado y las

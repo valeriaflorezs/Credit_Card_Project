@@ -6,7 +6,7 @@ múltiples -> Cliff's Delta (tamaño del efecto) -> bootstrap BCa (IC).
 
 **Por qué jerárquico y no todas las comparaciones pareadas:** con 112
 combinaciones hay C(112, 2) = 6,216 pares posibles. Correr DeLong
-(u otro test) sobre todos ellos sin corrección infla el error tipo I —
+(u otro test) sobre todos ellos sin corrección infla el error tipo I -
 cientos de "diferencias significativas" solo por azar. Por eso: primero
 Friedman responde si HAY evidencia de que no todas las combinaciones son
 equivalentes; solo si la respuesta es sí se identifica CUÁLES difieren
@@ -15,12 +15,12 @@ equivalentes; solo si la respuesta es sí se identifica CUÁLES difieren
 (DeLong) con corrección de Holm-Bonferroni/Benjamini-Hochberg.
 
 **Limitación honesta de los datos:** ``config.N_OUTER_FOLDS = 3`` (elegido
-por costo computacional dado el volumen de 112 combinaciones — ver
+por costo computacional dado el volumen de 112 combinaciones, ver
 config.py) significa que Friedman/Nemenyi comparan solo 3 "bloques", muy
 por debajo de lo recomendado en la literatura (Demšar 2006 sugiere ~10+
 datasets/folds para potencia estadística razonable). Este módulo reporta
-los resultados igual — es la validación cruzada con la que se generaron
-las 112 corridas — pero si Friedman NO resulta significativo, la
+los resultados igual, es la validación cruzada con la que se generaron
+las 112 corridas, pero si Friedman NO resulta significativo, la
 conclusión correcta con tan pocos bloques es "no hay potencia suficiente
 para detectar diferencias", no necesariamente "los modelos son
 equivalentes". Con k=112 y N=5 la diferencia crítica de Nemenyi (≈89)
@@ -56,7 +56,7 @@ def _combo_label(model: str, technique: str, method: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Etapa 1 — Friedman (ómnibus)
+# Etapa 1, Friedman (ómnibus)
 # ---------------------------------------------------------------------------
 
 
@@ -76,7 +76,7 @@ def build_performance_matrix(results: ResultsDict, metric: str = "f1") -> pd.Dat
         Filas = índice de fold externo, columnas = ``"modelo|tecnica|metodo"``.
         Todas las combinaciones DEBEN tener el mismo número de folds
         externos (garantizado si todas se corrieron con el mismo
-        ``n_outer_folds`` — el caso normal de ``experiment_runner.py``).
+        ``n_outer_folds``, el caso normal de ``experiment_runner.py``).
     """
     n_folds = {len(r.fold_results) for r in results.values()}
     if len(n_folds) > 1:
@@ -98,7 +98,7 @@ def build_performance_matrix_from_table(master_table: pd.DataFrame, metric: str 
 
     Necesario para correr la comparación jerárquica en una sesión NUEVA
     (ej. ``05_results_analysis.ipynb``, después de que
-    ``04_run_experiments.ipynb`` ya haya guardado y cerrado) — usa la
+    ``04_run_experiments.ipynb`` ya haya guardado y cerrado), usa la
     columna ``"{metric}_per_fold"`` (JSON) que
     ``nested_cv.NestedCVResult.summary_row`` persiste para este propósito
     exacto.
@@ -138,7 +138,7 @@ def friedman_test(performance_matrix: pd.DataFrame, alpha: float = 0.05) -> dict
 
     H0: todas las combinaciones tienen rendimiento equivalente (rangos
     promedio iguales). Si no se rechaza H0, se reporta así explícitamente
-    — NO se procede a Nemenyi/CD diagram/DeLong (ver docstring del módulo).
+   , NO se procede a Nemenyi/CD diagram/DeLong (ver docstring del módulo).
 
     Returns
     -------
@@ -249,13 +249,13 @@ def compare_factor_levels(
 
 
 # ---------------------------------------------------------------------------
-# Etapa 2a — Nemenyi post-hoc + CD diagram (solo si Friedman es significativo)
+# Etapa 2a, Nemenyi post-hoc + CD diagram (solo si Friedman es significativo)
 # ---------------------------------------------------------------------------
 
 
 def nemenyi_posthoc(performance_matrix: pd.DataFrame) -> pd.DataFrame:
     """Matriz de p-valores pareados de Nemenyi (ya corrige el error familywise
-    conjunto vía la distribución del rango studentizado — no requiere
+    conjunto vía la distribución del rango studentizado, no requiere
     corrección adicional tipo Holm/BH sobre esta matriz).
 
     Returns
@@ -269,7 +269,7 @@ def compute_critical_difference(k: int, n_blocks: int, alpha: float = 0.05) -> f
     """Diferencia Crítica (CD) de Nemenyi: ``CD = q_alpha * sqrt(k(k+1)/(6N))``.
 
     ``q_alpha`` se deriva de la distribución del rango studentizado con
-    ``df=inf`` (supuesto estándar de Nemenyi) dividido por ``sqrt(2)`` —
+    ``df=inf`` (supuesto estándar de Nemenyi) dividido por ``sqrt(2)`` -
     verificado contra la tabla de Demšar (2006): para k=5, alpha=0.05 da
     q_alpha≈2.728, coincidiendo con el valor tabulado.
 
@@ -291,7 +291,7 @@ def plot_cd_diagram(
     alpha: float = 0.05,
     save_path: str | None = None,
 ):
-    """Diagrama de Diferencia Crítica — sustituye a una tabla de miles de
+    """Diagrama de Diferencia Crítica, sustituye a una tabla de miles de
     comparaciones (obligatorio según el curso si Friedman es significativo).
 
     Wrapper sobre ``scikit_posthocs.critical_difference_diagram``.
@@ -306,12 +306,12 @@ def plot_cd_diagram(
 
 
 # ---------------------------------------------------------------------------
-# Etapa 2b — DeLong (subconjunto reducido) + corrección múltiple
+# Etapa 2b, DeLong (subconjunto reducido) + corrección múltiple
 # ---------------------------------------------------------------------------
 
 
 def _compute_midrank(x: np.ndarray) -> np.ndarray:
-    """Midranks (promedia rangos empatados) — paso interno del algoritmo
+    """Midranks (promedia rangos empatados), paso interno del algoritmo
     rápido de DeLong (Sun & Xu, 2014)."""
     sorted_idx = np.argsort(x, kind="mergesort")
     x_sorted = x[sorted_idx]
@@ -333,7 +333,7 @@ def _fast_delong_covariance(predictions: np.ndarray, n_positive: int) -> tuple[n
     """Algoritmo rápido de DeLong (Sun & Xu, 2014): AUCs + matriz de
     covarianza entre las AUCs de ``k`` clasificadores sobre el MISMO
     conjunto de prueba (por eso la comparación debe tratar la correlación
-    entre curvas — un t-test pareado ingenuo la ignoraría).
+    entre curvas, un t-test pareado ingenuo la ignoraría).
 
     Parameters
     ----------
@@ -408,7 +408,7 @@ def delong_comparisons_from_pooled(
     (Holm-Bonferroni o Benjamini-Hochberg/FDR).
 
     Función de bajo nivel, agnóstica a de DÓNDE vienen las predicciones
-    out-of-fold pooleadas — acepta cualquier dict ``{etiqueta: (y_true,
+    out-of-fold pooleadas, acepta cualquier dict ``{etiqueta: (y_true,
     y_pred, y_proba)}``, ya sea leído directamente de un
     ``NestedCVResult`` en memoria (ver ``compare_top_combinations_delong``)
     o RECONSTRUIDO desde la tabla maestra en una sesión nueva (ver
@@ -419,7 +419,7 @@ def delong_comparisons_from_pooled(
     ----------
     pooled : dict[str, tuple[np.ndarray, np.ndarray, np.ndarray]]
         2 o 3 entradas ``{etiqueta: (y_true, y_pred, y_proba)}``. Todas
-        deben compartir el mismo ``y_true`` (mismo dataset/particiones) —
+        deben compartir el mismo ``y_true`` (mismo dataset/particiones) -
         condición que exige DeLong para que la comparación sea válida.
     multiple_test_method : {"holm", "fdr_bh"}, default="holm"
         Ver ``statsmodels.stats.multitest.multipletests``.
@@ -464,7 +464,7 @@ def compare_top_combinations_delong(
     Parameters
     ----------
     top_combos : list[tuple[str, str, str]]
-        2 o 3 combinaciones (model, technique, method) — ver
+        2 o 3 combinaciones (model, technique, method), ver
         ``friedman_test``'s ``avg_ranks`` para elegir las de mejor rango.
     multiple_test_method : {"holm", "fdr_bh"}, default="holm"
         Ver ``statsmodels.stats.multitest.multipletests``.
@@ -479,7 +479,7 @@ def compare_top_combinations_delong(
 
 
 # ---------------------------------------------------------------------------
-# Tamaño del efecto — Cliff's Delta
+# Tamaño del efecto, Cliff's Delta
 # ---------------------------------------------------------------------------
 
 
@@ -493,7 +493,7 @@ def cliffs_delta(a: np.ndarray, b: np.ndarray) -> float:
 
     Nota: con ``config.N_OUTER_FOLDS = 3`` valores por combinación, esta
     estimación es extremadamente burda (solo 9 pares posibles entre dos
-    combinaciones) — reportar junto con la limitación de potencia
+    combinaciones), reportar junto con la limitación de potencia
     documentada en el docstring del módulo, no como una cifra definitiva.
     """
     a, b = np.asarray(a), np.asarray(b)
@@ -516,7 +516,7 @@ def interpret_cliffs_delta(delta: float) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Bootstrap BCa — intervalos de confianza
+# Bootstrap BCa, intervalos de confianza
 # ---------------------------------------------------------------------------
 
 
@@ -530,7 +530,7 @@ def bootstrap_bca_ci(
 ) -> dict[str, float]:
     """Intervalo de confianza bootstrap BCa (bias-corrected and accelerated)
     para una métrica de desempeño, sobre las predicciones out-of-fold
-    pooleadas (ver ``evaluation.pooled_predictions``) — no sobre los 3
+    pooleadas (ver ``evaluation.pooled_predictions``), no sobre los 3
     valores por fold (demasiado pocos para un bootstrap razonable).
 
     Implementación manual (no hay una función BCa lista para métricas de
@@ -599,7 +599,7 @@ def bootstrap_bca_ci(
 
 
 # ---------------------------------------------------------------------------
-# Orquestador — Etapa 1 -> Etapa 2 (condicional)
+# Orquestador, Etapa 1 -> Etapa 2 (condicional)
 # ---------------------------------------------------------------------------
 
 
@@ -617,7 +617,7 @@ def run_hierarchical_comparison(
     -------
     dict con, como mínimo, ``friedman`` (resultado de ``friedman_test``).
     Si ``friedman["significant"]`` es False, se detiene ahí (documentado
-    explícitamente en el resultado, ver ``stage_2_note``) — NO se ejecutan
+    explícitamente en el resultado, ver ``stage_2_note``), NO se ejecutan
     Nemenyi/CD/DeLong sobre datos donde no hay evidencia ómnibus de
     diferencia, tal como exige el curso.
     """
@@ -630,7 +630,7 @@ def run_hierarchical_comparison(
         output["stage_2_note"] = (
             f"Friedman no significativo (p={friedman['p_value']:.4f} >= alpha={alpha}): no se reporta "
             "evidencia de superioridad de ninguna combinación. Dado que N_OUTER_FOLDS=3 (pocos bloques), "
-            "esto puede reflejar falta de potencia estadística tanto como equivalencia real — ver "
+            "esto puede reflejar falta de potencia estadística tanto como equivalencia real, ver "
             "limitación documentada en el docstring del módulo."
         )
         return output
@@ -680,14 +680,14 @@ def run_hierarchical_comparison_from_table(
 ) -> dict[str, Any]:
     """Como ``run_hierarchical_comparison``, pero partiendo de la tabla
     maestra en CSV (``experiment_runner.load_master_table``) en vez de un
-    dict de ``NestedCVResult`` en memoria — el caso real de
+    dict de ``NestedCVResult`` en memoria, el caso real de
     ``05_results_analysis.ipynb``, corrido en una sesión NUEVA después de
     que ``04_run_experiments.ipynb`` ya guardó y cerró.
 
     Etapa 1 (Friedman/rangos) usa únicamente las columnas
     ``"{metric}_per_fold"`` de la tabla (barato). Etapa 2 (DeLong) SOLO
     reajusta el top-k (2-3 combinaciones) con sus ``best_params_per_fold``
-    ya conocidos (ver ``evaluation.regenerate_outof_fold_predictions`` —
+    ya conocidos (ver ``evaluation.regenerate_outof_fold_predictions`` -
     un ``fit`` por fold, no una búsqueda de hiperparámetros), nunca las
     112 combinaciones completas.
 
@@ -697,7 +697,7 @@ def run_hierarchical_comparison_from_table(
         Ver ``experiment_runner.load_master_table``.
     X, y : DataFrame, Series
         El MISMO dataset (mismas filas/orden) usado para generar
-        ``master_table`` — necesario para que ``recover_outer_fold``
+        ``master_table``, necesario para que ``recover_outer_fold``
         reproduzca los folds correctos.
 
     Returns
@@ -718,7 +718,7 @@ def run_hierarchical_comparison_from_table(
         output["stage_2_note"] = (
             f"Friedman no significativo (p={friedman['p_value']:.4f} >= alpha={alpha}): no se reporta "
             "evidencia de superioridad de ninguna combinación. Dado que N_OUTER_FOLDS=3 (pocos bloques), "
-            "esto puede reflejar falta de potencia estadística tanto como equivalencia real — ver "
+            "esto puede reflejar falta de potencia estadística tanto como equivalencia real, ver "
             "limitación documentada en el docstring del módulo."
         )
         return output

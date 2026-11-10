@@ -8,25 +8,25 @@ sensibilidad a la semilla aleatoria.
 El dataset tiene un desbalance ~78/22 (clase mayoritaria = no incumple).
 En ese escenario, **accuracy es engañosa**: un clasificador trivial que
 siempre predice "no incumple" ya obtiene ~78% de accuracy sin aprender
-nada — es precisamente el problema que el profesor señaló al rechazar el
+nada, es precisamente el problema que el profesor señaló al rechazar el
 0.93 de accuracy del Entregable 2 (ver PROJECT_BRIEF.md).
 
 En el contexto de riesgo crediticio, los dos tipos de error tienen costos
 muy distintos:
 
 - **Falso negativo** (predecir "no incumple" cuando SÍ incumple): el banco
-  otorga o mantiene crédito a un cliente que terminará en default — pierde
+  otorga o mantiene crédito a un cliente que terminará en default, pierde
   el principal más los intereses no pagados. Costo alto.
 - **Falso positivo** (predecir "incumple" cuando NO incumple): el banco
   trata con más cautela (o niega/limita crédito) a un cliente que en
-  realidad era solvente — costo de oportunidad (ingresos por intereses no
+  realidad era solvente, costo de oportunidad (ingresos por intereses no
   percibidos), pero no hay pérdida de principal.
 
 Esta asimetría (FN típicamente más costoso que FP) favorece **recall**
 (minimizar falsos negativos) o, si se quiere balancear con la precisión
 para no inundar de falsos positivos costosos en revisión manual, **F1**
 (media armónica de precision/recall). Por eso ``config.DEFAULT_SCORING =
-"f1"`` — un compromiso razonable por defecto — y por eso este módulo
+"f1"``, un compromiso razonable por defecto, y por eso este módulo
 reporta las 5 métricas núcleo (nunca solo accuracy) y expone
 ``expected_cost()`` para cuantificar la elección en términos de costo
 explícito, no solo argumento cualitativo. La proporción real FN/FP debe
@@ -34,7 +34,7 @@ calibrarse con el equipo/negocio; aquí se ilustra con un supuesto
 razonable (5:1), declarado explícitamente como supuesto, no como dato.
 
 **División de responsabilidades:** este módulo NUNCA reajusta un modelo
-para calcular matriz de confusión / ROC / métricas núcleo — usa
+para calcular matriz de confusión / ROC / métricas núcleo, usa
 directamente ``y_true``/``y_pred``/``y_proba`` ya guardados por
 ``nested_cv.OuterFoldResult``. Sí reajusta pipelines (una vez, sobre datos
 ya recuperados con ``complexity_analysis.recover_outer_fold``) para la
@@ -69,9 +69,9 @@ def expected_cost(
 ) -> dict[str, float]:
     """Costo esperado ponderado por falsos negativos/positivos.
 
-    ``cost_fn``/``cost_fp`` son un SUPUESTO ILUSTRATIVO (5:1 — un default
+    ``cost_fn``/``cost_fp`` son un SUPUESTO ILUSTRATIVO (5:1, un default
     no detectado cuesta ~5x lo que un cliente solvente tratado con más
-    cautela), no una cifra derivada de datos reales del banco — ajustar
+    cautela), no una cifra derivada de datos reales del banco, ajustar
     con el costo real si se dispone de él. El punto es cuantificar la
     justificación de preferir recall/F1 sobre accuracy, no dar una cifra
     definitiva.
@@ -96,7 +96,7 @@ def expected_cost(
 
 
 # ---------------------------------------------------------------------------
-# Matriz de confusión / curva ROC — agregadas out-of-fold
+# Matriz de confusión / curva ROC, agregadas out-of-fold
 # ---------------------------------------------------------------------------
 
 
@@ -107,7 +107,7 @@ def aggregate_confusion_matrix(result: NestedCVResult) -> np.ndarray:
     fold de PRUEBA a través de los folds externos (partición de
     ``StratifiedKFold``), sumar las matrices de confusión por fold
     equivale a la matriz de confusión "out-of-fold" sobre el dataset
-    completo — más estable que mirar un solo fold.
+    completo, más estable que mirar un solo fold.
 
     Returns
     -------
@@ -141,16 +141,16 @@ def regenerate_outof_fold_predictions(
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Reconstruye ``y_true``/``y_pred``/``y_proba`` out-of-fold (ver
     ``pooled_predictions``) SIN volver a correr la búsqueda de
-    hiperparámetros — a partir de ``best_params_per_fold`` ya encontrados
+    hiperparámetros, a partir de ``best_params_per_fold`` ya encontrados
     y guardados en la tabla maestra (columna JSON
     ``"best_params_per_fold"``, ver ``nested_cv.NestedCVResult.summary_row``).
 
     Necesario porque un ``NestedCVResult`` (con sus ``y_true``/``y_pred``/
     ``y_proba`` por fold) vive solo en memoria durante la sesión que corrió
-    ``experiment_runner.run_experiments`` — la tabla maestra en CSV no
+    ``experiment_runner.run_experiments``, la tabla maestra en CSV no
     guarda esos arrays (serían enormes y no caben bien en una fila). Una
     sesión NUEVA (ej. ``05_results_analysis.ipynb``, abierto después de
-    ``04_run_experiments.ipynb``) solo tiene el CSV — este helper recupera
+    ``04_run_experiments.ipynb``) solo tiene el CSV, este helper recupera
     cada fold (``complexity_analysis.recover_outer_fold``) y REAJUSTA el
     pipeline con los ``best_params`` YA CONOCIDOS de ese fold (barato: un
     solo ``fit``, no una búsqueda), en vez de reoptimizar desde cero.
@@ -159,7 +159,7 @@ def regenerate_outof_fold_predictions(
     ----------
     best_params_per_fold : list[dict]
         Un dict de hiperparámetros por fold externo, en orden (ver
-        columna ``best_params_per_fold`` de la tabla maestra — deserializar
+        columna ``best_params_per_fold`` de la tabla maestra, deserializar
         con ``json.loads`` antes de pasarlo aquí).
 
     Returns
@@ -193,7 +193,7 @@ def regenerate_outof_fold_predictions(
 
 def pooled_roc_curve(result: NestedCVResult) -> dict[str, Any]:
     """Curva ROC sobre las predicciones out-of-fold agregadas (ver
-    ``pooled_predictions``) — un solo AUC/curva por combinación, en vez de
+    ``pooled_predictions``), un solo AUC/curva por combinación, en vez de
     una curva ruidosa por cada fold pequeño.
     """
     y_true, _, y_proba = pooled_predictions(result)
@@ -207,7 +207,7 @@ def pooled_roc_curve(result: NestedCVResult) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# Tabla de métricas — media ± desviación estándar del outer loop, NUNCA un
+# Tabla de métricas, media ± desviación estándar del outer loop, NUNCA un
 # valor puntual de una sola partición
 # ---------------------------------------------------------------------------
 
@@ -250,7 +250,7 @@ def _expected_calibration_error(
 
     No está en scikit-learn directamente (``calibration_curve`` da los
     puntos del reliability diagram pero no agrega el error ponderado por
-    tamaño de bin) — implementación directa de la definición estándar.
+    tamaño de bin), implementación directa de la definición estándar.
     """
     y_true = np.asarray(y_true)
     y_proba = np.asarray(y_proba)
@@ -299,7 +299,7 @@ def evaluate_calibration(
 
 def pooled_calibration(result: NestedCVResult, n_bins: int = 10, strategy: str = "uniform") -> dict[str, Any]:
     """``evaluate_calibration`` sobre las predicciones out-of-fold agregadas
-    de las 3 (o N) particiones del outer loop — igual razón que
+    de las 3 (o N) particiones del outer loop, igual razón que
     ``pooled_roc_curve``: más estable que un solo fold pequeño.
     """
     y_true, _, y_proba = pooled_predictions(result)
@@ -311,7 +311,7 @@ def is_calibration_poor(ece: float, threshold: float = 0.05) -> bool:
 
     El umbral (0.05 = 5 puntos porcentuales de discrepancia media entre
     confianza y frecuencia observada) es una convención común en la
-    literatura de calibración, no una ley — documentado como heurística.
+    literatura de calibración, no una ley, documentado como heurística.
     """
     return ece > threshold
 
@@ -323,9 +323,9 @@ def fit_recalibrator(
 
     Implementado con primitivas estables de scikit-learn en vez de
     ``CalibratedClassifierCV(cv="prefit")`` (API de "prefit" deprecada/
-    cambiante entre versiones recientes de scikit-learn) — Platt scaling
+    cambiante entre versiones recientes de scikit-learn), Platt scaling
     ES, por definición, una regresión logística 1D sobre el score crudo, y
-    la recalibración isotónica ES ``IsotonicRegression`` — esta
+    la recalibración isotónica ES ``IsotonicRegression``, esta
     implementación es matemáticamente idéntica y no depende de una API que
     puede romperse con la versión de scikit-learn instalada.
 
@@ -334,7 +334,7 @@ def fit_recalibrator(
     y_calib, proba_calib : array-like
         Etiquetas verdaderas y probabilidades CRUDAS (del modelo ya
         entrenado) de un conjunto de CALIBRACIÓN separado del de
-        entrenamiento (ver ``assess_and_recalibrate``) — nunca el mismo
+        entrenamiento (ver ``assess_and_recalibrate``), nunca el mismo
         conjunto usado para entrenar el modelo, o la recalibración
         sobreajustaría.
     method : {"sigmoid", "isotonic"}
@@ -462,11 +462,11 @@ def seed_sensitivity_analysis(
 ) -> pd.DataFrame:
     """Reentrena el mismo modelo/hiperparámetros con distintas semillas
     aleatorias INTERNAS, sobre el MISMO fold, para medir cuánto varía el
-    desempeño por azar de inicialización — separado de la varianza entre
+    desempeño por azar de inicialización, separado de la varianza entre
     folds que ya reporta ``nested_cv.NestedCVResult.metrics_summary``.
 
     Solo tiene sentido para modelos con aleatoriedad propia en el
-    entrenamiento — ver ``SEED_SENSITIVE_MODELS`` (Random Forest:
+    entrenamiento, ver ``SEED_SENSITIVE_MODELS`` (Random Forest:
     bootstrap de muestras/features; XGBoost: subsample/colsample
     estocásticos). Para modelos determinísticos dado un mismo
     hiperparámetro (KNN, Naive Bayes, Regresión Logística con solver
@@ -474,7 +474,7 @@ def seed_sensitivity_analysis(
     de que la varianza entre semillas es ~0 (confirma que el modelo es,
     en efecto, determinista).
 
-    Nota importante: el fold de datos (``fold_index``) se mantiene fijo —
+    Nota importante: el fold de datos (``fold_index``) se mantiene fijo -
     la partición de ``StratifiedKFold`` (``n_outer_folds``,
     ``base_random_state``) NO cambia con ``seeds``, solo la semilla interna
     del ESTIMADOR. Cambiar ambas a la vez confundiría "sensibilidad a la
@@ -521,7 +521,7 @@ def seed_sensitivity_analysis(
 
 def summarize_seed_sensitivity(seed_results: pd.DataFrame) -> dict[str, tuple[float, float]]:
     """Media ± desviación estándar de cada métrica a través de las semillas
-    de ``seed_sensitivity_analysis`` — comparar esta desviación estándar
+    de ``seed_sensitivity_analysis``, comparar esta desviación estándar
     contra la de ``NestedCVResult.metrics_summary`` (entre folds) es lo que
     motiva la pregunta de la sección 10: ¿la diferencia entre modelos es
     mayor que su propia variabilidad intrínseca? (Se responde formalmente

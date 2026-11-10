@@ -2,16 +2,16 @@
 comparación con LIME.
 
 - **SHAP global**: summary plot sobre una muestra del fold de prueba.
-- **SHAP local**: waterfall plot para 2 observaciones — una bien
+- **SHAP local**: waterfall plot para 2 observaciones, una bien
   clasificada (alta confianza, correcta) y una con error alto (alta
-  confianza, INCORRECTA) — ver ``select_representative_instances``.
+  confianza, INCORRECTA), ver ``select_representative_instances``.
 - **LIME vs. SHAP** (específicamente para XGBoost, por pedido del curso):
   compara los top-k features de ambos métodos para la MISMA observación y
   discute cuándo y por qué pueden divergir (ver docstring de
   ``compare_shap_lime``).
 
 **Sobre qué espacio de features se explica:** SHAP/LIME se calculan sobre
-el espacio TRANSFORMADO (post ``preprocessing.py`` — one-hot de
+el espacio TRANSFORMADO (post ``preprocessing.py``, one-hot de
 ``SEX``/``EDUCATION``/``MARRIAGE`` + scaling condicional), porque es el
 espacio real que ve el modelo. ``aggregate_onehot_shap`` suma de vuelta
 las contribuciones de las columnas one-hot a su variable categórica
@@ -22,7 +22,7 @@ separadas.
 Bayes, Regresión Logística, SVM), SHAP recurre a un explicador
 model-agnostic (permutación/Kernel SHAP), mucho más lento que
 ``TreeExplainer``. Por eso ``background``/``n_explain`` se limitan
-explícitamente por defecto — este módulo está pensado para explicar UN
+explícitamente por defecto, este módulo está pensado para explicar UN
 modelo (el mejor identificado), no las 112 combinaciones.
 """
 
@@ -41,7 +41,7 @@ from src.preprocessing import get_preprocessing_steps
 
 TREE_MODELS: tuple[str, ...] = ("decision_tree", "random_forest", "xgboost")
 
-# Para explicadores model-agnostic (no basados en árboles) — ver docstring del módulo.
+# Para explicadores model-agnostic (no basados en árboles), ver docstring del módulo.
 DEFAULT_BACKGROUND_SIZE = 50
 DEFAULT_N_EXPLAIN = 100
 
@@ -49,7 +49,7 @@ DISCUSSION_LIME_VS_SHAP = """
 LIME (Local Interpretable Model-agnostic Explanations) ajusta un modelo
 SUSTITUTO lineal (regularizado, ej. Lasso) sobre muestras perturbadas
 alrededor de la observación a explicar, ponderadas por cercanía (kernel de
-similitud) — es una aproximación LOCAL, válida solo en esa vecindad, y su
+similitud), es una aproximación LOCAL, válida solo en esa vecindad, y su
 resultado depende de decisiones de diseño (ancho del kernel, número de
 muestras perturbadas, número de features retenidas).
 
@@ -65,7 +65,7 @@ no garantiza.
 1. **Features correlacionadas**: SHAP reparte el crédito entre features
    correlacionadas según su contribución marginal promedio; LIME, al
    ajustar un modelo lineal regularizado (Lasso), puede asignar todo el
-   peso a una sola de las features correlacionadas y anular la otra —
+   peso a una sola de las features correlacionadas y anular la otra -
    relevante aquí para el bloque `BILL_AMT1`-`BILL_AMT6` (VIF alto, ver
    EDA de la compañera).
 2. **No linealidad local fuerte**: si la frontera de decisión es muy
@@ -75,7 +75,7 @@ no garantiza.
    (exacto para árboles) sigue reflejando la no linealidad real del modelo.
 3. **Sensibilidad a hiperparámetros de LIME**: el ancho del kernel y el
    número de muestras perturbadas de LIME son elegidos por el usuario y
-   pueden cambiar el ranking de importancia entre corridas — SHAP
+   pueden cambiar el ranking de importancia entre corridas, SHAP
    (TreeExplainer) es determinístico dado el modelo.
 """.strip()
 
@@ -185,7 +185,7 @@ def _positive_class_values(raw_values: np.ndarray) -> np.ndarray:
 
     Distintas combinaciones de versión de ``shap``/tipo de modelo devuelven
     a veces (n_samples, n_features) directamente y a veces
-    (n_samples, n_features, n_clases) — este helper unifica ambos casos
+    (n_samples, n_features, n_clases), este helper unifica ambos casos
     para que el resto del módulo no dependa de esos detalles de versión.
     """
     values = np.asarray(raw_values)
@@ -207,7 +207,7 @@ def compute_shap_values(
     Usa ``shap.TreeExplainer`` (exacto, rápido) para modelos de árboles
     (``TREE_MODELS``); para el resto, ``shap.Explainer`` model-agnostic
     sobre ``predict_proba`` con un background MUESTREADO (ver constante
-    ``DEFAULT_BACKGROUND_SIZE`` — Kernel/Permutation SHAP escalan mal con
+    ``DEFAULT_BACKGROUND_SIZE``, Kernel/Permutation SHAP escalan mal con
     el tamaño del background).
 
     Returns
@@ -244,7 +244,7 @@ def aggregate_onehot_shap(
     variable categórica original en vez de fragmentarla.
 
     ``sklearn.compose.ColumnTransformer.get_feature_names_out()`` nombra
-    las columnas one-hot como ``"categorical__<col>_<categoria>"`` — se
+    las columnas one-hot como ``"categorical__<col>_<categoria>"``, se
     detecta el prefijo ``"categorical__<col>_"`` para cada nombre en
     ``config.CATEGORICAL_COLUMNS`` (o ``categorical_columns``) y se agrupan.
     """
@@ -288,7 +288,7 @@ def build_aggregated_display_matrix(
     categorical_columns: list[str] | None = None,
 ) -> np.ndarray:
     """Construye una matriz de "valores de feature" alineada columna-por-
-    columna con la salida de ``aggregate_onehot_shap`` — para colorear el
+    columna con la salida de ``aggregate_onehot_shap``, para colorear el
     summary plot por el valor real de cada feature.
 
     Para las columnas categóricas agregadas, usa el código crudo ORIGINAL
@@ -321,7 +321,7 @@ def plot_shap_summary(
     save_path: str | None = None,
     max_display: int = 15,
 ) -> None:
-    """Summary plot global (importancia + magnitud) — guarda a PNG si se
+    """Summary plot global (importancia + magnitud), guarda a PNG si se
     provee ``save_path`` (ej. ``results/figures/shap_summary_<modelo>.png``)."""
     import matplotlib.pyplot as plt
     import shap
@@ -405,7 +405,7 @@ def compare_shap_lime(
     según |SHAP| vs. el ranking/coeficientes de LIME.
 
     Ver ``DISCUSSION_LIME_VS_SHAP`` (constante de este módulo) para la
-    discusión metodológica completa de por qué pueden divergir — esta
+    discusión metodológica completa de por qué pueden divergir, esta
     función da la evidencia NUMÉRICA concreta para esa discusión en el
     reporte, no la reemplaza.
 

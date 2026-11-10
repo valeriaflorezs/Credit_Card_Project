@@ -79,19 +79,19 @@ Credit_Card_Project/
 | `00_eda.ipynb` | EDA y construcción de `data/processed/dataset_final.csv` (Parte 5) |
 | `01_baseline_logistic.ipynb` | Baseline: regresión logística con partición 80/20 |
 | `02_setup_check.ipynb`, `03_pipeline_dev.ipynb` | Verificación del entorno y desarrollo del pipeline (datos sintéticos) |
-| `04_run_experiments.ipynb` | Corrida 3 x 3 inicial (6 modelos, local); la corrida vigente 5 x 5 se hizo con `src/run_local_5x5.py` y Colab (`10_colab_5x5.ipynb`) a `results/experiments_master_5x5.csv` |
+| `04_run_experiments.ipynb` | Corrida 3 x 3 inicial (6 modelos, local); la corrida vigente 5 x 5 se hizo con `src/run_local_5x5.py` y Colab (`12_colab_5x5.ipynb`) a `results/experiments_master_5x5.csv` |
 | `07_svm_gpu_colab.ipynb` | SVM (16 combinaciones, corrida 3 x 3 inicial) en Colab con GPU; la corrida 5 x 5 está en `results/svm_gpu_results_colab_5x5.csv` |
 | `05_results_analysis.ipynb` | Tabla de las 112 combinaciones, métricas complementarias (ROC-AUC, PR-AUC; el F1 sigue siendo la principal), Friedman/Nemenyi, comparación por factor, DeLong, calibración y complejidad |
 | `06_interpretability.ipynb` | SHAP de XGBoost (secciones 1 a 4, un fold) y, en las secciones 5 y 6, SHAP en los 5 folds y LIME vs. SHAP en 200 observaciones por modelo (Random Forest y XGBoost) |
 | `08_tabla_maestra_svm.ipynb` | Tabla maestra consolidada de las 112 combinaciones (`results/master_table_112.csv`), mejor combinación por modelo (`results/best_per_model.csv`) y comparabilidad del SVM de Colab (reajuste en CPU y sensibilidad de Friedman) |
 | `09_anytime_multifidelidad.ipynb` | Curvas anytime de los cuatro optimizadores y comparación con Hyperband (multi-fidelidad propia) |
-
-El capítulo `correcciones.md` reúne la tabla de trazabilidad de las observaciones del docente y la auditoría de fuga de información.
+| `10_modelo_original_cs_fof.ipynb` | Modelo original CS-FOF, LightGBM y CatBoost frente al mejor F1 de las 112 combinaciones |
 
 Los estudios nuevos se reproducen con (entorno `creditcard`, desde la raíz):
 
 ```bash
 python -m src.master_table
+python -m src.build_master_table_e3   # une las 112 con CS-FOF, LightGBM y CatBoost (141 filas)
 ```
 
 ```bash

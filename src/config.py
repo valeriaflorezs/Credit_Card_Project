@@ -1,7 +1,7 @@
 """Configuración central del proyecto.
 
 Toda ruta de datos, nombre de columna target y parámetro de validación
-cruzada se define aquí — ningún otro módulo debe hardcodear estos valores.
+cruzada se define aquí, ningún otro módulo debe hardcodear estos valores.
 """
 
 import os
@@ -36,7 +36,7 @@ TARGET_COLUMN = "default_payment_next_month"
 # --- Columnas categóricas nominales ---
 # Confirmado por el EDA de la compañera (2026-09-16): SEX/EDUCATION/MARRIAGE
 # son categóricas nominales sin codificar (enteros; categorías inválidas ya
-# reagrupadas en "Otros"). No hay valores nulos en el dataset — no se
+# reagrupadas en "Otros"). No hay valores nulos en el dataset, no se
 # requiere imputación. AJUSTAR si el dataset final cambia nombres o
 # agrega/quita columnas categóricas. Cualquier columna NO listada aquí se
 # trata como numérica automáticamente (ver preprocessing.py).
@@ -52,10 +52,10 @@ N_INNER_FOLDS = 5
 # --- Optimización de hiperparámetros ---
 RANDOM_SEARCH_ITER = 25
 
-# Bayesiana (Optuna) — sampler TPE (ver src/optimization.py para justificación)
+# Bayesiana (Optuna), sampler TPE (ver src/optimization.py para justificación)
 OPTUNA_N_TRIALS = 30
 
-# Genética (DEAP) — valores conservadores por defecto dado el hardware
+# Genética (DEAP), valores conservadores por defecto dado el hardware
 # disponible (CPU-only, 16GB RAM); reducir aún más para modelos costosos
 # (svm, knn) al invocar desde experiment_runner.py (bloque 6).
 GA_POPULATION_SIZE = 16
@@ -67,16 +67,16 @@ GA_MUT_INDPB = 0.2        # prob. de mutar cada gen individual, dado que el indi
 # --- Paralelismo a nivel de metodo de optimizacion ---
 # Maquina con 12 nucleos logicos. Se deja n_jobs=1 en el modelo (RandomForest/
 # XGBoost, ver models.py) y en el bucle externo de experiment_runner.py (evita
-# paralelismo anidado) — el paralelismo real se aplica UNA sola vez, en el eje
+# paralelismo anidado), el paralelismo real se aplica UNA sola vez, en el eje
 # de evaluaciones independientes de cada metodo (candidatos de grid/random
 # search, trials de Optuna, individuos de la poblacion en genetic_deap). No
 # cambia folds, rangos de hiperparametros, tamaño de poblacion/generaciones ni
-# iteraciones — mismos resultados, menos tiempo de pared.
+# iteraciones, mismos resultados, menos tiempo de pared.
 # Bajado de 12 a 8, y de 8 a 4 (2026-09-23, ~12:38): con 12 workers,
 # svm/none/genetic_deap crasheo con TerminatedWorkerError (SO mato un worker
 # por memoria) tras >4h; con 8 volvio a crashear en ~2 min. Diagnostico con
 # 8: solo ~3GB de RAM genuinamente libres de los 16GB totales (Windows +
-# OneDrive + el navegador y otras aplicaciones ya usan ~13GB en base) — mucho
+# OneDrive + el navegador y otras aplicaciones ya usan ~13GB en base), mucho
 # menos margen del que se asumio. svm con probability=True entrena 5
 # modelos internos por fit (Platt scaling); con varios workers simultaneos
 # sobre ~20K filas cada uno, el consumo de RAM supera rapido lo disponible.

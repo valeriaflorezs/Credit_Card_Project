@@ -1,4 +1,4 @@
-"""Une los CSV por sesión de ``10_colab_5x5.ipynb`` en la tabla maestra 5 x 5.
+"""Une los CSV por sesión de ``12_colab_5x5.ipynb`` en la tabla maestra 5 x 5.
 
 Cada sesión de Colab guarda ``experiments_5x5__<modelos>__<métodos>.csv``. Se
 copian esos archivos a ``results/`` (o a ``results/colab_5x5/``) y este script

@@ -1,8 +1,9 @@
-title: "Default of Credit Card Clients — Pipeline de Clasificación"
+title: "Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning"
 author: "Katherin Barrera López y Valeria Florez Sarmiento"
 logo: ""
+copyright: "2026"
 
-# Los notebooks ya se ejecutan y versionan con sus salidas —
+# Los notebooks ya se ejecutan y versionan con sus salidas;
 # el book solo los renderiza, no los vuelve a correr.
 execute:
   execute_notebooks: "off"
@@ -13,6 +14,12 @@ bibtex_bibfiles:
 html:
   use_repository_button: false
   use_issues_button: false
+
+sphinx:
+  config:
+    html_static_path: ["_static"]
+    html_css_files: ["dash_theme.css"]
+    nb_output_stderr: "remove"
 
 parse:
   myst_enable_extensions:
@@ -28,6 +35,8 @@ exclude_patterns:
   - "results/**"
   - "src/**"
   - ".git/**"
+  - "EXPERIMENT_STATUS.md"
+  - "experiments/**"
   - "**.ipynb_checkpoints"
   - "PROJECT_BRIEF.md"
   - "README.md"

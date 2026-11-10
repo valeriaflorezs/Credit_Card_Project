@@ -1,0 +1,240 @@
+/* Tema del libro: misma paleta y estilo que el tablero (dash-credit-kv) */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+:root,
+html[data-theme="light"] {
+  --deep: #1A233D;
+  --navy: #36456D;
+  --pale: #D2BB89;
+  --gold: #B88F3D;
+  --cream: #F3EFE7;
+  --surface: #FFFFFF;
+  --surface-2: #F8F6F0;
+  --text: #1A233D;
+  --muted: #5D667F;
+  --line: rgba(26, 35, 61, .10);
+  --line-strong: rgba(26, 35, 61, .24);
+  --note-bg: #F6F0E1;
+  --tech-bg: #ECEEF4;
+  --code-bg: #EBE5D5;
+  --zebra: #FAF8F3;
+
+  --pst-font-family-base: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --pst-font-family-heading: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --pst-color-primary: #36456D;
+  --pst-color-secondary: #B88F3D;
+  --pst-color-link: #36456D;
+  --pst-color-link-hover: #B88F3D;
+  --pst-color-background: #F3EFE7;
+  --pst-color-on-background: #FFFFFF;
+  --pst-color-surface: #FFFFFF;
+  --pst-color-text-base: #1A233D;
+  --pst-color-text-muted: #5D667F;
+  --pst-color-heading-color: #1A233D;
+  --pst-color-border: rgba(26, 35, 61, .10);
+  --pst-color-shadow: rgba(26, 35, 61, .12);
+  --pst-color-target: #F6F0E1;
+  --pst-color-inline-code: #1A233D;
+  --pst-color-info: #36456D;
+  --pst-color-info-bg: #ECEEF4;
+  --pst-color-success: #36456D;
+  --pst-color-attention: #B88F3D;
+  --pst-color-warning: #B88F3D;
+  --pst-color-danger: #B88F3D;
+}
+
+html[data-theme="dark"] {
+  --deep: #E8ECF7;
+  --navy: #9FB0DD;
+  --pale: #D2BB89;
+  --gold: #D8B05A;
+  --cream: #111729;
+  --surface: #1A233D;
+  --surface-2: #202B4A;
+  --text: #E8ECF7;
+  --muted: #A8B1CB;
+  --line: rgba(255, 255, 255, .12);
+  --line-strong: rgba(255, 255, 255, .28);
+  --note-bg: #2A2A22;
+  --tech-bg: #222C4B;
+  --code-bg: #2A3254;
+  --zebra: #1E2844;
+
+  --pst-color-primary: #9FB0DD;
+  --pst-color-secondary: #D8B05A;
+  --pst-color-link: #9FB0DD;
+  --pst-color-link-hover: #D8B05A;
+  --pst-color-background: #111729;
+  --pst-color-on-background: #1A233D;
+  --pst-color-surface: #1A233D;
+  --pst-color-text-base: #E8ECF7;
+  --pst-color-text-muted: #A8B1CB;
+  --pst-color-heading-color: #F2F4FB;
+  --pst-color-border: rgba(255, 255, 255, .12);
+}
+
+body { background: var(--cream); color: var(--text); }
+.bd-main .bd-content .bd-article-container { background: transparent; }
+
+/* ---- Títulos ---- */
+h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.01em; color: var(--pst-color-heading-color); }
+h1 { font-weight: 800; }
+h2 { padding-bottom: .35rem; border-bottom: 2px solid var(--gold); display: inline-block; }
+h3 { color: var(--navy); }
+
+/* ---- Barra lateral oscura, como en el tablero ---- */
+html[data-theme="light"] .bd-sidebar-primary {
+  background: #1A233D;
+  border-right: 0;
+  --pst-color-text-base: #D3D8E5;
+  --pst-color-text-muted: #9AA3BA;
+  --pst-color-link: #D3D8E5;
+  --pst-color-heading-color: #FFFFFF;
+  --pst-color-border: rgba(255, 255, 255, .10);
+  --pst-color-on-background: #1A233D;
+}
+html[data-theme="light"] .bd-sidebar-primary .sidebar-header-items__title,
+html[data-theme="light"] .bd-sidebar-primary .site-logo,
+html[data-theme="light"] .bd-sidebar-primary p.caption,
+html[data-theme="light"] .bd-sidebar-primary .navbar-brand { color: #FFFFFF; }
+html[data-theme="light"] .bd-sidebar-primary .bd-links a { color: #D3D8E5; border-radius: 8px; }
+html[data-theme="light"] .bd-sidebar-primary .bd-links a:hover { background: rgba(255,255,255,.06); color: #FFFFFF; }
+html[data-theme="light"] .bd-sidebar-primary .bd-links a.current,
+html[data-theme="light"] .bd-sidebar-primary .bd-links li.current > a,
+html[data-theme="light"] .bd-sidebar-primary .bd-links a.reference.internal.current {
+  background: rgba(255,255,255,.10);
+  color: #FFFFFF;
+  box-shadow: inset 3px 0 0 #D2BB89;
+  font-weight: 600;
+}
+.bd-sidebar-primary .navbar-brand .logo__title { font-weight: 800; line-height: 1.2; }
+
+/* ---- Encabezado (barra superior) ---- */
+.bd-header-article, .header-article { background: transparent; border-bottom: 1px solid var(--line); }
+
+/* ---- Tarjetas (sphinx-design) y recuadros propios ---- */
+.sd-card, .cc-box {
+  background: var(--surface);
+  border: 1px solid var(--line) !important;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(26, 35, 61, .05), 0 8px 24px rgba(26, 35, 61, .05);
+}
+.sd-card .sd-card-body { padding: 1.1rem 1.25rem; }
+.sd-card-title { font-weight: 700; color: var(--text); }
+.cc-box { padding: 1.1rem 1.4rem; margin: 1rem 0; }
+.cc-box > :last-child { margin-bottom: 0; }
+
+/* KPI con borde dorado a la izquierda */
+.cc-kpi.sd-card { border-left: 4px solid var(--gold) !important; }
+.cc-kpi .sd-card-body { padding: .9rem 1.1rem; }
+.cc-kpi .kpi-label { font-size: .8rem; font-weight: 600; color: var(--muted); margin: 0; }
+.cc-kpi .kpi-value { font-size: 1.9rem; font-weight: 800; color: var(--text); line-height: 1.15; margin: .15rem 0; }
+.cc-kpi .kpi-note { font-size: .78rem; color: var(--muted); margin: 0; }
+
+/* Tarjetas de enlace (contenido del libro) */
+a.sd-card-hover:hover, .sd-card-hover:hover { border-color: var(--gold) !important; transform: translateY(-2px); }
+.cc-step.sd-card { border-top: 4px solid var(--navy) !important; }
+.cc-step .sd-card-title { font-size: 1rem; }
+
+/* ---- Admonitions con la paleta del tablero ---- */
+.admonition, div.admonition {
+  border: 1px solid var(--line) !important;
+  border-left: 4px solid var(--navy) !important;
+  border-radius: 12px;
+  background: var(--tech-bg);
+  box-shadow: none;
+}
+.admonition > .admonition-title, div.admonition > .admonition-title {
+  background: transparent !important;
+  color: var(--text);
+  font-weight: 700;
+}
+.admonition > .admonition-title::before { color: var(--navy) !important; }
+/* Dorados: pregunta, nota y limitaciones */
+.admonition.cc-pregunta, .admonition.note, .admonition.cc-limites, .admonition.warning {
+  background: var(--note-bg);
+  border-left-color: var(--gold) !important;
+}
+.admonition.cc-pregunta > .admonition-title::before,
+.admonition.note > .admonition-title::before,
+.admonition.cc-limites > .admonition-title::before { color: var(--gold) !important; }
+.admonition.cc-pregunta p:not(.admonition-title) { font-size: 1.12rem; font-weight: 700; }
+.cc-box.cc-resumen { border-left: 4px solid var(--gold) !important; text-align: justify; padding: 1.2rem 1.6rem; }
+.admonition.tip, .admonition.hint, .admonition.important { background: var(--tech-bg); border-left-color: var(--navy) !important; }
+
+/* ---- Fórmulas en recuadro ---- */
+.cc-formula {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold);
+  border-radius: 12px;
+  padding: .6rem 1.2rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.cc-formula .math { margin: .4rem 0; }
+.cc-formula > :last-child { margin-bottom: 0; }
+
+/* ---- Tablas: encabezado azul profundo y cebra ---- */
+table.table, .bd-article table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  width: 100%;
+}
+.bd-article table thead th, table.table thead th {
+  background: #1A233D;
+  color: #FFFFFF;
+  font-weight: 600;
+  border: 0;
+  text-align: left;
+}
+html[data-theme="dark"] .bd-article table thead th { background: #2A3560; }
+.bd-article table tbody tr:nth-child(even) td { background: var(--zebra); }
+.bd-article table td, .bd-article table th { padding: .55rem .8rem; border-color: var(--line); }
+
+/* ---- Código en línea ---- */
+code.literal, .bd-article code:not(.sphinx-codeblock) { background: var(--code-bg); color: var(--text); border-radius: 6px; padding: .05em .35em; border: 0; }
+
+/* ---- Viñetas con marcador dorado ---- */
+.bd-article ul:not(.sd-list-group):not(.sd-nav) > li::marker { color: var(--gold); }
+.bd-article ol > li::marker { color: var(--navy); font-weight: 700; }
+
+/* ---- Palabras clave como etiquetas ---- */
+.cc-chips { display: flex; flex-wrap: wrap; gap: .4rem; margin: .4rem 0 1rem; }
+.cc-chip { background: var(--note-bg); border: 1px solid var(--line-strong); color: var(--text);
+  border-radius: 999px; padding: .15rem .75rem; font-size: .82rem; font-weight: 600; }
+
+/* ---- Portada: tarjeta de crédito ---- */
+.cc-hero { display: grid; grid-template-columns: minmax(280px, 1.1fr) 1fr; gap: 2rem; align-items: center; margin: 1.5rem 0 2rem; }
+@media (max-width: 800px) { .cc-hero { grid-template-columns: 1fr; } }
+.cc-card {
+  aspect-ratio: 1.586;
+  border-radius: 20px;
+  padding: 1.4rem 1.6rem;
+  color: #F3EFE7;
+  background:
+    radial-gradient(circle at 85% 18%, rgba(255,255,255,.10) 0, transparent 40%),
+    linear-gradient(135deg, #36456D 0%, #1A233D 70%);
+  box-shadow: 0 24px 40px -18px rgba(26,35,61,.55);
+  display: flex; flex-direction: column; justify-content: space-between;
+  border: 1px solid rgba(255,255,255,.12);
+}
+.cc-card-top { display: flex; justify-content: space-between; align-items: center; font-weight: 700; letter-spacing: .04em; color: var(--pale); }
+.cc-chip-ic { width: 50px; height: 38px; border-radius: 8px;
+  background: linear-gradient(135deg, #E9D7A3, #B88F3D); border: 1px solid rgba(0,0,0,.2);
+  background-image: linear-gradient(135deg, #E9D7A3, #B88F3D),
+    repeating-linear-gradient(0deg, transparent 0 11px, rgba(0,0,0,.18) 11px 12px); background-blend-mode: multiply; }
+.cc-number { white-space: nowrap; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: clamp(.8rem, 1.7vw, 1.3rem); letter-spacing: .1em; }
+.cc-card-bottom { display: flex; justify-content: space-between; align-items: flex-end; font-size: .78rem; letter-spacing: .08em; }
+.cc-card-bottom small { display: block; color: #AEB6CC; font-weight: 400; letter-spacing: .04em; margin-bottom: .15rem; }
+.cc-card-bottom strong { text-transform: uppercase; font-weight: 600; }
+.cc-hero-text .cc-kicker { color: var(--gold); font-weight: 700; margin: 0 0 .4rem; }
+.cc-hero-text p { margin: .3rem 0; color: var(--muted); }
+.cc-hero-text .cc-names { color: var(--text); font-weight: 700; font-size: 1.1rem; }
+a.cc-btn { display: inline-block; margin-top: .8rem; background: var(--navy); color: #FFFFFF !important; padding: .6rem 1.2rem;
+  border-radius: 8px; font-weight: 600; text-decoration: none; }
+a.cc-btn:hover { background: #1A233D; }

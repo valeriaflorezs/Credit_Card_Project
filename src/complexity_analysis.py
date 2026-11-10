@@ -8,7 +8,7 @@ La medición de memoria usa ``tracemalloc`` (librería estándar, funciona en
 Windows) en vez de ``resource.getrusage`` (solo POSIX, no disponible en el
 hardware Windows de este proyecto) o ``psutil`` (dependencia extra
 evitable). Mide el pico de memoria de las asignaciones de Python/NumPy
-durante ``fit``/``predict`` — una aproximación razonable al costo de
+durante ``fit``/``predict``, una aproximación razonable al costo de
 memoria del modelo, no el RSS completo del proceso.
 """
 
@@ -30,25 +30,25 @@ from src.nested_cv import NestedCVResult
 from src.preprocessing import get_preprocessing_steps
 
 # ---------------------------------------------------------------------------
-# Complejidad teórica (metadata) — n = observaciones, p = features, T =
+# Complejidad teórica (metadata), n = observaciones, p = features, T =
 # número de árboles/rondas de boosting, k = n_neighbors, s = vectores de
 # soporte.
 # ---------------------------------------------------------------------------
 
 TRAIN_INFERENCE_COMPLEXITY: dict[str, dict[str, str]] = {
     "knn": {
-        "train": "O(n·p) — solo almacena los datos (\"lazy learner\"), sin ajuste real.",
+        "train": "O(n·p), solo almacena los datos (\"lazy learner\"), sin ajuste real.",
         "inference": (
             "O(n·p) por consulta con búsqueda exhaustiva (fuerza bruta). "
             "KD-Tree/Ball-Tree: O(p·log n) por consulta en dimensión baja/moderada "
-            "(degradan hacia fuerza bruta en alta dimensión — 'maldición de la "
+            "(degradan hacia fuerza bruta en alta dimensión, 'maldición de la "
             "dimensionalidad'). FAISS (aproximado): sub-lineal, O(log n) o mejor, "
-            "a costa de exactitud — recomendado si n crece mucho más allá de ~30K."
+            "a costa de exactitud, recomendado si n crece mucho más allá de ~30K."
         ),
         "notes": "Modelo más costoso en inferencia del set; candidato a correr en Colab si el Grid Search es exhaustivo.",
     },
     "naive_bayes": {
-        "train": "O(n·p) — una sola pasada para estimar media/varianza por feature y clase.",
+        "train": "O(n·p), una sola pasada para estimar media/varianza por feature y clase.",
         "inference": "O(p·C) por consulta (C = número de clases; C=2 aquí).",
         "notes": (
             "GaussianNB soporta `partial_fit` para aprendizaje incremental "
@@ -59,12 +59,12 @@ TRAIN_INFERENCE_COMPLEXITY: dict[str, dict[str, str]] = {
     "logistic_regression": {
         "train": (
             "Depende del solver. SAGA (elegido en models.py): O(n·p) por época, "
-            "con convergencia lineal gracias a reducción de varianza — escala mejor "
+            "con convergencia lineal gracias a reducción de varianza, escala mejor "
             "que solvers de segundo orden (ej. 'lbfgs'/'newton-cg', que aproximan la "
             "Hessiana y escalan peor con p) en datasets grandes como este (~30K filas)."
         ),
         "inference": "O(p) por consulta (producto punto con el vector de pesos).",
-        "notes": "SAGA soporta L1, L2 y elasticnet — necesario aquí porque se optimiza `penalty`.",
+        "notes": "SAGA soporta L1, L2 y elasticnet, necesario aquí porque se optimiza `penalty`.",
     },
     "decision_tree": {
         "train": "O(n·p·log n) en promedio (ordenar features para evaluar cada split).",
@@ -72,14 +72,14 @@ TRAIN_INFERENCE_COMPLEXITY: dict[str, dict[str, str]] = {
         "notes": "",
     },
     "random_forest": {
-        "train": "O(T·n·p·log n) — T árboles independientes, cada uno O(n·p·log n).",
+        "train": "O(T·n·p·log n), T árboles independientes, cada uno O(n·p·log n).",
         "inference": "O(T·log n) por consulta (promedio sobre los T árboles).",
-        "notes": "Paralelizable entre árboles (no usado aquí a nivel de n_jobs del modelo — ver models.py).",
+        "notes": "Paralelizable entre árboles (no usado aquí a nivel de n_jobs del modelo, ver models.py).",
     },
     "xgboost": {
         "train": (
             "O(T·n·p) con `tree_method='hist'` (histogramas: discretiza cada feature "
-            "en ~256 bins, evaluando splits en O(n) por nivel) — bloque config del "
+            "en ~256 bins, evaluando splits en O(n) por nivel), bloque config del "
             "modelo. El método EXACTO (ordenar todas las features en cada split) es "
             "O(T·n·p·log n), notablemente más lento para n~30K."
         ),
@@ -88,15 +88,15 @@ TRAIN_INFERENCE_COMPLEXITY: dict[str, dict[str, str]] = {
             "`early_stopping` con un set de validación independiente (no usado aquí: "
             "n_estimators se trata como hiperparámetro más dentro de la búsqueda, "
             "para no introducir un tercer nivel de partición además del outer/inner "
-            "loop — simplificación consciente, documentada)."
+            "loop, simplificación consciente, documentada)."
         ),
     },
     "svm": {
         "train": (
             "O(n²) a O(n³) con kernel RBF completo (programación cuadrática sobre la "
-            "matriz de kernel n×n) — el modelo con peor escalado teórico del set. "
+            "matriz de kernel n×n), el modelo con peor escalado teórico del set. "
             "Alternativas para n grande: LinearSVC (liblinear, sin kernel) O(n·p); "
-            "SGDClassifier (hinge loss) O(n·p) por época — ambas evitan la matriz de "
+            "SGDClassifier (hinge loss) O(n·p) por época, ambas evitan la matriz de "
             "kernel completa a costa de no capturar la no-linealidad de RBF."
         ),
         "inference": "O(s·p) por consulta (s = número de vectores de soporte, s ≤ n).",
@@ -170,7 +170,7 @@ def recover_outer_fold(
     combinaciones). En su lugar, dado que ``StratifiedKFold`` con
     ``shuffle=True`` y una semilla fija es determinístico para un mismo
     ``(X, y)``, este helper reconstruye el MISMO split re-instanciando el
-    splitter — siempre que se le pase el mismo ``(X, y)``, ``n_outer_folds``
+    splitter, siempre que se le pase el mismo ``(X, y)``, ``n_outer_folds``
     y ``random_state`` que usó la corrida original.
 
     Parameters
@@ -189,7 +189,7 @@ def recover_outer_fold(
 
 
 def select_best_fold_index(result: NestedCVResult, metric: str = "f1") -> int:
-    """Elige el fold externo con mejor valor de ``metric`` — usado como
+    """Elige el fold externo con mejor valor de ``metric``, usado como
     representante "optimizado" en la tabla de complejidad (ver docstring
     de ``build_complexity_table`` para la justificación de por qué se
     necesita elegir UNO solo)."""
@@ -220,7 +220,7 @@ def compare_standard_vs_optimized(
     spec : ModelSpec
     technique : str
         Técnica de balanceo del modelo OPTIMIZADO (el estándar siempre usa
-        ``"none"`` — sin balanceo, por definición de línea base).
+        ``"none"``, sin balanceo, por definición de línea base).
     best_params : dict
         Hiperparámetros del modelo OPTIMIZADO para este fold (ver
         ``OuterFoldResult.best_params``).
@@ -304,7 +304,7 @@ def build_complexity_table(
     Parameters
     ----------
     selections : dict[str, tuple[str, NestedCVResult]]
-        ``{model_name: (technique, NestedCVResult)}`` — típicamente, para
+        ``{model_name: (technique, NestedCVResult)}``, típicamente, para
         cada modelo, la combinación (técnica, método) con mejor desempeño
         en la tabla maestra de ``experiment_runner.py`` (bloque 6). Se pide
         UNA combinación por modelo (no las 112) porque la tabla de

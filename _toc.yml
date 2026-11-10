@@ -2,7 +2,6 @@ format: jb-book
 root: portada
 chapters:
   - file: introduccion
-  - file: correcciones
   - file: notebooks/00_eda
   - file: notebooks/01_baseline_logistic
   - file: notebooks/02_setup_check
@@ -12,6 +11,7 @@ chapters:
   - file: notebooks/06_interpretability
   - file: notebooks/08_tabla_maestra_svm
   - file: notebooks/09_anytime_multifidelidad
+  - file: notebooks/10_modelo_original_cs_fof
   - file: literatura
   - file: modelo_original
   - file: validacion

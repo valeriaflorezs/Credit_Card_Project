@@ -1,6 +1,6 @@
 """Orquestador de experimentos: bucle parametrizado modelo × balanceo ×
 método de optimización, paralelizado con joblib, con registro estructurado
-en una tabla maestra (CSV) que se guarda de forma INCREMENTAL — cada
+en una tabla maestra (CSV) que se guarda de forma INCREMENTAL, cada
 combinación agrega su fila apenas termina, no al final de todo el batch.
 
 **112 combinaciones:** 7 modelos × 4 técnicas de balanceo × 4 métodos de
@@ -16,14 +16,14 @@ contiene 96.
 termine todo el batch), y ``run_experiments(resume=True)`` (default) salta
 las combinaciones que ya aparecen en ese CSV. Esto permite correr un
 subconjunto ahora (ej. modelos baratos en local), interrumpir, y correr el
-resto después (ej. SVM/KNN en Colab) sin perder lo ya calculado — tal
+resto después (ej. SVM/KNN en Colab) sin perder lo ya calculado, tal
 como pide el proyecto para poder ejecutar subconjuntos de forma
 independiente.
 
 **Orden por costo computacional:** por defecto las combinaciones se
 ordenan para que los modelos más baratos (Naive Bayes, Regresión
-Logística, Decision Tree, XGBoost) corran primero — validan que el
-pipeline funciona de punta a punta — dejando Random Forest, KNN y SVM
+Logística, Decision Tree, XGBoost) corran primero, validan que el
+pipeline funciona de punta a punta, dejando Random Forest, KNN y SVM
 (los más costosos, sobre todo SVM+RBF con Grid Search) para el final.
 """
 
@@ -45,14 +45,14 @@ from src.nested_cv import NestedCVResult, run_nested_cv
 from src.optimization import OPTIMIZATION_METHODS
 
 # Log separado (nunca en experiments_master.csv) para combinaciones
-# canceladas por exceder ``timeout_seconds`` en ``run_experiments`` — ver
+# canceladas por exceder ``timeout_seconds`` en ``run_experiments``, ver
 # docstring de esa funcion. Se excluyen de "pendientes" en corridas
 # posteriores con resume=True, igual que las ya completadas, para no
 # reintentarlas indefinidamente.
 DEFAULT_SKIP_LOG_PATH = config.RESULTS_DIR / "skipped_timeout_log.csv"
 
 # Heurística de costo computacional creciente (ver docstring del módulo).
-# No es una medición exacta — solo ordena el trabajo pendiente para que lo
+# No es una medición exacta, solo ordena el trabajo pendiente para que lo
 # barato corra primero.
 MODEL_COST_ORDER: tuple[str, ...] = (
     "naive_bayes",
@@ -76,7 +76,7 @@ def get_all_combinations(
     """Construye la lista de combinaciones (modelo, técnica, método) VÁLIDAS.
 
     Filtra automáticamente las combinaciones (modelo, técnica) incompatibles
-    (ver ``balancing.is_compatible``) — nunca se agenda una corrida
+    (ver ``balancing.is_compatible``), nunca se agenda una corrida
     condenada a fallar.
 
     Parameters
@@ -157,7 +157,7 @@ def _build_row(
     result: NestedCVResult, random_state: int, n_inner_folds: int
 ) -> dict[str, Any]:
     # result.summary_row() ya incluye <metrica>_per_fold y
-    # best_params_per_fold (ver nested_cv.py) — necesarios para que
+    # best_params_per_fold (ver nested_cv.py), necesarios para que
     # evaluation.py/stats_comparison.py puedan trabajar desde esta tabla
     # en una sesión nueva, sin repetir la búsqueda de hiperparámetros.
     row = result.summary_row()
@@ -181,7 +181,7 @@ def run_single_experiment(
 ) -> NestedCVResult:
     """Corre UNA combinación (modelo, técnica, método) de punta a punta.
 
-    Delgado wrapper sobre ``nested_cv.run_nested_cv`` — expuesto acá para
+    Delgado wrapper sobre ``nested_cv.run_nested_cv``, expuesto acá para
     poder probar/depurar una sola combinación sin pasar por el batch
     completo de ``run_experiments``.
     """
@@ -236,7 +236,7 @@ def _run_single_experiment_into_queue(
             optimizer_kwargs=optimizer_kwargs,
         )
         q.put(("ok", result))
-    except Exception as exc:  # noqa: BLE001 — se reporta tal cual al padre
+    except Exception as exc:  # noqa: BLE001, se reporta tal cual al padre
         q.put(("error", repr(exc)))
 
 
@@ -268,7 +268,7 @@ def run_experiments(
         ``preprocessing.remove_duplicate_rows``, aplicar UNA vez antes de
         llamar esta función, nunca dentro del bucle).
     models, techniques, methods : list, optional
-        Subconjuntos a correr (ver ``get_all_combinations``) — permite
+        Subconjuntos a correr (ver ``get_all_combinations``), permite
         correr, por ejemplo, solo los modelos baratos ahora y el resto
         (SVM/KNN) después, posiblemente en otra máquina (Colab).
     n_outer_folds, n_inner_folds : int
@@ -303,16 +303,16 @@ def run_experiments(
         Si se da, cada combinación corre en un proceso aparte
         (``multiprocessing.Process``) con este tope de tiempo de pared. Si lo
         excede, el proceso se termina, la combinación se registra en
-        ``skip_log_path`` (NO en ``checkpoint_path`` — nunca se mezclan filas
+        ``skip_log_path`` (NO en ``checkpoint_path``, nunca se mezclan filas
         sin métricas reales con la tabla maestra) y se sigue con la
         siguiente. Documentado como desviación explícita, no como omisión
-        silenciosa — ver ``EXPERIMENT_STATUS.md``. Con ``None`` (default) el
+        silenciosa, ver ``EXPERIMENT_STATUS.md``. Con ``None`` (default) el
         comportamiento es el original: ``joblib.Parallel`` sin timeout.
     skip_log_path : str or Path, default=DEFAULT_SKIP_LOG_PATH
         CSV donde se registran las combinaciones saltadas por timeout
         (columnas: model, technique, method, elapsed_seconds,
         timeout_seconds, reason). Se excluyen de "pendientes" en corridas
-        futuras con ``resume=True``, igual que las completadas — para
+        futuras con ``resume=True``, igual que las completadas, para
         reintentarlas explícitamente, pasar ``models``/``techniques``/
         ``methods`` acotado a esas combinaciones con un ``timeout_seconds``
         mayor (o None).
@@ -410,7 +410,7 @@ def run_experiments(
             new_rows.append(row)
             results[(spec.name, technique, method)] = result
             print(
-                f"[experiment_runner] OK {spec.name}/{technique}/{method} — "
+                f"[experiment_runner] OK {spec.name}/{technique}/{method}, "
                 f"f1={result.metrics_summary['f1'][0]:.4f}±{result.metrics_summary['f1'][1]:.4f} "
                 f"({result.total_time_seconds:.1f}s)"
             )
@@ -443,7 +443,7 @@ def run_experiments(
             new_rows.append(row)
             results[(model_name, technique, method)] = result
             print(
-                f"[experiment_runner] OK {model_name}/{technique}/{method} — "
+                f"[experiment_runner] OK {model_name}/{technique}/{method}, "
                 f"f1={result.metrics_summary['f1'][0]:.4f}±{result.metrics_summary['f1'][1]:.4f} "
                 f"({result.total_time_seconds:.1f}s)"
             )
