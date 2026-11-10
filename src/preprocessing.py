@@ -4,7 +4,7 @@ condicional según el modelo (dentro del pipeline de CV).
 
 Dos etapas con responsabilidades distintas:
 
-1. ``build_final_dataset`` — transformaciones **deterministas y sin
+1. ``build_final_dataset``, transformaciones **deterministas y sin
    parámetros aprendidos** (no dependen de qué filas queden en train o en
    validación, así que aplicarlas sobre el dataset completo no filtra
    información): deduplicación, reagrupación de categorías no
@@ -12,7 +12,7 @@ Dos etapas con responsabilidades distintas:
    asimétricas, y reducción del bloque ``BILL_AMT1``-``BILL_AMT6``. Cada
    paso corresponde a un hallazgo del EDA (``notebooks/00_eda.ipynb``).
    Su resultado se guarda en ``config.PROCESSED_DATA_PATH``.
-2. ``build_column_transformer`` / ``get_preprocessing_steps`` — one-hot de
+2. ``build_column_transformer`` / ``get_preprocessing_steps``, one-hot de
    las categóricas y ``StandardScaler`` condicional. Estas SÍ aprenden
    parámetros (categorías, media/desviación), por eso viven dentro del
    pipeline de CV y se ajustan solo con el fold de entrenamiento.
@@ -23,7 +23,7 @@ remuestreo nunca toque el fold de validación.
 
 Todo el código del pipeline es agnóstico a los nombres de columnas
 NUMÉRICAS: solo necesita saber cuáles son las CATEGÓRICAS nominales
-(``config.CATEGORICAL_COLUMNS``) — cualquier otra columna se trata como
+(``config.CATEGORICAL_COLUMNS``), cualquier otra columna se trata como
 numérica automáticamente vía ``ColumnTransformer(remainder=...)``.
 """
 
@@ -205,7 +205,7 @@ def remove_duplicate_rows(
     test o CV), un par de filas idénticas puede terminar una en
     entrenamiento y la otra en validación/test. El modelo entrena
     literalmente sobre esa fila y luego se evalúa sobre su copia exacta,
-    inflando artificialmente la métrica de ese fold — una forma de
+    inflando artificialmente la métrica de ese fold, una forma de
     leakage. El EDA identificó 35 filas así en el dataset original y las
     elimina (``00_eda.ipynb``); ``build_final_dataset`` aplica el mismo
     paso, así que el dataset de ``data/processed/`` ya llega sin
@@ -217,7 +217,7 @@ def remove_duplicate_rows(
     df : pd.DataFrame
     subset : list[str], optional
         Columnas a considerar para detectar duplicados. Por defecto
-        (``None``) usa TODAS las columnas (incluido el target) — la
+        (``None``) usa TODAS las columnas (incluido el target), la
         definición más estricta de "fila duplicada". Pasar solo las
         columnas de features (sin el target) es más agresivo: verificar
         antes con ``check_label_conflicts`` si eso puede descartar filas
@@ -244,7 +244,7 @@ def check_label_conflicts(
 
     Un conflicto de etiqueta indica ruido irreducible en los datos (dos
     observaciones indistinguibles en las features disponibles, con
-    resultados distintos). No se resuelve automáticamente aquí — solo se
+    resultados distintos). No se resuelve automáticamente aquí, solo se
     reporta, para dejarlo documentado como limitación del dataset (igual
     que el EDA documenta los códigos ambiguos -2/0 de ``PAY_x``).
 
@@ -291,14 +291,14 @@ def build_column_transformer(
       no dejar una columna redundante en binarias como ``SEX``).
     - Todas las demás columnas (numéricas, sea cual sea su nombre) ->
       ``StandardScaler`` si ``apply_scaling=True`` (modelos sensibles a
-      escala — ver ``ModelSpec.requires_scaling`` en ``models.py``: KNN,
+      escala, ver ``ModelSpec.requires_scaling`` en ``models.py``: KNN,
       SVM, Regresión Logística), o sin transformar (passthrough) si no
       (árboles, Random Forest, XGBoost, Naive Bayes).
 
     Se usa como UN PASO MÁS del pipeline de CV (vía
     ``balancing.build_pipeline(preprocessing_steps=...)``), nunca aplicado
     por fuera de él, para que tanto el encoding como el scaling se ajusten
-    ÚNICAMENTE sobre el fold de entrenamiento en cada iteración — igual
+    ÚNICAMENTE sobre el fold de entrenamiento en cada iteración, igual
     que el balanceo (ver ``balancing.py``).
 
     Parameters
@@ -331,7 +331,7 @@ def get_preprocessing_steps(
     ``balancing.build_pipeline(..., preprocessing_steps=get_preprocessing_steps(spec))``.
 
     El scaling se activa/desactiva automáticamente según
-    ``spec.requires_scaling`` — quien orquesta el experimento (bloques 5/6)
+    ``spec.requires_scaling``, quien orquesta el experimento (bloques 5/6)
     no necesita decidirlo modelo por modelo.
 
     Parameters

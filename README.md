@@ -86,8 +86,6 @@ Credit_Card_Project/
 | `08_tabla_maestra_svm.ipynb` | Tabla maestra consolidada de las 112 combinaciones (`results/master_table_112.csv`), mejor combinación por modelo (`results/best_per_model.csv`) y comparabilidad del SVM de Colab (reajuste en CPU y sensibilidad de Friedman) |
 | `09_anytime_multifidelidad.ipynb` | Curvas anytime de los cuatro optimizadores y comparación con Hyperband (multi-fidelidad propia) |
 
-El capítulo `correcciones.md` reúne la tabla de trazabilidad de las observaciones del docente y la auditoría de fuga de información.
-
 Los estudios nuevos se reproducen con (entorno `creditcard`, desde la raíz):
 
 ```bash

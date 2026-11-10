@@ -1,8 +1,8 @@
-title: "Default of Credit Card Clients — Pipeline de Clasificación"
+title: "Predicción de incumplimiento de pago en tarjetas de crédito"
 author: "Katherin Barrera López y Valeria Florez Sarmiento"
 logo: ""
 
-# Los notebooks ya se ejecutan y versionan con sus salidas —
+# Los notebooks ya se ejecutan y versionan con sus salidas;
 # el book solo los renderiza, no los vuelve a correr.
 execute:
   execute_notebooks: "off"
@@ -27,5 +27,8 @@ exclude_patterns:
   - "results/**"
   - "src/**"
   - ".git/**"
+  - "README.md"
+  - "EXPERIMENT_STATUS.md"
+  - "experiments/**"
   - "**.ipynb_checkpoints"
   - "PROJECT_BRIEF.md"

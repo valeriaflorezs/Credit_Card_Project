@@ -79,7 +79,7 @@ class BalancedKNeighborsClassifier(KNeighborsClassifier):
 
     Es una extensión NO estándar (no existe en scikit-learn ni en ninguna
     librería reconocida) documentada específicamente para poder correr
-    ``knn/class_weight`` en este proyecto — a diferencia del resto de
+    ``knn/class_weight`` en este proyecto, a diferencia del resto de
     técnicas de balanceo, que sí usan mecanismos nativos de cada librería.
     Con ``class_weight=None`` (default) es idéntica a ``KNeighborsClassifier``.
     """
@@ -191,7 +191,7 @@ class ModelSpec:
         "class_weight" en XGBoost, que usa "scale_pos_weight").
     requires_scaling : bool, default=False
         Si el modelo es sensible a la escala de las features (KNN, SVM,
-        Regresión Logística) — lo usará ``preprocessing.py`` para decidir
+        Regresión Logística), lo usará ``preprocessing.py`` para decidir
         si aplicar ``StandardScaler`` dentro del pipeline.
     notes : str
         Justificación de las decisiones de espacio de búsqueda / complejidad.
@@ -223,7 +223,7 @@ def _logistic_regression_factory(random_state: int = RANDOM_STATE, **kwargs: Any
 def _knn_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
     # KNN no tiene componente aleatorio dado un dataset fijo: no acepta random_state.
     # BalancedKNeighborsClassifier es identico a KNeighborsClassifier cuando
-    # class_weight=None (default) — ver definicion arriba.
+    # class_weight=None (default), ver definicion arriba.
     if os.environ.get("KNN_BACKEND") == "cuml":  # búsqueda de vecinos en GPU (ver CuMLBalancedKNN)
         return CuMLBalancedKNN(**kwargs)
     return BalancedKNeighborsClassifier(**kwargs)
@@ -231,7 +231,7 @@ def _knn_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
 
 def _naive_bayes_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
     # BalancedGaussianNB es identico a GaussianNB cuando class_weight=None
-    # (default) — ver definicion arriba.
+    # (default), ver definicion arriba.
     return BalancedGaussianNB(**kwargs)
 
 
@@ -353,9 +353,9 @@ def _svm_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
         # max_iter acotado (default de sklearn es -1 = sin limite): ciertas
         # combinaciones de C/gamma pueden hacer que el solver SMO de libsvm
         # tarde desproporcionadamente en converger (observado en la corrida
-        # real, ver EXPERIMENT_STATUS.md seccion 8j). 200_000 es generoso —
+        # real, ver EXPERIMENT_STATUS.md seccion 8j). 200_000 es generoso -
         # no afecta la convergencia normal (fits legitimos convergen en
-        # ordenes de magnitud menos iteraciones) — pero evita un cuelgue
+        # ordenes de magnitud menos iteraciones), pero evita un cuelgue
         # verdaderamente sin limite. Si se alcanza el tope sin converger,
         # sklearn emite ConvergenceWarning y usa la mejor solucion parcial;
         # esa combinacion de hiperparametros simplemente puntua peor en el
@@ -424,7 +424,7 @@ MODEL_REGISTRY: dict[str, ModelSpec] = {
             "ninguna librería de terceros mantenida lo implementa). "
             "BalancedKNeighborsClassifier (ver arriba) pondera el VOTO de cada "
             "vecino por la frecuencia inversa de su clase en la etapa de "
-            "predicción — una extensión NO estándar, documentada explícitamente "
+            "predicción, una extensión NO estándar, documentada explícitamente "
             "como tal, para poder correr knn/class_weight en este proyecto. "
             "Complejidad: O(n*p) por consulta con búsqueda exhaustiva; ver "
             "complexity_analysis.py para contraste con KD-Tree/Ball-Tree/FAISS."
@@ -442,7 +442,7 @@ MODEL_REGISTRY: dict[str, ModelSpec] = {
             "GaussianNB no tiene class_weight nativo, pero sí acepta "
             "sample_weight en fit(): BalancedGaussianNB (ver arriba) traduce "
             "class_weight='balanced' a sample_weight vía "
-            "sklearn.utils.class_weight.compute_sample_weight — el mismo "
+            "sklearn.utils.class_weight.compute_sample_weight, el mismo "
             "mecanismo interno que usa scikit-learn para 'balanced' en otros "
             "modelos, así que sí es un mecanismo estándar, a diferencia de "
             "KNN. var_smoothing se busca en escala log porque actúa como un "
@@ -524,7 +524,7 @@ MODEL_REGISTRY: dict[str, ModelSpec] = {
         notes=(
             "scale_pos_weight (ratio n_neg/n_pos calculado sobre el fold de "
             "entrenamiento) es el equivalente a class_weight='balanced' en "
-            "XGBoost — debe calcularse en balancing.py a partir de y_train de "
+            "XGBoost, debe calcularse en balancing.py a partir de y_train de "
             "cada fold, nunca de todo el dataset (evita leakage). "
             "tree_method='hist' preferido sobre 'exact' por velocidad en "
             "n~30K (ver complexity_analysis.py). learning_rate en escala log "
@@ -545,7 +545,7 @@ MODEL_REGISTRY: dict[str, ModelSpec] = {
             "escala log porque ambos controlan el margen/complejidad de forma "
             "multiplicativa. probability=True habilita predict_proba para "
             "ROC/calibración pero añade una validación cruzada interna de 5 "
-            "folds en libsvm — es el modelo más costoso del pipeline (ver "
+            "folds en libsvm, es el modelo más costoso del pipeline (ver "
             "PROJECT_BRIEF: correr en Colab si es necesario). "
             "complexity_analysis.py debe contrastar esto contra "
             "LinearSVC/SGDClassifier (O(n) vs. O(n^2)-O(n^3) del kernel completo)."
@@ -645,7 +645,7 @@ def get_param_grid(
         continuos explota combinatoriamente: XGBoost tiene 6, así que
         4**6 = 4096 combinaciones, que bajo validación anidada (5 folds
         externos x 5 internos) son ~100,000 ajustes de modelo para una
-        sola combinación (modelo, técnica, método) — varias horas de
+        sola combinación (modelo, técnica, método), varias horas de
         cómputo real. Cuando el número de hiperparámetros numéricos hace
         que ``n_points**k`` supere este límite, se reduce ``n_points``
         (nunca por debajo de 2) para ese modelo específico, sin afectar a
