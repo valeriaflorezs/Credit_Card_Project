@@ -68,7 +68,7 @@ modificar la tabla anterior:
 | Pendiente | Estado | Nota |
 |---|---|---|
 | Genético de CS-FOF | Ejecutado | F1 0.5476; no cambia la mejor combinación (aleatoria, 0.5479) |
-| LightGBM y CatBoost | LightGBM: las 16 combinaciones. CatBoost: 9 de 16 (faltan el genético con class_weight, SMOTE con Optuna y genético, y las 4 de ADASYN) | CatBoost es el más lento (hasta 2 h por combinación). En ambos la mejor técnica es class_weight (LightGBM: SMOTE 0.537, ADASYN 0.535, sin balanceo 0.481; CatBoost: SMOTE 0.525, sin balanceo 0.478), así que la mejor combinación y las pruebas no cambian |
+| LightGBM y CatBoost | Las 16 combinaciones de cada uno (4 técnicas × 4 métodos) | En ambos la mejor técnica es class_weight (LightGBM: SMOTE 0.537, ADASYN 0.535, sin balanceo 0.481; CatBoost: SMOTE 0.527, ADASYN 0.524, sin balanceo 0.478), así que la mejor combinación y las pruebas no cambian |
 | Conjuntos adicionales | German Credit, Australian Credit Approval y Polish Companies Bankruptcy (solo año 1) | Give Me Some Credit se reemplazó por Polish porque solo está en Kaggle y se pidió un conjunto del repositorio UCI. Se usó un solo año de Polish (7 027 empresas) para que la validación anidada de CS-FOF fuera viable. Los 10 modelos usan class_weight y búsqueda aleatoria de 25 configuraciones (`src/run_additional_datasets.py`) |
 | Estudios de robustez | Ruido en etiquetas, tamaño de muestra y calibración (**exploratorios**) | Con los hiperparámetros elegidos en cada pliegue, sin búsqueda nueva (`experiments/robustez/`) |
 | Validación externa repetida | No ejecutada | No cambia el veredicto: con F1 casi idéntico al de CatBoost, más repeticiones no producirían superioridad |
