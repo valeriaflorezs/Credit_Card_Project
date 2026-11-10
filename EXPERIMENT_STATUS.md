@@ -7,7 +7,7 @@
 Se requieren al menos 5 folds. `src/config.py` tiene `N_OUTER_FOLDS = 5` y `N_INNER_FOLDS = 5`. La tabla maestra vigente es `results/experiments_master_5x5.csv` (96 filas) más `results/svm_gpu_results_colab_5x5.csv` (16 filas de SVM), y la consolida `results/master_table_112.csv`. La corrida 3 x 3 quedó como registro en `results/legacy_3x3/` y NO debe mezclarse con la nueva.
 
 Estado: **terminado**.
-- Corrida: 80 combinaciones (Naive Bayes, regresión logística, árbol, Random Forest y XGBoost) en la CPU local con `src/run_local_5x5.py`; KNN y SVM (32 combinaciones) en Colab con GPU T4 y cuML 26.06 (`10_colab_5x5.ipynb`, `07_svm_gpu_colab.ipynb`).
+- Corrida: 80 combinaciones (Naive Bayes, regresión logística, árbol, Random Forest y XGBoost) en la CPU local con `src/run_local_5x5.py`; KNN y SVM (32 combinaciones) en Colab con GPU T4 y cuML 26.06 (`12_colab_5x5.ipynb`, `07_svm_gpu_colab.ipynb`).
 - Unión y análisis: `merge_session_results`, `posthoc_metrics` (96/96), `svm_comparability` (16/16), `master_table`, `anytime_study` (45 corridas, folds 0 a 2 de 5) e `interpretability_multi` (5 folds, 200 observaciones por modelo).
 - Notebooks 05, 06, 08 y 09 reejecutados y con textos 5 x 5; también se actualizaron los textos de 02, 04, 07, 10, README, portada e introducción.
 - Resultado principal: mejor combinación XGBoost con `class_weight` y `bayesian_optuna`, F1 0.5466; Friedman significativo y Nemenyi (CD 89.4) separa solo los extremos del ranking.

@@ -1,6 +1,7 @@
-title: "Predicción de incumplimiento de pago en tarjetas de crédito"
+title: "Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning"
 author: "Katherin Barrera López y Valeria Florez Sarmiento"
 logo: ""
+copyright: "2026"
 
 # Los notebooks ya se ejecutan y versionan con sus salidas;
 # el book solo los renderiza, no los vuelve a correr.
@@ -13,6 +14,11 @@ bibtex_bibfiles:
 html:
   use_repository_button: false
   use_issues_button: false
+
+sphinx:
+  config:
+    html_static_path: ["_static"]
+    html_css_files: ["dash_theme.css"]
 
 parse:
   myst_enable_extensions:
