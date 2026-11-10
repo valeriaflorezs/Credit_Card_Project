@@ -1,0 +1,1143 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>11. Modelo original (CS-FOF) y métodos recientes &#8212; Predicción de incumplimiento de pago en tarjetas de crédito</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/11_modelo_original_cs_fof';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="09. Curvas anytime y multi-fidelidad" href="09_anytime_multifidelidad.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../portada.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Predicción de incumplimiento de pago en tarjetas de crédito</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../portada.html">
+                    Evaluación de preprocesamiento, análisis exploratorio y comparación sistemática de modelos para la predicción de incumplimiento de pago en tarjetas de crédito
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Marco del proyecto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">11. Modelo original (CS-FOF) y métodos recientes</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/11_modelo_original_cs_fof.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>11. Modelo original (CS-FOF) y métodos recientes</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-idea-de-cs-fof">1. La idea de CS-FOF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mejor-combinacion-de-cada-modelo">2. Mejor combinación de cada modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-diferencia-de-cs-fof-es-significativa">3. ¿La diferencia de CS-FOF es significativa?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ranking-global-friedman-y-nemenyi">4. Ranking global: Friedman y Nemenyi</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-sobre-las-mismas-predicciones-delong-y-mcnemar">5. Comparación sobre las mismas predicciones: DeLong y McNemar</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-parcial">6. Conclusión (parcial)</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="modelo-original-cs-fof-y-metodos-recientes">
+<h1>11. Modelo original (CS-FOF) y métodos recientes<a class="headerlink" href="#modelo-original-cs-fof-y-metodos-recientes" title="Link to this heading">#</a></h1>
+<p>Las 112 combinaciones de los notebooks 04 a 09 son los modelos tradicionales y fijan el punto de comparación: su mejor F1 medio (validación anidada 5 x 5) es el de <strong>XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y optimización bayesiana, 0.5466</strong>. Este notebook responde una sola pregunta: <strong>¿existe un modelo que supere ese F1?</strong></p>
+<p>Para responderla se agregan tres modelos con el mismo protocolo (mismos 5 folds externos y 5 internos, semilla 42, F1 de la clase <em>default</em> como métrica):</p>
+<ul class="simple">
+<li><p><strong>CS-FOF</strong> (<em>Cost-Sensitive Fisher Oblique Forest</em>), el modelo original del proyecto, programado desde cero con <code class="docutils literal notranslate"><span class="pre">numpy</span></code> en <code class="docutils literal notranslate"><span class="pre">src/original_model.py</span></code>.</p></li>
+<li><p><strong>LightGBM</strong> y <strong>CatBoost</strong>, dos métodos recientes de boosting, como referencia del estado del arte.</p></li>
+</ul>
+<p>Los resultados son parciales, porque las corridas de los modelos nuevos todavía no terminan. Provienen de <code class="docutils literal notranslate"><span class="pre">results/experiments_5x5__cs_fof.csv</span></code> (4 combinaciones) y <code class="docutils literal notranslate"><span class="pre">results/experiments_5x5__boosting_recientes.csv</span></code> (25 combinaciones: 16 de LightGBM y 9 de CatBoost, sin ADASYN), unidos a las 112 en <code class="docutils literal notranslate"><span class="pre">results/master_table_e3.csv</span></code> (141 filas).</p>
+<section id="la-idea-de-cs-fof">
+<h2>1. La idea de CS-FOF<a class="headerlink" href="#la-idea-de-cs-fof" title="Link to this heading">#</a></h2>
+<p>Un árbol clásico corta sobre una sola variable a la vez. Pero el riesgo de <em>default</em> depende de combinaciones (por ejemplo, del límite de crédito junto con lo pagado el mes anterior), de modo que la frontera es oblicua. En cada nodo, CS-FOF compara dos tipos de corte y se queda con el mejor:</p>
+<ol class="arabic simple">
+<li><p><strong>Cortes rectos</strong>, como en Random Forest: umbrales sobre <span class="math notranslate nohighlight">\(\sqrt{p}\)</span> variables sorteadas.</p></li>
+<li><p><strong>Un corte oblicuo</strong> en la dirección discriminante de Fisher, calculada solo con los clientes del nodo y ponderando más a los que incumplen (para penalizar más el falso negativo). Con <span class="math notranslate nohighlight">\(\mu_0\)</span> y <span class="math notranslate nohighlight">\(\mu_1\)</span> las medias de cada clase y <span class="math notranslate nohighlight">\(S_w\)</span> la matriz de dispersión intraclase ponderada,</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+v = S_w^{-1}\left(\mu_1 - \mu_0\right), \qquad z = v^\top x .
+\]</div>
+<p>El nodo elige el corte de mayor reducción de impureza de Gini ponderada <span class="math notranslate nohighlight">\(\Delta G\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+G = 1 - p_0^2 - p_1^2, \qquad
+\Delta G = G_{\text{padre}} - \frac{W_L}{W}\,G_L - \frac{W_R}{W}\,G_R .
+\]</div>
+<p>Como el corte oblicuo compite con todos los rectos, el corte elegido nunca es peor que el mejor recto <strong>en los datos de entrenamiento</strong>:</p>
+<div class="math notranslate nohighlight">
+\[
+\Delta G(\text{elegido}) \;\ge\; \max_j \Delta G(\text{recto}_j).
+\]</div>
+<p>Esto no garantiza que el bosque completo prediga mejor en clientes nuevos; eso solo lo pueden decir las pruebas de las secciones 3 y 4.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">PROJECT_ROOT</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+<span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">PROJECT_ROOT</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">PROJECT_ROOT</span><span class="p">))</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">float_format</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{:,.4f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span>
+<span class="n">RES</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">RESULTS_DIR</span>
+<span class="n">COMP</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">PROJECT_ROOT</span> <span class="o">/</span> <span class="s2">"experiments"</span> <span class="o">/</span> <span class="s2">"comparacion_final"</span>
+
+<span class="n">NUEVOS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"cs_fof"</span><span class="p">,</span> <span class="s2">"lightgbm"</span><span class="p">,</span> <span class="s2">"catboost"</span><span class="p">]</span>
+<span class="n">tabla</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">RES</span> <span class="o">/</span> <span class="s2">"master_table_e3.csv"</span><span class="p">)</span>
+<span class="n">tabla</span><span class="p">[</span><span class="s2">"grupo"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tabla</span><span class="p">[</span><span class="s2">"model"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">NUEVOS</span><span class="p">),</span> <span class="s2">"nuevo"</span><span class="p">,</span> <span class="s2">"tradicional"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Filas:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tabla</span><span class="p">),</span> <span class="s2">"|"</span><span class="p">,</span> <span class="n">tabla</span><span class="p">[</span><span class="s2">"grupo"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tabla</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"model"</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filas: 141 | {'tradicional': 112, 'nuevo': 29}
+model
+knn                    16
+decision_tree          16
+naive_bayes            16
+random_forest          16
+lightgbm               16
+logistic_regression    16
+svm                    16
+xgboost                16
+catboost                9
+cs_fof                  4
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mejor-combinacion-de-cada-modelo">
+<h2>2. Mejor combinación de cada modelo<a class="headerlink" href="#mejor-combinacion-de-cada-modelo" title="Link to this heading">#</a></h2>
+<p>Para cada modelo se toma la combinación (técnica de balanceo y método de optimización) con mayor F1 medio en los 5 folds externos. La desviación estándar usa <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mejores</span> <span class="o">=</span> <span class="p">(</span><span class="n">tabla</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tabla</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"model"</span><span class="p">)[</span><span class="s2">"f1_mean"</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()]</span>
+           <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"f1_mean"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+           <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="n">mejores</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">"puesto"</span><span class="p">,</span> <span class="n">mejores</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">vista</span> <span class="o">=</span> <span class="n">mejores</span><span class="p">[[</span><span class="s2">"puesto"</span><span class="p">,</span> <span class="s2">"model"</span><span class="p">,</span> <span class="s2">"grupo"</span><span class="p">,</span> <span class="s2">"technique"</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">,</span>
+                 <span class="s2">"f1_mean"</span><span class="p">,</span> <span class="s2">"f1_std"</span><span class="p">,</span> <span class="s2">"precision_mean"</span><span class="p">,</span> <span class="s2">"recall_mean"</span><span class="p">,</span> <span class="s2">"roc_auc_mean"</span><span class="p">]]</span>
+<span class="n">vista</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>puesto</th>
+      <th>model</th>
+      <th>grupo</th>
+      <th>technique</th>
+      <th>method</th>
+      <th>f1_mean</th>
+      <th>f1_std</th>
+      <th>precision_mean</th>
+      <th>recall_mean</th>
+      <th>roc_auc_mean</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>catboost</td>
+      <td>nuevo</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5480</td>
+      <td>0.0088</td>
+      <td>0.4840</td>
+      <td>0.6317</td>
+      <td>0.7838</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>cs_fof</td>
+      <td>nuevo</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5479</td>
+      <td>0.0054</td>
+      <td>0.5148</td>
+      <td>0.5864</td>
+      <td>0.7847</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>xgboost</td>
+      <td>tradicional</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.5466</td>
+      <td>0.0091</td>
+      <td>0.4927</td>
+      <td>0.6149</td>
+      <td>0.7828</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>lightgbm</td>
+      <td>nuevo</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.5462</td>
+      <td>0.0086</td>
+      <td>0.4878</td>
+      <td>0.6207</td>
+      <td>0.7843</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>random_forest</td>
+      <td>tradicional</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5452</td>
+      <td>0.0077</td>
+      <td>0.4974</td>
+      <td>0.6041</td>
+      <td>0.7831</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>svm</td>
+      <td>tradicional</td>
+      <td>smote</td>
+      <td>random_search</td>
+      <td>0.5387</td>
+      <td>0.0048</td>
+      <td>0.4795</td>
+      <td>0.6148</td>
+      <td>0.7638</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>knn</td>
+      <td>tradicional</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5264</td>
+      <td>0.0122</td>
+      <td>0.4569</td>
+      <td>0.6208</td>
+      <td>0.7629</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>decision_tree</td>
+      <td>tradicional</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.5254</td>
+      <td>0.0043</td>
+      <td>0.4788</td>
+      <td>0.5854</td>
+      <td>0.7569</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>logistic_regression</td>
+      <td>tradicional</td>
+      <td>class_weight</td>
+      <td>genetic_deap</td>
+      <td>0.5182</td>
+      <td>0.0104</td>
+      <td>0.4484</td>
+      <td>0.6139</td>
+      <td>0.7449</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>naive_bayes</td>
+      <td>tradicional</td>
+      <td>smote</td>
+      <td>grid_search</td>
+      <td>0.4987</td>
+      <td>0.0078</td>
+      <td>0.4136</td>
+      <td>0.6279</td>
+      <td>0.7454</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trad</span> <span class="o">=</span> <span class="n">tabla</span><span class="p">[</span><span class="n">tabla</span><span class="p">[</span><span class="s2">"grupo"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"tradicional"</span><span class="p">]</span>
+<span class="n">ref</span> <span class="o">=</span> <span class="n">trad</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">trad</span><span class="p">[</span><span class="s2">"f1_mean"</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mejor de las 112 combinaciones: </span><span class="si">{</span><span class="n">ref</span><span class="p">[</span><span class="s1">'model'</span><span class="p">]</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="n">ref</span><span class="p">[</span><span class="s1">'technique'</span><span class="p">]</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="n">ref</span><span class="p">[</span><span class="s1">'method'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"F1 medio = </span><span class="si">{</span><span class="n">ref</span><span class="p">[</span><span class="s1">'f1_mean'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> (desv. </span><span class="si">{</span><span class="n">ref</span><span class="p">[</span><span class="s1">'f1_std'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">nuevos</span> <span class="o">=</span> <span class="n">mejores</span><span class="p">[</span><span class="n">mejores</span><span class="p">[</span><span class="s2">"grupo"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"nuevo"</span><span class="p">][[</span><span class="s2">"model"</span><span class="p">,</span> <span class="s2">"f1_mean"</span><span class="p">,</span> <span class="s2">"f1_std"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">nuevos</span><span class="p">[</span><span class="s2">"dif. frente a las 112"</span><span class="p">]</span> <span class="o">=</span> <span class="n">nuevos</span><span class="p">[</span><span class="s2">"f1_mean"</span><span class="p">]</span> <span class="o">-</span> <span class="n">ref</span><span class="p">[</span><span class="s2">"f1_mean"</span><span class="p">]</span>
+<span class="n">nuevos</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mejor de las 112 combinaciones: xgboost / class_weight / bayesian_optuna
+F1 medio = 0.5466 (desv. 0.0091)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>model</th>
+      <th>f1_mean</th>
+      <th>f1_std</th>
+      <th>dif. frente a las 112</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>catboost</td>
+      <td>0.5480</td>
+      <td>0.0088</td>
+      <td>0.0015</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>cs_fof</td>
+      <td>0.5479</td>
+      <td>0.0054</td>
+      <td>0.0014</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>lightgbm</td>
+      <td>0.5462</td>
+      <td>0.0086</td>
+      <td>-0.0004</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">4.6</span><span class="p">))</span>
+<span class="n">colores</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"#C9930C"</span> <span class="k">if</span> <span class="n">g</span> <span class="o">==</span> <span class="s2">"nuevo"</span> <span class="k">else</span> <span class="s2">"#1B3071"</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">mejores</span><span class="p">[</span><span class="s2">"grupo"</span><span class="p">]]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">mejores</span><span class="p">[</span><span class="s2">"model"</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">mejores</span><span class="p">[</span><span class="s2">"f1_mean"</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">xerr</span><span class="o">=</span><span class="n">mejores</span><span class="p">[</span><span class="s2">"f1_std"</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">colores</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">ref</span><span class="p">[</span><span class="s2">"f1_mean"</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#0C1A41"</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">ref</span><span class="p">[</span><span class="s2">"f1_mean"</span><span class="p">],</span> <span class="o">-</span><span class="mf">0.9</span><span class="p">,</span> <span class="s2">"mejor de las 112"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">"top"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#0C1A41"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.46</span><span class="p">,</span> <span class="mf">0.56</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"F1 medio de la clase default (5 folds externos, barras = desv. estándar)"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Mejor combinación de cada modelo (dorado: modelos nuevos)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/670bec985b184f1d671aae05e5d2332f7d2523e95d44519750987942d61262b4.png" src="../_images/670bec985b184f1d671aae05e5d2332f7d2523e95d44519750987942d61262b4.png" />
+</div>
+</div>
+<p><strong>Lectura.</strong> CatBoost (0.5480) y CS-FOF (0.5479) superan al mejor de las 112 por 0.0015 y 0.0014 de F1, y LightGBM (0.5462) queda 0.0004 por debajo. Las tres diferencias son de milésimas, mucho menores que la desviación entre folds (cerca de 0.009).</p>
+</section>
+<section id="la-diferencia-de-cs-fof-es-significativa">
+<h2>3. ¿La diferencia de CS-FOF es significativa?<a class="headerlink" href="#la-diferencia-de-cs-fof-es-significativa" title="Link to this heading">#</a></h2>
+<p>Se compara CS-FOF con la mejor combinación de cada rival, fold a fold. Como los 5 folds comparten datos de entrenamiento, el <span class="math notranslate nohighlight">\(t\)</span> de Nadeau y Bengio corrige la varianza de la diferencia entre folds. Con <span class="math notranslate nohighlight">\(d_i\)</span> la diferencia de F1 en el fold <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(k=5\)</span> folds, <span class="math notranslate nohighlight">\(n_1\)</span> y <span class="math notranslate nohighlight">\(n_2\)</span> los tamaños de entrenamiento y prueba:</p>
+<div class="math notranslate nohighlight">
+\[
+t = \frac{\bar d}{\sqrt{\left(\dfrac{1}{k} + \dfrac{n_2}{n_1}\right) s_d^2}} .
+\]</div>
+<p>También se reporta el Wilcoxon por pares (con 5 folds su valor mínimo posible es 0.0625) y el delta de Cliff como tamaño de efecto. Ambos <span class="math notranslate nohighlight">\(p\)</span>-valores se corrigen con Holm.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cmp_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">COMP</span> <span class="o">/</span> <span class="s2">"cs_fof_vs_modelos.csv"</span><span class="p">)</span>
+<span class="n">cmp_</span> <span class="o">=</span> <span class="n">cmp_</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">"modelo"</span><span class="p">:</span> <span class="s2">"rival"</span><span class="p">,</span> <span class="s2">"dif_f1"</span><span class="p">:</span> <span class="s2">"F1 CS-FOF menos rival"</span><span class="p">,</span> <span class="s2">"gana"</span><span class="p">:</span> <span class="s2">"folds que gana CS-FOF (de 5)"</span><span class="p">,</span>
+                            <span class="s2">"p_nadeau_bengio_holm"</span><span class="p">:</span> <span class="s2">"p Nadeau-Bengio (Holm)"</span><span class="p">,</span> <span class="s2">"p_wilcoxon_holm"</span><span class="p">:</span> <span class="s2">"p Wilcoxon (Holm)"</span><span class="p">})</span>
+<span class="n">cmp_</span><span class="p">[[</span><span class="s2">"rival"</span><span class="p">,</span> <span class="s2">"F1 CS-FOF menos rival"</span><span class="p">,</span> <span class="s2">"folds que gana CS-FOF (de 5)"</span><span class="p">,</span> <span class="s2">"cliff"</span><span class="p">,</span>
+      <span class="s2">"p_nadeau_bengio"</span><span class="p">,</span> <span class="s2">"p Nadeau-Bengio (Holm)"</span><span class="p">,</span> <span class="s2">"p Wilcoxon (Holm)"</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rival</th>
+      <th>F1 CS-FOF menos rival</th>
+      <th>folds que gana CS-FOF (de 5)</th>
+      <th>cliff</th>
+      <th>p_nadeau_bengio</th>
+      <th>p Nadeau-Bengio (Holm)</th>
+      <th>p Wilcoxon (Holm)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>catboost</td>
+      <td>-0.0001</td>
+      <td>2</td>
+      <td>-0.0400</td>
+      <td>0.9743</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>xgboost</td>
+      <td>0.0014</td>
+      <td>4</td>
+      <td>0.3600</td>
+      <td>0.6266</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>lightgbm</td>
+      <td>0.0018</td>
+      <td>3</td>
+      <td>0.1200</td>
+      <td>0.5673</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>random_forest</td>
+      <td>0.0027</td>
+      <td>4</td>
+      <td>0.3600</td>
+      <td>0.3093</td>
+      <td>1.0000</td>
+      <td>0.7500</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>svm</td>
+      <td>0.0092</td>
+      <td>5</td>
+      <td>0.7600</td>
+      <td>0.0023</td>
+      <td>0.0141</td>
+      <td>0.5625</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>knn</td>
+      <td>0.0216</td>
+      <td>5</td>
+      <td>0.9200</td>
+      <td>0.0113</td>
+      <td>0.0563</td>
+      <td>0.5625</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>decision_tree</td>
+      <td>0.0225</td>
+      <td>5</td>
+      <td>1.0000</td>
+      <td>0.0004</td>
+      <td>0.0033</td>
+      <td>0.5625</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>logistic_regression</td>
+      <td>0.0297</td>
+      <td>5</td>
+      <td>1.0000</td>
+      <td>0.0020</td>
+      <td>0.0141</td>
+      <td>0.5625</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>naive_bayes</td>
+      <td>0.0493</td>
+      <td>5</td>
+      <td>1.0000</td>
+      <td>0.0000</td>
+      <td>0.0003</td>
+      <td>0.5625</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Lectura.</strong> Frente a CatBoost, XGBoost, LightGBM y Random Forest las diferencias son menores a 0.003 de F1 y ningún <span class="math notranslate nohighlight">\(p\)</span>-valor corregido es significativo: no hay evidencia de que CS-FOF sea mejor, ni peor, que ellos. En cambio, supera a SVM, KNN, árbol de decisión, regresión logística y Naive Bayes (diferencias de 0.009 a 0.049 de F1 y <span class="math notranslate nohighlight">\(p\)</span> de Nadeau-Bengio con Holm menor a 0.06 en los cinco, y delta de Cliff de 0.76 a 1). El Wilcoxon con 5 folds no alcanza a ser significativo en ningún caso.</p>
+</section>
+<section id="ranking-global-friedman-y-nemenyi">
+<h2>4. Ranking global: Friedman y Nemenyi<a class="headerlink" href="#ranking-global-friedman-y-nemenyi" title="Link to this heading">#</a></h2>
+<p>Se ordenan los 10 modelos (la mejor combinación de cada uno) por rango medio de F1 en los 5 folds. La prueba de Friedman contrasta si todos son equivalentes; si no, la diferencia crítica de Nemenyi indica cuándo dos rangos medios se separan:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{CD} = q_\alpha \sqrt{\frac{k(k+1)}{6N}}, \qquad k = 10 \text{ modelos},\; N = 5 \text{ folds}.
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fr</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">COMP</span> <span class="o">/</span> <span class="s2">"friedman.json"</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Friedman: chi2 = </span><span class="si">{</span><span class="n">fr</span><span class="p">[</span><span class="s1">'friedman_chi2'</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, p = </span><span class="si">{</span><span class="n">fr</span><span class="p">[</span><span class="s1">'friedman_p'</span><span class="p">]</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Diferencia crítica de Nemenyi (CD) = </span><span class="si">{</span><span class="n">fr</span><span class="p">[</span><span class="s1">'nemenyi_cd'</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">rangos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">fr</span><span class="p">[</span><span class="s2">"rangos"</span><span class="p">])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span>
+<span class="n">mejor_rango</span> <span class="o">=</span> <span class="n">rangos</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">4.4</span><span class="p">))</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"#C9930C"</span> <span class="k">if</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">NUEVOS</span> <span class="k">else</span> <span class="s2">"#1B3071"</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">rangos</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">rangos</span><span class="o">.</span><span class="n">index</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">rangos</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">cols</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">mejor_rango</span> <span class="o">+</span> <span class="n">fr</span><span class="p">[</span><span class="s2">"nemenyi_cd"</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#0C1A41"</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">mejor_rango</span> <span class="o">+</span> <span class="n">fr</span><span class="p">[</span><span class="s2">"nemenyi_cd"</span><span class="p">],</span> <span class="o">-</span><span class="mf">0.9</span><span class="p">,</span> <span class="s2">"mejor rango + CD"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">"top"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Rango medio de F1 (menor es mejor)"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Ranking de los 10 modelos (Friedman)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">dentro</span> <span class="o">=</span> <span class="n">rangos</span><span class="p">[</span><span class="n">rangos</span> <span class="o">&lt;=</span> <span class="n">mejor_rango</span> <span class="o">+</span> <span class="n">fr</span><span class="p">[</span><span class="s2">"nemenyi_cd"</span><span class="p">]]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Modelos que Nemenyi no separa del mejor:"</span><span class="p">,</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dentro</span><span class="o">.</span><span class="n">index</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Friedman: chi2 = 40.29, p = 6.74e-06
+Diferencia crítica de Nemenyi (CD) = 6.06
+</pre></div>
+</div>
+<img alt="../_images/66bff029bd948538919e9d26309c0097c640cab11e996fd6c91c5f83a83cfee0.png" src="../_images/66bff029bd948538919e9d26309c0097c640cab11e996fd6c91c5f83a83cfee0.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Modelos que Nemenyi no separa del mejor: catboost, cs_fof, xgboost, random_forest, lightgbm, svm, knn, decision_tree
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Lectura.</strong> Friedman es significativo, pero Nemenyi con solo 5 folds es poco potente: solo separa de la cabeza a regresión logística y Naive Bayes. CatBoost, CS-FOF, XGBoost, Random Forest y LightGBM ocupan los cinco primeros rangos, pero entre ellos (y aun frente a SVM, KNN y el árbol de decisión) el orden no es estadísticamente interpretable. Se lee como una comparación descriptiva.</p>
+</section>
+<section id="comparacion-sobre-las-mismas-predicciones-delong-y-mcnemar">
+<h2>5. Comparación sobre las mismas predicciones: DeLong y McNemar<a class="headerlink" href="#comparacion-sobre-las-mismas-predicciones-delong-y-mcnemar" title="Link to this heading">#</a></h2>
+<p>Con las probabilidades fuera de muestra (<em>out-of-fold</em>) de cada modelo se comparan sus AUC con la prueba de DeLong y sus aciertos con McNemar (sobre los clientes en que solo uno de los dos falla). Con unos 30,000 clientes, McNemar detecta diferencias minúsculas en los aciertos, por lo que se interpreta junto con el tamaño de la diferencia de F1 de la sección anterior.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">COMP</span> <span class="o">/</span> <span class="s2">"delong_mcnemar.csv"</span><span class="p">)</span>
+<span class="n">dm</span><span class="p">[[</span><span class="s2">"rival"</span><span class="p">,</span> <span class="s2">"auc_cs_fof"</span><span class="p">,</span> <span class="s2">"auc_rival"</span><span class="p">,</span> <span class="s2">"delong_p"</span><span class="p">,</span> <span class="s2">"mcnemar_solo_cs_fof_falla"</span><span class="p">,</span>
+    <span class="s2">"mcnemar_solo_rival_falla"</span><span class="p">,</span> <span class="s2">"f1_oof_cs_fof"</span><span class="p">,</span> <span class="s2">"f1_oof_rival"</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rival</th>
+      <th>auc_cs_fof</th>
+      <th>auc_rival</th>
+      <th>delong_p</th>
+      <th>mcnemar_solo_cs_fof_falla</th>
+      <th>mcnemar_solo_rival_falla</th>
+      <th>f1_oof_cs_fof</th>
+      <th>f1_oof_rival</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>catboost</td>
+      <td>0.7833</td>
+      <td>0.7843</td>
+      <td>0.2727</td>
+      <td>429</td>
+      <td>936</td>
+      <td>0.5484</td>
+      <td>0.5470</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>xgboost</td>
+      <td>0.7833</td>
+      <td>0.7827</td>
+      <td>0.5606</td>
+      <td>434</td>
+      <td>827</td>
+      <td>0.5484</td>
+      <td>0.5448</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>lightgbm</td>
+      <td>0.7833</td>
+      <td>0.7725</td>
+      <td>0.0000</td>
+      <td>345</td>
+      <td>782</td>
+      <td>0.5484</td>
+      <td>0.5459</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>random_forest</td>
+      <td>0.7833</td>
+      <td>0.7822</td>
+      <td>0.1714</td>
+      <td>313</td>
+      <td>615</td>
+      <td>0.5484</td>
+      <td>0.5434</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Lectura.</strong> El AUC de CS-FOF es indistinguible del de CatBoost, XGBoost y Random Forest (DeLong con <span class="math notranslate nohighlight">\(p &gt; 0.1\)</span>) y mayor que el de LightGBM (DeLong con <span class="math notranslate nohighlight">\(p &lt; 0.001\)</span>). McNemar sí marca diferencias en los aciertos individuales, pero esas diferencias se compensan: el F1 fuera de muestra de CS-FOF y de cada rival difiere en menos de 0.003.</p>
+</section>
+<section id="conclusion-parcial">
+<h2>6. Conclusión (parcial)<a class="headerlink" href="#conclusion-parcial" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Respuesta a la pregunta con los resultados disponibles.</strong> Ningún modelo nuevo supera de forma significativa al mejor de las 112 combinaciones. El mayor F1 medio es de CatBoost (0.5480), seguido de CS-FOF (0.5479); frente al mejor tradicional (XGBoost, 0.5466) la ventaja es de 0.001 a 0.002, menor que la desviación entre folds.</p></li>
+<li><p><strong>CS-FOF</strong> es competitivo, con el mayor ROC-AUC medio y la menor variación entre folds entre los cinco primeros, pero empata estadísticamente con CatBoost, XGBoost, LightGBM y Random Forest.</p></li>
+<li><p><strong>Estado de las corridas.</strong> Los resultados son parciales: las corridas de los modelos nuevos todavía no terminan (hasta ahora CS-FOF con 4 combinaciones, LightGBM con 16 y CatBoost con 9 de 16). Esta sección y las tablas se actualizan cuando se completen.</p></li>
+<li><p><strong>Limitación metodológica.</strong> Con 5 folds las pruebas tienen poca potencia, así que la comparación entre los modelos de cabeza es descriptiva.</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="09_anytime_multifidelidad.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">09. Curvas anytime y multi-fidelidad</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-idea-de-cs-fof">1. La idea de CS-FOF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mejor-combinacion-de-cada-modelo">2. Mejor combinación de cada modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-diferencia-de-cs-fof-es-significativa">3. ¿La diferencia de CS-FOF es significativa?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ranking-global-friedman-y-nemenyi">4. Ranking global: Friedman y Nemenyi</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-sobre-las-mismas-predicciones-delong-y-mcnemar">5. Comparación sobre las mismas predicciones: DeLong y McNemar</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-parcial">6. Conclusión (parcial)</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Katherin Barrera López y Valeria Florez Sarmiento
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

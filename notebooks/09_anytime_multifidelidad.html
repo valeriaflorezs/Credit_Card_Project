@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>09. Curvas anytime y multi-fidelidad &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
+    <title>09. Curvas anytime y multi-fidelidad &#8212; Predicción de incumplimiento de pago en tarjetas de crédito</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -55,7 +55,7 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -64,6 +64,7 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="11. Modelo original (CS-FOF) y métodos recientes" href="11_modelo_original_cs_fof.html" />
     <link rel="prev" title="08. Tabla maestra consolidada y comparabilidad del SVM" href="08_tabla_maestra_svm.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -192,7 +193,7 @@
   
   
   
-    <p class="title logo__title">Default of Credit Card Clients — Pipeline de Clasificación</p>
+    <p class="title logo__title">Predicción de incumplimiento de pago en tarjetas de crédito</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -208,13 +209,12 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../portada.html">
-                    Default of Credit Card Clients
+                    Evaluación de preprocesamiento, análisis exploratorio y comparación sistemática de modelos para la predicción de incumplimiento de pago en tarjetas de crédito
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Introducción y marco del proyecto</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../correcciones.html">Trazabilidad de correcciones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
@@ -225,6 +225,7 @@
 
 <li class="toctree-l1"><a class="reference internal" href="08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">09. Curvas anytime y multi-fidelidad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_modelo_original_cs_fof.html">11. Modelo original (CS-FOF) y métodos recientes</a></li>
 </ul>
 
     </div>
@@ -388,7 +389,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="curvas-anytime-y-multi-fidelidad">
 <h1>09. Curvas anytime y multi-fidelidad<a class="headerlink" href="#curvas-anytime-y-multi-fidelidad" title="Link to this heading">#</a></h1>
-<p>La tabla maestra guarda el resultado final de cada búsqueda, pero no dice qué tan rápido encontró un buen candidato. Este notebook corrige esa omisión de dos maneras:</p>
+<p>La tabla maestra guarda el resultado final de cada búsqueda, pero no dice qué tan rápido encontró un buen candidato. Este notebook lo estudia de dos maneras:</p>
 <ol class="arabic simple">
 <li><p><strong>Curvas anytime</strong> de los cuatro optimizadores del proyecto (grid, random, bayesiana con TPE y genético con DEAP): calidad del mejor candidato encontrado si la búsqueda se detuviera en cada punto, medida en número de evaluaciones y en costo de cómputo.</p></li>
 <li><p><strong>Multi-fidelidad</strong>: se implementó Hyperband desde cero (<code class="docutils literal notranslate"><span class="pre">src/multifidelity.py</span></code>), usando como fidelidad la fracción de filas de entrenamiento, y se compara con Random Search sobre el mismo espacio de búsqueda.</p></li>
@@ -1093,6 +1094,15 @@ Razón de costo media: 1.12
         <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title">08. Tabla maestra consolidada y comparabilidad del SVM</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="11_modelo_original_cs_fof.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">11. Modelo original (CS-FOF) y métodos recientes</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>

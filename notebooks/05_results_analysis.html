@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>05. Análisis de resultados &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
+    <title>05. Análisis de resultados &#8212; Predicción de incumplimiento de pago en tarjetas de crédito</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -55,7 +55,7 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -195,7 +195,7 @@
   
   
   
-    <p class="title logo__title">Default of Credit Card Clients — Pipeline de Clasificación</p>
+    <p class="title logo__title">Predicción de incumplimiento de pago en tarjetas de crédito</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -211,13 +211,12 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../portada.html">
-                    Default of Credit Card Clients
+                    Evaluación de preprocesamiento, análisis exploratorio y comparación sistemática de modelos para la predicción de incumplimiento de pago en tarjetas de crédito
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Introducción y marco del proyecto</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../correcciones.html">Trazabilidad de correcciones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
@@ -228,6 +227,7 @@
 
 <li class="toctree-l1"><a class="reference internal" href="08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_modelo_original_cs_fof.html">11. Modelo original (CS-FOF) y métodos recientes</a></li>
 </ul>
 
     </div>
@@ -384,6 +384,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calibracion-brier-ece-reliability-diagram-recalibracion-si-corresponde">Calibración: Brier, ECE, reliability diagram (+ recalibración si corresponde)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complejidad-computacional-estandar-vs-optimizado">Complejidad computacional: estándar vs. optimizado</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#siguiente-paso">Siguiente Paso</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#siguiente-paso-modelo-original-y-metodos-recientes">Siguiente paso: modelo original y métodos recientes</a></li>
 </ul>
             </nav>
         </div>
@@ -2002,7 +2003,7 @@ DeLong (pares dentro del top, corrección Holm):
 </details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Complejidad teórica (xgboost):
-  Train:      O(T·n·p) con `tree_method='hist'` (histogramas: discretiza cada feature en ~256 bins, evaluando splits en O(n) por nivel) — bloque config del modelo. El método EXACTO (ordenar todas las features en cada split) es O(T·n·p·log n), notablemente más lento para n~30K.
+  Train:      O(T·n·p) con `tree_method='hist'` (histogramas: discretiza cada feature en ~256 bins, evaluando splits en O(n) por nivel), bloque config del modelo. El método EXACTO (ordenar todas las features en cada split) es O(T·n·p·log n), notablemente más lento para n~30K.
   Inferencia: O(T·log n) por consulta.
 </pre></div>
 </div>
@@ -2052,6 +2053,10 @@ DeLong (pares dentro del top, corrección Holm):
 <section id="siguiente-paso">
 <h2>Siguiente Paso<a class="headerlink" href="#siguiente-paso" title="Link to this heading">#</a></h2>
 <p>Con la combinación de mayor F1 medio identificada (su ventaja sobre otras cercanas no es estadísticamente distinguible), avanzamos al notebook <code class="docutils literal notranslate"><span class="pre">06_interpretability.ipynb</span></code>: allí se interpreta con SHAP el Random Forest de esa combinación (100 observaciones de un fold en las secciones 1 a 4, y los 5 folds en la sección 5) y se compara LIME frente a SHAP en 120 observaciones por modelo (sección 6). La tabla maestra consolidada y la comparabilidad del SVM están en <code class="docutils literal notranslate"><span class="pre">08_tabla_maestra_svm.ipynb</span></code>, y las curvas anytime y la multi-fidelidad en <code class="docutils literal notranslate"><span class="pre">09_anytime_multifidelidad.ipynb</span></code>.</p>
+</section>
+<section id="siguiente-paso-modelo-original-y-metodos-recientes">
+<h2>Siguiente paso: modelo original y métodos recientes<a class="headerlink" href="#siguiente-paso-modelo-original-y-metodos-recientes" title="Link to this heading">#</a></h2>
+<p>Todas las conclusiones de este notebook son sobre las 112 combinaciones de modelos tradicionales. Si algún modelo nuevo supera su mejor F1 medio (XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y optimización bayesiana, 0.5466) se estudia en <code class="docutils literal notranslate"><span class="pre">11_modelo_original_cs_fof.ipynb</span></code>, que compara CS-FOF, LightGBM y CatBoost con el mismo protocolo.</p>
 </section>
 </section>
 
@@ -2132,6 +2137,7 @@ DeLong (pares dentro del top, corrección Holm):
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calibracion-brier-ece-reliability-diagram-recalibracion-si-corresponde">Calibración: Brier, ECE, reliability diagram (+ recalibración si corresponde)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complejidad-computacional-estandar-vs-optimizado">Complejidad computacional: estándar vs. optimizado</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#siguiente-paso">Siguiente Paso</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#siguiente-paso-modelo-original-y-metodos-recientes">Siguiente paso: modelo original y métodos recientes</a></li>
 </ul>
   </nav></div>
 

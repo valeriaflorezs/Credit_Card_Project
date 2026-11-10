@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introducción y marco del proyecto &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
+    <title>Marco del proyecto &#8212; Predicción de incumplimiento de pago en tarjetas de crédito</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -55,7 +55,7 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js?v=36754332"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -66,8 +66,8 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Trazabilidad de correcciones" href="correcciones.html" />
-    <link rel="prev" title="Default of Credit Card Clients" href="portada.html" />
+    <link rel="next" title="EDA: Análisis Exploratorio de Datos" href="notebooks/00_eda.html" />
+    <link rel="prev" title="Evaluación de preprocesamiento, análisis exploratorio y comparación sistemática de modelos para la predicción de incumplimiento de pago en tarjetas de crédito" href="portada.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -195,7 +195,7 @@
   
   
   
-    <p class="title logo__title">Default of Credit Card Clients — Pipeline de Clasificación</p>
+    <p class="title logo__title">Predicción de incumplimiento de pago en tarjetas de crédito</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -211,13 +211,12 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="portada.html">
-                    Default of Credit Card Clients
+                    Evaluación de preprocesamiento, análisis exploratorio y comparación sistemática de modelos para la predicción de incumplimiento de pago en tarjetas de crédito
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introducción y marco del proyecto</a></li>
-<li class="toctree-l1"><a class="reference internal" href="correcciones.html">Trazabilidad de correcciones</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Setup Check</a></li>
@@ -228,6 +227,7 @@
 
 <li class="toctree-l1"><a class="reference internal" href="notebooks/08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/11_modelo_original_cs_fof.html">11. Modelo original (CS-FOF) y métodos recientes</a></li>
 </ul>
 
     </div>
@@ -363,7 +363,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Introducción y marco del proyecto</h1>
+    <h1>Marco del proyecto</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -375,27 +375,37 @@
                 <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduccion">Introducción</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#planteamiento-del-problema">Planteamiento del problema</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preguntas-de-investigacion">Preguntas de investigación</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hipotesis-exploratorias">Hipótesis exploratorias</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alcance-y-limitaciones">Alcance y limitaciones</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pregunta-de-investigacion">Pregunta de investigación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preguntas-especificas">Preguntas específicas</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hipotesis-exploratorias">Hipótesis exploratorias</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion">Justificación</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos">Objetivos</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-general">Objetivo general</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-especificos">Objetivos específicos</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alcance-y-limitaciones">Alcance y limitaciones</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marco-teorico">Marco teórico</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diccionario-de-variables">Diccionario de variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#riesgo-de-credito-y-default">Riesgo de crédito y <em>default</em></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-exploratorio-de-datos">Análisis exploratorio de datos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-atipicos-y-asimetria">Valores atípicos y asimetría</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#desbalance-de-clases">Desbalance de clases</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlacion-de-spearman-y-multicolinealidad">Correlación de Spearman y multicolinealidad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#asociacion-y-comparacion-de-grupos">Asociación y comparación de grupos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calibracion-de-probabilidades">Calibración de probabilidades</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#antecedentes">Antecedentes</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diccionario-de-variables">Diccionario de variables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metodologia">Metodología</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#datos">Datos</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#etl">ETL</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-exploratorio">Análisis exploratorio</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-base">Modelo base</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diseno-experimental">Diseño experimental</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-original-y-metodos-recientes">Modelo original y métodos recientes</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad">Interpretabilidad</a></li>
 </ul>
 </li>
@@ -412,63 +422,76 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="introduccion-y-marco-del-proyecto">
-<h1>Introducción y marco del proyecto<a class="headerlink" href="#introduccion-y-marco-del-proyecto" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="marco-del-proyecto">
+<h1>Marco del proyecto<a class="headerlink" href="#marco-del-proyecto" title="Link to this heading">#</a></h1>
 <section id="introduccion">
 <h2>Introducción<a class="headerlink" href="#introduccion" title="Link to this heading">#</a></h2>
-<p>La predicción del incumplimiento de pago (<em>credit default</em>) es uno de los problemas de mayor relevancia
-práctica en la gestión del riesgo crediticio, por su efecto directo sobre la solvencia de las entidades
-financieras y sobre las políticas de otorgamiento de crédito. Anticipar qué clientes tienen mayor probabilidad
-de caer en mora permite ajustar límites de crédito, diferenciar tasas de interés y diseñar estrategias de
-cobranza preventiva, reduciendo la exposición a pérdidas <span class="bibtex-citation" id="id1">[<a class="reference internal" href="#id14" title="I. C. Yeh and C. F. Lien. The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. Expert Systems with Applications, 36(2):2473–2480, 2009.">YL09</a>]</span>.</p>
-<p>En aprendizaje automático el problema se aborda como una clasificación binaria supervisada, con modelos que van
-desde la regresión logística, interpretable, hasta métodos de ensamble como Random Forest y <em>gradient
-boosting</em>, cuyo desempeño comparativo se evaluó originalmente sobre el conjunto de datos de este trabajo
-<span class="bibtex-citation" id="id2">[<a class="reference internal" href="#id14" title="I. C. Yeh and C. F. Lien. The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. Expert Systems with Applications, 36(2):2473–2480, 2009.">YL09</a>]</span>. Técnicas de interpretabilidad como SHAP <span class="bibtex-citation" id="id3">[<a class="reference internal" href="#id15" title="S. M. Lundberg and S. I. Lee. A unified approach to interpreting model predictions. In Advances in Neural Information Processing Systems, volume 30, 4765–4774. 2017.">LL17</a>]</span> complementan esos modelos con
-explicaciones por variable, algo valioso en el sector financiero, donde la trazabilidad de las decisiones
-automatizadas suele ser un requisito.</p>
+<p>Las tarjetas de crédito son una de las líneas de la banca minorista con mayor exposición al riesgo: cada cliente
+recibe un cupo (límite de crédito) y se espera que lo pague en las fechas pactadas. Cuando no lo hace, la entidad
+enfrenta pérdidas, mayores costos de cobranza y la necesidad de provisionar capital. Anticipar qué clientes tienen
+mayor probabilidad de incurrir en mora permite ajustar límites de crédito, definir tasas diferenciadas y diseñar
+estrategias de cobranza preventivas <span class="bibtex-citation" id="id1">[<a class="reference internal" href="#id14" title="I. C. Yeh and C. F. Lien. The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. Expert Systems with Applications, 36(2):2473–2480, 2009.">YL09</a>]</span>.</p>
+<p>Desde la perspectiva técnica, el problema se ha abordado extensamente como una tarea de clasificación binaria, con
+modelos que van desde la regresión logística hasta métodos de ensamble como Random Forest y <em>gradient boosting</em>,
+evaluados originalmente sobre el conjunto de datos de este trabajo <span class="bibtex-citation" id="id2">[<a class="reference internal" href="#id14" title="I. C. Yeh and C. F. Lien. The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. Expert Systems with Applications, 36(2):2473–2480, 2009.">YL09</a>]</span>. Técnicas de interpretabilidad
+como SHAP <span class="bibtex-citation" id="id3">[<a class="reference internal" href="#id15" title="S. M. Lundberg and S. I. Lee. A unified approach to interpreting model predictions. In Advances in Neural Information Processing Systems, volume 30, 4765–4774. 2017.">LL17</a>]</span> complementan estos modelos con explicaciones a nivel de variable, algo valioso en
+contextos regulados como el financiero.</p>
+<p>Este libro presenta el análisis del conjunto <em>Default of Credit Card Clients</em> (UCI), con 30,000 clientes de un banco
+de Taiwán observados entre abril y septiembre de 2005. Para cada cliente se conoce su límite de crédito, sus
+características demográficas, su historial de pagos de seis meses, los montos facturados, los montos pagados y si
+incumplió el pago del mes siguiente (variable objetivo). El proyecto se desarrolló en etapas: comprensión del
+problema, proceso ETL, análisis exploratorio (EDA), modelo base de regresión logística, comparación sistemática de
+112 configuraciones de modelos, análisis de resultados e interpretabilidad. El resumen de resultados está en la
+portada y cada etapa se documenta en los capítulos siguientes.</p>
+<p>Cifras de partida tras la limpieza: <strong>29,965 clientes</strong>, <strong>21 columnas</strong> en el conjunto final y una tasa de <em>default</em>
+de <strong>22.1 %</strong> (6,630 clientes).</p>
 </section>
 <section id="planteamiento-del-problema">
 <h2>Planteamiento del problema<a class="headerlink" href="#planteamiento-del-problema" title="Link to this heading">#</a></h2>
-<p>El conjunto de datos contiene 30,000 clientes de tarjetas de crédito en Taiwán (2005), con 23 variables
-predictoras (límite de crédito, datos demográficos, historial de pagos, montos facturados y montos pagados de
-seis meses) y una variable objetivo binaria: si el cliente incumplió el pago al mes siguiente.</p>
+<p>Una entidad financiera otorga crédito sin saber con certeza quién pagará. Si concede cupos demasiado altos a
+clientes que luego incumplen, la cartera se deteriora: se pierde el capital no recuperado, aumentan los costos de
+cobranza y se deben constituir mayores provisiones. Si, por el contrario, restringe el crédito en exceso, pierde
+ingresos por intereses y comisiones.</p>
+<p>En esta muestra, el 22.1 % de los clientes (6,630) no pagó su tarjeta el mes siguiente. Identificar tempranamente
+qué perfiles y comportamientos anticipan ese incumplimiento es la base para fijar límites, priorizar la cobranza
+preventiva y alimentar un modelo de <em>scoring</em>.</p>
+<p>Los errores no son simétricos: no detectar a quien incumplirá (falso negativo) suele costar más que revisar de más a
+quien sí pagaría (falso positivo). Por eso reportar solo el <em>accuracy</em> es engañoso: un clasificador que siempre
+prediga “no <em>default</em>” ya alcanzaría 77.9 % de <em>accuracy</em> sin detectar a ningún cliente en riesgo.</p>
 <p>Tres dificultades hacen que el problema no se resuelva con un modelo estándar:</p>
 <ul class="simple">
-<li><p><strong>Desbalance de clases.</strong> Solo cerca del 22 % de los clientes incumple. Un modelo entrenado sin ajustes favorece la
-clase mayoritaria y puede mostrar un <em>accuracy</em> alto mientras detecta pocos casos de <em>default</em>. La regresión
-logística base de este proyecto, por ejemplo, tiene un F1 de la clase minoritaria de cerca de 0.38.</p></li>
+<li><p><strong>Desbalance de clases.</strong> Un modelo entrenado sin ajustes favorece la clase mayoritaria. La regresión logística
+base de este proyecto tiene un F1 de la clase minoritaria de cerca de 0.38.</p></li>
 <li><p><strong>Calidad y estructura de los datos.</strong> Hay duplicados exactos, categorías no documentadas en <code class="docutils literal notranslate"><span class="pre">EDUCATION</span></code> y
 <code class="docutils literal notranslate"><span class="pre">MARRIAGE</span></code>, códigos ambiguos en las variables <code class="docutils literal notranslate"><span class="pre">PAY_x</span></code>, distribuciones muy asimétricas y una multicolinealidad
 severa entre las seis variables <code class="docutils literal notranslate"><span class="pre">BILL_AMT</span></code>.</p></li>
 <li><p><strong>Muchas decisiones que interactúan.</strong> El algoritmo, la técnica de balanceo y la forma de optimizar los
-hiperparámetros afectan el resultado y rara vez se comparan de manera conjunta y con una validación que
-evite la fuga de información.</p></li>
+hiperparámetros afectan el resultado y rara vez se comparan de manera conjunta y con una validación que evite la
+fuga de información.</p></li>
 </ul>
-<p>Para una entidad financiera el costo de equivocarse no es simétrico. Si concede cupos altos a clientes que luego
-incumplen, pierde capital, aumentan sus costos de cobranza y debe constituir mayores provisiones. Si restringe
-el crédito en exceso, pierde ingresos por intereses y comisiones. En esta muestra 6,630 clientes (22.1 %) no
-pagaron su tarjeta el mes siguiente, y no detectar a quien incumplirá (falso negativo) suele costar más que
-revisar de más a quien sí pagaría (falso positivo).</p>
-<section id="preguntas-de-investigacion">
-<h3>Preguntas de investigación<a class="headerlink" href="#preguntas-de-investigacion" title="Link to this heading">#</a></h3>
-<p>La pregunta general es: <strong>¿qué características del cliente, de su línea de crédito y de su historial reciente de
-pagos se asocian con el incumplimiento del mes siguiente, y con qué intensidad?</strong> A partir de ella, el trabajo
-se pregunta:</p>
-<ul class="simple">
+<section id="pregunta-de-investigacion">
+<h3>Pregunta de investigación<a class="headerlink" href="#pregunta-de-investigacion" title="Link to this heading">#</a></h3>
+<p><strong>¿Qué características del cliente, de su línea de crédito y de su historial reciente de pagos se asocian con el
+incumplimiento del mes siguiente, y con qué intensidad?</strong></p>
+</section>
+<section id="preguntas-especificas">
+<h3>Preguntas específicas<a class="headerlink" href="#preguntas-especificas" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
 <li><p>¿Cómo se distribuyen las variables y qué problemas de calidad presentan?</p></li>
 <li><p>¿Qué tan desbalanceada está la variable objetivo?</p></li>
 <li><p>¿Qué variables separan mejor a los clientes que incumplen?</p></li>
 <li><p>¿Existe redundancia entre las variables predictoras?</p></li>
-<li><p>¿Qué combinación de algoritmo, técnica de balanceo y método de optimización detecta mejor a los clientes en
-riesgo de incumplimiento, y qué parte de la mejora se debe a cada decisión?</p></li>
-</ul>
+<li><p>¿Qué combinación de algoritmo, técnica de balanceo y método de optimización de hiperparámetros detecta mejor a
+los clientes en riesgo, y qué parte de la mejora se debe a cada decisión?</p></li>
+</ol>
+</section>
 </section>
 <section id="hipotesis-exploratorias">
-<h3>Hipótesis exploratorias<a class="headerlink" href="#hipotesis-exploratorias" title="Link to this heading">#</a></h3>
+<h2>Hipótesis exploratorias<a class="headerlink" href="#hipotesis-exploratorias" title="Link to this heading">#</a></h2>
+<p>Se contrastan de forma descriptiva y visual a lo largo del EDA.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p></p></th>
+<tr class="row-odd"><th class="head"><p>#</p></th>
 <th class="head"><p>Hipótesis</p></th>
 </tr>
 </thead>
@@ -492,86 +515,169 @@ riesgo de incumplimiento, y qué parte de la mejora se debe a cada decisión?</p
 </table>
 </div>
 </section>
-<section id="alcance-y-limitaciones">
-<h3>Alcance y limitaciones<a class="headerlink" href="#alcance-y-limitaciones" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Los datos provienen de un solo banco de Taiwán y de un periodo corto (abril a septiembre de 2005), por lo que
-no se generalizan sin cautela a otros mercados o épocas.</p></li>
-<li><p>El análisis es asociativo: una correlación no implica causalidad.</p></li>
-<li><p>Los códigos <code class="docutils literal notranslate"><span class="pre">-2</span></code> y <code class="docutils literal notranslate"><span class="pre">0</span></code> de <code class="docutils literal notranslate"><span class="pre">PAY_x</span></code> no están documentados con precisión en la fuente y se conservan sin
-recodificar.</p></li>
-<li><p>Las cifras monetarias están en dólares taiwaneses (NT$).</p></li>
-</ul>
-</section>
-</section>
 <section id="justificacion">
 <h2>Justificación<a class="headerlink" href="#justificacion" title="Link to this heading">#</a></h2>
-<p>En riesgo crediticio un falso negativo, un cliente que incumple y no fue detectado, es más costoso que un
-falso positivo. Por eso el <em>accuracy</em> no basta, y el trabajo prioriza métricas sensibles a la clase minoritaria
-(F1, <em>recall</em>, PR-AUC). Documentar de forma reproducible el preprocesamiento y comparar de manera sistemática
-las alternativas permite separar el aporte real de cada decisión (por ejemplo, el balanceo frente al modelo
-elegido) y evitar conclusiones basadas en una sola configuración.</p>
+<p>Un EDA riguroso evita errores costosos en el modelado: revela datos mal codificados, variables redundantes, sesgos de
+muestreo y desbalance antes de que afecten al modelo. Además, en riesgo crediticio el <em>accuracy</em> no basta, y el
+trabajo prioriza métricas sensibles a la clase minoritaria (F1, <em>recall</em>, PR-AUC). Documentar de forma reproducible
+el preprocesamiento y comparar de manera sistemática las alternativas permite separar el aporte real de cada
+decisión (por ejemplo, el balanceo frente al modelo elegido) y evitar conclusiones basadas en una sola
+configuración. También permite explicar a perfiles no técnicos (riesgos, cobranza, gerencia) qué señales preceden al
+incumplimiento, con evidencia visual y estadística.</p>
 </section>
 <section id="objetivos">
 <h2>Objetivos<a class="headerlink" href="#objetivos" title="Link to this heading">#</a></h2>
 <section id="objetivo-general">
 <h3>Objetivo general<a class="headerlink" href="#objetivo-general" title="Link to this heading">#</a></h3>
 <p>Evaluar de forma sistemática el efecto del preprocesamiento, el algoritmo, la técnica de balanceo y el método de
-optimización de hiperparámetros sobre la capacidad de predecir el incumplimiento de pago de clientes de tarjetas
-de crédito.</p>
+optimización de hiperparámetros sobre la capacidad de predecir el incumplimiento de pago de clientes de tarjetas de
+crédito, a partir de un análisis exploratorio univariado y multivariado.</p>
 </section>
 <section id="objetivos-especificos">
 <h3>Objetivos específicos<a class="headerlink" href="#objetivos-especificos" title="Link to this heading">#</a></h3>
 <ol class="arabic simple">
-<li><p>Describir el problema y el conjunto de datos, incluida la variable objetivo y su nivel de desbalance.</p></li>
-<li><p>Documentar de forma reproducible el proceso ETL, justificando cada decisión de limpieza.</p></li>
-<li><p>Caracterizar estadísticamente las variables mediante un EDA univariado y bivariado, y evaluar la
-multicolinealidad.</p></li>
-<li><p>Entrenar un modelo base (regresión logística) sobre una partición <em>train/test</em> aislada de fuga de
-información, y cuantificar su margen de mejora, en especial en falsos negativos y falsos positivos.</p></li>
-<li><p>Comparar 112 configuraciones (7 modelos x 4 técnicas de balanceo x 4 métodos de optimización) con
-validación cruzada anidada y el F1 de la clase <em>default</em> como métrica principal.</p></li>
-<li><p>Contrastar estadísticamente las configuraciones y analizar la calibración de probabilidades y el costo
-computacional.</p></li>
-<li><p>Interpretar los modelos con SHAP y LIME para identificar las variables que más influyen en la predicción.</p></li>
+<li><p>Describir la calidad de los datos y documentar la limpieza aplicada (duplicados, categorías no documentadas,
+saldos negativos).</p></li>
+<li><p>Caracterizar la distribución de cada variable, su asimetría y la presencia de valores atípicos.</p></li>
+<li><p>Cuantificar el desbalance de clases y comparar a los clientes con y sin <em>default</em> según variables demográficas,
+de crédito y de pagos.</p></li>
+<li><p>Identificar relaciones entre variables y detectar multicolinealidad (correlaciones y VIF).</p></li>
+<li><p>Entrenar un modelo base (regresión logística) sobre una partición <em>train/test</em> libre de fuga de información y
+cuantificar su margen de mejora, con atención a falsos negativos y falsos positivos.</p></li>
+<li><p>Comparar 112 configuraciones (7 modelos por 4 técnicas de balanceo por 4 métodos de optimización) con validación
+cruzada anidada y el F1 de la clase <em>default</em> como métrica principal.</p></li>
+<li><p>Contrastar estadísticamente las configuraciones, analizar la calibración de probabilidades y el costo
+computacional, e interpretar los modelos con SHAP y LIME.</p></li>
 </ol>
 </section>
 </section>
+<section id="alcance-y-limitaciones">
+<h2>Alcance y limitaciones<a class="headerlink" href="#alcance-y-limitaciones" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Los datos provienen de un solo banco de Taiwán y de un periodo corto (de abril a septiembre de 2005): no se
+generalizan sin cautela a otros mercados o épocas.</p></li>
+<li><p>El análisis es asociativo; una correlación no implica causalidad.</p></li>
+<li><p>Los códigos <code class="docutils literal notranslate"><span class="pre">-2</span></code> y <code class="docutils literal notranslate"><span class="pre">0</span></code> de <code class="docutils literal notranslate"><span class="pre">PAY_x</span></code> no están documentados con precisión en la fuente; se conservan sin recodificar.</p></li>
+<li><p>Existen grupos de clientes con predictoras idénticas pero etiqueta distinta (ruido propio de la fuente), lo que
+impone un techo al desempeño de cualquier modelo con estas variables.</p></li>
+<li><p>Las cifras monetarias están en dólares taiwaneses (NT$).</p></li>
+</ul>
+</section>
 <section id="marco-teorico">
 <h2>Marco teórico<a class="headerlink" href="#marco-teorico" title="Link to this heading">#</a></h2>
-<p><strong>Riesgo de crédito y <em>default</em>.</strong> El riesgo de crédito es la posibilidad de que una entidad sufra pérdidas
-porque un deudor no cumple sus obligaciones. En Basilea II la pérdida esperada se descompone como
-<span class="math notranslate nohighlight">\(EL = PD \times LGD \times EAD\)</span>, donde <span class="math notranslate nohighlight">\(PD\)</span> es la probabilidad de incumplimiento en un horizonte dado (lo que
-estudian estos datos), <span class="math notranslate nohighlight">\(LGD\)</span> la fracción de la exposición que se pierde si hay incumplimiento y <span class="math notranslate nohighlight">\(EAD\)</span> el monto
-expuesto en ese momento.</p>
-<p><strong>Scoring crediticio.</strong> Los modelos de <em>scoring</em> estiman la <span class="math notranslate nohighlight">\(PD\)</span> a partir del comportamiento de pago, el
-límite, la deuda y el perfil demográfico, y sirven para aprobar solicitudes, fijar cupos y priorizar la
-cobranza.</p>
-<p><strong>Análisis exploratorio de datos (EDA).</strong> Propuesto por Tukey <span class="bibtex-citation" id="id4">[<a class="reference internal" href="#id16" title="J. W. Tukey. Exploratory Data Analysis. Addison-Wesley, 1977.">Tuk77</a>]</span>: explorar los datos con
-resúmenes numéricos y gráficos antes de ajustar modelos, para descubrir patrones, anomalías y supuestos.</p>
-<p><strong>Valores atípicos y asimetría.</strong> Se usa el criterio de Tukey: es atípico un valor menor que <span class="math notranslate nohighlight">\(Q_1 - 1.5\,IQR\)</span> o
-mayor que <span class="math notranslate nohighlight">\(Q_3 + 1.5\,IQR\)</span>. La winsorización recorta los extremos a percentiles sin eliminar clientes, y la
-transformación logarítmica con signo suaviza colas largas cuando hay ceros o negativos.</p>
-<p><strong>Desbalance de clases.</strong> Con una clase minoritaria, un clasificador puede lograr alta exactitud ignorándola.
-Por eso se pondera las clases (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>), se sobremuestrea la minoritaria con SMOTE <span class="bibtex-citation" id="id5">[<a class="reference internal" href="#id17" title="N. V. Chawla, K. W. Bowyer, L. O. Hall, and W. P. Kegelmeyer. SMOTE: synthetic minority over-sampling technique. Journal of Artificial Intelligence Research, 16:321–357, 2002.">CBHK02</a>]</span>
-o ADASYN, se ajusta el umbral y se evalúa con F1, <em>recall</em> de la clase minoritaria y AUC en lugar de <em>accuracy</em>.</p>
-<p><strong>Correlación de Spearman y multicolinealidad.</strong> Spearman <span class="bibtex-citation" id="id6">[<a class="reference internal" href="#id18" title="C. Spearman. The proof and measurement of association between two things. The American Journal of Psychology, 15(1):72–101, 1904.">Spe04</a>]</span> mide asociación monótona con
-los rangos de los datos, sin exigir linealidad ni normalidad, y resiste los valores extremos. Se prefiere sobre
-Pearson porque los montos son muy asimétricos, las variables <code class="docutils literal notranslate"><span class="pre">PAY_x</span></code> son ordinales y el objetivo es binario. La
-multicolinealidad se mide con <span class="math notranslate nohighlight">\(VIF_j = 1/(1 - R_j^2)\)</span>; un VIF mayor que 10 (algunos autores usan 5) es señal de
-alerta.</p>
-<p><strong>Asociación y comparación de grupos.</strong> La prueba <span class="math notranslate nohighlight">\(\chi^2\)</span> de independencia y la V de Cramér
-<span class="bibtex-citation" id="id7">[<a class="reference internal" href="#id19" title="H. Cramér. Mathematical Methods of Statistics. Princeton University Press, 1946.">Cramer46</a>]</span> miden la asociación entre variables categóricas. Para comparar grupos sin suponer
-normalidad se usan Mann-Whitney <span class="bibtex-citation" id="id8">[<a class="reference internal" href="#id20" title="H. B. Mann and D. R. Whitney. On a test of whether one of two random variables is stochastically larger than the other. Annals of Mathematical Statistics, 18(1):50–60, 1947.">MW47</a>]</span> y Kruskal-Wallis <span class="bibtex-citation" id="id9">[<a class="reference internal" href="#id21" title="W. H. Kruskal and W. A. Wallis. Use of ranks in one-criterion variance analysis. Journal of the American Statistical Association, 47(260):583–621, 1952.">KW52</a>]</span>, y la t de Welch
-para medias con varianzas distintas. Con cerca de 30,000 clientes casi cualquier diferencia resulta significativa,
-así que se reporta también el tamaño del efecto.</p>
-<p><strong>Antecedentes.</strong> Yeh y Lien <span class="bibtex-citation" id="id10">[<a class="reference internal" href="#id14" title="I. C. Yeh and C. F. Lien. The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. Expert Systems with Applications, 36(2):2473–2480, 2009.">YL09</a>]</span> compararon seis técnicas de minería de datos (regresión
-logística, análisis discriminante, k vecinos, Naive Bayes, redes neuronales y árboles de clasificación) con
-estos mismos datos y propusieron un método de suavizado por ordenamiento para estimar la probabilidad real de
-incumplimiento. Este trabajo parte de ese conjunto de datos, completa la etapa de comprensión de los datos y
-compara de manera sistemática algoritmos modernos, técnicas de balanceo y métodos de optimización.</p>
+<section id="riesgo-de-credito-y-default">
+<h3>Riesgo de crédito y <em>default</em><a class="headerlink" href="#riesgo-de-credito-y-default" title="Link to this heading">#</a></h3>
+<p>El riesgo de crédito es la posibilidad de que una entidad sufra pérdidas porque un deudor no cumple, total o
+parcialmente, sus obligaciones. En la regulación bancaria (Basilea II) la pérdida esperada se descompone así:</p>
+<div class="math notranslate nohighlight">
+\[
+EL = PD \times LGD \times EAD
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(PD\)</span> es la probabilidad de incumplimiento en un horizonte dado (lo que estudian estos datos), <span class="math notranslate nohighlight">\(LGD\)</span> la fracción
+de la exposición que se pierde si hay incumplimiento y <span class="math notranslate nohighlight">\(EAD\)</span> el monto expuesto en ese momento. En este proyecto,
+<em>default</em> es la variable binaria que indica si el cliente no pagó en el mes siguiente. Los modelos de <em>scoring</em>
+estiman la <span class="math notranslate nohighlight">\(PD\)</span> a partir del comportamiento de pago, el límite, la deuda y el perfil demográfico.</p>
+</section>
+<section id="analisis-exploratorio-de-datos">
+<h3>Análisis exploratorio de datos<a class="headerlink" href="#analisis-exploratorio-de-datos" title="Link to this heading">#</a></h3>
+<p>Propuesto por Tukey <span class="bibtex-citation" id="id4">[<a class="reference internal" href="#id16" title="J. W. Tukey. Exploratory Data Analysis. Addison-Wesley, 1977.">Tuk77</a>]</span>, consiste en explorar los datos con resúmenes numéricos y gráficos antes de
+ajustar modelos, para descubrir patrones, anomalías y supuestos. El análisis univariado estudia una variable a la
+vez; el bivariado y el multivariado, las relaciones entre dos o más variables.</p>
+</section>
+<section id="valores-atipicos-y-asimetria">
+<h3>Valores atípicos y asimetría<a class="headerlink" href="#valores-atipicos-y-asimetria" title="Link to this heading">#</a></h3>
+<p>La asimetría indica hacia dónde se alarga la cola de una distribución y la curtosis qué tan pesadas son sus colas.
+Según el criterio de Tukey, un valor <span class="math notranslate nohighlight">\(x\)</span> es atípico si</p>
+<div class="math notranslate nohighlight">
+\[
+x &lt; Q_1 - 1.5\,\mathrm{IQR}
+\quad \text{o} \quad
+x &gt; Q_3 + 1.5\,\mathrm{IQR},
+\qquad \mathrm{IQR} = Q_3 - Q_1 .
+\]</div>
+<p>La winsorización recorta los extremos a percentiles (por ejemplo, P1 y P99) sin eliminar clientes. Para suavizar
+colas largas cuando hay ceros o negativos se usa el logaritmo con signo:</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{slog}(x) = \operatorname{sign}(x)\,\ln\!\left(1 + |x|\right).
+\]</div>
+</section>
+<section id="desbalance-de-clases">
+<h3>Desbalance de clases<a class="headerlink" href="#desbalance-de-clases" title="Link to this heading">#</a></h3>
+<p>Cuando una clase es mucho menos frecuente, un clasificador puede lograr alta exactitud ignorándola. Se recomienda
+ponderar las clases (<code class="docutils literal notranslate"><span class="pre">class_weight</span></code>), sobremuestrear la minoritaria (SMOTE <span class="bibtex-citation" id="id5">[<a class="reference internal" href="#id17" title="N. V. Chawla, K. W. Bowyer, L. O. Hall, and W. P. Kegelmeyer. SMOTE: synthetic minority over-sampling technique. Journal of Artificial Intelligence Research, 16:321–357, 2002.">CBHK02</a>]</span> o ADASYN), ajustar el
+umbral de decisión y evaluar con <span class="math notranslate nohighlight">\(F_1\)</span>, <em>recall</em> de la clase minoritaria y AUC en lugar del <em>accuracy</em>. Con <span class="math notranslate nohighlight">\(TP\)</span>, <span class="math notranslate nohighlight">\(FP\)</span> y
+<span class="math notranslate nohighlight">\(FN\)</span> los verdaderos positivos, falsos positivos y falsos negativos de la clase <em>default</em>:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{Precision} = \frac{TP}{TP + FP}, \qquad
+\mathrm{Recall} = \frac{TP}{TP + FN}, \qquad
+F_1 = \frac{2\,\mathrm{Precision}\cdot\mathrm{Recall}}{\mathrm{Precision} + \mathrm{Recall}} .
+\]</div>
+</section>
+<section id="correlacion-de-spearman-y-multicolinealidad">
+<h3>Correlación de Spearman y multicolinealidad<a class="headerlink" href="#correlacion-de-spearman-y-multicolinealidad" title="Link to this heading">#</a></h3>
+<p>La correlación de Spearman <span class="bibtex-citation" id="id6">[<a class="reference internal" href="#id18" title="C. Spearman. The proof and measurement of association between two things. The American Journal of Psychology, 15(1):72–101, 1904.">Spe04</a>]</span> mide asociación monótona: es la correlación de Pearson aplicada a
+los rangos de los datos,</p>
+<div class="math notranslate nohighlight">
+\[
+\rho_s = \rho\!\left(\operatorname{rango}(X),\, \operatorname{rango}(Y)\right).
+\]</div>
+<p>No exige linealidad ni normalidad y resiste los valores extremos, lo que la hace adecuada para montos muy
+asimétricos, variables <code class="docutils literal notranslate"><span class="pre">PAY_x</span></code> ordinales y un objetivo binario. La multicolinealidad se evalúa con el Factor de
+Inflación de la Varianza, donde <span class="math notranslate nohighlight">\(R_j^2\)</span> es el coeficiente de determinación al regresar la variable <span class="math notranslate nohighlight">\(j\)</span> sobre las demás
+predictoras:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{VIF}_j = \frac{1}{1 - R_j^2} .
+\]</div>
+<p>Un VIF mayor que 10 (algunos autores usan 5) es señal de alerta.</p>
+</section>
+<section id="asociacion-y-comparacion-de-grupos">
+<h3>Asociación y comparación de grupos<a class="headerlink" href="#asociacion-y-comparacion-de-grupos" title="Link to this heading">#</a></h3>
+<p>La prueba <span class="math notranslate nohighlight">\(\chi^2\)</span> de independencia contrasta si dos variables categóricas están asociadas; su tamaño de efecto se
+mide con la V de Cramér <span class="bibtex-citation" id="id7">[<a class="reference internal" href="#id19" title="H. Cramér. Mathematical Methods of Statistics. Princeton University Press, 1946.">Cramer46</a>]</span>, con <span class="math notranslate nohighlight">\(n\)</span> observaciones y <span class="math notranslate nohighlight">\(k\)</span> el menor número de categorías entre las dos
+variables:</p>
+<div class="math notranslate nohighlight">
+\[
+V = \sqrt{\frac{\chi^2 / n}{k - 1}} ,
+\]</div>
+<p>con <span class="math notranslate nohighlight">\(V &lt; 0.1\)</span> como efecto pequeño. Para comparar grupos sin suponer normalidad se usan Mann-Whitney
+<span class="bibtex-citation" id="id8">[<a class="reference internal" href="#id20" title="H. B. Mann and D. R. Whitney. On a test of whether one of two random variables is stochastically larger than the other. Annals of Mathematical Statistics, 18(1):50–60, 1947.">MW47</a>]</span> (dos grupos) y Kruskal-Wallis <span class="bibtex-citation" id="id9">[<a class="reference internal" href="#id21" title="W. H. Kruskal and W. A. Wallis. Use of ranks in one-criterion variance analysis. Journal of the American Statistical Association, 47(260):583–621, 1952.">KW52</a>]</span> (tres o más), y la t de Welch para medias con
+varianzas distintas. Con <span class="math notranslate nohighlight">\(R_g\)</span> la suma de rangos del grupo <span class="math notranslate nohighlight">\(g\)</span>, <span class="math notranslate nohighlight">\(n_g\)</span> su tamaño y <span class="math notranslate nohighlight">\(N\)</span> el total de observaciones:</p>
+<div class="math notranslate nohighlight">
+\[
+U_1 = R_1 - \frac{n_1 (n_1 + 1)}{2}, \qquad
+H = \frac{12}{N(N+1)} \sum_{g} \frac{R_g^2}{n_g} - 3(N+1), \qquad
+t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}} .
+\]</div>
+<p>Con cerca de 30,000 observaciones casi cualquier diferencia resulta significativa, por lo que se reporta el tamaño
+del efecto y no solo el <span class="math notranslate nohighlight">\(p\)</span>-valor.</p>
+</section>
+<section id="calibracion-de-probabilidades">
+<h3>Calibración de probabilidades<a class="headerlink" href="#calibracion-de-probabilidades" title="Link to this heading">#</a></h3>
+<p>Un modelo está calibrado si, entre los clientes a los que asigna probabilidad <span class="math notranslate nohighlight">\(p\)</span>, la proporción de <em>default</em> es
+cercana a <span class="math notranslate nohighlight">\(p\)</span>. Se mide con el puntaje de Brier y con el error de calibración esperado (ECE), que agrupa las
+probabilidades en <span class="math notranslate nohighlight">\(B\)</span> intervalos:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{Brier} = \frac{1}{N}\sum_{i=1}^{N}\left(\hat p_i - y_i\right)^2, \qquad
+\mathrm{ECE} = \sum_{b=1}^{B} \frac{n_b}{N}\,\left|\,\mathrm{acc}_b - \mathrm{conf}_b\,\right| ,
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(n_b\)</span> es el número de clientes en el intervalo <span class="math notranslate nohighlight">\(b\)</span>, <span class="math notranslate nohighlight">\(\mathrm{acc}_b\)</span> la frecuencia observada de <em>default</em> y
+<span class="math notranslate nohighlight">\(\mathrm{conf}_b\)</span> la probabilidad media predicha.</p>
+</section>
+<section id="antecedentes">
+<h3>Antecedentes<a class="headerlink" href="#antecedentes" title="Link to this heading">#</a></h3>
+<p>Yeh y Lien <span class="bibtex-citation" id="id10">[<a class="reference internal" href="#id14" title="I. C. Yeh and C. F. Lien. The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. Expert Systems with Applications, 36(2):2473–2480, 2009.">YL09</a>]</span> compararon seis técnicas de minería de datos (regresión logística, análisis
+discriminante, k vecinos, Naive Bayes, redes neuronales y árboles de clasificación) con estos mismos datos y
+propusieron un método de suavizado por ordenamiento para estimar la probabilidad real de incumplimiento. Este
+trabajo parte de ese conjunto de datos, completa la etapa de comprensión de los datos y compara de manera
+sistemática algoritmos modernos, técnicas de balanceo y métodos de optimización.</p>
+</section>
+</section>
 <section id="diccionario-de-variables">
-<h3>Diccionario de variables<a class="headerlink" href="#diccionario-de-variables" title="Link to this heading">#</a></h3>
+<h2>Diccionario de variables<a class="headerlink" href="#diccionario-de-variables" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Variable</p></th>
@@ -619,7 +725,6 @@ compara de manera sistemática algoritmos modernos, técnicas de balanceo y mét
 </tbody>
 </table>
 </div>
-</section>
 </section>
 <section id="metodologia">
 <h2>Metodología<a class="headerlink" href="#metodologia" title="Link to this heading">#</a></h2>
@@ -691,6 +796,13 @@ de cabeza, y la comparación entre ellas se interpreta de manera descriptiva.</p
 computacional de cada configuración.</p></li>
 </ul>
 </section>
+<section id="modelo-original-y-metodos-recientes">
+<h3>Modelo original y métodos recientes<a class="headerlink" href="#modelo-original-y-metodos-recientes" title="Link to this heading">#</a></h3>
+<p>Las 112 configuraciones anteriores son los modelos tradicionales y fijan el punto de comparación: su mejor F1 medio
+es 0.547 (XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y optimización bayesiana). Con ese valor como referencia se busca un modelo que
+lo supere: un bosque aleatorio propio con cortes oblicuos sensibles al costo (CS-FOF), contrastado además con dos
+métodos recientes de boosting (LightGBM y CatBoost) bajo el mismo protocolo de validación anidada 5 x 5.</p>
+</section>
 <section id="interpretabilidad">
 <h3>Interpretabilidad<a class="headerlink" href="#interpretabilidad" title="Link to this heading">#</a></h3>
 <p>SHAP sobre el Random Forest y comparación LIME vs. SHAP para XGBoost sobre una observación.</p>
@@ -722,6 +834,12 @@ computacional de cada configuración.</p></li>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">06_interpretability</span></code></p></td>
 <td><p>SHAP y LIME</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">08_tabla_maestra_svm</span></code>, <code class="docutils literal notranslate"><span class="pre">09_anytime_multifidelidad</span></code></p></td>
+<td><p>Tabla maestra, comparabilidad del SVM, curvas anytime y multi-fidelidad</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">11_modelo_original_cs_fof</span></code></p></td>
+<td><p>Modelo original CS-FOF, LightGBM y CatBoost frente a las 112 combinaciones</p></td>
 </tr>
 </tbody>
 </table>
@@ -809,15 +927,15 @@ computacional de cada configuración.</p></li>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Default of Credit Card Clients</p>
+        <p class="prev-next-title">Evaluación de preprocesamiento, análisis exploratorio y comparación sistemática de modelos para la predicción de incumplimiento de pago en tarjetas de crédito</p>
       </div>
     </a>
     <a class="right-next"
-       href="correcciones.html"
+       href="notebooks/00_eda.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Trazabilidad de correcciones</p>
+        <p class="prev-next-title">EDA: Análisis Exploratorio de Datos</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -841,27 +959,37 @@ computacional de cada configuración.</p></li>
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduccion">Introducción</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#planteamiento-del-problema">Planteamiento del problema</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preguntas-de-investigacion">Preguntas de investigación</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hipotesis-exploratorias">Hipótesis exploratorias</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alcance-y-limitaciones">Alcance y limitaciones</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pregunta-de-investigacion">Pregunta de investigación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preguntas-especificas">Preguntas específicas</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hipotesis-exploratorias">Hipótesis exploratorias</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion">Justificación</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos">Objetivos</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-general">Objetivo general</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-especificos">Objetivos específicos</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alcance-y-limitaciones">Alcance y limitaciones</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marco-teorico">Marco teórico</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diccionario-de-variables">Diccionario de variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#riesgo-de-credito-y-default">Riesgo de crédito y <em>default</em></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-exploratorio-de-datos">Análisis exploratorio de datos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#valores-atipicos-y-asimetria">Valores atípicos y asimetría</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#desbalance-de-clases">Desbalance de clases</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlacion-de-spearman-y-multicolinealidad">Correlación de Spearman y multicolinealidad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#asociacion-y-comparacion-de-grupos">Asociación y comparación de grupos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calibracion-de-probabilidades">Calibración de probabilidades</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#antecedentes">Antecedentes</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diccionario-de-variables">Diccionario de variables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metodologia">Metodología</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#datos">Datos</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#etl">ETL</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-exploratorio">Análisis exploratorio</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-base">Modelo base</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diseno-experimental">Diseño experimental</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-original-y-metodos-recientes">Modelo original y métodos recientes</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad">Interpretabilidad</a></li>
 </ul>
 </li>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>04. Ejecutar experimentos &#8212; Default of Credit Card Clients — Pipeline de Clasificación</title>
+    <title>04. Ejecutar experimentos &#8212; Predicción de incumplimiento de pago en tarjetas de crédito</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -55,7 +55,7 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -193,7 +193,7 @@
   
   
   
-    <p class="title logo__title">Default of Credit Card Clients — Pipeline de Clasificación</p>
+    <p class="title logo__title">Predicción de incumplimiento de pago en tarjetas de crédito</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -209,13 +209,12 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../portada.html">
-                    Default of Credit Card Clients
+                    Evaluación de preprocesamiento, análisis exploratorio y comparación sistemática de modelos para la predicción de incumplimiento de pago en tarjetas de crédito
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Introducción y marco del proyecto</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../correcciones.html">Trazabilidad de correcciones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Marco del proyecto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Setup Check</a></li>
@@ -226,6 +225,7 @@
 
 <li class="toctree-l1"><a class="reference internal" href="08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_modelo_original_cs_fof.html">11. Modelo original (CS-FOF) y métodos recientes</a></li>
 </ul>
 
     </div>
@@ -563,128 +563,128 @@ Orden por costo computacional: ('naive_bayes', 'logistic_regression', 'decision_
 [experiment_runner] 40 combinaciones a ejecutar.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/grid_search — f1=0.5366±0.0091 (459.6s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/grid_search: f1=0.5366±0.0091 (459.6s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/random_search — f1=0.5255±0.0043 (134.8s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/random_search: f1=0.5255±0.0043 (134.8s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/bayesian_optuna — f1=0.5222±0.0092 (136.4s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/bayesian_optuna: f1=0.5222±0.0092 (136.4s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/genetic_deap — f1=0.5206±0.0087 (414.4s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/genetic_deap: f1=0.5206±0.0087 (414.4s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/grid_search — f1=0.5444±0.0052 (250.6s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/grid_search: f1=0.5444±0.0052 (250.6s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/random_search — f1=0.5438±0.0093 (86.8s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/random_search: f1=0.5438±0.0093 (86.8s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/bayesian_optuna — f1=0.5451±0.0099 (94.4s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/bayesian_optuna: f1=0.5451±0.0099 (94.4s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/genetic_deap — f1=0.5440±0.0104 (335.5s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/genetic_deap: f1=0.5440±0.0104 (335.5s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/grid_search — f1=0.4735±0.0035 (208.9s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/grid_search: f1=0.4735±0.0035 (208.9s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/random_search — f1=0.4750±0.0031 (194.9s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/random_search: f1=0.4750±0.0031 (194.9s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/bayesian_optuna — f1=0.4759±0.0048 (406.0s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/bayesian_optuna: f1=0.4759±0.0048 (406.0s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/genetic_deap — f1=0.4790±0.0039 (2044.7s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/genetic_deap: f1=0.4790±0.0039 (2044.7s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/grid_search — f1=0.5298±0.0050 (308.5s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/grid_search: f1=0.5298±0.0050 (308.5s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/random_search — f1=0.5280±0.0047 (266.3s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/random_search: f1=0.5280±0.0047 (266.3s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/bayesian_optuna — f1=0.5301±0.0028 (400.3s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/bayesian_optuna: f1=0.5301±0.0028 (400.3s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/genetic_deap — f1=0.5321±0.0013 (1877.1s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/genetic_deap: f1=0.5321±0.0013 (1877.1s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/grid_search — f1=0.5259±0.0051 (313.3s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/grid_search: f1=0.5259±0.0051 (313.3s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/random_search — f1=0.5303±0.0046 (298.1s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/random_search: f1=0.5303±0.0046 (298.1s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/bayesian_optuna — f1=0.5305±0.0043 (550.0s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/bayesian_optuna: f1=0.5305±0.0043 (550.0s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/genetic_deap — f1=0.5289±0.0019 (1819.4s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/genetic_deap: f1=0.5289±0.0019 (1819.4s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/grid_search — f1=0.5448±0.0074 (178.3s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/grid_search: f1=0.5448±0.0074 (178.3s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/random_search — f1=0.5453±0.0088 (163.6s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/random_search: f1=0.5453±0.0088 (163.6s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/bayesian_optuna — f1=0.5444±0.0079 (344.0s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/bayesian_optuna: f1=0.5444±0.0079 (344.0s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/genetic_deap — f1=0.5460±0.0088 (2432.4s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/genetic_deap: f1=0.5460±0.0088 (2432.4s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/grid_search — f1=0.4421±0.0024 (34.9s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/grid_search: f1=0.4421±0.0024 (34.9s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/random_search — f1=0.4415±0.0039 (44.0s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/random_search: f1=0.4415±0.0039 (44.0s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/bayesian_optuna — f1=0.4334±0.0038 (1335.4s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/bayesian_optuna: f1=0.4334±0.0038 (1335.4s)
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\valef\anaconda3\envs\creditcard\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
   warnings.warn(
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/genetic_deap — f1=0.4422±0.0035 (10880.4s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/genetic_deap: f1=0.4422±0.0035 (10880.4s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/grid_search — f1=0.5076±0.0008 (40.0s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/grid_search: f1=0.5076±0.0008 (40.0s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/random_search — f1=0.5046±0.0021 (53.3s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/random_search: f1=0.5046±0.0021 (53.3s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/bayesian_optuna — f1=0.5082±0.0010 (4246.3s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/bayesian_optuna: f1=0.5082±0.0010 (4246.3s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/genetic_deap — f1=0.5080±0.0010 (1920.7s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/genetic_deap: f1=0.5080±0.0010 (1920.7s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/grid_search — f1=0.4880±0.0027 (41.2s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/grid_search: f1=0.4880±0.0027 (41.2s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/random_search — f1=0.4860±0.0026 (55.7s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/random_search: f1=0.4860±0.0026 (55.7s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/bayesian_optuna — f1=0.4879±0.0028 (4413.4s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/bayesian_optuna: f1=0.4879±0.0028 (4413.4s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/genetic_deap — f1=0.4891±0.0046 (1997.1s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/genetic_deap: f1=0.4891±0.0046 (1997.1s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/grid_search — f1=0.5260±0.0058 (27.0s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/grid_search: f1=0.5260±0.0058 (27.0s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/random_search — f1=0.5265±0.0050 (33.6s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/random_search: f1=0.5265±0.0050 (33.6s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/bayesian_optuna — f1=0.5266±0.0051 (1813.6s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/bayesian_optuna: f1=0.5266±0.0051 (1813.6s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/genetic_deap — f1=0.5238±0.0039 (3995.8s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/genetic_deap: f1=0.5238±0.0039 (3995.8s)
 
 40 combinaciones nuevas corridas en esta sesion.
 96 filas totales en la tabla maestra (C:\Users\valef\OneDrive\Desktop\Credit_Card_Project\results\experiments_master.csv).
