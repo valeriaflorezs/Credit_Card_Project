@@ -22,8 +22,41 @@ problema, proceso ETL, análisis exploratorio (EDA), modelo base de regresión l
 112 configuraciones de modelos, análisis de resultados e interpretabilidad. El resumen de resultados está en la
 portada y cada etapa se documenta en los capítulos siguientes.
 
-Cifras de partida tras la limpieza: **29,965 clientes**, **21 columnas** en el conjunto final y una tasa de *default*
-de **22.1 %** (6,630 clientes).
+::::{grid} 2 2 4 4
+:gutter: 3
+
+:::{grid-item-card}
+:class-card: cc-kpi
+
+<p class="kpi-label">Clientes analizados</p>
+<p class="kpi-value">29,965</p>
+<p class="kpi-note">tras la limpieza</p>
+:::
+
+:::{grid-item-card}
+:class-card: cc-kpi
+
+<p class="kpi-label">Columnas finales</p>
+<p class="kpi-value">21</p>
+<p class="kpi-note">20 predictoras y el objetivo</p>
+:::
+
+:::{grid-item-card}
+:class-card: cc-kpi
+
+<p class="kpi-label">Tasa de default</p>
+<p class="kpi-value">22.1 %</p>
+<p class="kpi-note">6,630 clientes</p>
+:::
+
+:::{grid-item-card}
+:class-card: cc-kpi
+
+<p class="kpi-label">Periodo</p>
+<p class="kpi-value">2005</p>
+<p class="kpi-note">abril a septiembre, banco de Taiwán</p>
+:::
+::::
 
 ## Planteamiento del problema
 
@@ -42,21 +75,36 @@ prediga "no *default*" ya alcanzaría 77.9 % de *accuracy* sin detectar a ningú
 
 Tres dificultades hacen que el problema no se resuelva con un modelo estándar:
 
-- **Desbalance de clases.** Un modelo entrenado sin ajustes favorece la clase mayoritaria. La regresión logística
-  base de este proyecto tiene un F1 de la clase minoritaria de cerca de 0.38.
-- **Calidad y estructura de los datos.** Hay duplicados exactos, categorías no documentadas en `EDUCATION` y
-  `MARRIAGE`, códigos ambiguos en las variables `PAY_x`, distribuciones muy asimétricas y una multicolinealidad
-  severa entre las seis variables `BILL_AMT`.
-- **Muchas decisiones que interactúan.** El algoritmo, la técnica de balanceo y la forma de optimizar los
-  hiperparámetros afectan el resultado y rara vez se comparan de manera conjunta y con una validación que evite la
-  fuga de información.
+::::{grid} 1 1 3 3
+:gutter: 3
 
-### Pregunta de investigación
+:::{grid-item-card} Desbalance de clases
+:class-card: cc-step
 
-**¿Qué características del cliente, de su línea de crédito y de su historial reciente de pagos se asocian con el
-incumplimiento del mes siguiente, y con qué intensidad?**
+Un modelo entrenado sin ajustes favorece la clase mayoritaria. La regresión logística base de este proyecto tiene un F1 de la clase minoritaria de cerca de 0.38.
+:::
 
-### Preguntas específicas
+:::{grid-item-card} Calidad y estructura de los datos
+:class-card: cc-step
+
+Hay duplicados exactos, categorías no documentadas en `EDUCATION` y `MARRIAGE`, códigos ambiguos en las variables `PAY_x`, distribuciones muy asimétricas y una multicolinealidad severa entre las seis variables `BILL_AMT`.
+:::
+
+:::{grid-item-card} Muchas decisiones que interactúan
+:class-card: cc-step
+
+El algoritmo, la técnica de balanceo y la forma de optimizar los hiperparámetros afectan el resultado y rara vez se comparan de manera conjunta y con una validación que evite la fuga de información.
+:::
+::::
+
+:::{admonition} Pregunta de investigación
+:class: cc-pregunta
+
+¿Qué características del cliente, de su línea de crédito y de su historial reciente de pagos se asocian con el incumplimiento del mes siguiente, y con qué intensidad?
+:::
+
+:::{admonition} Preguntas específicas
+:class: tip
 
 1. ¿Cómo se distribuyen las variables y qué problemas de calidad presentan?
 2. ¿Qué tan desbalanceada está la variable objetivo?
@@ -64,6 +112,7 @@ incumplimiento del mes siguiente, y con qué intensidad?**
 4. ¿Existe redundancia entre las variables predictoras?
 5. ¿Qué combinación de algoritmo, técnica de balanceo y método de optimización de hiperparámetros detecta mejor a
    los clientes en riesgo, y qué parte de la mejora se debe a cada decisión?
+:::
 
 ## Hipótesis exploratorias
 
@@ -79,6 +128,7 @@ Se contrastan de forma descriptiva y visual a lo largo del EDA.
 
 ## Justificación
 
+:::{div} cc-box
 Un EDA riguroso evita errores costosos en el modelado: revela datos mal codificados, variables redundantes, sesgos de
 muestreo y desbalance antes de que afecten al modelo. Además, en riesgo crediticio el *accuracy* no basta, y el
 trabajo prioriza métricas sensibles a la clase minoritaria (F1, *recall*, PR-AUC). Documentar de forma reproducible
@@ -86,16 +136,20 @@ el preprocesamiento y comparar de manera sistemática las alternativas permite s
 decisión (por ejemplo, el balanceo frente al modelo elegido) y evitar conclusiones basadas en una sola
 configuración. También permite explicar a perfiles no técnicos (riesgos, cobranza, gerencia) qué señales preceden al
 incumplimiento, con evidencia visual y estadística.
+:::
 
 ## Objetivos
 
-### Objetivo general
+:::{admonition} Objetivo general
+:class: cc-pregunta
 
 Evaluar de forma sistemática el efecto del preprocesamiento, el algoritmo, la técnica de balanceo y el método de
 optimización de hiperparámetros sobre la capacidad de predecir el incumplimiento de pago de clientes de tarjetas de
 crédito, a partir de un análisis exploratorio univariado y multivariado.
+:::
 
-### Objetivos específicos
+:::{admonition} Objetivos específicos
+:class: tip
 
 1. Describir la calidad de los datos y documentar la limpieza aplicada (duplicados, categorías no documentadas,
    saldos negativos).
@@ -109,8 +163,12 @@ crédito, a partir de un análisis exploratorio univariado y multivariado.
    cruzada anidada y el F1 de la clase *default* como métrica principal.
 7. Contrastar estadísticamente las configuraciones, analizar la calibración de probabilidades y el costo
    computacional, e interpretar los modelos con SHAP y LIME.
+:::
 
 ## Alcance y limitaciones
+
+:::{admonition} Qué tener presente
+:class: cc-limites
 
 - Los datos provienen de un solo banco de Taiwán y de un periodo corto (de abril a septiembre de 2005): no se
   generalizan sin cautela a otros mercados o épocas.
@@ -119,6 +177,7 @@ crédito, a partir de un análisis exploratorio univariado y multivariado.
 - Existen grupos de clientes con predictoras idénticas pero etiqueta distinta (ruido propio de la fuente), lo que
   impone un techo al desempeño de cualquier modelo con estas variables.
 - Las cifras monetarias están en dólares taiwaneses (NT$).
+:::
 
 ## Marco teórico
 
@@ -127,9 +186,11 @@ crédito, a partir de un análisis exploratorio univariado y multivariado.
 El riesgo de crédito es la posibilidad de que una entidad sufra pérdidas porque un deudor no cumple, total o
 parcialmente, sus obligaciones. En la regulación bancaria (Basilea II) la pérdida esperada se descompone así:
 
+:::{div} cc-formula
 $$
 EL = PD \times LGD \times EAD
 $$
+:::
 
 donde $PD$ es la probabilidad de incumplimiento en un horizonte dado (lo que estudian estos datos), $LGD$ la fracción
 de la exposición que se pierde si hay incumplimiento y $EAD$ el monto expuesto en ese momento. En este proyecto,
@@ -147,19 +208,23 @@ vez; el bivariado y el multivariado, las relaciones entre dos o más variables.
 La asimetría indica hacia dónde se alarga la cola de una distribución y la curtosis qué tan pesadas son sus colas.
 Según el criterio de Tukey, un valor $x$ es atípico si
 
+:::{div} cc-formula
 $$
 x < Q_1 - 1.5\,\mathrm{IQR}
 \quad \text{o} \quad
 x > Q_3 + 1.5\,\mathrm{IQR},
 \qquad \mathrm{IQR} = Q_3 - Q_1 .
 $$
+:::
 
 La winsorización recorta los extremos a percentiles (por ejemplo, P1 y P99) sin eliminar clientes. Para suavizar
 colas largas cuando hay ceros o negativos se usa el logaritmo con signo:
 
+:::{div} cc-formula
 $$
 \operatorname{slog}(x) = \operatorname{sign}(x)\,\ln\!\left(1 + |x|\right).
 $$
+:::
 
 ### Desbalance de clases
 
@@ -168,29 +233,35 @@ ponderar las clases (`class_weight`), sobremuestrear la minoritaria (SMOTE {cite
 umbral de decisión y evaluar con $F_1$, *recall* de la clase minoritaria y AUC en lugar del *accuracy*. Con $TP$, $FP$ y
 $FN$ los verdaderos positivos, falsos positivos y falsos negativos de la clase *default*:
 
+:::{div} cc-formula
 $$
 \mathrm{Precision} = \frac{TP}{TP + FP}, \qquad
 \mathrm{Recall} = \frac{TP}{TP + FN}, \qquad
 F_1 = \frac{2\,\mathrm{Precision}\cdot\mathrm{Recall}}{\mathrm{Precision} + \mathrm{Recall}} .
 $$
+:::
 
 ### Correlación de Spearman y multicolinealidad
 
 La correlación de Spearman {cite:p}`spearman1904` mide asociación monótona: es la correlación de Pearson aplicada a
 los rangos de los datos,
 
+:::{div} cc-formula
 $$
 \rho_s = \rho\!\left(\operatorname{rango}(X),\, \operatorname{rango}(Y)\right).
 $$
+:::
 
 No exige linealidad ni normalidad y resiste los valores extremos, lo que la hace adecuada para montos muy
 asimétricos, variables `PAY_x` ordinales y un objetivo binario. La multicolinealidad se evalúa con el Factor de
 Inflación de la Varianza, donde $R_j^2$ es el coeficiente de determinación al regresar la variable $j$ sobre las demás
 predictoras:
 
+:::{div} cc-formula
 $$
 \mathrm{VIF}_j = \frac{1}{1 - R_j^2} .
 $$
+:::
 
 Un VIF mayor que 10 (algunos autores usan 5) es señal de alerta.
 
@@ -200,19 +271,23 @@ La prueba $\chi^2$ de independencia contrasta si dos variables categóricas est�
 mide con la V de Cramér {cite:p}`cramer1946`, con $n$ observaciones y $k$ el menor número de categorías entre las dos
 variables:
 
+:::{div} cc-formula
 $$
 V = \sqrt{\frac{\chi^2 / n}{k - 1}} ,
 $$
+:::
 
 con $V < 0.1$ como efecto pequeño. Para comparar grupos sin suponer normalidad se usan Mann-Whitney
 {cite:p}`mann1947` (dos grupos) y Kruskal-Wallis {cite:p}`kruskal1952` (tres o más), y la t de Welch para medias con
 varianzas distintas. Con $R_g$ la suma de rangos del grupo $g$, $n_g$ su tamaño y $N$ el total de observaciones:
 
+:::{div} cc-formula
 $$
 U_1 = R_1 - \frac{n_1 (n_1 + 1)}{2}, \qquad
 H = \frac{12}{N(N+1)} \sum_{g} \frac{R_g^2}{n_g} - 3(N+1), \qquad
 t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}} .
 $$
+:::
 
 Con cerca de 30,000 observaciones casi cualquier diferencia resulta significativa, por lo que se reporta el tamaño
 del efecto y no solo el $p$-valor.
@@ -223,10 +298,12 @@ Un modelo está calibrado si, entre los clientes a los que asigna probabilidad $
 cercana a $p$. Se mide con el puntaje de Brier y con el error de calibración esperado (ECE), que agrupa las
 probabilidades en $B$ intervalos:
 
+:::{div} cc-formula
 $$
 \mathrm{Brier} = \frac{1}{N}\sum_{i=1}^{N}\left(\hat p_i - y_i\right)^2, \qquad
 \mathrm{ECE} = \sum_{b=1}^{B} \frac{n_b}{N}\,\left|\,\mathrm{acc}_b - \mathrm{conf}_b\,\right| ,
 $$
+:::
 
 donde $n_b$ es el número de clientes en el intervalo $b$, $\mathrm{acc}_b$ la frecuencia observada de *default* y
 $\mathrm{conf}_b$ la probabilidad media predicha.
