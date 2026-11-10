@@ -126,7 +126,9 @@ o ADASYN, se ajusta el umbral y se evalúa con F1, *recall* de la clase minorita
 
 **Correlación de Spearman y multicolinealidad.** Spearman {cite:p}`spearman1904` mide asociación monótona con
 los rangos de los datos, sin exigir linealidad ni normalidad, y resiste los valores extremos. Se prefiere sobre
-Pearson porque los montos son muy asimétricos, las variables `PAY_x` son ordinales y el objetivo es binario. La
+Pearson porque los montos son muy asimétricos, las variables `PAY_x` son ordinales y el objetivo es binario; es el
+único método de correlación del proyecto. Entre los seis montos facturados (`BILL_AMT1` a `BILL_AMT6`) va de 0.73
+a 0.91, la cifra que citan también el EDA y el tablero. La
 multicolinealidad se mide con $VIF_j = 1/(1 - R_j^2)$; un VIF mayor que 10 (algunos autores usan 5) es señal de
 alerta.
 
