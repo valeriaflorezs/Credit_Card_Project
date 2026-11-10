@@ -5,13 +5,13 @@ Todos comparten la misma fuente de verdad para el espacio de búsqueda
 (``models.ModelSpec.hyperparameters``, ver ``models.py``) y la misma forma
 de construir el pipeline preprocesamiento+balanceo+modelo
 (``balancing.build_pipeline``, ver ``balancing.py``), y todos devuelven un
-``OptimizationResult`` con la misma forma — así ``nested_cv.py`` (bloque 5)
+``OptimizationResult`` con la misma forma, así ``nested_cv.py`` (bloque 5)
 y ``experiment_runner.py`` (bloque 6) pueden tratarlos de forma intercambiable
 vía ``run_optimization(method, ...)``.
 
 **Grid Search y Random Search** delegan la partición en folds internos a
 ``GridSearchCV``/``RandomizedSearchCV`` de scikit-learn (que clona y
-reajusta el pipeline internamente por fold — sin leakage, ver
+reajusta el pipeline internamente por fold, sin leakage, ver
 ``balancing.py``).
 
 **Bayesiana y Genética** implementan manualmente el pipeline completo
@@ -62,7 +62,7 @@ class OptimizationResult:
         Mejores hiperparámetros encontrados (sin prefijo de pipeline).
     best_score : float
         Score promedio de validación INTERNA (inner loop) del mejor
-        candidato — nunca debe reportarse como métrica final; esa siempre
+        candidato, nunca debe reportarse como métrica final; esa siempre
         proviene de evaluar ``best_pipeline`` sobre el fold externo (outer
         loop, ver ``nested_cv.py``).
     best_pipeline : imblearn.pipeline.Pipeline
@@ -126,7 +126,7 @@ def _trace_from_search_cv(search: Any, n_splits: int) -> pd.DataFrame:
 
 
 # ---------------------------------------------------------------------------
-# Grid Search / Random Search — delegan el bucle de CV interno a scikit-learn
+# Grid Search / Random Search, delegan el bucle de CV interno a scikit-learn
 # ---------------------------------------------------------------------------
 
 
@@ -262,7 +262,7 @@ def run_random_search(
 
 
 # ---------------------------------------------------------------------------
-# Optimización Bayesiana (Optuna) — pipeline manual dentro de cada trial
+# Optimización Bayesiana (Optuna), pipeline manual dentro de cada trial
 # ---------------------------------------------------------------------------
 
 
@@ -320,7 +320,7 @@ def run_bayesian_search(
     n_jobs : int, default=1
         Trials en paralelo (hilos, soporte nativo de Optuna vía
         ``study.optimize``). No cambia el algoritmo TPE en si ni el numero
-        de trials — solo la concurrencia con la que se ejecutan. Con
+        de trials, solo la concurrencia con la que se ejecutan. Con
         ``n_jobs>1`` puede haber hasta ``n_jobs`` trials "en vuelo"
         simultaneamente evaluados contra el mismo estado previo del study
         (en vez de estrictamente uno-a-la-vez); es el comportamiento
@@ -388,7 +388,7 @@ def run_bayesian_search(
 
 
 # ---------------------------------------------------------------------------
-# Algoritmos Genéticos (DEAP) — pipeline manual dentro de cada evaluación
+# Algoritmos Genéticos (DEAP), pipeline manual dentro de cada evaluación
 # ---------------------------------------------------------------------------
 
 
@@ -494,18 +494,18 @@ def run_genetic_search(
 
     Operadores (justificación)
     ---------------------------
-    - **Selección — torneo** (``tournsize=tournament_size``): se prefiere
+    - **Selección, torneo** (``tournsize=tournament_size``): se prefiere
       sobre ruleta (fitness-proportionate) porque no requiere escalar/
       normalizar el fitness y controla la presión de selección de forma
       explícita vía ``tournament_size``, reduciendo el riesgo de que un
       único individuo domine tempranamente la población (causa común de
       convergencia prematura con ruleta).
-    - **Crossover — uniforme** (``indpb=0.5``, aplicado con probabilidad
+    - **Crossover, uniforme** (``indpb=0.5``, aplicado con probabilidad
       ``cx_prob`` por par de padres): cada gen se intercambia
       independientemente; apropiado porque los hiperparámetros no tienen
       una noción de "posición adyacente" que un crossover de un punto
       debiera preservar.
-    - **Mutación — gaussiana/categórica** (``indpb=mut_indpb`` por gen,
+    - **Mutación, gaussiana/categórica** (``indpb=mut_indpb`` por gen,
       aplicada con probabilidad ``mut_prob`` por individuo): ruido gaussiano
       (en escala log10 para hiperparámetros log) para genes numéricos,
       reasignación aleatoria para categóricos.
@@ -536,7 +536,7 @@ def run_genetic_search(
         forma independiente (su propio nested cv.split() + pipeline.fit()),
         asi que paralelizar esta evaluacion no cambia que individuos se
         evaluan, cuantas generaciones corren, ni el resultado de cada
-        evaluacion — solo el tiempo de pared. Con ``n_jobs=1`` (default) el
+        evaluacion, solo el tiempo de pared. Con ``n_jobs=1`` (default) el
         comportamiento es identico al secuencial original (map() estandar).
 
     Returns
@@ -690,7 +690,7 @@ def run_genetic_search(
 
 
 # ---------------------------------------------------------------------------
-# Dispatcher único — usado por nested_cv.py / experiment_runner.py
+# Dispatcher único, usado por nested_cv.py / experiment_runner.py
 # ---------------------------------------------------------------------------
 
 _DISPATCH: dict[str, Callable[..., OptimizationResult]] = {

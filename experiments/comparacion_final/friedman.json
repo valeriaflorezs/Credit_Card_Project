@@ -1,0 +1,17 @@
+{
+ "friedman_chi2": 40.28727272727275,
+ "friedman_p": 6.73981826564901e-06,
+ "nemenyi_cd": 6.057992834068874,
+ "rangos": {
+  "catboost": 2.0,
+  "cs_fof": 2.4,
+  "xgboost": 3.2,
+  "lightgbm": 3.8,
+  "random_forest": 3.6,
+  "svm": 6.0,
+  "knn": 7.6,
+  "decision_tree": 7.6,
+  "logistic_regression": 8.8,
+  "naive_bayes": 10.0
+ }
+}

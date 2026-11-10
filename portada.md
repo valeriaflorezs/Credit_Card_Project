@@ -1,6 +1,4 @@
-# Default of Credit Card Clients
-
-## Evaluación de preprocesamiento, análisis exploratorio y comparación sistemática de modelos para la predicción de incumplimiento de pago en tarjetas de crédito
+# Evaluación de preprocesamiento, análisis exploratorio y comparación sistemática de modelos para la predicción de incumplimiento de pago en tarjetas de crédito
 
 **Autoras:** Katherin Barrera López y Valeria Florez Sarmiento
 
@@ -14,39 +12,55 @@ Tablero interactivo del EDA: <https://dash-credit-kv.onrender.com>
 
 ## Resumen del proyecto
 
-Este proyecto desarrolla un flujo completo de ciencia de datos y aprendizaje automático para predecir el
-incumplimiento de pago (*default*) de clientes de tarjetas de crédito. Parte del conjunto de datos público
-*Default of Credit Card Clients* del repositorio UCI (30,000 clientes de Taiwán, 2005; 29,965 registros y 21
-columnas tras eliminar 35 duplicados exactos y transformar variables) y recorre el proceso de extracción,
-limpieza y transformación (ETL), el análisis exploratorio (EDA) y la comparación sistemática de modelos.
+Este trabajo presenta un flujo completo de aprendizaje automático para la predicción del incumplimiento de pago
+(*default*) de clientes de tarjetas de crédito, a partir del conjunto de datos público *Default of Credit Card
+Clients* del repositorio UCI, compuesto originalmente por 30,000 observaciones y 23 variables predictoras. El estudio
+integra el proceso de extracción, transformación y carga (ETL), un análisis exploratorio de datos (EDA) y una
+evaluación sistemática de modelos de clasificación.
 
-El EDA identificó un desbalance moderado de clases (cerca del 22 % de *default*), categorías no documentadas en
-`EDUCATION` y `MARRIAGE`, y una multicolinealidad severa entre los montos facturados, que se resumieron en
-tres variables derivadas. El estado de pago más reciente (`PAY_0`) resultó la señal individual más
-discriminante.
+El EDA incluyó estadística descriptiva, diagnóstico de valores faltantes y duplicados, análisis de la forma de las
+distribuciones, detección de valores atípicos, comparación formal de grupos con pruebas no paramétricas y de
+independencia, y evaluación de multicolinealidad con correlaciones y el Factor de Inflación de la Varianza (VIF).
+Se eliminaron 35 registros duplicados exactos (quedaron 29,965), se encontraron categorías no oficiales en
+`EDUCATION` y `MARRIAGE`, y se halló una multicolinealidad severa entre las variables de facturación mensual, que se
+resumieron en tres variables derivadas. La variable `PAY_0` destacó como la señal individual más discriminante. La
+variable objetivo presenta un desbalance moderado: 77.9 % sin *default* y 22.1 % con *default*.
 
-La comparación de modelos se hizo con un diseño factorial de **112 configuraciones**: 7 modelos x 4 técnicas de
-balanceo x 4 métodos de optimización de hiperparámetros, evaluadas con validación cruzada anidada (5 folds
-externos x 5 internos) y con el F1 de la clase minoritaria como métrica principal.
+Como línea base se entrenó una regresión logística con partición estratificada 80/20, cuyo F1 para la clase
+*default* es de cerca de 0.38. Después se evaluaron 112 configuraciones mediante un diseño factorial (7 modelos por 4
+técnicas de balanceo por 4 métodos de optimización de hiperparámetros), con validación cruzada anidada (5 folds
+externos por 5 internos) y el F1 de la clase *default* como métrica principal. La mejor configuración fue XGBoost con
+ponderación de clases y optimización bayesiana (F1 medio de 0.547), seguida de cerca por Random Forest con
+ponderación de clases.
+Con ese F1 como referencia, el proyecto propone además un modelo original (un bosque aleatorio con cortes oblicuos
+sensibles al costo) y lo contrasta con dos métodos recientes de boosting.
 
-## Resultados principales
+**Palabras clave:** aprendizaje automático, análisis exploratorio de datos, preprocesamiento, clasificación binaria,
+riesgo crediticio, desbalance de clases, validación cruzada anidada, optimización de hiperparámetros, F1-score.
 
-- El F1 de la clase *default* sube de cerca de 0.38 (regresión logística sin balanceo) a entre 0.52 y 0.55 con balanceo.
-- Esa mejora proviene en buena parte del balanceo, que desplaza el umbral de decisión; el ROC-AUC casi no
-  cambia entre técnicas.
-- Con 5 folds, la prueba post-hoc de Nemenyi solo separa combinaciones muy alejadas en el ranking (224 de
-  6,216 pares); entre las combinaciones de cabeza no hay diferencias significativas, por lo que esa comparación
-  es descriptiva.
-- La interpretabilidad se aborda con SHAP en los 5 folds (Random Forest y XGBoost) y una comparación LIME vs. SHAP.
+### Resultados en cifras
 
-## Contenido de este libro
+| Modelo | F1 de la clase *default* |
+|---|---|
+| Regresión logística (línea base, partición 80/20) | cerca de 0.38 |
+| Mejores combinaciones con balanceo (validación anidada 5 x 5) | entre 0.52 y 0.55 |
+| XGBoost con `class_weight` y optimización bayesiana | 0.547 |
 
-1. **Introducción:** contexto, planteamiento del problema, justificación, objetivos y metodología.
+- Esa mejora proviene en buena parte del balanceo, que desplaza el umbral de decisión; el ROC-AUC casi no cambia
+  entre técnicas.
+- Con 5 folds, la prueba post-hoc de Nemenyi solo separa combinaciones muy alejadas en el ranking (224 de 6,216
+  pares); entre las combinaciones de cabeza no hay diferencias significativas, por lo que esa comparación es
+  descriptiva.
+- La interpretabilidad se aborda con SHAP en los 5 folds (Random Forest y XGBoost) y una comparación LIME frente a
+  SHAP.
+
+### Contenido del libro
+
+1. **Marco del proyecto:** introducción, planteamiento del problema, hipótesis, justificación, objetivos, marco
+   teórico y metodología.
 2. **Análisis exploratorio (EDA)** y construcción del dataset final.
 3. **Modelo base:** regresión logística con partición 80/20.
 4. **Pipeline y experimentos:** desarrollo del pipeline y corrida de las combinaciones.
 5. **Análisis de resultados:** tabla de las 112 combinaciones, comparación estadística, calibración y complejidad.
 6. **Interpretabilidad:** SHAP y LIME.
-
-**Palabras clave:** aprendizaje automático, análisis exploratorio de datos, riesgo crediticio, clasificación
-binaria, desbalance de clases, optimización de hiperparámetros, validación cruzada anidada, F1-score.
+7. **Modelo original:** CS-FOF, LightGBM y CatBoost frente al mejor F1 de las 112 combinaciones.

@@ -20,6 +20,6 @@ Pendiente, en este orden (todo reanuda solo, desde la raiz con el entorno credit
 2. python -u -m src.anytime_study       (reanuda; omite lo que ya esta en results/anytime)
 3. python -m src.master_table           (necesita posthoc y svm_comparability terminados para el PR-AUC de SVM)
 4. python -u -m src.interpretability_multi   (necesita master_table)
-5. Reejecutar notebooks 05, 06, 08, 09; actualizar textos con cifras 3 x 3 (introduccion.md, portada.md, README.md, correcciones.md, notebooks 00/01/02/07/10); reconstruir el libro.
-Nota: KNN en GPU difiere del reajuste en CPU hasta ~0.007 de F1 (posthoc f1_check); documentarlo en 08 y correcciones.md.
+5. Reejecutar notebooks 05, 06, 08, 09; actualizar textos con cifras 3 x 3 (introduccion.md, portada.md, README.md, notebooks 00/01/02/07/10); reconstruir el libro.
+Nota: KNN en GPU difiere del reajuste en CPU hasta ~0.007 de F1 (posthoc f1_check); documentarlo en 08.
 Lanzar procesos largos con PowerShell Start-Process con -WorkingDirectory (bash con nohup se muere al cerrar la llamada).

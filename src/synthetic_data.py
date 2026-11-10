@@ -11,7 +11,7 @@ Las columnas categóricas nominales de ``config.CATEGORICAL_COLUMNS``
 generan con esos nombres exactos y una cardinalidad plausible, para poder
 probar el encoding condicional de ``preprocessing.py`` end-to-end con
 datos sintéticos. El resto de columnas son genéricas
-(``feature_0``, ``feature_1``, ...) — el pipeline sigue sin acoplarse a
+(``feature_0``, ``feature_1``, ...), el pipeline sigue sin acoplarse a
 nombres de columnas NUMÉRICAS reales.
 """
 

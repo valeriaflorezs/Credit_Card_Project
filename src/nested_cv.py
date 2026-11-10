@@ -1,12 +1,12 @@
 """Validación cruzada anidada: bucle externo (outer loop) para estimar
 desempeño de generalización, bucle interno (inner loop) para optimizar
-hiperparámetros — nunca al revés.
+hiperparámetros, nunca al revés.
 
 **Regla crítica del curso:** la métrica final reportada SIEMPRE proviene
 de evaluar el pipeline ya optimizado sobre el fold de prueba del OUTER
 loop; el ``best_score`` que devuelve ``optimization.py`` es solo la
 métrica de validación INTERNA (inner loop) usada para elegir
-hiperparámetros, y nunca debe confundirse con la métrica final —
+hiperparámetros, y nunca debe confundirse con la métrica final -
 mezclar ambos niveles es, según el curso, la causa más común de
 sobreestimación de desempeño.
 
@@ -21,7 +21,7 @@ optimización):
    entrenamiento externo, y devuelve un pipeline ya reajustado
    (``best_pipeline``) sobre ese fold de entrenamiento externo completo.
 3. Ese ``best_pipeline`` se evalúa sobre el fold de PRUEBA externo (nunca
-   visto por la optimización) — esas predicciones son las que alimentan
+   visto por la optimización), esas predicciones son las que alimentan
    las métricas finales.
 
 Este módulo calcula un set "núcleo" de métricas (accuracy, precision,
@@ -29,7 +29,7 @@ recall, F1, ROC-AUC) por fold externo y su resumen media±desviación
 estándar. El set completo de evaluación (matriz de confusión, curva ROC,
 calibración/Brier/ECE) se construye en ``evaluation.py`` (bloque 8) a
 partir de ``y_true``/``y_pred``/``y_proba`` que este módulo conserva por
-fold — sin recalcular ni volver a ajustar nada.
+fold, sin recalcular ni volver a ajustar nada.
 """
 
 from __future__ import annotations
@@ -67,11 +67,11 @@ class OuterFoldResult:
     fold_index : int
     best_params : dict
         Hiperparámetros elegidos por el inner loop para ESTE fold externo
-        (pueden variar de un fold externo a otro — es normal y esperado).
+        (pueden variar de un fold externo a otro, es normal y esperado).
     inner_best_score : float
         Score de validación INTERNA del inner loop. Solo referencia/
         diagnóstico (ej. detectar overfitting del inner loop si difiere
-        mucho de las métricas de este mismo fold) — NUNCA se reporta como
+        mucho de las métricas de este mismo fold), NUNCA se reporta como
         métrica final.
     y_true, y_pred, y_proba : np.ndarray
         Del fold de prueba EXTERNO. ``y_proba`` es la probabilidad de la
@@ -109,7 +109,7 @@ class NestedCVResult:
         Un elemento por fold del outer loop.
     metrics_summary : dict[str, tuple[float, float]]
         ``{métrica: (media, desviación_estándar)}`` a través de los folds
-        del OUTER loop — esta es la fuente de verdad para reportar
+        del OUTER loop, esta es la fuente de verdad para reportar
         desempeño (ver regla crítica en el docstring del módulo).
     total_time_seconds : float
     """
@@ -129,7 +129,7 @@ class NestedCVResult:
         fold externo) y ``best_params_per_fold`` (lista JSON de dicts).
         Sin esto, una tabla maestra cargada en una sesión NUEVA (ej.
         ``05_results_analysis.ipynb``, corrido después de
-        ``04_run_experiments.ipynb``) solo tendría medias/desviaciones —
+        ``04_run_experiments.ipynb``) solo tendría medias/desviaciones -
         insuficiente para Friedman/Nemenyi (bloque 10, necesitan el valor
         POR fold, no el resumen) o para recalcular matriz de confusión/ROC/
         calibración/SHAP de una combinación puntual sin repetir la
@@ -162,7 +162,7 @@ def compute_core_metrics(
 
     ``zero_division=0`` evita que un fold sin predicciones positivas
     (posible con folds pequeños y clases muy desbalanceadas) haga fallar
-    todo el experimento — un valor 0 en ese caso es la convención estándar
+    todo el experimento, un valor 0 en ese caso es la convención estándar
     de scikit-learn y queda visible en el resultado, no oculto.
     """
     return {
@@ -204,12 +204,12 @@ def run_nested_cv(
         Modelo base (ver ``models.MODEL_REGISTRY``).
     technique : str
         Técnica de balanceo (ver ``balancing.BALANCING_TECHNIQUES``). Debe
-        ser compatible con ``spec`` (ver ``balancing.is_compatible``) — de
+        ser compatible con ``spec`` (ver ``balancing.is_compatible``), de
         lo contrario se lanza ``ValueError`` antes de correr ningún fold.
     method : str
         Método de optimización (ver ``optimization.OPTIMIZATION_METHODS``).
     X, y : DataFrame, Series
-        Dataset COMPLETO (ya deduplicado si corresponde — ver
+        Dataset COMPLETO (ya deduplicado si corresponde, ver
         ``preprocessing.remove_duplicate_rows``, que debe aplicarse antes,
         una sola vez, nunca dentro de este bucle).
     n_outer_folds, n_inner_folds : int
@@ -267,7 +267,7 @@ def run_nested_cv(
         fit_time_seconds = time.time() - t0
 
         # best_pipeline ya viene reajustado sobre TODO X_train_outer
-        # (contrato de optimization.OptimizationResult) — se evalúa aquí
+        # (contrato de optimization.OptimizationResult), se evalúa aquí
         # sobre X_test_outer, nunca visto durante la optimización.
         y_pred = opt_result.best_pipeline.predict(X_test_outer)
         y_proba = opt_result.best_pipeline.predict_proba(X_test_outer)[:, 1]
