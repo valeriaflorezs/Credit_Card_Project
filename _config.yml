@@ -27,7 +27,6 @@ exclude_patterns:
   - "results/**"
   - "src/**"
   - ".git/**"
-  - "README.md"
   - "EXPERIMENT_STATUS.md"
   - "experiments/**"
   - "**.ipynb_checkpoints"
