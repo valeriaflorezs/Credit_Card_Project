@@ -27,7 +27,9 @@ cumple**. Se reporta así, sin ajustar el modelo después de ver los resultados 
 ## Limitaciones
 - El protocolo se documentó después de los experimentos (desviación declarada en
   `experiments/protocolo.md`).
-- CS-FOF, LightGBM y CatBoost solo se evaluaron con pesos de clase.
+- CS-FOF solo se evaluó con pesos de clase. LightGBM completó sus 16 combinaciones y CatBoost 9 de 16
+  (faltan el genético con pesos de clase, SMOTE con Optuna y genético, y ADASYN); en ambos, pesos de clase
+  fue la mejor técnica.
 - Con 5 pliegues externos y 4 conjuntos, las pruebas pareadas tienen poca potencia; no se ejecutó la
   validación externa repetida.
 - Los estudios de robustez son exploratorios: usan los hiperparámetros elegidos con los datos completos y
