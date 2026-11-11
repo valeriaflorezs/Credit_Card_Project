@@ -87,7 +87,7 @@ problema y se reporta con un veredicto honesto sobre su superioridad.
 - CS-FOF empata con el mejor método del estado del arte: Friedman detecta diferencias entre los 10 modelos ($\chi^2 = 40.3$), pero Nadeau–Bengio, Wilcoxon y DeLong no separan a CS-FOF de CatBoost, XGBoost, LightGBM ni Random Forest. La condición R3 de superioridad **no se cumple**.
 - CS-FOF sí supera con significancia y efecto grande a SVM, árbol de decisión, regresión logística y Naive Bayes.
 - En la evaluación ampliada es el más robusto al ruido y a muestras pequeñas, pero falla más que CatBoost con los clientes al día en septiembre y con desbalance extremo (Polish).
-- El techo del problema es bajo: los mejores modelos rondan F1 ≈ 0.55 y AUC ≈ 0.78.
+- Los mejores modelos rondan F1 ≈ 0.55 y AUC ≈ 0.78 y quedan muy cerca entre sí; eso no prueba un techo del problema, pero hace difícil separarlos estadísticamente.
 :::
 
 ## Contenido del libro

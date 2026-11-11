@@ -20,8 +20,10 @@
    cubre el 90 % nominal en ambas clases.
 6. **El corte oblicuo aporta y los cortes demasiado fuertes sobreajustan:** la ablación mostró que
    activar el corte oblicuo mejora el F1, y que más variables o más profundidad lo empeoran.
-7. **El techo de este conjunto de datos es bajo:** los mejores modelos de la literatura y de este
-   proyecto quedan cerca de F1 ≈ 0.55 y AUC ≈ 0.78, lo que limita cuánto puede separarse cualquier modelo.
+7. **Los mejores modelos quedan muy cerca entre sí:** los de la literatura y los de este proyecto rondan
+   F1 ≈ 0.55 y AUC ≈ 0.78 con estas variables. Esto no prueba que exista un techo; solo indica que, con la
+   información disponible, las diferencias entre buenos modelos son pequeñas y cuesta separarlas
+   estadísticamente.
 
 Según la sección 6.4 del Entregable 3, la condición R3 (superioridad estadística y consistencia) **no se
 cumple**. Se reporta así, sin ajustar el modelo después de ver los resultados de prueba.
@@ -43,7 +45,7 @@ cumple**. Se reporta así, sin ajustar el modelo después de ver los resultados 
 - CS-FOF falla más que CatBoost justo en el grupo más grande de la cartera: los clientes al día en
   septiembre (77 % de los clientes, F1 0.261 frente a 0.298).
 - Con 90 % de confianza, la predicción conforme deja a la mitad de los clientes en el conjunto
-  {pago, impago}: el techo del problema limita cualquier modelo.
+  {pago, impago}: con estas variables, una parte grande de los clientes sigue siendo difícil de clasificar.
 - El cambio de distribución solo se simuló por grupos de edad y educación, porque los datos no tienen
   fechas; no reemplaza una validación con datos de otro periodo o de otro banco.
 
