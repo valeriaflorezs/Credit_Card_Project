@@ -406,7 +406,7 @@ El libro sigue la estructura mínima del Entregable 3.
 | 0 | Introducción | Problema, motivación, objetivos, marco teórico y metodología |
 | 1 | Trazabilidad de correcciones | Observaciones del Entregable 2, acciones realizadas y auditoría de fuga de información |
 | 2 | Datos: ETL y EDA | Análisis exploratorio, construcción del conjunto final y declaración de los datos |
-| 3 | Modelos benchmark | Modelo base, protocolo, pipeline, corrida de las 112 combinaciones, resultados, interpretabilidad, tabla maestra y curvas anytime |
+| 3 | Modelos benchmark | Modelo base, protocolo, pipeline, corrida de las 112 combinaciones, resultados, interpretabilidad, tabla maestra, curvas anytime y validación del algoritmo genético con las funciones de De Jong |
 | 4 | Revisión de literatura y novedad | Matriz de búsqueda, declaración de novedad y trabajos cercanos |
 | 5 | Modelo original | CS-FOF: formulación, pseudocódigo, propiedades, complejidad, código, pruebas y ablación |
 | 6 | Protocolo y validación estadística | Protocolo pre-registrado, pruebas de hipótesis, tamaños del efecto y veredicto |

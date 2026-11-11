@@ -16,6 +16,6 @@ jobs:
           python-version: "3.12"
           cache: pip
       - name: Instalar dependencias del modelo, los artefactos y las pruebas
-        run: pip install numpy==2.5.3 pandas==3.0.6 scikit-learn==1.9.1 joblib==1.6.0 imbalanced-learn==0.14.2 xgboost==3.4.1 lightgbm==4.7.0 catboost==1.2.10 pytest
+        run: pip install numpy==2.5.3 pandas==3.0.6 scikit-learn==1.9.1 joblib==1.6.0 imbalanced-learn==0.14.2 xgboost==3.4.1 lightgbm==4.7.0 catboost==1.2.10 optuna==5.0.0 deap==1.4.3 pytest
       - name: Ejecutar pytest
         run: python -m pytest tests/ -q
