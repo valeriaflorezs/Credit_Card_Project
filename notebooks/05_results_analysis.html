@@ -216,9 +216,21 @@
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. Introducción</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Marco del proyecto</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. Trazabilidad de correcciones</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../correcciones.html">Trazabilidad de correcciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Datos: ETL y EDA</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DATA_STATEMENT.html">Declaración de los datos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Modelos benchmark</span></p>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
@@ -228,15 +240,36 @@
 
 <li class="toctree-l1"><a class="reference internal" href="08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
-<li class="toctree-l1"><a class="reference internal" href="10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimizacion_dejong.html">Validación del algoritmo genético con las funciones de De Jong</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Revisión de literatura y novedad</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../literatura.html">Revisión de literatura y evidencia de novedad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Modelo original</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../modelo_original.html">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../validacion.html">Validación estadística del modelo original</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. Evaluación ampliada y robustez</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../evaluacion_ampliada.html">Evaluación ampliada: ablación, robustez y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Dashboard y despliegue</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../dashboard.html">Dashboard y despliegue</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../MODEL_CARD.html">Ficha del modelo: CS-FOF</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../DATA_STATEMENT.html">Declaración de los datos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">9. Conclusiones y limitaciones</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../conclusiones.html">Conclusiones y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Reproducibilidad y bibliografía</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../reproducibilidad.html">Reproducibilidad, archivo del repositorio y declaración de autoría</a></li>
 </ul>
 
@@ -383,7 +416,6 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-prioritario">Objetivo prioritario:</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos-y-tabla-maestra">Cargar datos y tabla maestra</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-metricas-media-y-desviacion-estandar-outer-loop">Tabla de métricas (media y desviación estándar, outer loop)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-complementarias-independientes-del-umbral">Métricas complementarias (independientes del umbral)</a></li>
@@ -409,9 +441,8 @@
   <section class="tex2jax_ignore mathjax_ignore" id="analisis-de-resultados">
 <h1>05. Análisis de resultados<a class="headerlink" href="#analisis-de-resultados" title="Link to this heading">#</a></h1>
 <p>Este capítulo ejecuta la fase de evaluación cuantitativa del pipeline experimental sobre la tabla maestra de las 112 combinaciones (96 filas de CPU local y de KNN en GPU, más 16 filas de SVM en GPU), todas de la validación anidada 5 x 5.</p>
-<section id="objetivo-prioritario">
-<h2>Objetivo prioritario:<a class="headerlink" href="#objetivo-prioritario" title="Link to this heading">#</a></h2>
-<p>Dado que la <strong>métrica clave definida para este problema es el <span class="math notranslate nohighlight">\(F_1\)</span>-score</strong>, la evaluación prioriza la maximización de la media armónica entre la Precisión (<span class="math notranslate nohighlight">\(\text{Precision}\)</span>) y la Sensibilidad (<span class="math notranslate nohighlight">\(\text{Recall}\)</span>). Esto es crítico en escenarios donde existe un desbalance de clases relevante y se busca un equilibrio óptimo entre minimizar los falsos negativos y controlar la tasa de falsos positivos, garantizando una detección robusta y confiable.</p>
+<p><strong>Objetivo prioritario.</strong>
+Dado que la <strong>métrica clave definida para este problema es el <span class="math notranslate nohighlight">\(F_1\)</span>-score</strong>, la evaluación prioriza la maximización de la media armónica entre la Precisión (<span class="math notranslate nohighlight">\(\text{Precision}\)</span>) y la Sensibilidad (<span class="math notranslate nohighlight">\(\text{Recall}\)</span>). Esto es crítico en escenarios donde existe un desbalance de clases relevante y se busca un equilibrio óptimo entre minimizar los falsos negativos y controlar la tasa de falsos positivos, garantizando una detección robusta y confiable.</p>
 <hr class="docutils" />
 <p><strong>Contenido:</strong></p>
 <ul class="simple">
@@ -465,7 +496,6 @@
 </div>
 </details>
 </div>
-</section>
 <section id="cargar-datos-y-tabla-maestra">
 <h2>Cargar datos y tabla maestra<a class="headerlink" href="#cargar-datos-y-tabla-maestra" title="Link to this heading">#</a></h2>
 <p>Se carga el dataset procesado garantizando la reproducibilidad del orden de los datos y se consolida la tabla maestra combinada.</p>
@@ -2130,7 +2160,6 @@ DeLong (pares dentro del top, corrección Holm):
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-prioritario">Objetivo prioritario:</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos-y-tabla-maestra">Cargar datos y tabla maestra</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-metricas-media-y-desviacion-estandar-outer-loop">Tabla de métricas (media y desviación estándar, outer loop)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-complementarias-independientes-del-umbral">Métricas complementarias (independientes del umbral)</a></li>

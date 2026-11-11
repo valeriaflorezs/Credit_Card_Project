@@ -65,7 +65,7 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Declaración de los datos" href="DATA_STATEMENT.html" />
+    <link rel="next" title="Conclusiones y limitaciones" href="conclusiones.html" />
     <link rel="prev" title="Dashboard y despliegue" href="dashboard.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -214,9 +214,21 @@
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. Introducción</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="introduccion.html">Marco del proyecto</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. Trazabilidad de correcciones</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="correcciones.html">Trazabilidad de correcciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Datos: ETL y EDA</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="notebooks/00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DATA_STATEMENT.html">Declaración de los datos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Modelos benchmark</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
@@ -226,15 +238,36 @@
 
 <li class="toctree-l1"><a class="reference internal" href="notebooks/08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizacion_dejong.html">Validación del algoritmo genético con las funciones de De Jong</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Revisión de literatura y novedad</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="literatura.html">Revisión de literatura y evidencia de novedad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Modelo original</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="modelo_original.html">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="validacion.html">Validación estadística del modelo original</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. Evaluación ampliada y robustez</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="evaluacion_ampliada.html">Evaluación ampliada: ablación, robustez y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Dashboard y despliegue</span></p>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="dashboard.html">Dashboard y despliegue</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Ficha del modelo: CS-FOF</a></li>
-<li class="toctree-l1"><a class="reference internal" href="DATA_STATEMENT.html">Declaración de los datos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">9. Conclusiones y limitaciones</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="conclusiones.html">Conclusiones y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Reproducibilidad y bibliografía</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="reproducibilidad.html">Reproducibilidad, archivo del repositorio y declaración de autoría</a></li>
 </ul>
 
@@ -419,7 +452,9 @@ Implementación propia con numpy: <code class="docutils literal notranslate"><sp
 <li><p><strong>Para qué:</strong> estimar la probabilidad de que un cliente de tarjeta de crédito incumpla el pago del
 mes siguiente, como <strong>apoyo</strong> a la gestión de riesgo (priorizar cobranza preventiva, revisar cupos).</p></li>
 <li><p><strong>Quién:</strong> analistas de riesgo y estudiantes, con fines académicos y demostrativos.</p></li>
-<li><p><strong>Salida:</strong> probabilidad de incumplimiento y clase predicha con umbral 0.5.</p></li>
+<li><p><strong>Salida:</strong> puntaje de incumplimiento, clase predicha según un umbral y conjunto de predicción
+conforme al 90 %. La validación usa el umbral 0.5; en el tablero el umbral es ajustable y arranca en
+el de máximo F1 (52 %).</p></li>
 </ul>
 </section>
 <section id="usos-no-recomendados">
@@ -485,18 +520,25 @@ Australian 0.874 (XGBoost 0.880) y Polish año 1 0.430 (CatBoost 0.733).</p>
 extremo (Polish, 4 % de positivos) rinde mucho menos que los métodos de <em>boosting</em>.</p></li>
 <li><p>Solo se evaluó con la técnica de pesos de clase.</p></li>
 <li><p>Entrenar con pesos de costo <strong>sobreestima</strong> la probabilidad de incumplimiento (probabilidad media
-0.40 frente a una tasa real de 0.22). Si se usan como probabilidades reales, recalibrar (Platt o
-isotónica).</p></li>
-<li><p>Implementación en Python puro: entrenar es más lento que con librerías en C (unos 13 s por ajuste
-con 4 procesos, frente a 1–3 s de Random Forest y los métodos de <em>boosting</em>).</p></li>
+0.40 frente a una tasa real de 0.22). La regresión isotónica ajustada fuera de pliegue lo corrige
+(ECE de 0.180 a 0.003), pero entonces su ventaja de calibración frente a los demás desaparece.</p></li>
+<li><p>Implementación en numpy, sin código compilado: unas 5 veces más lenta que CatBoost al entrenar
+(6.6 s frente a 1.4 s con 24 mil clientes y 4 núcleos) y unas 600 veces al predecir (253 ms por cada
+1,000 clientes). Sirve para el tablero, no para puntuar millones de clientes.</p></li>
+<li><p>Con 90 % de confianza, la predicción conforme deja a la mitad de los clientes en el conjunto
+{pago, impago}: el modelo no puede decidir con esa confianza en uno de cada dos casos.</p></li>
+<li><p>Falla más que CatBoost justo en el grupo más grande de la cartera, los clientes al día en
+septiembre (77 % de los clientes; F1 0.261 frente a 0.298).</p></li>
 </ul>
 </section>
 <section id="riesgos-y-consideraciones-eticas">
 <h2>Riesgos y consideraciones éticas<a class="headerlink" href="#riesgos-y-consideraciones-eticas" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><strong>Sesgo:</strong> las tasas de incumplimiento difieren por sexo y nivel educativo en los datos; el modelo
-puede trasladar esas diferencias a sus predicciones. Antes de cualquier uso real hay que medir
-el desempeño por subgrupo.</p></li>
+puede trasladar esas diferencias a sus predicciones. El análisis de errores por subgrupo (capítulo
+de evaluación ampliada) muestra diferencias de F1 pequeñas entre edades y niveles educativos, y un
+F1 0.02 menor en mujeres que en hombres (0.540 frente a 0.559), igual que en CatBoost. Antes de un
+uso real habría que repetir esa revisión con datos actuales y con métricas de equidad.</p></li>
 <li><p><strong>Falsos negativos</strong> (morosos no detectados) generan pérdidas; <strong>falsos positivos</strong> pueden llevar a
 restringir crédito a clientes solventes. El umbral debe fijarse según los costos de la entidad.</p></li>
 </ul>
@@ -504,8 +546,13 @@ restringir crédito a clientes solventes. El umbral debe fijarse según los cost
 <section id="interpretabilidad">
 <h2>Interpretabilidad<a class="headerlink" href="#interpretabilidad" title="Link to this heading">#</a></h2>
 <p>Los coeficientes de cada corte oblicuo se pueden leer como reglas de riesgo (por ejemplo, cuánto
-pesa el atraso reciente frente al del mes anterior). Para explicaciones globales y locales se usa
-SHAP por permutación.</p>
+pesa el atraso reciente frente al del mes anterior).</p>
+<ul class="simple">
+<li><p><strong>SHAP global:</strong> SHAP por permutación en 300 clientes de prueba, con el mismo explicador que para CatBoost.
+Las dos importancias se parecen mucho (Spearman 0.95). Las variables principales son PAY_0, el cupo y PAY_2.
+CS-FOF reparte más peso entre los meses de atraso (capítulo del modelo original).</p></li>
+<li><p><strong>SHAP local:</strong> el tablero muestra, para cada cliente, valores de Shapley exactos por grupo de variables.</p></li>
+</ul>
 </section>
 </section>
 
@@ -549,11 +596,11 @@ SHAP por permutación.</p>
       </div>
     </a>
     <a class="right-next"
-       href="DATA_STATEMENT.html"
+       href="conclusiones.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Declaración de los datos</p>
+        <p class="prev-next-title">Conclusiones y limitaciones</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

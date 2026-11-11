@@ -471,18 +471,18 @@
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm cc-kpi docutils">
 <div class="sd-card-body docutils">
-<p class="kpi-label">Configuraciones</p>
-<p class="kpi-value">112</p>
-<p class="kpi-note">7 modelos x 4 balanceos x 4 optimizadores</p>
+<p class="kpi-label">Combinaciones evaluadas</p>
+<p class="kpi-value">148</p>
+<p class="kpi-note">112 del diseño factorial + 36 de CS-FOF, LightGBM y CatBoost</p>
 </div>
 </div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm cc-kpi docutils">
 <div class="sd-card-body docutils">
-<p class="kpi-label">Mejor F1 de las 112</p>
-<p class="kpi-value">0.547</p>
-<p class="kpi-note">XGBoost, validación anidada 5 x 5</p>
+<p class="kpi-label">Mejor F1 (validación anidada 5 × 5)</p>
+<p class="kpi-value">0.548</p>
+<p class="kpi-note">CatBoost 0.5480 y CS-FOF 0.5479: empate</p>
 </div>
 </div>
 </div>
@@ -497,11 +497,13 @@ el conjunto de datos de clientes de Taiwán se han usado modelos estadísticos, 
 profundas; sus resultados son muy similares, las redes pierden interpretabilidad y los árboles solo dividen el espacio
 en paralelo a los ejes. Se propone el <em>Cost-Sensitive Fisher Oblique Forest</em> (CS-FOF), un bosque aleatorio
 implementado desde cero cuyos nodos pueden cortar por la dirección discriminante de Fisher ponderada por el costo del
-incumplimiento; se basa en los árboles oblicuos y se evalúa con validación cruzada anidada y pruebas de hipótesis. En
-un experimento piloto, CS-FOF obtuvo el mayor F1 de la clase <em>default</em> entre seis modelos (0.547 frente a 0.546, una
-mejora relativa de 0.3%) con un AUC-ROC de 0.780; se espera que la validación final confirme esta ventaja de forma
-significativa. El aporte es un clasificador interpretable y no neuronal que lleva los cortes oblicuos al riesgo
-crediticio, con garantías teóricas sobre la calidad de cada partición.</p>
+incumplimiento, y se compara con 148 combinaciones de 10 modelos mediante validación cruzada anidada 5 × 5 y un
+protocolo de pruebas de hipótesis. CS-FOF obtiene un F1 de la clase <em>default</em> de 0.5479 ± 0.0054, empatado con
+CatBoost (0.5480), con el mayor AUC-ROC (0.785) y la menor variabilidad entre pliegues, pero <strong>no es superior de
+forma estadísticamente significativa</strong> a CatBoost, XGBoost, LightGBM ni Random Forest, y no es consistente en tres
+conjuntos de crédito adicionales. Es más robusto que el <em>boosting</em> ante etiquetas ruidosas y muestras pequeñas. El
+aporte es un clasificador no neuronal, con tres propiedades demostradas, que iguala al estado del arte en este
+problema y se reporta con un veredicto honesto sobre su superioridad.</p>
 <div class="cc-chips"><span class="cc-chip">riesgo crediticio</span><span class="cc-chip">incumplimiento de pago</span><span class="cc-chip">tarjetas de crédito</span><span class="cc-chip">árboles de decisión oblicuos</span><span class="cc-chip">bosques aleatorios</span><span class="cc-chip">discriminante de Fisher</span><span class="cc-chip">aprendizaje sensible al costo</span><span class="cc-chip">desbalance de clases</span></div>
 </div>
 </section>
@@ -511,17 +513,25 @@ crediticio, con garantías teóricas sobre la calidad de cada partición.</p>
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
 <th class="head"><p>F1 de la clase <em>default</em></p></th>
+<th class="head"><p>Validación</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Regresión logística (línea base, partición 80/20)</p></td>
+<tr class="row-even"><td><p>Regresión logística (línea base)</p></td>
 <td><p>cerca de 0.38</p></td>
+<td><p>Partición 80/20</p></td>
 </tr>
-<tr class="row-odd"><td><p>Mejores combinaciones con balanceo (validación anidada 5 x 5)</p></td>
-<td><p>entre 0.52 y 0.55</p></td>
+<tr class="row-odd"><td><p>Mejor de las 112 combinaciones (XGBoost, pesos de clase, Optuna)</p></td>
+<td><p>0.5466 ± 0.0091</p></td>
+<td><p>Anidada 5 × 5</p></td>
 </tr>
-<tr class="row-even"><td><p>XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y optimización bayesiana</p></td>
-<td><p>0.547</p></td>
+<tr class="row-even"><td><p><strong>CatBoost</strong> (pesos de clase, búsqueda aleatoria), mejor global</p></td>
+<td><p><strong>0.5480 ± 0.0088</strong></p></td>
+<td><p>Anidada 5 × 5</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>CS-FOF</strong> (modelo original, pesos de clase, búsqueda aleatoria)</p></td>
+<td><p><strong>0.5479 ± 0.0054</strong></p></td>
+<td><p>Anidada 5 × 5</p></td>
 </tr>
 </tbody>
 </table>
@@ -529,9 +539,10 @@ crediticio, con garantías teóricas sobre la calidad de cada partición.</p>
 <div class="cc-limites admonition">
 <p class="admonition-title">Qué se concluye</p>
 <ul class="simple">
-<li><p>La mejora sobre la línea base proviene en buena parte del balanceo, que desplaza el umbral de decisión; el ROC-AUC casi no cambia entre técnicas.</p></li>
-<li><p>Con 5 folds, la prueba post-hoc de Nemenyi solo separa combinaciones muy alejadas en el ranking (224 de 6,216 pares); entre las combinaciones de cabeza no hay diferencias significativas, por lo que esa comparación es descriptiva.</p></li>
-<li><p>La interpretabilidad se aborda con SHAP en los 5 folds (Random Forest y XGBoost) y una comparación LIME frente a SHAP.</p></li>
+<li><p>CS-FOF empata con el mejor método del estado del arte: Friedman detecta diferencias entre los 10 modelos (<span class="math notranslate nohighlight">\(\chi^2 = 40.3\)</span>), pero Nadeau–Bengio, Wilcoxon y DeLong no separan a CS-FOF de CatBoost, XGBoost, LightGBM ni Random Forest. La condición R3 de superioridad <strong>no se cumple</strong>.</p></li>
+<li><p>CS-FOF sí supera con significancia y efecto grande a SVM, árbol de decisión, regresión logística y Naive Bayes.</p></li>
+<li><p>En la evaluación ampliada es el más robusto al ruido y a muestras pequeñas, pero falla más que CatBoost con los clientes al día en septiembre y con desbalance extremo (Polish).</p></li>
+<li><p>El techo del problema es bajo: los mejores modelos rondan F1 ≈ 0.55 y AUC ≈ 0.78.</p></li>
 </ul>
 </div>
 </section>
@@ -543,8 +554,8 @@ crediticio, con garantías teóricas sobre la calidad de cada partición.</p>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover cc-step docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-1. Marco del proyecto</div>
-<p class="sd-card-text">Introducción, problema, hipótesis, objetivos, marco teórico y metodología.</p>
+0. Introducción</div>
+<p class="sd-card-text">Problema, hipótesis, objetivos, marco teórico y metodología.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="introduccion.html"><span class="doc">Marco del proyecto</span></a></div>
 </div>
@@ -552,8 +563,17 @@ crediticio, con garantías teóricas sobre la calidad de cada partición.</p>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover cc-step docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-2. Análisis exploratorio</div>
-<p class="sd-card-text">EDA y construcción del dataset final.</p>
+1. Trazabilidad de correcciones</div>
+<p class="sd-card-text">Observaciones del Entregable 2, acciones realizadas y auditoría de fuga.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="correcciones.html"><span class="doc">Trazabilidad de correcciones</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover cc-step docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+2. Datos: ETL y EDA</div>
+<p class="sd-card-text">Análisis exploratorio, dataset final y declaración de los datos.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="notebooks/00_eda.html"><span class="doc">EDA: Análisis Exploratorio de Datos</span></a></div>
 </div>
@@ -561,26 +581,8 @@ crediticio, con garantías teóricas sobre la calidad de cada partición.</p>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover cc-step docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-3. Modelo base</div>
-<p class="sd-card-text">Regresión logística con partición 80/20.</p>
-</div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="notebooks/01_baseline_logistic.html"><span class="doc">01. Modelo base: Regresión Logística</span></a></div>
-</div>
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover cc-step docutils">
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-4. Pipeline y experimentos</div>
-<p class="sd-card-text">Desarrollo del pipeline y corrida de las combinaciones.</p>
-</div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="notebooks/03_pipeline_dev.html"><span class="doc">03. Desarrollo y prueba del pipeline completo</span></a></div>
-</div>
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover cc-step docutils">
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-5. Análisis de resultados</div>
-<p class="sd-card-text">Tabla de las 112 combinaciones, comparación estadística, calibración y complejidad.</p>
+3. Modelos benchmark</div>
+<p class="sd-card-text">Las 112 combinaciones, interpretabilidad, tabla maestra, curvas anytime y validación del genético.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="notebooks/05_results_analysis.html"><span class="doc">05. Análisis de resultados</span></a></div>
 </div>
@@ -588,19 +590,64 @@ crediticio, con garantías teóricas sobre la calidad de cada partición.</p>
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover cc-step docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-6. Interpretabilidad</div>
-<p class="sd-card-text">SHAP y LIME.</p>
+4. Literatura y novedad</div>
+<p class="sd-card-text">Matriz de búsqueda en tres bases de datos y declaración de novedad.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="notebooks/06_interpretability.html"><span class="doc">06. Interpretabilidad (SHAP y LIME)</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="literatura.html"><span class="doc">Revisión de literatura y evidencia de novedad</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover cc-step docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-7. Modelo original</div>
-<p class="sd-card-text">CS-FOF, LightGBM y CatBoost frente al mejor F1 de las 112 combinaciones.</p>
+5. Modelo original</div>
+<p class="sd-card-text">CS-FOF: formulación, pseudocódigo, propiedades, código, pruebas, ablación y SHAP.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="notebooks/10_modelo_original_cs_fof.html"><span class="doc">10. Modelo original (CS-FOF) y métodos recientes</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="modelo_original.html"><span class="doc">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover cc-step docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+6. Validación estadística</div>
+<p class="sd-card-text">Protocolo, pruebas de hipótesis, tamaños del efecto y veredicto.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="validacion.html"><span class="doc">Validación estadística del modelo original</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover cc-step docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+7. Evaluación ampliada</div>
+<p class="sd-card-text">Conjuntos adicionales, robustez, calibración, incertidumbre y análisis de errores.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="evaluacion_ampliada.html"><span class="doc">Evaluación ampliada: ablación, robustez y limitaciones</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover cc-step docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+8. Dashboard y despliegue</div>
+<p class="sd-card-text">Tablero en Render, predicción en vivo, ficha del modelo y artefactos.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="dashboard.html"><span class="doc">Dashboard y despliegue</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover cc-step docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+9. Conclusiones</div>
+<p class="sd-card-text">Hallazgos, veredicto sobre R1, R2 y R3, limitaciones y trabajo futuro.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="conclusiones.html"><span class="doc">Conclusiones y limitaciones</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover cc-step docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+10. Reproducibilidad</div>
+<p class="sd-card-text">Entorno, semillas, lista de verificación y declaración de autoría.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="reproducibilidad.html"><span class="doc">Reproducibilidad, archivo del repositorio y declaración de autoría</span></a></div>
 </div>
 </div>
 </div>

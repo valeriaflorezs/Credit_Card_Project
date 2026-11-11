@@ -476,8 +476,26 @@ de Taiwán observados entre abril y septiembre de 2005. Para cada cliente se con
 características demográficas, su historial de pagos de seis meses, los montos facturados, los montos pagados y si
 incumplió el pago del mes siguiente (variable objetivo). El proyecto se desarrolló en etapas: comprensión del
 problema, proceso ETL, análisis exploratorio (EDA), modelo base de regresión logística, comparación sistemática de
-112 configuraciones de modelos, análisis de resultados e interpretabilidad. El resumen de resultados está en la
-portada y cada etapa se documenta en los capítulos siguientes.</p>
+112 configuraciones de modelos, un modelo original con su validación estadística y evaluación ampliada, y un tablero
+interactivo desplegado. El resumen de resultados está en la portada y cada etapa se documenta en los capítulos
+siguientes.</p>
+<p><strong>Contribuciones.</strong></p>
+<ol class="arabic simple">
+<li><p>Un modelo original, el <em>Cost-Sensitive Fisher Oblique Forest</em> (CS-FOF): un bosque aleatorio programado desde
+cero cuyos nodos pueden cortar por la dirección discriminante de Fisher ponderada por el costo del incumplimiento.
+Se demuestran tres propiedades (nunca peor que los cortes por ejes, optimalidad de Fisher y terminación) y se
+verifican con pruebas unitarias.</p></li>
+<li><p>Una comparación justa de 148 combinaciones de 10 modelos, con validación cruzada anidada 5 × 5, las mismas
+particiones y el mismo presupuesto de búsqueda, que incluye dos métodos recientes (LightGBM y CatBoost).</p></li>
+<li><p>Una validación estadística con protocolo registrado, al menos tres pruebas de hipótesis con corrección por
+comparaciones múltiples y tamaños del efecto, más tres conjuntos de crédito adicionales. El veredicto se reporta
+tal cual: CS-FOF empata con CatBoost y no es superior de forma significativa.</p></li>
+<li><p>Una evaluación ampliada: robustez al ruido y al tamaño de muestra, 10 semillas, escalabilidad, cambio de
+distribución, calibración, predicción conforme, análisis de errores por subgrupo y SHAP del modelo original.</p></li>
+<li><p>Un tablero interactivo desplegado en https://dash-credit-kv.onrender.com, con predicción en vivo, explicación
+local SHAP, conjunto de predicción conforme y umbral de decisión ajustable, y un paquete de reproducibilidad
+completo (artefactos con prueba de ida y vuelta, integración continua y archivo con DOI).</p></li>
+</ol>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-2 sd-row-cols-xs-2 sd-row-cols-sm-2 sd-row-cols-md-4 sd-row-cols-lg-4 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
 <div class="sd-col sd-d-flex-row docutils">

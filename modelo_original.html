@@ -67,7 +67,7 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Validación estadística del modelo original" href="validacion.html" />
+    <link rel="next" title="10. Modelo original (CS-FOF) y métodos recientes" href="notebooks/10_modelo_original_cs_fof.html" />
     <link rel="prev" title="Revisión de literatura y evidencia de novedad" href="literatura.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -216,9 +216,21 @@
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. Introducción</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="introduccion.html">Marco del proyecto</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. Trazabilidad de correcciones</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="correcciones.html">Trazabilidad de correcciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Datos: ETL y EDA</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="notebooks/00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DATA_STATEMENT.html">Declaración de los datos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Modelos benchmark</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
@@ -228,15 +240,36 @@
 
 <li class="toctree-l1"><a class="reference internal" href="notebooks/08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizacion_dejong.html">Validación del algoritmo genético con las funciones de De Jong</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Revisión de literatura y novedad</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="literatura.html">Revisión de literatura y evidencia de novedad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Modelo original</span></p>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="validacion.html">Validación estadística del modelo original</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. Evaluación ampliada y robustez</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="evaluacion_ampliada.html">Evaluación ampliada: ablación, robustez y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Dashboard y despliegue</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="dashboard.html">Dashboard y despliegue</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MODEL_CARD.html">Ficha del modelo: CS-FOF</a></li>
-<li class="toctree-l1"><a class="reference internal" href="DATA_STATEMENT.html">Declaración de los datos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">9. Conclusiones y limitaciones</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="conclusiones.html">Conclusiones y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Reproducibilidad y bibliografía</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="reproducibilidad.html">Reproducibilidad, archivo del repositorio y declaración de autoría</a></li>
 </ul>
 
@@ -390,6 +423,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion">Implementación</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-es-nuevo-y-que-se-reutiliza">Qué es nuevo y qué se reutiliza</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iteraciones-de-diseno">Iteraciones de diseño</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad-shap-frente-al-mejor-benchmark">Interpretabilidad: SHAP frente al mejor benchmark</a></li>
 </ul>
             </nav>
         </div>
@@ -496,6 +530,48 @@ ponderada por costo, que compite con los cortes por ejes bajo el mismo criterio 
 oblicuos más fuertes (más variables o árboles más profundos) <strong>sobreajustaron</strong>; por eso se fijaron un
 candidato oblicuo por nodo con las mismas <span class="math notranslate nohighlight">\(q\)</span> variables y una profundidad máxima de 14.</p>
 </section>
+<section id="interpretabilidad-shap-frente-al-mejor-benchmark">
+<h2>Interpretabilidad: SHAP frente al mejor benchmark<a class="headerlink" href="#interpretabilidad-shap-frente-al-mejor-benchmark" title="Link to this heading">#</a></h2>
+<p>Para ver si CS-FOF decide con las mismas variables que CatBoost, el mejor modelo de referencia, se calcularon
+valores SHAP para los dos (<code class="docutils literal notranslate"><span class="pre">experiments/robustez/shap_cs_fof.py</span></code>):</p>
+<ul class="simple">
+<li><p><strong>Mismo método.</strong> Se usa SHAP por permutación para los dos, porque CS-FOF no es un árbol de scikit-learn y no
+admite el explicador exacto de árboles. Usar el mismo explicador evita que las diferencias vengan del método.</p></li>
+<li><p><strong>Datos que el modelo no vio.</strong> Se explican 300 clientes de la prueba del pliegue externo 1, en una muestra
+estratificada. Cada modelo se entrenó con el entrenamiento de ese pliegue y los hiperparámetros que eligió
+ahí.</p></li>
+<li><p><strong>Fondo y evaluaciones.</strong> El fondo son 50 clientes del entrenamiento; se usan 101 evaluaciones por cliente.
+Los valores suman exactamente la probabilidad de cada cliente: el error de aditividad es menor que <span class="math notranslate nohighlight">\(10^{-14}\)</span>.</p></li>
+</ul>
+<figure class="align-default" id="fig-shap-csfof">
+<a class="reference internal image-reference" href="_images/shap_cs_fof_vs_catboost.png"><img alt="_images/shap_cs_fof_vs_catboost.png" src="_images/shap_cs_fof_vs_catboost.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Izquierda: importancia media |SHAP| de las 12 variables más importantes. Centro y derecha: valor SHAP de cada
+cliente; el color indica si el valor de la variable es alto (rojo) o bajo (azul).</span><a class="headerlink" href="#fig-shap-csfof" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Usan casi las mismas variables.</strong> La correlación de Spearman entre las importancias de las 25 columnas es
+0.95 (<span class="math notranslate nohighlight">\(p &lt; 10^{-12}\)</span>). Las dos variables principales coinciden: el estado de pago de septiembre (PAY_0) y el
+cupo. Cuatro de las cinco primeras variables son comunes a los dos modelos. En los clientes y variables
+principales, el signo del aporte coincide en el 88 % de los casos. En los dos modelos, la demografía (sexo,
+educación, estado civil y edad) pesa lo mismo: el 11 % de la importancia total.</p>
+<p><strong>Diferencias, y cómo se explican.</strong></p>
+<ul class="simple">
+<li><p><strong>CS-FOF reparte más peso entre meses de atraso.</strong> PAY_2 (agosto) pesa el 38 % de PAY_0 en CS-FOF y el 23 %
+en CatBoost. Los estados de pago suman el 47 % de la importancia de CS-FOF frente al 43 % de CatBoost. Es lo
+que se espera de un corte oblicuo: la dirección de Fisher combina en un solo corte los atrasos de varios
+meses, que están muy correlacionados (Spearman 0.47 a 0.82), en lugar de separarlos en cortes sucesivos.</p></li>
+<li><p><strong>La factura media.</strong> En CatBoost, una factura alta sube el riesgo. En CS-FOF el efecto es pequeño y de signo
+mixto. Como la factura está correlacionada con el cupo y con los pagos, la dirección de Fisher puede
+absorber su efecto dentro de esas combinaciones. Esto es interacción con otras variables y no un error, pero
+hace que la lectura variable por variable de CS-FOF sea menos directa.</p></li>
+<li><p><strong>Valores SHAP más pequeños.</strong> En total, las importancias de CS-FOF son un 20 % menores (0.29 frente a
+0.37) porque sus probabilidades son menos extremas. Esto concuerda con su mejor calibración sin recalibrar.</p></li>
+</ul>
+<p>Las dos lecturas se apoyan en la misma evidencia que el EDA: el atraso reciente es la señal dominante, el cupo
+y los pagos la modulan, y la demografía aporta poco.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -538,11 +614,11 @@ candidato oblicuo por nodo con las mismas <span class="math notranslate nohighli
       </div>
     </a>
     <a class="right-next"
-       href="validacion.html"
+       href="notebooks/10_modelo_original_cs_fof.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Validación estadística del modelo original</p>
+        <p class="prev-next-title">10. Modelo original (CS-FOF) y métodos recientes</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -571,6 +647,7 @@ candidato oblicuo por nodo con las mismas <span class="math notranslate nohighli
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion">Implementación</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-es-nuevo-y-que-se-reutiliza">Qué es nuevo y qué se reutiliza</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iteraciones-de-diseno">Iteraciones de diseño</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad-shap-frente-al-mejor-benchmark">Interpretabilidad: SHAP frente al mejor benchmark</a></li>
 </ul>
   </nav></div>
 
