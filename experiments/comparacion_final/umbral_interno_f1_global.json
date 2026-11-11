@@ -1,0 +1,7 @@
+{
+  "cs_fof": 0.548,
+  "catboost": 0.5498,
+  "xgboost": 0.5474,
+  "lightgbm": 0.5479,
+  "random_forest": 0.5452
+}

@@ -9,6 +9,8 @@
 3. **No es superior de forma significativa al mejor modelo de referencia.** Frente a CatBoost, XGBoost,
    LightGBM y Random Forest, ni Nadeau–Bengio, ni Wilcoxon, ni DeLong son significativas. Sí supera con
    significancia y efecto grande a SVM, árbol de decisión, regresión logística y Naive Bayes.
+   Con el umbral elegido dentro del entrenamiento de cada modelo, el empate se mantiene: CatBoost queda
+   0.0016 por delante, sin significancia.
 4. **No es consistente en otros conjuntos de crédito.** En German y Australian queda en el grupo de
    cabeza (con el mayor AUC-ROC en German), pero en Polish, con 4 % de quiebras, los métodos de *boosting*
    lo superan con amplitud. En el rango medio de los 4 conjuntos, CatBoost es primero (1.25) y CS-FOF

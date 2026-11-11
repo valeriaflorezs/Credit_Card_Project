@@ -275,6 +275,67 @@ intervalo para la diferencia de desempeño. Se construyó con las mismas predicc
 - **LightGBM:** como se indicó arriba, su reajuste fuera de pliegue rinde menos que su validación anidada, así
   que su intervalo favorece a CS-FOF.
 
+**Umbral elegido dentro del entrenamiento (exploratorio).** Todas las comparaciones anteriores usan el umbral
+0.5. Para comprobar que el resultado no depende de esa elección, cada uno de los cinco mejores modelos recibió su
+propio umbral, con el mismo protocolo (`experiments/comparacion_final/umbral_interno.py`):
+
+1. **Predicciones internas.** En cada pliegue externo se usa solo su entrenamiento. Con los hiperparámetros
+   elegidos ahí se generan predicciones internas fuera de pliegue (5 pliegues).
+2. **Elección del umbral.** Con esas predicciones internas se elige el umbral que maximiza el F1.
+3. **Aplicación.** El umbral queda congelado y se aplica a la prueba externa, que no intervino en ninguna
+   elección.
+
+Es exploratorio porque se decidió después de ver los resultados.
+
+```{list-table} F1 en la prueba externa con umbral 0.5 y con el umbral elegido en el entrenamiento (media de 5 pliegues).
+:header-rows: 1
+:name: tab-umbral-interno
+
+* - Modelo
+  - Umbral elegido (rango)
+  - F1 con 0.5
+  - F1 con umbral ajustado
+  - Cambio
+* - CS-FOF
+  - 0.51 (0.50 a 0.53)
+  - 0.5483
+  - 0.5481
+  - −0.0003
+* - CatBoost
+  - 0.55 (0.53 a 0.57)
+  - 0.5471
+  - **0.5497**
+  - +0.0026
+* - XGBoost
+  - 0.53 (0.51 a 0.56)
+  - 0.5448
+  - 0.5474
+  - +0.0026
+* - LightGBM
+  - 0.54 (0.52 a 0.57)
+  - 0.5459
+  - 0.5479
+  - +0.0020
+* - Random Forest
+  - 0.53 (0.52 a 0.54)
+  - 0.5434
+  - 0.5452
+  - +0.0019
+```
+
+**Qué cambia al ajustar el umbral:**
+
+- **Los métodos de *boosting* y Random Forest ganan entre 0.002 y 0.003 de F1;** CS-FOF no gana nada. Su umbral
+  óptimo ya estaba en 0.51, porque sus probabilidades están mejor centradas, como se vio en la calibración.
+- **Con umbrales ajustados, CatBoost queda por delante de CS-FOF** por 0.0016. No es significativo:
+  - Nadeau–Bengio da p = 0.60 y Wilcoxon p = 0.63, ambos sin corregir.
+  - El bootstrap pareado del F1 global da un IC 95 % de [−0.0055, +0.0022].
+- **La diferencia frente a Random Forest que el bootstrap mostraba con 0.5 deja de ser significativa:** queda
+  en +0.0028, con IC 95 % de [−0.0005, +0.0061].
+- **Lectura:** parte de la pequeña ventaja de CS-FOF con el umbral 0.5 venía de que sus probabilidades
+  quedan mejor centradas en ese corte, no de que separe mejor a los clientes. Cuando cada modelo usa su propio
+  umbral, los cinco quedan empatados.
+
 **Qué mide cada prueba.** Las pruebas de este capítulo no responden la misma pregunta, y por eso no se
 cuentan como tres demostraciones de una mejora en F1:
 
@@ -323,7 +384,8 @@ LightGBM y Random Forest, Nadeau–Bengio y Wilcoxon no son significativas, el i
 diferencia de F1 frente a CatBoost contiene el cero ([−0.003, +0.006]) y el tamaño del efecto es despreciable
 o pequeño. El único intervalo que excluye el cero es frente a Random Forest (+0.005 de F1), pero está
 condicionado a los modelos ya entrenados y la prueba que considera el reentrenamiento (Nadeau–Bengio) no lo
-confirma. En los tres conjuntos de datos adicionales tampoco es consistente (capítulo
+confirma. Con el umbral elegido dentro del entrenamiento de cada modelo, esa diferencia también desaparece y
+CatBoost queda ligeramente por delante (0.5497 frente a 0.5481), sin significancia. En los tres conjuntos de datos adicionales tampoco es consistente (capítulo
 de evaluación ampliada). Sí es significativamente mejor que SVM, árbol de decisión, regresión logística
 y Naive Bayes con tamaños de efecto grandes, y empata con el mejor método del estado del arte en el
 problema principal con la menor variabilidad entre pliegues.
