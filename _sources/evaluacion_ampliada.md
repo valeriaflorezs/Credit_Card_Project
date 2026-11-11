@@ -403,7 +403,7 @@ bajo intercambiabilidad.
 
 La cobertura empírica coincide con la nominal en las dos clases para los cinco modelos. El precio es el
 tamaño: con 90 % de confianza, la mitad de los clientes recibe el conjunto {pago, impago}. Es una forma
-honesta de decir que el techo de este problema (F1 ≈ 0.55) deja a uno de cada dos clientes en zona de
+honesta de decir que, con estas variables y modelos (F1 ≈ 0.55), uno de cada dos clientes queda en zona de
 duda. El tablero muestra este conjunto junto con cada predicción.
 
 ### Análisis de errores

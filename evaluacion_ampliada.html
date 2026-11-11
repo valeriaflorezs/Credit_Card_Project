@@ -448,7 +448,7 @@
 <p>Las variantes se evaluaron <strong>solo con el entrenamiento del pliegue externo 1</strong>, con validación interna
 estratificada de 3 pliegues, sin usar ningún pliegue de prueba (<code class="docutils literal notranslate"><span class="pre">experiments/cs_fof_diseno/</span></code>).</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-ablacion">
-<caption><span class="caption-number">Table 7 </span><span class="caption-text">Variantes de diseño de CS-FOF (F1 de la clase <em>default</em>, validación interna).</span><a class="headerlink" href="#tab-ablacion" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 10 </span><span class="caption-text">Variantes de diseño de CS-FOF (F1 de la clase <em>default</em>, validación interna).</span><a class="headerlink" href="#tab-ablacion" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Variante</p></th>
 <th class="head"><p>F1</p></th>
@@ -503,7 +503,7 @@ métodos de búsqueda dan resultados cercanos (0.5456 a 0.5479).</p>
 UCI con el mismo procedimiento: validación anidada 5 × 5, <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y búsqueda aleatoria de 25
 configuraciones (<code class="docutils literal notranslate"><span class="pre">src/run_additional_datasets.py</span></code>).</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-conjuntos">
-<caption><span class="caption-number">Table 8 </span><span class="caption-text">F1 medio de la clase de riesgo en los 5 pliegues externos y rango medio en los 4 conjuntos.</span><a class="headerlink" href="#tab-conjuntos" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 11 </span><span class="caption-text">F1 medio de la clase de riesgo en los 5 pliegues externos y rango medio en los 4 conjuntos.</span><a class="headerlink" href="#tab-conjuntos" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
 <th class="head"><p>Taiwán</p></th>
@@ -614,7 +614,7 @@ hipótesis, así que las diferencias pequeñas deben leerse con cautela.</p>
 <p><strong>Ruido en las etiquetas.</strong> Se invierte al azar una fracción de las etiquetas de entrenamiento (la misma
 para todos los modelos).</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-ruido">
-<caption><span class="caption-number">Table 9 </span><span class="caption-text">F1 medio en 5 pliegues según el porcentaje de etiquetas de entrenamiento invertidas.</span><a class="headerlink" href="#tab-ruido" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 12 </span><span class="caption-text">F1 medio en 5 pliegues según el porcentaje de etiquetas de entrenamiento invertidas.</span><a class="headerlink" href="#tab-ruido" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
 <th class="head"><p>0 %</p></th>
@@ -662,7 +662,7 @@ niveles y pierde menos que los tres métodos de <em>boosting</em> (−0.015 fren
 es el que menos pierde (−0.013).</p>
 <p><strong>Tamaño de la muestra.</strong> Se entrena con una fracción estratificada del entrenamiento de cada pliegue.</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-tamano">
-<caption><span class="caption-number">Table 10 </span><span class="caption-text">F1 medio en 5 pliegues según la fracción del entrenamiento usada.</span><a class="headerlink" href="#tab-tamano" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 13 </span><span class="caption-text">F1 medio en 5 pliegues según la fracción del entrenamiento usada.</span><a class="headerlink" href="#tab-tamano" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
 <th class="head"><p>10 %</p></th>
@@ -712,7 +712,7 @@ modelos por igual: sus hiperparámetros se eligieron con el entrenamiento comple
 <p><strong>Calibración.</strong> Con los pesos de clase, todos los modelos sobreestiman la probabilidad de
 incumplimiento (probabilidad media de 0.40 a 0.44 frente a una tasa real de 0.22).</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-calibracion">
-<caption><span class="caption-number">Table 11 </span><span class="caption-text">Calibración de las probabilidades fuera de pliegue (29 965 clientes; tasa real 0.221).</span><a class="headerlink" href="#tab-calibracion" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 14 </span><span class="caption-text">Calibración de las probabilidades fuera de pliegue (29 965 clientes; tasa real 0.221).</span><a class="headerlink" href="#tab-calibracion" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
 <th class="head"><p>Brier</p></th>
@@ -1076,7 +1076,7 @@ bajo intercambiabilidad.</p>
 </div>
 <p>La cobertura empírica coincide con la nominal en las dos clases para los cinco modelos. El precio es el
 tamaño: con 90 % de confianza, la mitad de los clientes recibe el conjunto {pago, impago}. Es una forma
-honesta de decir que el techo de este problema (F1 ≈ 0.55) deja a uno de cada dos clientes en zona de
+honesta de decir que, con estas variables y modelos (F1 ≈ 0.55), uno de cada dos clientes queda en zona de
 duda. El tablero muestra este conjunto junto con cada predicción.</p>
 </section>
 <section id="analisis-de-errores">

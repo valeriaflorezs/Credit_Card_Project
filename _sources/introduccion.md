@@ -193,7 +193,8 @@ crédito, a partir de un análisis exploratorio univariado y multivariado.
 - El análisis es asociativo; una correlación no implica causalidad.
 - Los códigos `-2` y `0` de `PAY_x` no están documentados con precisión en la fuente; se conservan sin recodificar.
 - Existen grupos de clientes con predictoras idénticas pero etiqueta distinta (ruido propio de la fuente), lo que
-  impone un techo al desempeño de cualquier modelo con estas variables.
+  hace imposible clasificar bien a todos esos clientes con estas variables (es un error irreducible, aunque
+  pequeño).
 - Las cifras monetarias están en dólares taiwaneses (NT$).
 :::
 

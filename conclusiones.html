@@ -238,6 +238,7 @@
 
 <li class="toctree-l1"><a class="reference internal" href="notebooks/08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizacion_dejong.html">Validación del algoritmo genético con las funciones de De Jong</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Revisión de literatura y novedad</span></p>
 <ul class="nav bd-sidenav">
@@ -437,7 +438,9 @@ verificadas con pruebas unitarias.</p></li>
 y la menor variabilidad entre pliegues de los 10 modelos.</p></li>
 <li><p><strong>No es superior de forma significativa al mejor modelo de referencia.</strong> Frente a CatBoost, XGBoost,
 LightGBM y Random Forest, ni Nadeau–Bengio, ni Wilcoxon, ni DeLong son significativas. Sí supera con
-significancia y efecto grande a SVM, árbol de decisión, regresión logística y Naive Bayes.</p></li>
+significancia y efecto grande a SVM, árbol de decisión, regresión logística y Naive Bayes.
+Con el umbral elegido dentro del entrenamiento de cada modelo, el empate se mantiene: CatBoost queda
+0.0016 por delante, sin significancia.</p></li>
 <li><p><strong>No es consistente en otros conjuntos de crédito.</strong> En German y Australian queda en el grupo de
 cabeza (con el mayor AUC-ROC en German), pero en Polish, con 4 % de quiebras, los métodos de <em>boosting</em>
 lo superan con amplitud. En el rango medio de los 4 conjuntos, CatBoost es primero (1.25) y CS-FOF
@@ -449,8 +452,10 @@ cinco mejores modelos, aunque tras la regresión isotónica todos quedan iguales
 cubre el 90 % nominal en ambas clases.</p></li>
 <li><p><strong>El corte oblicuo aporta y los cortes demasiado fuertes sobreajustan:</strong> la ablación mostró que
 activar el corte oblicuo mejora el F1, y que más variables o más profundidad lo empeoran.</p></li>
-<li><p><strong>El techo de este conjunto de datos es bajo:</strong> los mejores modelos de la literatura y de este
-proyecto quedan cerca de F1 ≈ 0.55 y AUC ≈ 0.78, lo que limita cuánto puede separarse cualquier modelo.</p></li>
+<li><p><strong>Los mejores modelos quedan muy cerca entre sí:</strong> los de la literatura y los de este proyecto rondan
+F1 ≈ 0.55 y AUC ≈ 0.78 con estas variables. Esto no prueba que exista un techo; solo indica que, con la
+información disponible, las diferencias entre buenos modelos son pequeñas y cuesta separarlas
+estadísticamente.</p></li>
 </ol>
 <p>Según la sección 6.4 del Entregable 3, la condición R3 (superioridad estadística y consistencia) <strong>no se
 cumple</strong>. Se reporta así, sin ajustar el modelo después de ver los resultados de prueba.</p>
@@ -473,7 +478,7 @@ CS-FOF desaparece.</p></li>
 <li><p>CS-FOF falla más que CatBoost justo en el grupo más grande de la cartera: los clientes al día en
 septiembre (77 % de los clientes, F1 0.261 frente a 0.298).</p></li>
 <li><p>Con 90 % de confianza, la predicción conforme deja a la mitad de los clientes en el conjunto
-{pago, impago}: el techo del problema limita cualquier modelo.</p></li>
+{pago, impago}: con estas variables, una parte grande de los clientes sigue siendo difícil de clasificar.</p></li>
 <li><p>El cambio de distribución solo se simuló por grupos de edad y educación, porque los datos no tienen
 fechas; no reemplaza una validación con datos de otro periodo o de otro banco.</p></li>
 </ul>
