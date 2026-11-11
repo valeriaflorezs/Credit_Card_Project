@@ -1,0 +1,35 @@
+modelo,familia,neuronal,usado_en_papers_del_problema (credit card default / Taiwan),aparece_en_papers_de_modelos_mejorados (savedrecs_original + Scopus),veredicto_para_modelo_original
+Regresion logistica (incl. Firth / ridge / log-F / cloglog),Lineal,No,"Si: WoS #5 #6 #9 #12 #13 #34 #36 #49; Scopus Bhandary 2025, Choi 2026",Si: Wang 2012; Yao 2022; Dumitrescu 2022 (PLTR),No sirve: ya usado
+KNN (IBk),Vecinos,No,"Si: WoS #9 #12 #13 #33 #36 #53; Scopus Choi 2026",Si: Yao 2022,No sirve: ya usado
+Naive Bayes (Gaussiano / Categorico / Multinomial),Probabilistico,No,"Si: WoS #9 #13 #19 #53; Scopus Choi 2026",No,No sirve: ya usado
+Analisis discriminante (LDA / QDA / FLDA),Lineal,No,"Si: WoS #9 #13 #42; Scopus Bhandary 2025",Si: Wang 2012,No sirve: ya usado
+Arbol de decision (CART / J48),Arboles,No,"Si: WoS #9 #12 #13 #16 #33 #34 #36",Si: Wang 2012; Yao 2022,No sirve: ya usado
+SVM,Kernels,No,"Si: WoS #12 #25 #33 #34 #53; Scopus Choi 2026, Nanda 2025",Si: Yao 2022,No sirve: ya usado
+Random Forest,Ensamble de arboles,No,"Si: WoS #12 #16 #34 #36 #51; Scopus varios",Si: Wang 2012; Cao 2021; Yao 2022; Garcia 2019,No sirve: ya usado
+XGBoost,Boosting,No,"Si: WoS #1 #7 #18 #25 #27 #36 #40; Scopus Thomas 2022, Liu 2024",Si: Yao 2022,No sirve: ya usado
+LightGBM,Boosting,No,"Si: WoS #15 #27; Scopus Choi 2026",No,No sirve: ya usado
+CatBoost,Boosting,No,Si: Scopus Choi 2026,No,No sirve: ya usado
+AdaBoost,Boosting,No,"Si: WoS #16; Scopus Choi 2026, Bacova 2021",Si: Marques 2012; Yao 2022; Garcia 2019,No sirve: ya usado
+Gradient Boosting / GBDT / HistGradientBoosting,Boosting,No,"Si: WoS #21; Scopus Choi 2026, Bacova 2021",Si: Cao 2021; Yao 2022; Garcia 2019 (stochastic GB),No sirve: ya usado
+Extra Trees,Ensamble de arboles,No,Si: Scopus Choi 2026,Si: Yao 2022,No sirve: ya usado
+Bagging,Ensamble,No,"Si: Scopus Choi 2026, Bacova 2021",Si: Marques 2012; Wang 2012; Garcia 2019,No sirve: ya usado
+Stacking (meta-aprendiz XGBoost),Ensamble,No,Si: WoS #43,Si: Scopus Zhang 2024; Muslim 2025,No sirve: ya usado y no aceptado por el profesor
+Sistema de multiples clasificadores secuencial,Ensamble,No,Si: WoS #31,No,No sirve: ya usado
+Ensamble en cascada (LFGCE),Ensamble,No,Si: WoS #50,No,No sirve: ya usado
+Rotation Forest,Ensamble de arboles,No,No (WoS: 0 resultados con el dataset de Taiwan),"Si: 8 papers de credito en WoS (Marques 2012, Gicic 2019, Belhadi 2021, Wang 2012, Cao 2021, Yao 2022, Garcia 2019, du Jardin 2021) y variantes en Scopus (RUROForest/SROForest 2016, SSRotF 2026, HERF 2014)",Debil: muy usado en credito; piloto de la opcion 1 empato
+Random Subspace,Ensamble,No,No,Si: Marques 2012; Wang 2012; Garcia 2019,Solo como trabajo cercano
+DECORATE,Ensamble,No,No,Si: Garcia 2019,Solo como trabajo cercano
+LogitBoost,Boosting,No,No,Si: Belhadi 2021/2025,Solo como trabajo cercano
+Consolidated Trees Construction (CTC),Arboles,No,No,Si: Gicic & Subasi 2019,Solo como trabajo cercano
+Seleccion dinamica de ensambles (KNORA-E/U/IU; DESP; META-DES; RMkNN),Ensamble,No,"Posible: Scopus Mangla 2025 usa KNORA y DESP en un 'credit card dataset' (verificar si es Taiwan)",Si: Melo 2021; Hou 2020; Zhang 2025; Cruz 2014; Cordeiro 2023,Debil: verificar Mangla 2025
+Credal Decision Trees en ensamble,Arboles,No,No,Si: Moral-Garcia 2023,Solo como trabajo cercano
+PLTR (logistica penalizada con reglas de arboles),Hibrido lineal-arboles,No,No consta en los abstracts (4 datasets de credito; verificar si incluye Taiwan),Si: Dumitrescu 2022,Trabajo cercano
+GEV-GBDT (boosting con perdida de valor extremo),Boosting,No,No consta (4 datasets de prestamos),Si: Zhang 2025,Trabajo cercano
+Markowitz Random Forest,Ensamble de arboles,No,No,Si: Kouloumpris & Vlahavas 2025 (metodo general),Trabajo cercano
+Bosque / arbol oblicuo,Arboles,No,No (WoS: 0; Scopus: 0 en credito),Solo Jaeger 2019 (supervivencia medica),Candidato elegido: CS-FOF
+Behavior2Shapelets + logistica,Series/patrones,No,Si: WoS #47,No,No sirve: ya usado
+Q-method (discriminacion libre de distribucion),Estadistico,No,Si: WoS #42,No,No sirve: ya usado
+BFMGHC (granulos difusos + boosting),Difuso,No,Si: WoS #20,No,No sirve: ya usado
+FTwNB (Naive Bayes federado de tres vias),Probabilistico,No,Si: WoS #19,No,No sirve: ya usado
+ES-MK-MCP (kernels multiples + estrategia evolutiva),Kernels,No,Por verificar: WoS #22 (dos datasets UCI de credito),No,Probablemente ya usado
+"Redes neuronales (MLP, BPNN, ELM, LSTM, Transformer, CSA-Net, DNN, TabNet, RBFN)",Neuronal,Si,"Si: WoS #1 #4 #9 #12 #13 #15 #24 #25 #27 #39 #52; Scopus varios",Si: Wang 2012 (RBFN); du Jardin 2021,Prohibido por el profesor

@@ -29,3 +29,6 @@ Thumbs.db
 results/figures/obsoletas_dataset_v1/
 results/figures/dev_*
 colab_package.zip
+
+# Conjuntos de datos adicionales descargados de UCI (se regeneran con src/run_additional_datasets.py)
+data/external/

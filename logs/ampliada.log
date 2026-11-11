@@ -1,0 +1,123 @@
+Edad: entrena ≤ 35, prueba > 35 cs_fof 0.5582
+Edad: entrena ≤ 35, prueba > 35 catboost 0.5534
+Edad: entrena ≤ 35, prueba > 35 xgboost 0.5445
+Edad: entrena ≤ 35, prueba > 35 lightgbm 0.5576
+Edad: entrena ≤ 35, prueba > 35 random_forest 0.5559
+Educación: entrena universidad/posgrado, prueba secundaria/otros cs_fof 0.5569
+Educación: entrena universidad/posgrado, prueba secundaria/otros catboost 0.546
+Educación: entrena universidad/posgrado, prueba secundaria/otros xgboost 0.5519
+Educación: entrena universidad/posgrado, prueba secundaria/otros lightgbm 0.5491
+Educación: entrena universidad/posgrado, prueba secundaria/otros random_forest 0.5547
+                                                       escenario         model  n_train  n_test  tasa_train  tasa_test     f1  roc_auc  brier  seconds
+                                 Edad: entrena ≤ 35, prueba > 35        cs_fof    16787   13178      0.2142     0.2302 0.5582   0.7803 0.1696      9.0
+                                 Edad: entrena ≤ 35, prueba > 35      catboost    16787   13178      0.2142     0.2302 0.5534   0.7810 0.1788      1.4
+                                 Edad: entrena ≤ 35, prueba > 35       xgboost    16787   13178      0.2142     0.2302 0.5445   0.7765 0.1700      0.5
+                                 Edad: entrena ≤ 35, prueba > 35      lightgbm    16787   13178      0.2142     0.2302 0.5576   0.7818 0.2012      1.0
+                                 Edad: entrena ≤ 35, prueba > 35 random_forest    16787   13178      0.2142     0.2302 0.5559   0.7800 0.1760      1.1
+Educación: entrena universidad/posgrado, prueba secundaria/otros        cs_fof    24582    5383      0.2180     0.2359 0.5569   0.7744 0.1899      8.2
+Educación: entrena universidad/posgrado, prueba secundaria/otros      catboost    24582    5383      0.2180     0.2359 0.5460   0.7769 0.1999      1.4
+Educación: entrena universidad/posgrado, prueba secundaria/otros       xgboost    24582    5383      0.2180     0.2359 0.5519   0.7737 0.1905      0.6
+Educación: entrena universidad/posgrado, prueba secundaria/otros      lightgbm    24582    5383      0.2180     0.2359 0.5491   0.7777 0.2109      0.8
+Educación: entrena universidad/posgrado, prueba secundaria/otros random_forest    24582    5383      0.2180     0.2359 0.5547   0.7758 0.1923      1.6
+{'eje': 'n', 'fraccion': 0.1, 'n': 2397, 'p': 25, 'model': 'cs_fof', 'ajuste_s': 1.26, 'inferencia_ms_por_1000': 258.709}
+{'eje': 'n', 'fraccion': 0.1, 'n': 2397, 'p': 25, 'model': 'catboost', 'ajuste_s': 0.46, 'inferencia_ms_por_1000': 0.468}
+{'eje': 'n', 'fraccion': 0.1, 'n': 2397, 'p': 25, 'model': 'xgboost', 'ajuste_s': 0.26, 'inferencia_ms_por_1000': 1.74}
+{'eje': 'n', 'fraccion': 0.1, 'n': 2397, 'p': 25, 'model': 'lightgbm', 'ajuste_s': 0.15, 'inferencia_ms_por_1000': 4.485}
+{'eje': 'n', 'fraccion': 0.1, 'n': 2397, 'p': 25, 'model': 'random_forest', 'ajuste_s': 0.48, 'inferencia_ms_por_1000': 11.045}
+{'eje': 'n', 'fraccion': 0.25, 'n': 5993, 'p': 25, 'model': 'cs_fof', 'ajuste_s': 2.26, 'inferencia_ms_por_1000': 240.769}
+{'eje': 'n', 'fraccion': 0.25, 'n': 5993, 'p': 25, 'model': 'catboost', 'ajuste_s': 0.72, 'inferencia_ms_por_1000': 0.466}
+{'eje': 'n', 'fraccion': 0.25, 'n': 5993, 'p': 25, 'model': 'xgboost', 'ajuste_s': 0.3, 'inferencia_ms_por_1000': 1.213}
+{'eje': 'n', 'fraccion': 0.25, 'n': 5993, 'p': 25, 'model': 'lightgbm', 'ajuste_s': 0.38, 'inferencia_ms_por_1000': 5.275}
+{'eje': 'n', 'fraccion': 0.25, 'n': 5993, 'p': 25, 'model': 'random_forest', 'ajuste_s': 0.57, 'inferencia_ms_por_1000': 11.14}
+{'eje': 'n', 'fraccion': 0.5, 'n': 11986, 'p': 25, 'model': 'cs_fof', 'ajuste_s': 3.84, 'inferencia_ms_por_1000': 273.557}
+{'eje': 'n', 'fraccion': 0.5, 'n': 11986, 'p': 25, 'model': 'catboost', 'ajuste_s': 1.03, 'inferencia_ms_por_1000': 0.468}
+{'eje': 'n', 'fraccion': 0.5, 'n': 11986, 'p': 25, 'model': 'xgboost', 'ajuste_s': 0.43, 'inferencia_ms_por_1000': 1.147}
+{'eje': 'n', 'fraccion': 0.5, 'n': 11986, 'p': 25, 'model': 'lightgbm', 'ajuste_s': 0.62, 'inferencia_ms_por_1000': 5.469}
+{'eje': 'n', 'fraccion': 0.5, 'n': 11986, 'p': 25, 'model': 'random_forest', 'ajuste_s': 0.88, 'inferencia_ms_por_1000': 12.927}
+{'eje': 'n', 'fraccion': 1.0, 'n': 23972, 'p': 25, 'model': 'cs_fof', 'ajuste_s': 6.56, 'inferencia_ms_por_1000': 253.109}
+{'eje': 'n', 'fraccion': 1.0, 'n': 23972, 'p': 25, 'model': 'catboost', 'ajuste_s': 1.35, 'inferencia_ms_por_1000': 0.389}
+{'eje': 'n', 'fraccion': 1.0, 'n': 23972, 'p': 25, 'model': 'xgboost', 'ajuste_s': 0.55, 'inferencia_ms_por_1000': 4.821}
+{'eje': 'n', 'fraccion': 1.0, 'n': 23972, 'p': 25, 'model': 'lightgbm', 'ajuste_s': 0.9, 'inferencia_ms_por_1000': 5.498}
+{'eje': 'n', 'fraccion': 1.0, 'n': 23972, 'p': 25, 'model': 'random_forest', 'ajuste_s': 1.46, 'inferencia_ms_por_1000': 9.445}
+{'eje': 'p', 'fraccion': 0.25, 'n': 23972, 'p': 6, 'model': 'cs_fof', 'ajuste_s': 4.42, 'inferencia_ms_por_1000': 199.519}
+{'eje': 'p', 'fraccion': 0.25, 'n': 23972, 'p': 6, 'model': 'catboost', 'ajuste_s': 1.13, 'inferencia_ms_por_1000': 0.375}
+{'eje': 'p', 'fraccion': 0.25, 'n': 23972, 'p': 6, 'model': 'xgboost', 'ajuste_s': 0.3, 'inferencia_ms_por_1000': 1.061}
+{'eje': 'p', 'fraccion': 0.25, 'n': 23972, 'p': 6, 'model': 'lightgbm', 'ajuste_s': 0.61, 'inferencia_ms_por_1000': 5.629}
+{'eje': 'p', 'fraccion': 0.25, 'n': 23972, 'p': 6, 'model': 'random_forest', 'ajuste_s': 1.36, 'inferencia_ms_por_1000': 12.99}
+{'eje': 'p', 'fraccion': 0.5, 'n': 23972, 'p': 12, 'model': 'cs_fof', 'ajuste_s': 4.96, 'inferencia_ms_por_1000': 213.155}
+{'eje': 'p', 'fraccion': 0.5, 'n': 23972, 'p': 12, 'model': 'catboost', 'ajuste_s': 1.24, 'inferencia_ms_por_1000': 0.49}
+{'eje': 'p', 'fraccion': 0.5, 'n': 23972, 'p': 12, 'model': 'xgboost', 'ajuste_s': 0.46, 'inferencia_ms_por_1000': 1.117}
+{'eje': 'p', 'fraccion': 0.5, 'n': 23972, 'p': 12, 'model': 'lightgbm', 'ajuste_s': 0.77, 'inferencia_ms_por_1000': 5.931}
+{'eje': 'p', 'fraccion': 0.5, 'n': 23972, 'p': 12, 'model': 'random_forest', 'ajuste_s': 1.44, 'inferencia_ms_por_1000': 10.962}
+{'eje': 'p', 'fraccion': 0.75, 'n': 23972, 'p': 19, 'model': 'cs_fof', 'ajuste_s': 5.8, 'inferencia_ms_por_1000': 237.077}
+{'eje': 'p', 'fraccion': 0.75, 'n': 23972, 'p': 19, 'model': 'catboost', 'ajuste_s': 1.35, 'inferencia_ms_por_1000': 0.458}
+{'eje': 'p', 'fraccion': 0.75, 'n': 23972, 'p': 19, 'model': 'xgboost', 'ajuste_s': 0.47, 'inferencia_ms_por_1000': 1.929}
+{'eje': 'p', 'fraccion': 0.75, 'n': 23972, 'p': 19, 'model': 'lightgbm', 'ajuste_s': 0.75, 'inferencia_ms_por_1000': 5.618}
+{'eje': 'p', 'fraccion': 0.75, 'n': 23972, 'p': 19, 'model': 'random_forest', 'ajuste_s': 1.76, 'inferencia_ms_por_1000': 10.913}
+{'eje': 'p', 'fraccion': 1.0, 'n': 23972, 'p': 25, 'model': 'cs_fof', 'ajuste_s': 6.45, 'inferencia_ms_por_1000': 260.776}
+{'eje': 'p', 'fraccion': 1.0, 'n': 23972, 'p': 25, 'model': 'catboost', 'ajuste_s': 1.43, 'inferencia_ms_por_1000': 0.487}
+{'eje': 'p', 'fraccion': 1.0, 'n': 23972, 'p': 25, 'model': 'xgboost', 'ajuste_s': 0.55, 'inferencia_ms_por_1000': 1.393}
+{'eje': 'p', 'fraccion': 1.0, 'n': 23972, 'p': 25, 'model': 'lightgbm', 'ajuste_s': 1.02, 'inferencia_ms_por_1000': 5.618}
+{'eje': 'p', 'fraccion': 1.0, 'n': 23972, 'p': 25, 'model': 'random_forest', 'ajuste_s': 1.55, 'inferencia_ms_por_1000': 13.255}
+cs_fof         tiempo ∝ n^0.72
+catboost       tiempo ∝ n^0.47
+xgboost        tiempo ∝ n^0.34
+lightgbm       tiempo ∝ n^0.78
+random_forest  tiempo ∝ n^0.49
+semilla 0 cs_fof         F1 0.5474
+semilla 0 catboost       F1 0.5446
+semilla 0 xgboost        F1 0.5448
+semilla 0 lightgbm       F1 0.5457
+semilla 0 random_forest  F1 0.5447
+semilla 1 cs_fof         F1 0.5472
+semilla 1 catboost       F1 0.5485
+semilla 1 xgboost        F1 0.5454
+semilla 1 lightgbm       F1 0.5449
+semilla 1 random_forest  F1 0.5457
+semilla 2 cs_fof         F1 0.5477
+semilla 2 catboost       F1 0.5472
+semilla 2 xgboost        F1 0.5437
+semilla 2 lightgbm       F1 0.5467
+semilla 2 random_forest  F1 0.5433
+semilla 3 cs_fof         F1 0.5453
+semilla 3 catboost       F1 0.5480
+semilla 3 xgboost        F1 0.5438
+semilla 3 lightgbm       F1 0.5467
+semilla 3 random_forest  F1 0.5438
+semilla 4 cs_fof         F1 0.5461
+semilla 4 catboost       F1 0.5461
+semilla 4 xgboost        F1 0.5443
+semilla 4 lightgbm       F1 0.5454
+semilla 4 random_forest  F1 0.5442
+semilla 5 cs_fof         F1 0.5475
+semilla 5 catboost       F1 0.5469
+semilla 5 xgboost        F1 0.5462
+semilla 5 lightgbm       F1 0.5451
+semilla 5 random_forest  F1 0.5438
+semilla 6 cs_fof         F1 0.5458
+semilla 6 catboost       F1 0.5470
+semilla 6 xgboost        F1 0.5439
+semilla 6 lightgbm       F1 0.5458
+semilla 6 random_forest  F1 0.5438
+semilla 7 cs_fof         F1 0.5473
+semilla 7 catboost       F1 0.5471
+semilla 7 xgboost        F1 0.5452
+semilla 7 lightgbm       F1 0.5458
+semilla 7 random_forest  F1 0.5437
+semilla 8 cs_fof         F1 0.5472
+semilla 8 catboost       F1 0.5461
+semilla 8 xgboost        F1 0.5446
+semilla 8 lightgbm       F1 0.5454
+semilla 8 random_forest  F1 0.5436
+semilla 9 cs_fof         F1 0.5470
+semilla 9 catboost       F1 0.5466
+semilla 9 xgboost        F1 0.5450
+semilla 9 lightgbm       F1 0.5454
+semilla 9 random_forest  F1 0.5440
+                 mean     std     min     max  ic95_bajo  ic95_alto  cs_fof_gana_en
+model                                                                              
+cs_fof         0.5469  0.0008  0.5453  0.5477     0.5454     0.5476             NaN
+catboost       0.5468  0.0011  0.5446  0.5485     0.5449     0.5484             7.0
+lightgbm       0.5457  0.0006  0.5449  0.5467     0.5449     0.5467             8.0
+xgboost        0.5447  0.0008  0.5437  0.5462     0.5438     0.5460            10.0
+random_forest  0.5440  0.0007  0.5433  0.5457     0.5434     0.5455            10.0

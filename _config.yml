@@ -28,6 +28,7 @@ parse:
 
 # Exclusión explícita de carpetas de datos, scripts, logs y temporales
 exclude_patterns:
+  - ".pytest_cache/**"
   - ".venv/**"
   - "data/**"
   - "logs/**"
@@ -38,3 +39,9 @@ exclude_patterns:
   - "experiments/**"
   - "**.ipynb_checkpoints"
   - "PROJECT_BRIEF.md"
+  - "README.md"
+  - "EXPERIMENT_STATUS.md"
+  - "experiments/**"
+  - "tests/**"
+  - "artifacts/**"
+  - ".github/**"

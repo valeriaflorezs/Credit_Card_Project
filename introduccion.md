@@ -253,7 +253,9 @@ $$
 :::
 
 No exige linealidad ni normalidad y resiste los valores extremos, lo que la hace adecuada para montos muy
-asimétricos, variables `PAY_x` ordinales y un objetivo binario. La multicolinealidad se evalúa con el Factor de
+asimétricos, variables `PAY_x` ordinales y un objetivo binario. Es el único método de correlación del proyecto: entre
+los seis montos facturados (`BILL_AMT1` a `BILL_AMT6`) va de 0.73 a 0.91, la misma cifra del EDA y del tablero. La
+multicolinealidad se evalúa con el Factor de
 Inflación de la Varianza, donde $R_j^2$ es el coeficiente de determinación al regresar la variable $j$ sobre las demás
 predictoras:
 
@@ -397,18 +399,21 @@ SHAP sobre el Random Forest y comparación LIME vs. SHAP para XGBoost sobre una 
 
 ## Estructura del libro
 
-| Capítulo | Contenido |
-|---|---|
-| 00. EDA | Análisis exploratorio y construcción del conjunto de datos final |
-| 01. Modelo base | Regresión logística con partición 80/20 |
-| 02. Verificación del protocolo | Protocolo experimental: semilla y validación cruzada anidada |
-| 03. Desarrollo del pipeline | Prueba del pipeline completo con datos sintéticos |
-| 04. Experimentos | Corrida de las combinaciones |
-| 05. Análisis de resultados | Resultados, comparación estadística, calibración y complejidad |
-| 06. Interpretabilidad | SHAP y LIME |
-| 08. Tabla maestra | Tabla maestra, comparabilidad del SVM |
-| 09. Curvas anytime | Curvas anytime y multi-fidelidad |
-| 10. Modelo original | CS-FOF, LightGBM y CatBoost frente a las 112 combinaciones |
+El libro sigue la estructura mínima del Entregable 3.
+
+| N.° | Capítulo | Contenido |
+|---|---|---|
+| 0 | Introducción | Problema, motivación, objetivos, marco teórico y metodología |
+| 1 | Trazabilidad de correcciones | Observaciones del Entregable 2, acciones realizadas y auditoría de fuga de información |
+| 2 | Datos: ETL y EDA | Análisis exploratorio, construcción del conjunto final y declaración de los datos |
+| 3 | Modelos benchmark | Modelo base, protocolo, pipeline, corrida de las 112 combinaciones, resultados, interpretabilidad, tabla maestra y curvas anytime |
+| 4 | Revisión de literatura y novedad | Matriz de búsqueda, declaración de novedad y trabajos cercanos |
+| 5 | Modelo original | CS-FOF: formulación, pseudocódigo, propiedades, complejidad, código, pruebas y ablación |
+| 6 | Protocolo y validación estadística | Protocolo pre-registrado, pruebas de hipótesis, tamaños del efecto y veredicto |
+| 7 | Evaluación ampliada y robustez | Conjuntos adicionales, semillas, ruido, tamaño, escalabilidad, cambio de distribución, calibración, incertidumbre y análisis de errores |
+| 8 | Dashboard y despliegue | Arquitectura del dashboard, URL pública y ficha del modelo |
+| 9 | Conclusiones y limitaciones | Hallazgos, veredicto sobre R1, R2 y R3, limitaciones y trabajo futuro |
+| 10 | Reproducibilidad y bibliografía | Entorno, semillas, lista de verificación, archivo con DOI y declaración de autoría |
 
 ## Referencias
 

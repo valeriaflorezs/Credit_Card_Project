@@ -237,11 +237,13 @@ class _ArbolCSFOF:
             nodo_de = 2 * pos[nodo_de] + np.where(va_izq, 0, 1)
             ids_nivel = nuevos_ids.ravel()
 
-        self.feat_ = np.vstack(feat)
+        # Tipos enteros compactos: el artefacto serializado pesa menos (Render
+        # tiene memoria limitada) y las predicciones no cambian.
+        self.feat_ = np.vstack(feat).astype(np.int16)
         self.coef_ = np.vstack(coef)
         self.thr_ = np.asarray(thr)
-        self.izq_ = np.asarray(izq)
-        self.der_ = np.asarray(der)
+        self.izq_ = np.asarray(izq, dtype=np.int32)
+        self.der_ = np.asarray(der, dtype=np.int32)
         self.valor_ = np.asarray(valor)
         return self
 
