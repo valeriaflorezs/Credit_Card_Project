@@ -74,3 +74,9 @@ modificar la tabla anterior:
 | Validación externa repetida | No ejecutada | No cambia el veredicto: con F1 casi idéntico al de CatBoost, más repeticiones no producirían superioridad |
 | Ablación con validación anidada | Sigue solo en el pliegue 1 | — |
 | DeLong y McNemar | Contra CatBoost, XGBoost, LightGBM y Random Forest | Se amplió de los dos mejores modelos base a los cuatro mejores rivales |
+
+## 8. Actualización del 11 de noviembre de 2026
+Estudios **exploratorios** agregados después de los anteriores, con las mismas particiones y los
+hiperparámetros elegidos en cada pliegue (`experiments/robustez/ampliada.py`): 10 semillas, escalabilidad
+en $n$ y $p$, cambio de distribución por grupos de edad y educación, recalibración isotónica, predicción
+conforme por clase (α = 0.10) y análisis de errores por subgrupo. No sustentan por sí solos la condición R3.

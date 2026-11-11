@@ -274,13 +274,144 @@ incumplimiento (probabilidad media de 0.40 a 0.44 frente a una tasa real de 0.22
 ```
 
 CS-FOF tiene las probabilidades mejor calibradas de los cinco en las tres métricas, aunque ninguno está
-bien calibrado; para usar las probabilidades como riesgo real hace falta recalibrarlas (por ejemplo, con
-regresión isotónica), lo que queda como trabajo futuro.
+bien calibrado; para usar las probabilidades como riesgo real hace falta recalibrarlas; la sección de recalibración
+muestra que la regresión isotónica lo resuelve para todos.
 
 **Costo.** CS-FOF es el más lento: unos 13 s por ajuste con 4 procesos, frente a 1–3 s de los demás.
 
+## Estudios complementarios
+
+Estos estudios completan la Tabla 4 del Entregable 3. Son **exploratorios** (no estaban en el protocolo
+original) y no sustentan por sí solos la condición R3. Usan las mismas 5 particiones externas y, cuando
+hay que entrenar, los hiperparámetros que cada modelo eligió en cada pliegue, sin búsqueda nueva.
+
+### Estabilidad por semilla
+
+Estudio en ejecución (10 semillas × 5 pliegues × 5 modelos); los resultados se agregan al terminar.
+
+### Escalabilidad
+
+Tiempo de ajuste en el pliegue 0 (4 núcleos) al variar el número de filas $n$ y de columnas $p$.
+
+| $n$ (con $p=25$) | CS-FOF | CatBoost | XGBoost | LightGBM | Random Forest |
+|---|---|---|---|---|---|
+| 2,397 (10 %) | 1.26 s | 0.46 s | 0.26 s | 0.15 s | 0.48 s |
+| 5,993 (25 %) | 2.26 s | 0.72 s | 0.30 s | 0.38 s | 0.57 s |
+| 11,986 (50 %) | 3.84 s | 1.03 s | 0.43 s | 0.62 s | 0.88 s |
+| 23,972 (100 %) | 6.56 s | 1.35 s | 0.55 s | 0.90 s | 1.46 s |
+| Pendiente log-log en $n$ | 0.72 | 0.47 | 0.34 | 0.78 | 0.49 |
+| Inferencia (ms / 1,000 clientes) | 253.1 | 0.4 | 4.8 | 5.5 | 9.4 |
+
+```{figure} results/figures/escalabilidad.png
+:name: fig-escalabilidad
+:width: 100%
+
+Tiempo de ajuste frente a $n$ (izquierda, escala logarítmica) y frente a $p$ (derecha), pliegue 0.
+```
+
+El tiempo de CS-FOF crece de forma sublineal en $n$ en este rango (pendiente 0.72), como predice el
+término $O(n\log n)$ de la complejidad cuando la profundidad está acotada y la constante del ordenamiento
+domina. Con $p$ crece poco (de 4.4 s con 6 columnas a 6.5 s con 25) porque cada nodo solo examina
+$q=\lfloor\sqrt p\rfloor$ variables. Es el modelo más lento: unas 5 veces CatBoost al entrenar y unas
+600 veces al predecir, porque está escrito en numpy y no en código compilado. Para el tablero esto no es
+un problema (un cliente se predice en milisegundos), pero sí lo sería para puntuar millones de clientes.
+
+### Cambio de distribución
+
+El conjunto es un corte transversal sin fechas, así que no hay un bloque temporal posterior. Se simula
+el cambio con dos particiones por grupo que no se usaron en ninguna decisión de diseño: entrenar con un
+grupo y probar con el otro (hiperparámetros del pliegue 0).
+
+| Escenario | CS-FOF | CatBoost | XGBoost | LightGBM | Random Forest |
+|---|---|---|---|---|---|
+| Edad: entrena ≤ 35 (16,787), prueba > 35 (13,178) | **0.558** | 0.553 | 0.545 | 0.558 | 0.556 |
+| Educación: entrena universidad/posgrado (24,582), prueba secundaria/otros (5,383) | **0.557** | 0.546 | 0.552 | 0.549 | 0.555 |
+
+F1 de la clase de impago en el grupo de prueba. Brier de CS-FOF: 0.170 y 0.190, el menor o empatado con
+el menor en ambos escenarios.
+
+CS-FOF conserva el primer lugar en los dos escenarios (en edad, empatado con LightGBM a la tercera
+cifra) y ningún modelo se degrada respecto a la validación cruzada: el cambio de grupo de edad o de
+educación mueve poco la tasa de impago (de 0.214 a 0.230 y de 0.218 a 0.236). Es una prueba débil de
+cambio de distribución, porque los grupos comparten periodo y banco.
+
+### Recalibración
+
+Con pesos de clase, todos los modelos sobreestiman el riesgo (probabilidad media 0.40 a 0.44 frente a
+una tasa real de 0.22). Se ajustó una regresión isotónica con las probabilidades fuera de pliegue de 4
+pliegues y se aplicó al quinto, de modo que ninguna probabilidad se recalibra con sus propios datos.
+
+| Modelo | Brier antes | Brier después | ECE antes | ECE después | AUC antes | AUC después |
+|---|---|---|---|---|---|---|
+| CS-FOF | 0.168 | **0.134** | 0.180 | **0.003** | 0.783 | 0.781 |
+| CatBoost | 0.179 | **0.134** | 0.204 | **0.003** | 0.784 | 0.782 |
+| XGBoost | 0.175 | 0.135 | 0.196 | 0.003 | 0.783 | 0.781 |
+| LightGBM | 0.190 | 0.138 | 0.220 | 0.023 | 0.773 | 0.764 |
+| Random Forest | 0.173 | 0.134 | 0.189 | 0.003 | 0.782 | 0.781 |
+
+```{figure} results/figures/recalibracion_isotonica.png
+:name: fig-recalibracion
+:width: 100%
+
+Curvas de confiabilidad de CS-FOF y CatBoost antes y después de la regresión isotónica.
+```
+
+La regresión isotónica deja a los cinco modelos prácticamente calibrados (ECE de 0.003) y con el mismo
+Brier. La ventaja de calibración de CS-FOF que se vio arriba **desaparece tras recalibrar**: era una
+diferencia del puntaje sin calibrar, no de la información que contiene. El AUC baja muy poco porque la
+regresión isotónica es monótona pero crea empates.
+
+### Cuantificación de incertidumbre: predicción conforme
+
+Se construyeron conjuntos de predicción conformes por clase (Mondrian) con nivel nominal de 90 %
+($\alpha=0.10$): el conjunto de un cliente contiene cada clase $c$ cuyo puntaje de no conformidad
+$1-\hat p_c(x)$ no supera el cuantil $\lceil (n_c+1)(1-\alpha)\rceil/n_c$ de los puntajes de los
+clientes de la clase $c$ en los otros 4 pliegues. La garantía es de cobertura marginal en cada clase,
+bajo intercambiabilidad.
+
+| Modelo | Cobertura | Cobertura en impago | Cobertura en pago | Tamaño medio | Un solo valor |
+|---|---|---|---|---|---|
+| CS-FOF | 0.900 | 0.899 | 0.900 | 1.50 | 50.0 % |
+| CatBoost | 0.900 | 0.901 | 0.900 | 1.50 | 50.5 % |
+| XGBoost | 0.900 | 0.899 | 0.900 | 1.50 | 50.4 % |
+| LightGBM | 0.901 | 0.897 | 0.903 | 1.55 | 44.7 % |
+| Random Forest | 0.900 | 0.901 | 0.900 | 1.50 | 50.3 % |
+
+La cobertura empírica coincide con la nominal en las dos clases para los cinco modelos. El precio es el
+tamaño: con 90 % de confianza, la mitad de los clientes recibe el conjunto {pago, impago}. Es una forma
+honesta de decir que el techo de este problema (F1 ≈ 0.55) deja a uno de cada dos clientes en zona de
+duda. El tablero muestra este conjunto junto con cada predicción.
+
+### Análisis de errores
+
+F1 por subgrupo con las predicciones fuera de pliegue (umbral 0.5).
+
+| Subgrupo | n | Tasa de impago | F1 CS-FOF | F1 CatBoost | Diferencia |
+|---|---|---|---|---|---|
+| Pago de septiembre al día o adelantado | 23,169 | 0.138 | 0.261 | 0.298 | **−0.037** |
+| Pago de septiembre con 1 mes de atraso | 3,667 | 0.340 | 0.551 | 0.547 | +0.004 |
+| Pago de septiembre con 2 o más meses | 3,129 | 0.695 | 0.821 | 0.820 | +0.000 |
+| Cupo en el cuartil más bajo | 7,673 | 0.318 | 0.602 | 0.593 | +0.008 |
+| Cupo en el cuartil más alto | 7,058 | 0.140 | 0.455 | 0.457 | −0.002 |
+| Edad ≤ 30 | 10,997 | 0.225 | 0.561 | 0.554 | +0.007 |
+| Edad > 45 | 4,666 | 0.252 | 0.572 | 0.577 | −0.005 |
+| Educación secundaria | 4,915 | 0.252 | 0.569 | 0.566 | +0.004 |
+| Mujer | 18,091 | 0.208 | 0.540 | 0.538 | +0.003 |
+| Hombre | 11,874 | 0.242 | 0.559 | 0.559 | −0.000 |
+
+**Dónde falla.** El punto débil de todos los modelos son los clientes que están al día en septiembre:
+son el 77 % de la cartera, su tasa de impago es baja (13.8 %) y el F1 cae a 0.26 a 0.30. Ahí CS-FOF es
+claramente peor que CatBoost: deja pasar al 11.0 % de esos clientes como falsos negativos. La causa
+probable es que, dentro de este grupo, el impago depende de señales débiles y no lineales (pagos parciales
+en meses anteriores, tendencia de la factura) que el *boosting* capta mejor al corregir los errores de
+forma secuencial, mientras que el corte de Fisher busca una sola dirección lineal por nodo. En los grupos
+con atraso, donde la señal es fuerte, los dos modelos empatan. Entre sexos, edades y niveles educativos
+las diferencias son pequeñas (menos de 0.01) y no hay un subgrupo demográfico en el que CS-FOF se
+derrumbe, aunque el F1 es 0.02 menor en mujeres que en hombres en ambos modelos.
+
 ## Lo que no se ejecutó
 
-Por tiempo de cómputo no se ejecutaron: la validación externa repetida (no cambiaría el veredicto, ver
-`experiments/protocolo.md`), el estudio de cambio de distribución, la recalibración, la predicción
-conforme y la ablación con validación anidada 5 × 5. Se declaran como desviaciones y como trabajo futuro.
+Por tiempo de cómputo no se ejecutaron la validación externa repetida (no cambiaría el veredicto, ver
+`experiments/protocolo.md`) ni la ablación con validación anidada 5 × 5. Se declaran como desviaciones y
+como trabajo futuro. Todos los estudios de esta sección se reproducen con
+`python experiments/robustez/ampliada.py`.

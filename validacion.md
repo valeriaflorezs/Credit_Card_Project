@@ -84,6 +84,16 @@ igualdad de desempeño ($\chi^2=40.29$, $p=6.7\times10^{-6}$). Los mejores rango
 la diferencia crítica de Nemenyi es 6.06, así que la prueba solo separa a los mejores de los modelos
 clásicos más débiles.
 
+```{figure} results/figures/cd_diagram_final.png
+:name: fig-cd-final
+:width: 100%
+
+Diagrama de diferencia crítica de Nemenyi con CS-FOF incluido. Cada modelo se ubica en su rango medio
+(1 es el mejor) sobre los 5 pliegues externos; las barras azules unen modelos cuya diferencia de rangos es
+menor que la diferencia crítica (6.06) y que, por tanto, no se distinguen. CS-FOF (2.4) queda en el
+mismo grupo que CatBoost (2.0), XGBoost, Random Forest y LightGBM.
+```
+
 ```{list-table} CS-FOF frente a la mejor combinación de cada modelo. p-valores ajustados con Holm (9 comparaciones).
 :header-rows: 1
 :name: tab-pruebas

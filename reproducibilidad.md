@@ -42,6 +42,10 @@
   - `python -m src.build_master_table_e3`, luego `python experiments/comparacion_final/pruebas.py`, `delong.py` y `entre_conjuntos.py`
 * - Robustez (exploratoria)
   - `python experiments/robustez/robustez.py` (calibración, ruido y tamaño de muestra; ~1 h en 4 núcleos)
+* - Evaluación ampliada (exploratoria)
+  - `python experiments/robustez/ampliada.py` (diagrama de diferencia crítica, predicción conforme, recalibración, análisis de errores, cambio de distribución, escalabilidad y 10 semillas; ~35 min en 4 núcleos)
+* - Protocolo
+  - `experiments/protocolo.md`, registrado el 8 de noviembre de 2026 en el commit `62ddeb7` (etiqueta `protocolo-2026-11-08`)
 ```
 
 ## Declaración de autoría y uso de herramientas
