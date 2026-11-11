@@ -1,0 +1,271 @@
+{
+  "modelo": "random_forest",
+  "archivo": "random_forest.joblib",
+  "fecha_entrenamiento_utc": "2026-11-11T19:32:36+00:00",
+  "semilla": 42,
+  "tecnica_balanceo": "class_weight",
+  "metodo_busqueda_anidada": "random_search",
+  "seleccion_final": {
+    "criterio": "mayor F1 medio en CV estratificada de 5 pliegues sobre todos los datos, entre las configuraciones elegidas por el bucle interno",
+    "candidatos": [
+      {
+        "max_depth": 11,
+        "max_features": "log2",
+        "min_samples_leaf": 1,
+        "min_samples_split": 45,
+        "n_estimators": 235
+      },
+      {
+        "max_depth": 17,
+        "max_features": "sqrt",
+        "min_samples_leaf": 1,
+        "min_samples_split": 26,
+        "n_estimators": 426
+      },
+      {
+        "max_depth": 13,
+        "max_features": "log2",
+        "min_samples_leaf": 4,
+        "min_samples_split": 41,
+        "n_estimators": 251
+      },
+      {
+        "max_depth": 15,
+        "max_features": "log2",
+        "min_samples_leaf": 15,
+        "min_samples_split": 25,
+        "n_estimators": 316
+      },
+      {
+        "max_depth": 22,
+        "max_features": "log2",
+        "min_samples_leaf": 3,
+        "min_samples_split": 38,
+        "n_estimators": 406
+      }
+    ],
+    "f1_candidatos": [
+      0.5463155193670042,
+      0.5429653307059934,
+      0.5479317592542925,
+      0.5440613987751655,
+      0.5463221114430847
+    ],
+    "elegido": 2
+  },
+  "hiperparametros_finales": {
+    "max_depth": 13,
+    "max_features": "log2",
+    "min_samples_leaf": 4,
+    "min_samples_split": 41,
+    "n_estimators": 251
+  },
+  "metricas_bucle_externo_5x5": {
+    "f1": {
+      "media": 0.5452495554202816,
+      "desviacion_estandar": 0.007684918915805332,
+      "por_pliegue": [
+        0.5510413110276545,
+        0.5404058383766465,
+        0.5375415282392026,
+        0.5555924327912379,
+        0.5416666666666666
+      ]
+    },
+    "precision": {
+      "media": 0.49735770410558156,
+      "desviacion_estandar": 0.011617953143923183,
+      "por_pliegue": [
+        0.5034310667498441,
+        0.5118004045853001,
+        0.4804038004750594,
+        0.4961470065204505,
+        0.4950062421972534
+      ]
+    },
+    "recall": {
+      "media": 0.6040723981900452,
+      "desviacion_estandar": 0.021410361337222315,
+      "por_pliegue": [
+        0.6085972850678733,
+        0.5723981900452488,
+        0.610105580693816,
+        0.6312217194570136,
+        0.5980392156862745
+      ]
+    },
+    "roc_auc": {
+      "media": 0.7830738334462858,
+      "desviacion_estandar": 0.009518715189336795,
+      "por_pliegue": [
+        0.7860779013522305,
+        0.7714205772632272,
+        0.7801794054141575,
+        0.7972894470045935,
+        0.7804018361972205
+      ]
+    },
+    "accuracy": {
+      "media": 0.7771066243951277,
+      "desviacion_estandar": 0.006269413715475111,
+      "por_pliegue": [
+        0.7805773402302687,
+        0.784582012347739,
+        0.7677290171867178,
+        0.7765726681127982,
+        0.7760720840981145
+      ]
+    }
+  },
+  "n_filas_entrenamiento": 29965,
+  "tasa_default": 0.22125813449023862,
+  "columnas_entrada": [
+    {
+      "nombre": "SEX",
+      "tipo": "categorica",
+      "valores": [
+        1,
+        2
+      ]
+    },
+    {
+      "nombre": "EDUCATION",
+      "tipo": "categorica",
+      "valores": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "nombre": "MARRIAGE",
+      "tipo": "categorica",
+      "valores": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "nombre": "AGE",
+      "tipo": "numerica",
+      "min": 21.0,
+      "max": 79.0
+    },
+    {
+      "nombre": "PAY_0",
+      "tipo": "numerica",
+      "min": -2.0,
+      "max": 8.0
+    },
+    {
+      "nombre": "PAY_2",
+      "tipo": "numerica",
+      "min": -2.0,
+      "max": 8.0
+    },
+    {
+      "nombre": "PAY_3",
+      "tipo": "numerica",
+      "min": -2.0,
+      "max": 8.0
+    },
+    {
+      "nombre": "PAY_4",
+      "tipo": "numerica",
+      "min": -2.0,
+      "max": 8.0
+    },
+    {
+      "nombre": "PAY_5",
+      "tipo": "numerica",
+      "min": -2.0,
+      "max": 8.0
+    },
+    {
+      "nombre": "PAY_6",
+      "tipo": "numerica",
+      "min": -2.0,
+      "max": 8.0
+    },
+    {
+      "nombre": "BILL_AMT_MEAN_6M_LOG",
+      "tipo": "numerica",
+      "min": -10.933895349340577,
+      "max": 13.68462119591077
+    },
+    {
+      "nombre": "BILL_AMT_TREND_6M_LOG",
+      "tipo": "numerica",
+      "min": -11.506663039711574,
+      "max": 11.814100806715205
+    },
+    {
+      "nombre": "N_CREDIT_BALANCE_MONTHS",
+      "tipo": "numerica",
+      "min": 0.0,
+      "max": 6.0
+    },
+    {
+      "nombre": "LIMIT_BAL_LOG",
+      "tipo": "numerica",
+      "min": 9.210440366976517,
+      "max": 13.815511557963774
+    },
+    {
+      "nombre": "PAY_AMT1_LOG",
+      "tipo": "numerica",
+      "min": 0.0,
+      "max": 13.680324082159185
+    },
+    {
+      "nombre": "PAY_AMT2_LOG",
+      "tipo": "numerica",
+      "min": 0.0,
+      "max": 14.336836856166123
+    },
+    {
+      "nombre": "PAY_AMT3_LOG",
+      "tipo": "numerica",
+      "min": 0.0,
+      "max": 13.705741449838731
+    },
+    {
+      "nombre": "PAY_AMT4_LOG",
+      "tipo": "numerica",
+      "min": 0.0,
+      "max": 13.339087971220277
+    },
+    {
+      "nombre": "PAY_AMT5_LOG",
+      "tipo": "numerica",
+      "min": 0.0,
+      "max": 12.963437983416684
+    },
+    {
+      "nombre": "PAY_AMT6_LOG",
+      "tipo": "numerica",
+      "min": 0.0,
+      "max": 13.178114023025646
+    }
+  ],
+  "clases": {
+    "0": "no incumple",
+    "1": "incumple el pago del mes siguiente"
+  },
+  "prueba_ida_y_vuelta": true,
+  "tamano_archivo_mb": 5.96,
+  "tiempo_entrenamiento_s": 243.1,
+  "versiones": {
+    "python": "3.13.17",
+    "numpy": "2.5.3",
+    "pandas": "3.0.5",
+    "scikit-learn": "1.9.1",
+    "joblib": "1.6.0",
+    "imblearn": "0.14.2",
+    "xgboost": "3.4.1",
+    "lightgbm": "4.7.0",
+    "catboost": "1.2.10"
+  }
+}
