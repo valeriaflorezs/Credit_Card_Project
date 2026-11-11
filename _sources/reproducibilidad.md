@@ -58,7 +58,8 @@ redacción.
 
 Durante el proyecto se utilizó la herramienta de inteligencia artificial generativa **Claude
 (Anthropic)** como apoyo en la búsqueda bibliográfica, la programación (incluida una implementación de
-referencia del modelo original y sus pruebas), el análisis estadístico y la redacción. Todo el contenido
+referencia del modelo original y sus pruebas), el análisis estadístico, la redacción, el desarrollo del
+dashboard en Dash y de su versión en Shiny, y la generación de los artefactos de los modelos. Todo el contenido
 generado con apoyo de la herramienta fue revisado, verificado y editado por las autoras, quienes
 comprenden el código entregado, pueden explicarlo y modificarlo, y asumen la total responsabilidad por
 el contenido, los análisis y las conclusiones de este informe. La herramienta no figura como autora.
@@ -67,8 +68,8 @@ Firmado:
 
 | Nombre | Firma | Fecha |
 |---|---|---|
-| Valeria Florez Sarmiento | | |
-| Katherin Barrera López | | |
+| Valeria Florez Sarmiento | Firmado electrónicamente: Valeria Florez Sarmiento | 11 de noviembre de 2026 |
+| Katherin Barrera López | Firmado electrónicamente: Katherin Barrera López | 11 de noviembre de 2026 |
 
 ## Referencias del Entregable 3
 
