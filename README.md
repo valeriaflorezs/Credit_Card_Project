@@ -91,7 +91,7 @@ Los estudios nuevos se reproducen con (entorno `creditcard`, desde la raíz):
 
 ```bash
 python -m src.master_table
-python -m src.build_master_table_e3   # une las 112 con CS-FOF, LightGBM y CatBoost (141 filas)
+python -m src.build_master_table_e3   # une las 112 con CS-FOF, LightGBM y CatBoost (148 filas)
 ```
 
 ```bash

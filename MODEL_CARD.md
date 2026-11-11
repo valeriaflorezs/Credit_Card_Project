@@ -15,7 +15,9 @@ Implementación propia con numpy: `src/original_model.py`. Artefacto: `artifacts
 - **Para qué:** estimar la probabilidad de que un cliente de tarjeta de crédito incumpla el pago del
   mes siguiente, como **apoyo** a la gestión de riesgo (priorizar cobranza preventiva, revisar cupos).
 - **Quién:** analistas de riesgo y estudiantes, con fines académicos y demostrativos.
-- **Salida:** probabilidad de incumplimiento y clase predicha con umbral 0.5.
+- **Salida:** puntaje de incumplimiento, clase predicha según un umbral y conjunto de predicción
+  conforme al 90 %. La validación usa el umbral 0.5; en el tablero el umbral es ajustable y arranca en
+  el de máximo F1 (52 %).
 
 ## Usos no recomendados
 - Tomar decisiones automáticas sobre personas (negar crédito, subir tasas) **sin revisión humana**.
@@ -51,15 +53,22 @@ Australian 0.874 (XGBoost 0.880) y Polish año 1 0.430 (CatBoost 0.733).
   extremo (Polish, 4 % de positivos) rinde mucho menos que los métodos de *boosting*.
 - Solo se evaluó con la técnica de pesos de clase.
 - Entrenar con pesos de costo **sobreestima** la probabilidad de incumplimiento (probabilidad media
-  0.40 frente a una tasa real de 0.22). Si se usan como probabilidades reales, recalibrar (Platt o
-  isotónica).
-- Implementación en Python puro: entrenar es más lento que con librerías en C (unos 13 s por ajuste
-  con 4 procesos, frente a 1–3 s de Random Forest y los métodos de *boosting*).
+  0.40 frente a una tasa real de 0.22). La regresión isotónica ajustada fuera de pliegue lo corrige
+  (ECE de 0.180 a 0.003), pero entonces su ventaja de calibración frente a los demás desaparece.
+- Implementación en numpy, sin código compilado: unas 5 veces más lenta que CatBoost al entrenar
+  (6.6 s frente a 1.4 s con 24 mil clientes y 4 núcleos) y unas 600 veces al predecir (253 ms por cada
+  1,000 clientes). Sirve para el tablero, no para puntuar millones de clientes.
+- Con 90 % de confianza, la predicción conforme deja a la mitad de los clientes en el conjunto
+  {pago, impago}: el modelo no puede decidir con esa confianza en uno de cada dos casos.
+- Falla más que CatBoost justo en el grupo más grande de la cartera, los clientes al día en
+  septiembre (77 % de los clientes; F1 0.261 frente a 0.298).
 
 ## Riesgos y consideraciones éticas
 - **Sesgo:** las tasas de incumplimiento difieren por sexo y nivel educativo en los datos; el modelo
-  puede trasladar esas diferencias a sus predicciones. Antes de cualquier uso real hay que medir
-  el desempeño por subgrupo.
+  puede trasladar esas diferencias a sus predicciones. El análisis de errores por subgrupo (capítulo
+  de evaluación ampliada) muestra diferencias de F1 pequeñas entre edades y niveles educativos, y un
+  F1 0.02 menor en mujeres que en hombres (0.540 frente a 0.559), igual que en CatBoost. Antes de un
+  uso real habría que repetir esa revisión con datos actuales y con métricas de equidad.
 - **Falsos negativos** (morosos no detectados) generan pérdidas; **falsos positivos** pueden llevar a
   restringir crédito a clientes solventes. El umbral debe fijarse según los costos de la entidad.
 
