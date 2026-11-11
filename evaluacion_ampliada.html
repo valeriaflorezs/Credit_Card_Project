@@ -240,6 +240,7 @@
 
 <li class="toctree-l1"><a class="reference internal" href="notebooks/08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizacion_dejong.html">Validación del algoritmo genético con las funciones de De Jong</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Revisión de literatura y novedad</span></p>
 <ul class="nav bd-sidenav">
@@ -447,7 +448,7 @@
 <p>Las variantes se evaluaron <strong>solo con el entrenamiento del pliegue externo 1</strong>, con validación interna
 estratificada de 3 pliegues, sin usar ningún pliegue de prueba (<code class="docutils literal notranslate"><span class="pre">experiments/cs_fof_diseno/</span></code>).</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-ablacion">
-<caption><span class="caption-number">Table 6 </span><span class="caption-text">Variantes de diseño de CS-FOF (F1 de la clase <em>default</em>, validación interna).</span><a class="headerlink" href="#tab-ablacion" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 7 </span><span class="caption-text">Variantes de diseño de CS-FOF (F1 de la clase <em>default</em>, validación interna).</span><a class="headerlink" href="#tab-ablacion" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Variante</p></th>
 <th class="head"><p>F1</p></th>
@@ -502,7 +503,7 @@ métodos de búsqueda dan resultados cercanos (0.5456 a 0.5479).</p>
 UCI con el mismo procedimiento: validación anidada 5 × 5, <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y búsqueda aleatoria de 25
 configuraciones (<code class="docutils literal notranslate"><span class="pre">src/run_additional_datasets.py</span></code>).</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-conjuntos">
-<caption><span class="caption-number">Table 7 </span><span class="caption-text">F1 medio de la clase de riesgo en los 5 pliegues externos y rango medio en los 4 conjuntos.</span><a class="headerlink" href="#tab-conjuntos" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 8 </span><span class="caption-text">F1 medio de la clase de riesgo en los 5 pliegues externos y rango medio en los 4 conjuntos.</span><a class="headerlink" href="#tab-conjuntos" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
 <th class="head"><p>Taiwán</p></th>
@@ -613,7 +614,7 @@ hipótesis, así que las diferencias pequeñas deben leerse con cautela.</p>
 <p><strong>Ruido en las etiquetas.</strong> Se invierte al azar una fracción de las etiquetas de entrenamiento (la misma
 para todos los modelos).</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-ruido">
-<caption><span class="caption-number">Table 8 </span><span class="caption-text">F1 medio en 5 pliegues según el porcentaje de etiquetas de entrenamiento invertidas.</span><a class="headerlink" href="#tab-ruido" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 9 </span><span class="caption-text">F1 medio en 5 pliegues según el porcentaje de etiquetas de entrenamiento invertidas.</span><a class="headerlink" href="#tab-ruido" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
 <th class="head"><p>0 %</p></th>
@@ -661,7 +662,7 @@ niveles y pierde menos que los tres métodos de <em>boosting</em> (−0.015 fren
 es el que menos pierde (−0.013).</p>
 <p><strong>Tamaño de la muestra.</strong> Se entrena con una fracción estratificada del entrenamiento de cada pliegue.</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-tamano">
-<caption><span class="caption-number">Table 9 </span><span class="caption-text">F1 medio en 5 pliegues según la fracción del entrenamiento usada.</span><a class="headerlink" href="#tab-tamano" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 10 </span><span class="caption-text">F1 medio en 5 pliegues según la fracción del entrenamiento usada.</span><a class="headerlink" href="#tab-tamano" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
 <th class="head"><p>10 %</p></th>
@@ -711,7 +712,7 @@ modelos por igual: sus hiperparámetros se eligieron con el entrenamiento comple
 <p><strong>Calibración.</strong> Con los pesos de clase, todos los modelos sobreestiman la probabilidad de
 incumplimiento (probabilidad media de 0.40 a 0.44 frente a una tasa real de 0.22).</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-calibracion">
-<caption><span class="caption-number">Table 10 </span><span class="caption-text">Calibración de las probabilidades fuera de pliegue (29 965 clientes; tasa real 0.221).</span><a class="headerlink" href="#tab-calibracion" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 11 </span><span class="caption-text">Calibración de las probabilidades fuera de pliegue (29 965 clientes; tasa real 0.221).</span><a class="headerlink" href="#tab-calibracion" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
 <th class="head"><p>Brier</p></th>
@@ -822,7 +823,7 @@ hay que entrenar, los hiperparámetros que cada modelo eligió en cada pliegue, 
 <a class="reference internal image-reference" href="_images/semillas_boxplot.png"><img alt="_images/semillas_boxplot.png" src="_images/semillas_boxplot.png" style="width: 100%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 2 </span><span class="caption-text">F1 de la clase de impago en 10 semillas × 5 pliegues externos. Las cajas resumen los 50 valores; los
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">F1 de la clase de impago en 10 semillas × 5 pliegues externos. Las cajas resumen los 50 valores; los
 puntos dorados son la media de cada semilla.</span><a class="headerlink" href="#fig-semillas" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
@@ -895,7 +896,7 @@ confirma el empate del bucle externo y que la posición de CS-FOF no depende de 
 <a class="reference internal image-reference" href="_images/escalabilidad.png"><img alt="_images/escalabilidad.png" src="_images/escalabilidad.png" style="width: 100%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Tiempo de ajuste frente a <span class="math notranslate nohighlight">\(n\)</span> (izquierda, escala logarítmica) y frente a <span class="math notranslate nohighlight">\(p\)</span> (derecha), pliegue 0.</span><a class="headerlink" href="#fig-escalabilidad" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Tiempo de ajuste frente a <span class="math notranslate nohighlight">\(n\)</span> (izquierda, escala logarítmica) y frente a <span class="math notranslate nohighlight">\(p\)</span> (derecha), pliegue 0.</span><a class="headerlink" href="#fig-escalabilidad" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>El tiempo de CS-FOF crece de forma sublineal en <span class="math notranslate nohighlight">\(n\)</span> en este rango (pendiente 0.72), como predice el
@@ -1009,7 +1010,7 @@ pliegues y se aplicó al quinto, de modo que ninguna probabilidad se recalibra c
 <a class="reference internal image-reference" href="_images/recalibracion_isotonica.png"><img alt="_images/recalibracion_isotonica.png" src="_images/recalibracion_isotonica.png" style="width: 100%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Curvas de confiabilidad de CS-FOF y CatBoost antes y después de la regresión isotónica.</span><a class="headerlink" href="#fig-recalibracion" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Curvas de confiabilidad de CS-FOF y CatBoost antes y después de la regresión isotónica.</span><a class="headerlink" href="#fig-recalibracion" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>La regresión isotónica deja a los cinco modelos prácticamente calibrados (ECE de 0.003) y con el mismo

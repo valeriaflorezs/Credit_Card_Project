@@ -1,0 +1,744 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Validación del algoritmo genético con las funciones de De Jong &#8212; Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/dash_theme.css?v=16a22a96" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'optimizacion_dejong';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Revisión de literatura y evidencia de novedad" href="literatura.html" />
+    <link rel="prev" title="09. Curvas anytime y multi-fidelidad" href="notebooks/09_anytime_multifidelidad.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="portada.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="portada.html">
+                    Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. Introducción</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduccion.html">Marco del proyecto</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. Trazabilidad de correcciones</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="correcciones.html">Trazabilidad de correcciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Datos: ETL y EDA</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DATA_STATEMENT.html">Declaración de los datos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Modelos benchmark</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Verificación del protocolo experimental</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/04_run_experiments.html">04. Ejecutar experimentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/05_results_analysis.html">05. Análisis de resultados</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="notebooks/08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Validación del algoritmo genético con las funciones de De Jong</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Revisión de literatura y novedad</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="literatura.html">Revisión de literatura y evidencia de novedad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Modelo original</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="modelo_original.html">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="validacion.html">Validación estadística del modelo original</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. Evaluación ampliada y robustez</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="evaluacion_ampliada.html">Evaluación ampliada: ablación, robustez y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Dashboard y despliegue</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dashboard.html">Dashboard y despliegue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MODEL_CARD.html">Ficha del modelo: CS-FOF</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">9. Conclusiones y limitaciones</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="conclusiones.html">Conclusiones y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Reproducibilidad y bibliografía</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="reproducibilidad.html">Reproducibilidad, archivo del repositorio y declaración de autoría</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/optimizacion_dejong.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Validación del algoritmo genético con las funciones de De Jong</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-hace-falta">Por qué hace falta</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diseno">Diseño</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultados">Resultados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion">Interpretación</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="validacion-del-algoritmo-genetico-con-las-funciones-de-de-jong">
+<h1>Validación del algoritmo genético con las funciones de De Jong<a class="headerlink" href="#validacion-del-algoritmo-genetico-con-las-funciones-de-de-jong" title="Link to this heading">#</a></h1>
+<section id="por-que-hace-falta">
+<h2>Por qué hace falta<a class="headerlink" href="#por-que-hace-falta" title="Link to this heading">#</a></h2>
+<p>El algoritmo genético es uno de los cuatro métodos de búsqueda de hiperparámetros del proyecto. En los datos de
+crédito no se puede saber si está bien configurado, porque el mejor F1 posible es desconocido. Además, en las
+curvas anytime el genético no superó a la búsqueda aleatoria.</p>
+<p>Para saber si eso es un defecto de la implementación o una propiedad del problema, se probó el mismo genético en
+las cinco funciones clásicas de <span class="bibtex-citation" id="id1">De Jong [<a class="reference internal" href="reproducibilidad.html#id23" title="Kenneth Alan De Jong. An Analysis of the Behavior of a Class of Genetic Adaptive Systems. PhD thesis, University of Michigan, 1975.">DJ75</a>]</span>. Su mínimo es conocido, así que se puede medir qué tan cerca
+llega cada método. Este estudio <strong>no cambia ningún modelo ni ningún resultado</strong> de la validación anidada: solo
+evalúa el optimizador.</p>
+</section>
+<section id="diseno">
+<h2>Diseño<a class="headerlink" href="#diseno" title="Link to this heading">#</a></h2>
+<ul>
+<li><p><strong>El mismo genético.</strong> <code class="docutils literal notranslate"><span class="pre">src/dejong.py</span></code> aplica los mismos operadores de <code class="docutils literal notranslate"><span class="pre">src/optimization.py</span></code> con la misma
+configuración:</p>
+<ul class="simple">
+<li><p>inicialización uniforme;</p></li>
+<li><p>cruce uniforme con probabilidad 0.6 por pareja;</p></li>
+<li><p>mutación gaussiana con probabilidad 0.3 por individuo y 0.2 por gen;</p></li>
+<li><p>torneo de tamaño 3;</p></li>
+<li><p>élite de 2;</p></li>
+<li><p>16 individuos y 10 generaciones.</p></li>
+</ul>
+<p>Solo cambia la aptitud, que es <span class="math notranslate nohighlight">\(-f(\mathbf x)\)</span> porque el genético maximiza.</p>
+</li>
+<li><p><strong>Las cinco funciones de De Jong.</strong> Todas se minimizan:</p></li>
+</ul>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Función</p></th>
+<th class="head"><p>Dimensión</p></th>
+<th class="head"><p>Dominio</p></th>
+<th class="head"><p>Mínimo</p></th>
+<th class="head"><p>Qué pone a prueba</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>F1 esfera, <span class="math notranslate nohighlight">\(\sum x_i^2\)</span></p></td>
+<td><p>3</p></td>
+<td><p><span class="math notranslate nohighlight">\([-5.12, 5.12]\)</span></p></td>
+<td><p>0</p></td>
+<td><p>Convergencia en una función suave y convexa</p></td>
+</tr>
+<tr class="row-odd"><td><p>F2 Rosenbrock, <span class="math notranslate nohighlight">\(100(x_1^2-x_2)^2+(1-x_1)^2\)</span></p></td>
+<td><p>2</p></td>
+<td><p><span class="math notranslate nohighlight">\([-2.048, 2.048]\)</span></p></td>
+<td><p>0</p></td>
+<td><p>Valle curvo y estrecho</p></td>
+</tr>
+<tr class="row-even"><td><p>F3 escalón, <span class="math notranslate nohighlight">\(\sum \lfloor x_i \rfloor\)</span></p></td>
+<td><p>5</p></td>
+<td><p><span class="math notranslate nohighlight">\([-5.12, 5.12]\)</span></p></td>
+<td><p>−30</p></td>
+<td><p>Mesetas sin gradiente</p></td>
+</tr>
+<tr class="row-odd"><td><p>F4 cuártica con ruido, <span class="math notranslate nohighlight">\(\sum i\,x_i^4+\mathcal N(0,1)\)</span></p></td>
+<td><p>30</p></td>
+<td><p><span class="math notranslate nohighlight">\([-1.28, 1.28]\)</span></p></td>
+<td><p>0</p></td>
+<td><p>Alta dimensión con evaluaciones ruidosas</p></td>
+</tr>
+<tr class="row-even"><td><p>F5 zorreras de Shekel</p></td>
+<td><p>2</p></td>
+<td><p><span class="math notranslate nohighlight">\([-65.536, 65.536]\)</span></p></td>
+<td><p>0.998</p></td>
+<td><p>25 mínimos locales</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul class="simple">
+<li><p><strong>Comparación justa.</strong> Con cada semilla, la búsqueda aleatoria recibe exactamente el mismo número de
+evaluaciones que usó el genético. Con el presupuesto del proyecto son unas 120 evaluaciones, porque los
+hijos que no cambian no se vuelven a evaluar.</p></li>
+<li><p><strong>Repeticiones.</strong> Se usan 10 semillas. Se repite todo con un presupuesto amplio, 50 individuos × 50
+generaciones (unas 1,780 evaluaciones), para separar la calidad del algoritmo de la escasez de presupuesto.</p></li>
+<li><p><strong>Pruebas unitarias.</strong> <code class="docutils literal notranslate"><span class="pre">tests/test_dejong.py</span></code> se ejecuta en cada <em>push</em>. Verifica:</p>
+<ul>
+<li><p>los mínimos conocidos;</p></li>
+<li><p>que el genético converge en la esfera con presupuesto amplio;</p></li>
+<li><p>que el mejor valor nunca empeora, gracias al elitismo;</p></li>
+<li><p>que supera a la búsqueda aleatoria en la esfera con el presupuesto del proyecto;</p></li>
+<li><p>que es reproducible con la misma semilla.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="resultados">
+<h2>Resultados<a class="headerlink" href="#resultados" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-dejong">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Mejor valor encontrado (mediana de 10 semillas) y número de semillas en que el genético supera a la búsqueda aleatoria con el mismo número de evaluaciones.</span><a class="headerlink" href="#tab-dejong" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Función</p></th>
+<th class="head"><p>Mínimo</p></th>
+<th class="head"><p>Genético 16 × 10</p></th>
+<th class="head"><p>Aleatoria (mismas evaluaciones)</p></th>
+<th class="head"><p>Gana el genético</p></th>
+<th class="head"><p>Genético 50 × 50</p></th>
+<th class="head"><p>Aleatoria (mismas evaluaciones)</p></th>
+<th class="head"><p>Gana el genético</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>F1 esfera (n = 3)</p></td>
+<td><p>0</p></td>
+<td><p><strong>0.211</strong></p></td>
+<td><p>1.912</p></td>
+<td><p>10 / 10</p></td>
+<td><p><strong>0.001</strong></p></td>
+<td><p>0.369</p></td>
+<td><p>10 / 10</p></td>
+</tr>
+<tr class="row-odd"><td><p>F2 Rosenbrock (n = 2)</p></td>
+<td><p>0</p></td>
+<td><p>0.900</p></td>
+<td><p><strong>0.488</strong></p></td>
+<td><p>4 / 10</p></td>
+<td><p>0.053</p></td>
+<td><p><strong>0.027</strong></p></td>
+<td><p>4 / 10</p></td>
+</tr>
+<tr class="row-even"><td><p>F3 escalón (n = 5)</p></td>
+<td><p>−30</p></td>
+<td><p><strong>−25.5</strong></p></td>
+<td><p>−18.5</p></td>
+<td><p>10 / 10</p></td>
+<td><p><strong>−30.0</strong></p></td>
+<td><p>−22.5</p></td>
+<td><p>10 / 10</p></td>
+</tr>
+<tr class="row-odd"><td><p>F4 cuártica con ruido (n = 30)</p></td>
+<td><p>0</p></td>
+<td><p><strong>44.4</strong></p></td>
+<td><p>101.1</p></td>
+<td><p>10 / 10</p></td>
+<td><p><strong>1.43</strong></p></td>
+<td><p>66.5</p></td>
+<td><p>10 / 10</p></td>
+</tr>
+<tr class="row-even"><td><p>F5 Shekel (n = 2)</p></td>
+<td><p>0.998</p></td>
+<td><p>20.70</p></td>
+<td><p><strong>11.21</strong></p></td>
+<td><p>3 / 10</p></td>
+<td><p><strong>0.999</strong></p></td>
+<td><p>2.231</p></td>
+<td><p>8 / 10</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="align-default" id="fig-dejong">
+<a class="reference internal image-reference" href="_images/dejong_convergencia.png"><img alt="_images/dejong_convergencia.png" src="_images/dejong_convergencia.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Brecha al óptimo del mejor valor encontrado hasta cada evaluación, con el presupuesto del proyecto. Las líneas
+son la mediana de 10 semillas y las bandas, el rango intercuartílico. El eje vertical está en escala
+logarítmica simétrica.</span><a class="headerlink" href="#fig-dejong" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="interpretacion">
+<h2>Interpretación<a class="headerlink" href="#interpretacion" title="Link to this heading">#</a></h2>
+<p><strong>La implementación es correcta.</strong> Con presupuesto amplio, el genético encuentra el mínimo exacto de la esfera
+(0.001) y del escalón (−30) y llega al mínimo global de Shekel (0.999 frente a 0.998), pese a sus 25 mínimos
+locales. En la cuártica de 30 dimensiones con ruido baja de 101 a 1.4, mientras la búsqueda aleatoria se queda
+en 66.</p>
+<p><strong>Con el presupuesto del proyecto, la ventaja depende de la dimensión.</strong> En las funciones de 3, 5 y 30
+variables, el genético gana en las 10 semillas. En las de 2 variables (Rosenbrock y Shekel), la búsqueda
+aleatoria es igual o mejor: con unas 115 evaluaciones cubre bien un plano, y el genético todavía no ha
+explotado lo que encontró. En Rosenbrock pierde incluso con presupuesto amplio: la mutación gaussiana, con una
+desviación del 15 % del rango, es demasiado gruesa para seguir un valle estrecho.</p>
+<p><strong>Esto explica lo que se vio con los datos de crédito.</strong> Los espacios de hiperparámetros del proyecto tienen
+entre 2 y 6 dimensiones, y el F1 cambia muy poco dentro de una región amplia de buenas configuraciones (la
+diferencia entre métodos fue menor que la variación entre pliegues). Es justo el caso en que la búsqueda
+aleatoria es muy competitiva <span class="bibtex-citation" id="id2">[<a class="reference internal" href="reproducibilidad.html#id24" title="James Bergstra and Yoshua Bengio. Random search for hyper-parameter optimization. Journal of Machine Learning Research, 13:281–305, 2012.">BB12</a>]</span>. Que el genético no la superara no indica un error de
+implementación: con unas 120 evaluaciones y pocas dimensiones, explorar al azar rinde tanto como evolucionar.</p>
+<p><strong>Limitación.</strong> Las funciones de De Jong son continuas, mientras que algunos hiperparámetros son enteros o
+categóricos. Aquí solo se prueban los operadores para variables continuas. Los de enteros comparten la mutación
+gaussiana y la redondean; los categóricos no se prueban.</p>
+<p>Se reproduce con <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.dejong</span></code> (unos 2 minutos).</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="notebooks/09_anytime_multifidelidad.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">09. Curvas anytime y multi-fidelidad</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="literatura.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Revisión de literatura y evidencia de novedad</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-hace-falta">Por qué hace falta</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diseno">Diseño</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultados">Resultados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion">Interpretación</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Katherin Barrera López y Valeria Florez Sarmiento
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

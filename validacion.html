@@ -240,6 +240,7 @@
 
 <li class="toctree-l1"><a class="reference internal" href="notebooks/08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizacion_dejong.html">Validación del algoritmo genético con las funciones de De Jong</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Revisión de literatura y novedad</span></p>
 <ul class="nav bd-sidenav">
@@ -444,7 +445,7 @@ y <code class="docutils literal notranslate"><span class="pre">experiments/compa
 <section id="resultados">
 <h2>Resultados<a class="headerlink" href="#resultados" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-ranking">
-<caption><span class="caption-number">Table 3 </span><span class="caption-text">Mejor combinación de cada modelo en los 5 pliegues externos.</span><a class="headerlink" href="#tab-ranking" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 4 </span><span class="caption-text">Mejor combinación de cada modelo en los 5 pliegues externos.</span><a class="headerlink" href="#tab-ranking" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
 <th class="head"><p>Técnica</p></th>
@@ -532,14 +533,14 @@ clásicos más débiles.</p>
 <a class="reference internal image-reference" href="_images/cd_diagram_final.png"><img alt="_images/cd_diagram_final.png" src="_images/cd_diagram_final.png" style="width: 100%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Diagrama de diferencia crítica de Nemenyi con CS-FOF incluido. Cada modelo se ubica en su rango medio
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Diagrama de diferencia crítica de Nemenyi con CS-FOF incluido. Cada modelo se ubica en su rango medio
 (1 es el mejor) sobre los 5 pliegues externos; las barras azules unen modelos cuya diferencia de rangos es
 menor que la diferencia crítica (6.06) y que, por tanto, no se distinguen. CS-FOF (2.4) queda en el
 mismo grupo que CatBoost (2.0), XGBoost, Random Forest y LightGBM.</span><a class="headerlink" href="#fig-cd-final" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-pruebas">
-<caption><span class="caption-number">Table 4 </span><span class="caption-text">CS-FOF frente a la mejor combinación de cada modelo. p-valores ajustados con Holm (9 comparaciones).</span><a class="headerlink" href="#tab-pruebas" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 5 </span><span class="caption-text">CS-FOF frente a la mejor combinación de cada modelo. p-valores ajustados con Holm (9 comparaciones).</span><a class="headerlink" href="#tab-pruebas" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Rival</p></th>
 <th class="head"><p>Diferencia de F1</p></th>
@@ -620,7 +621,7 @@ mismo grupo que CatBoost (2.0), XGBoost, Random Forest y LightGBM.</span><a clas
 <p><strong>DeLong y McNemar.</strong> Se reajustaron los modelos con los hiperparámetros elegidos en cada pliegue para
 obtener predicciones fuera de pliegue de los 29 965 clientes.</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-delong">
-<caption><span class="caption-number">Table 5 </span><span class="caption-text">DeLong (AUC) y McNemar (errores a umbral 0.5) sobre predicciones fuera de pliegue.</span><a class="headerlink" href="#tab-delong" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 6 </span><span class="caption-text">DeLong (AUC) y McNemar (errores a umbral 0.5) sobre predicciones fuera de pliegue.</span><a class="headerlink" href="#tab-delong" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Rival</p></th>
 <th class="head"><p>AUC CS-FOF / rival</p></th>
