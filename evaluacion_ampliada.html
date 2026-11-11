@@ -1,0 +1,1322 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Evaluación ampliada: ablación, robustez y limitaciones &#8212; Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/dash_theme.css?v=16a22a96" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'evaluacion_ampliada';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dashboard y despliegue" href="dashboard.html" />
+    <link rel="prev" title="Validación estadística del modelo original" href="validacion.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="portada.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="portada.html">
+                    Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. Introducción</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduccion.html">Marco del proyecto</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. Trazabilidad de correcciones</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="correcciones.html">Trazabilidad de correcciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Datos: ETL y EDA</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DATA_STATEMENT.html">Declaración de los datos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Modelos benchmark</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Verificación del protocolo experimental</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/04_run_experiments.html">04. Ejecutar experimentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/05_results_analysis.html">05. Análisis de resultados</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="notebooks/08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Revisión de literatura y novedad</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="literatura.html">Revisión de literatura y evidencia de novedad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Modelo original</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="modelo_original.html">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="validacion.html">Validación estadística del modelo original</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. Evaluación ampliada y robustez</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Evaluación ampliada: ablación, robustez y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Dashboard y despliegue</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dashboard.html">Dashboard y despliegue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MODEL_CARD.html">Ficha del modelo: CS-FOF</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">9. Conclusiones y limitaciones</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="conclusiones.html">Conclusiones y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Reproducibilidad y bibliografía</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="reproducibilidad.html">Reproducibilidad, archivo del repositorio y declaración de autoría</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/evaluacion_ampliada.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Evaluación ampliada: ablación, robustez y limitaciones</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ablacion-y-sensibilidad-pruebas-de-diseno">Ablación y sensibilidad (pruebas de diseño)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estabilidad-entre-pliegues">Estabilidad entre pliegues</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conjuntos-de-datos-adicionales">Conjuntos de datos adicionales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robustez">Robustez</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estudios-complementarios">Estudios complementarios</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estabilidad-por-semilla">Estabilidad por semilla</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#escalabilidad">Escalabilidad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cambio-de-distribucion">Cambio de distribución</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recalibracion">Recalibración</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cuantificacion-de-incertidumbre-prediccion-conforme">Cuantificación de incertidumbre: predicción conforme</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-de-errores">Análisis de errores</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lo-que-no-se-ejecuto">Lo que no se ejecutó</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="evaluacion-ampliada-ablacion-robustez-y-limitaciones">
+<h1>Evaluación ampliada: ablación, robustez y limitaciones<a class="headerlink" href="#evaluacion-ampliada-ablacion-robustez-y-limitaciones" title="Link to this heading">#</a></h1>
+<section id="ablacion-y-sensibilidad-pruebas-de-diseno">
+<h2>Ablación y sensibilidad (pruebas de diseño)<a class="headerlink" href="#ablacion-y-sensibilidad-pruebas-de-diseno" title="Link to this heading">#</a></h2>
+<p>Las variantes se evaluaron <strong>solo con el entrenamiento del pliegue externo 1</strong>, con validación interna
+estratificada de 3 pliegues, sin usar ningún pliegue de prueba (<code class="docutils literal notranslate"><span class="pre">experiments/cs_fof_diseno/</span></code>).</p>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-ablacion">
+<caption><span class="caption-number">Table 6 </span><span class="caption-text">Variantes de diseño de CS-FOF (F1 de la clase <em>default</em>, validación interna).</span><a class="headerlink" href="#tab-ablacion" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Variante</p></th>
+<th class="head"><p>F1</p></th>
+<th class="head"><p>Lectura</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CS-FOF base (un candidato oblicuo, <span class="math notranslate nohighlight">\(q=\sqrt p\)</span>, <span class="math notranslate nohighlight">\(d=10\)</span>, <span class="math notranslate nohighlight">\(h=20\)</span>)</p></td>
+<td><p><strong>0.5493</strong></p></td>
+<td><p>Referencia</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sin corte oblicuo (ablación)</p></td>
+<td><p>0.5452</p></td>
+<td><p>El corte oblicuo aporta +0.004</p></td>
+</tr>
+<tr class="row-even"><td><p>Oblicuo con <span class="math notranslate nohighlight">\(p/2\)</span> variables</p></td>
+<td><p>0.5449</p></td>
+<td><p>Un corte más fuerte sobreajusta</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dos candidatos oblicuos por nodo</p></td>
+<td><p>0.5482</p></td>
+<td><p>Sin mejora</p></td>
+</tr>
+<tr class="row-even"><td><p>Más profundo (<span class="math notranslate nohighlight">\(d=14\)</span>, <span class="math notranslate nohighlight">\(h=10\)</span>)</p></td>
+<td><p>0.5238</p></td>
+<td><p>Sobreajuste claro</p></td>
+</tr>
+<tr class="row-odd"><td><p>128 bins</p></td>
+<td><p>0.5458</p></td>
+<td><p>Sin mejora</p></td>
+</tr>
+<tr class="row-even"><td><p>Random Forest / XGBoost (mejores hiperparámetros del pliegue 1)</p></td>
+<td><p>0.5450 / 0.5412</p></td>
+<td><p>Referencias</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Las variantes de regularización (profundidad 8 a 12, hoja mínima 20 a 40, <span class="math notranslate nohighlight">\(\varepsilon\)</span> entre 0.01 y
+0.5, <code class="docutils literal notranslate"><span class="pre">sqrt</span></code> o <code class="docutils literal notranslate"><span class="pre">log2</span></code>, 150 o 300 árboles) quedaron todas entre 0.546 y 0.550: el modelo <strong>no depende de
+un ajuste fino</strong> de sus hiperparámetros, una señal de estabilidad frente al sobreajuste.</p>
+</section>
+<section id="estabilidad-entre-pliegues">
+<h2>Estabilidad entre pliegues<a class="headerlink" href="#estabilidad-entre-pliegues" title="Link to this heading">#</a></h2>
+<p>En la validación anidada 5 × 5, CS-FOF tiene la menor desviación estándar del F1 entre los cinco mejores
+modelos (0.0054, frente a 0.0077–0.0091 de CatBoost, XGBoost, LightGBM y Random Forest), y sus cuatro
+métodos de búsqueda dan resultados cercanos (0.5456 a 0.5479).</p>
+</section>
+<section id="conjuntos-de-datos-adicionales">
+<h2>Conjuntos de datos adicionales<a class="headerlink" href="#conjuntos-de-datos-adicionales" title="Link to this heading">#</a></h2>
+<p>Para comprobar la consistencia, los 10 modelos se evaluaron en tres conjuntos de crédito del repositorio
+UCI con el mismo procedimiento: validación anidada 5 × 5, <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y búsqueda aleatoria de 25
+configuraciones (<code class="docutils literal notranslate"><span class="pre">src/run_additional_datasets.py</span></code>).</p>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-conjuntos">
+<caption><span class="caption-number">Table 7 </span><span class="caption-text">F1 medio de la clase de riesgo en los 5 pliegues externos y rango medio en los 4 conjuntos.</span><a class="headerlink" href="#tab-conjuntos" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelo</p></th>
+<th class="head"><p>Taiwán</p></th>
+<th class="head"><p>German (1 000; 30 %)</p></th>
+<th class="head"><p>Australian (690; 56 %)</p></th>
+<th class="head"><p>Polish año 1 (7 027; 4 %)</p></th>
+<th class="head"><p>Rango medio</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CatBoost</p></td>
+<td><p><strong>0.548</strong></p></td>
+<td><p><strong>0.605</strong></p></td>
+<td><p>0.878</p></td>
+<td><p><strong>0.733</strong></p></td>
+<td><p><strong>1.25</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>XGBoost</p></td>
+<td><p>0.547</p></td>
+<td><p>0.599</p></td>
+<td><p><strong>0.880</strong></p></td>
+<td><p>0.682</p></td>
+<td><p>2.75</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>CS-FOF</strong></p></td>
+<td><p><strong>0.548</strong></p></td>
+<td><p>0.589</p></td>
+<td><p>0.874</p></td>
+<td><p>0.430</p></td>
+<td><p>4.75</p></td>
+</tr>
+<tr class="row-odd"><td><p>Random Forest</p></td>
+<td><p>0.545</p></td>
+<td><p>0.600</p></td>
+<td><p>0.874</p></td>
+<td><p>0.446</p></td>
+<td><p>4.75</p></td>
+</tr>
+<tr class="row-even"><td><p>LightGBM</p></td>
+<td><p>0.546</p></td>
+<td><p>0.575</p></td>
+<td><p>0.874</p></td>
+<td><p>0.658</p></td>
+<td><p>4.75</p></td>
+</tr>
+<tr class="row-odd"><td><p>SVM</p></td>
+<td><p>0.539</p></td>
+<td><p>0.601</p></td>
+<td><p>0.862</p></td>
+<td><p>0.167</p></td>
+<td><p>5.75</p></td>
+</tr>
+<tr class="row-even"><td><p>KNN</p></td>
+<td><p>0.526</p></td>
+<td><p>0.560</p></td>
+<td><p>0.877</p></td>
+<td><p>0.138</p></td>
+<td><p>6.75</p></td>
+</tr>
+<tr class="row-odd"><td><p>Regresión logística</p></td>
+<td><p>0.518</p></td>
+<td><p>0.600</p></td>
+<td><p>0.872</p></td>
+<td><p>0.130</p></td>
+<td><p>7.00</p></td>
+</tr>
+<tr class="row-even"><td><p>Árbol de decisión</p></td>
+<td><p>0.525</p></td>
+<td><p>0.521</p></td>
+<td><p>0.860</p></td>
+<td><p>0.429</p></td>
+<td><p>8.25</p></td>
+</tr>
+<tr class="row-odd"><td><p>Naive Bayes</p></td>
+<td><p>0.499</p></td>
+<td><p>0.591</p></td>
+<td><p>0.837</p></td>
+<td><p>0.074</p></td>
+<td><p>9.00</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>La prueba de Friedman con la corrección de Iman–Davenport rechaza la igualdad de los 10 modelos en los
+4 conjuntos (<span class="math notranslate nohighlight">\(F=4.38\)</span>, <span class="math notranslate nohighlight">\(p=0.0013\)</span>), con CatBoost en el primer lugar. Ninguna comparación de CS-FOF con
+Wilcoxon y Holm es significativa (con 4 conjuntos el p mínimo es 0.125). Lectura por conjunto:</p>
+<ul class="simple">
+<li><p><strong>German:</strong> CS-FOF tiene el mayor AUC-ROC de los 10 (0.790) y un AUC-PR de 0.627, pero su F1 a umbral
+0.5 queda en el puesto 7 (0.589).</p></li>
+<li><p><strong>Australian:</strong> todos los modelos basados en árboles quedan dentro de 0.006 en F1; CS-FOF es cuarto.</p></li>
+<li><p><strong>Polish:</strong> con 4 % de quiebras y razones financieras de colas muy pesadas, los tres métodos de
+<em>boosting</em> superan con amplitud a los dos bosques (CatBoost 0.733 frente a CS-FOF 0.430 y Random
+Forest 0.446). El <em>boosting</em> corrige iterativamente los casos raros mal clasificados, mientras que el
+promedio de árboles independientes los diluye; la ponderación por costo de CS-FOF no basta para
+compensarlo.</p></li>
+</ul>
+<p><strong>CS-FOF no es consistentemente superior en los conjuntos adicionales.</strong> Su desempeño es equivalente al
+de Random Forest, el modelo del que parte, y queda por detrás de CatBoost y XGBoost cuando el
+desbalance es extremo.</p>
+</section>
+<section id="robustez">
+<h2>Robustez<a class="headerlink" href="#robustez" title="Link to this heading">#</a></h2>
+<p>Estudios <strong>exploratorios</strong> (no estaban en el protocolo original) sobre los cinco mejores modelos en
+Taiwán (<code class="docutils literal notranslate"><span class="pre">experiments/robustez/robustez.py</span></code>). Para no hacer una búsqueda nueva, cada modelo usa los
+hiperparámetros que eligió en cada pliegue externo; el ruido y el submuestreo se aplican solo al
+entrenamiento, y la prueba siempre es limpia y completa. Son 5 pliegues por nivel, sin pruebas de
+hipótesis, así que las diferencias pequeñas deben leerse con cautela.</p>
+<p><strong>Ruido en las etiquetas.</strong> Se invierte al azar una fracción de las etiquetas de entrenamiento (la misma
+para todos los modelos).</p>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-ruido">
+<caption><span class="caption-number">Table 8 </span><span class="caption-text">F1 medio en 5 pliegues según el porcentaje de etiquetas de entrenamiento invertidas.</span><a class="headerlink" href="#tab-ruido" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelo</p></th>
+<th class="head"><p>0 %</p></th>
+<th class="head"><p>5 %</p></th>
+<th class="head"><p>10 %</p></th>
+<th class="head"><p>20 %</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>CS-FOF</strong></p></td>
+<td><p><strong>0.5483</strong></p></td>
+<td><p>0.5455</p></td>
+<td><p><strong>0.5455</strong></p></td>
+<td><p><strong>0.5336</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>CatBoost</p></td>
+<td><p>0.5471</p></td>
+<td><p><strong>0.5469</strong></p></td>
+<td><p>0.5416</p></td>
+<td><p>0.5301</p></td>
+</tr>
+<tr class="row-even"><td><p>XGBoost</p></td>
+<td><p>0.5448</p></td>
+<td><p>0.5430</p></td>
+<td><p>0.5401</p></td>
+<td><p>0.5252</p></td>
+</tr>
+<tr class="row-odd"><td><p>LightGBM</p></td>
+<td><p>0.5459</p></td>
+<td><p>0.5443</p></td>
+<td><p>0.5408</p></td>
+<td><p>0.5304</p></td>
+</tr>
+<tr class="row-even"><td><p>Random Forest</p></td>
+<td><p>0.5434</p></td>
+<td><p>0.5423</p></td>
+<td><p>0.5414</p></td>
+<td><p>0.5303</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Todos pierden entre 0.013 y 0.020 de F1 con 20 % de ruido. CS-FOF tiene el mayor F1 en tres de los cuatro
+niveles y pierde menos que los tres métodos de <em>boosting</em> (−0.015 frente a −0.016 a −0.020); Random Forest
+es el que menos pierde (−0.013).</p>
+<p><strong>Tamaño de la muestra.</strong> Se entrena con una fracción estratificada del entrenamiento de cada pliegue.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-tamano">
+<caption><span class="caption-number">Table 9 </span><span class="caption-text">F1 medio en 5 pliegues según la fracción del entrenamiento usada.</span><a class="headerlink" href="#tab-tamano" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelo</p></th>
+<th class="head"><p>10 %</p></th>
+<th class="head"><p>25 %</p></th>
+<th class="head"><p>50 %</p></th>
+<th class="head"><p>100 %</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>CS-FOF</strong></p></td>
+<td><p>0.5356</p></td>
+<td><p><strong>0.5429</strong></p></td>
+<td><p><strong>0.5473</strong></p></td>
+<td><p><strong>0.5483</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>CatBoost</p></td>
+<td><p>0.5290</p></td>
+<td><p>0.5379</p></td>
+<td><p>0.5442</p></td>
+<td><p>0.5471</p></td>
+</tr>
+<tr class="row-even"><td><p>XGBoost</p></td>
+<td><p>0.5244</p></td>
+<td><p>0.5370</p></td>
+<td><p>0.5392</p></td>
+<td><p>0.5448</p></td>
+</tr>
+<tr class="row-odd"><td><p>LightGBM</p></td>
+<td><p>0.5363</p></td>
+<td><p>0.5415</p></td>
+<td><p>0.5437</p></td>
+<td><p>0.5459</p></td>
+</tr>
+<tr class="row-even"><td><p>Random Forest</p></td>
+<td><p><strong>0.5375</strong></p></td>
+<td><p>0.5415</p></td>
+<td><p>0.5405</p></td>
+<td><p>0.5434</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Con 25 % o más de los datos CS-FOF queda primero; con 10 % (unos 2 400 clientes) Random Forest y LightGBM
+quedan ligeramente por encima. Los métodos de <em>boosting</em> son los que más pierden con pocos datos (XGBoost
+−0.020 y CatBoost −0.018 entre 100 % y 10 %, frente a −0.013 de CS-FOF). Hay un sesgo a favor de todos los
+modelos por igual: sus hiperparámetros se eligieron con el entrenamiento completo.</p>
+<p><strong>Calibración.</strong> Con los pesos de clase, todos los modelos sobreestiman la probabilidad de
+incumplimiento (probabilidad media de 0.40 a 0.44 frente a una tasa real de 0.22).</p>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-calibracion">
+<caption><span class="caption-number">Table 10 </span><span class="caption-text">Calibración de las probabilidades fuera de pliegue (29 965 clientes; tasa real 0.221).</span><a class="headerlink" href="#tab-calibracion" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelo</p></th>
+<th class="head"><p>Brier</p></th>
+<th class="head"><p>Log-loss</p></th>
+<th class="head"><p>ECE</p></th>
+<th class="head"><p>Probabilidad media</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>CS-FOF</strong></p></td>
+<td><p>0.1679</p></td>
+<td><p>0.5177</p></td>
+<td><p>0.1797</p></td>
+<td><p>0.401</p></td>
+</tr>
+<tr class="row-odd"><td><p>Random Forest</p></td>
+<td><p>0.1725</p></td>
+<td><p>0.5276</p></td>
+<td><p>0.1891</p></td>
+<td><p>0.410</p></td>
+</tr>
+<tr class="row-even"><td><p>XGBoost</p></td>
+<td><p>0.1750</p></td>
+<td><p>0.5347</p></td>
+<td><p>0.1962</p></td>
+<td><p>0.417</p></td>
+</tr>
+<tr class="row-odd"><td><p>CatBoost</p></td>
+<td><p>0.1785</p></td>
+<td><p>0.5435</p></td>
+<td><p>0.2042</p></td>
+<td><p>0.425</p></td>
+</tr>
+<tr class="row-even"><td><p>LightGBM</p></td>
+<td><p>0.1899</p></td>
+<td><p>0.5674</p></td>
+<td><p>0.2197</p></td>
+<td><p>0.441</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>CS-FOF tiene las probabilidades mejor calibradas de los cinco en las tres métricas, aunque ninguno está
+bien calibrado; para usar las probabilidades como riesgo real hace falta recalibrarlas; la sección de recalibración
+muestra que la regresión isotónica lo resuelve para todos.</p>
+<p><strong>Costo.</strong> CS-FOF es el más lento: unos 13 s por ajuste con 4 procesos, frente a 1–3 s de los demás.</p>
+</section>
+<section id="estudios-complementarios">
+<h2>Estudios complementarios<a class="headerlink" href="#estudios-complementarios" title="Link to this heading">#</a></h2>
+<p>Estos estudios completan la Tabla 4 del Entregable 3. Son <strong>exploratorios</strong> (no estaban en el protocolo
+original) y no sustentan por sí solos la condición R3. Usan las mismas 5 particiones externas y, cuando
+hay que entrenar, los hiperparámetros que cada modelo eligió en cada pliegue, sin búsqueda nueva.</p>
+<section id="estabilidad-por-semilla">
+<h3>Estabilidad por semilla<a class="headerlink" href="#estabilidad-por-semilla" title="Link to this heading">#</a></h3>
+<p>Se repitió el ajuste de los cinco mejores modelos con 10 semillas distintas (0 a 9) sobre los mismos
+5 pliegues externos y los mismos hiperparámetros, es decir, 50 ajustes por modelo. La semilla cambia el
+<em>bootstrap</em>, el sorteo de variables y, en el <em>boosting</em>, el submuestreo.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelo</p></th>
+<th class="head"><p>F1 medio (10 semillas)</p></th>
+<th class="head"><p>D.e. entre semillas</p></th>
+<th class="head"><p>Mínimo y máximo</p></th>
+<th class="head"><p>Intervalo 95 % (percentiles)</p></th>
+<th class="head"><p>Semillas en que CS-FOF gana</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CS-FOF</p></td>
+<td><p><strong>0.5469</strong></p></td>
+<td><p>0.0008</p></td>
+<td><p>0.5453 a 0.5477</p></td>
+<td><p>0.5454 a 0.5476</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>CatBoost</p></td>
+<td><p>0.5468</p></td>
+<td><p>0.0011</p></td>
+<td><p>0.5446 a 0.5485</p></td>
+<td><p>0.5449 a 0.5484</p></td>
+<td><p>7 de 10</p></td>
+</tr>
+<tr class="row-even"><td><p>LightGBM</p></td>
+<td><p>0.5457</p></td>
+<td><p>0.0006</p></td>
+<td><p>0.5449 a 0.5467</p></td>
+<td><p>0.5449 a 0.5467</p></td>
+<td><p>8 de 10</p></td>
+</tr>
+<tr class="row-odd"><td><p>XGBoost</p></td>
+<td><p>0.5447</p></td>
+<td><p>0.0008</p></td>
+<td><p>0.5437 a 0.5462</p></td>
+<td><p>0.5438 a 0.5460</p></td>
+<td><p>10 de 10</p></td>
+</tr>
+<tr class="row-even"><td><p>Random Forest</p></td>
+<td><p>0.5440</p></td>
+<td><p>0.0007</p></td>
+<td><p>0.5433 a 0.5457</p></td>
+<td><p>0.5434 a 0.5455</p></td>
+<td><p>10 de 10</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="align-default" id="fig-semillas">
+<a class="reference internal image-reference" href="_images/semillas_boxplot.png"><img alt="_images/semillas_boxplot.png" src="_images/semillas_boxplot.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">F1 de la clase de impago en 10 semillas × 5 pliegues externos. Las cajas resumen los 50 valores; los
+puntos dorados son la media de cada semilla.</span><a class="headerlink" href="#fig-semillas" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>La variación por semilla (desviación de 0.0006 a 0.0011) es unas 10 veces menor que la variación entre
+pliegues (0.005 a 0.009): la incertidumbre del F1 viene sobre todo de la partición, no de la semilla.
+CS-FOF y CatBoost quedan empatados (0.5469 frente a 0.5468, con intervalos que se solapan casi por
+completo); CS-FOF gana en 7 de 10 semillas a CatBoost y en todas a XGBoost y Random Forest. El resultado
+confirma el empate del bucle externo y que la posición de CS-FOF no depende de una semilla favorable.</p>
+</section>
+<section id="escalabilidad">
+<h3>Escalabilidad<a class="headerlink" href="#escalabilidad" title="Link to this heading">#</a></h3>
+<p>Tiempo de ajuste en el pliegue 0 (4 núcleos) al variar el número de filas <span class="math notranslate nohighlight">\(n\)</span> y de columnas <span class="math notranslate nohighlight">\(p\)</span>.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(n\)</span> (con <span class="math notranslate nohighlight">\(p=25\)</span>)</p></th>
+<th class="head"><p>CS-FOF</p></th>
+<th class="head"><p>CatBoost</p></th>
+<th class="head"><p>XGBoost</p></th>
+<th class="head"><p>LightGBM</p></th>
+<th class="head"><p>Random Forest</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2,397 (10 %)</p></td>
+<td><p>1.26 s</p></td>
+<td><p>0.46 s</p></td>
+<td><p>0.26 s</p></td>
+<td><p>0.15 s</p></td>
+<td><p>0.48 s</p></td>
+</tr>
+<tr class="row-odd"><td><p>5,993 (25 %)</p></td>
+<td><p>2.26 s</p></td>
+<td><p>0.72 s</p></td>
+<td><p>0.30 s</p></td>
+<td><p>0.38 s</p></td>
+<td><p>0.57 s</p></td>
+</tr>
+<tr class="row-even"><td><p>11,986 (50 %)</p></td>
+<td><p>3.84 s</p></td>
+<td><p>1.03 s</p></td>
+<td><p>0.43 s</p></td>
+<td><p>0.62 s</p></td>
+<td><p>0.88 s</p></td>
+</tr>
+<tr class="row-odd"><td><p>23,972 (100 %)</p></td>
+<td><p>6.56 s</p></td>
+<td><p>1.35 s</p></td>
+<td><p>0.55 s</p></td>
+<td><p>0.90 s</p></td>
+<td><p>1.46 s</p></td>
+</tr>
+<tr class="row-even"><td><p>Pendiente log-log en <span class="math notranslate nohighlight">\(n\)</span></p></td>
+<td><p>0.72</p></td>
+<td><p>0.47</p></td>
+<td><p>0.34</p></td>
+<td><p>0.78</p></td>
+<td><p>0.49</p></td>
+</tr>
+<tr class="row-odd"><td><p>Inferencia (ms / 1,000 clientes)</p></td>
+<td><p>253.1</p></td>
+<td><p>0.4</p></td>
+<td><p>4.8</p></td>
+<td><p>5.5</p></td>
+<td><p>9.4</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="align-default" id="fig-escalabilidad">
+<a class="reference internal image-reference" href="_images/escalabilidad.png"><img alt="_images/escalabilidad.png" src="_images/escalabilidad.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Tiempo de ajuste frente a <span class="math notranslate nohighlight">\(n\)</span> (izquierda, escala logarítmica) y frente a <span class="math notranslate nohighlight">\(p\)</span> (derecha), pliegue 0.</span><a class="headerlink" href="#fig-escalabilidad" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>El tiempo de CS-FOF crece de forma sublineal en <span class="math notranslate nohighlight">\(n\)</span> en este rango (pendiente 0.72), como predice el
+término <span class="math notranslate nohighlight">\(O(n\log n)\)</span> de la complejidad cuando la profundidad está acotada y la constante del ordenamiento
+domina. Con <span class="math notranslate nohighlight">\(p\)</span> crece poco (de 4.4 s con 6 columnas a 6.5 s con 25) porque cada nodo solo examina
+<span class="math notranslate nohighlight">\(q=\lfloor\sqrt p\rfloor\)</span> variables. Es el modelo más lento: unas 5 veces CatBoost al entrenar y unas
+600 veces al predecir, porque está escrito en numpy y no en código compilado. Para el tablero esto no es
+un problema (un cliente se predice en milisegundos), pero sí lo sería para puntuar millones de clientes.</p>
+</section>
+<section id="cambio-de-distribucion">
+<h3>Cambio de distribución<a class="headerlink" href="#cambio-de-distribucion" title="Link to this heading">#</a></h3>
+<p>El conjunto es un corte transversal sin fechas, así que no hay un bloque temporal posterior. Se simula
+el cambio con dos particiones por grupo que no se usaron en ninguna decisión de diseño: entrenar con un
+grupo y probar con el otro (hiperparámetros del pliegue 0).</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Escenario</p></th>
+<th class="head"><p>CS-FOF</p></th>
+<th class="head"><p>CatBoost</p></th>
+<th class="head"><p>XGBoost</p></th>
+<th class="head"><p>LightGBM</p></th>
+<th class="head"><p>Random Forest</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Edad: entrena ≤ 35 (16,787), prueba &gt; 35 (13,178)</p></td>
+<td><p><strong>0.558</strong></p></td>
+<td><p>0.553</p></td>
+<td><p>0.545</p></td>
+<td><p>0.558</p></td>
+<td><p>0.556</p></td>
+</tr>
+<tr class="row-odd"><td><p>Educación: entrena universidad/posgrado (24,582), prueba secundaria/otros (5,383)</p></td>
+<td><p><strong>0.557</strong></p></td>
+<td><p>0.546</p></td>
+<td><p>0.552</p></td>
+<td><p>0.549</p></td>
+<td><p>0.555</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>F1 de la clase de impago en el grupo de prueba. Brier de CS-FOF: 0.170 y 0.190, el menor o empatado con
+el menor en ambos escenarios.</p>
+<p>CS-FOF conserva el primer lugar en los dos escenarios (en edad, empatado con LightGBM a la tercera
+cifra) y ningún modelo se degrada respecto a la validación cruzada: el cambio de grupo de edad o de
+educación mueve poco la tasa de impago (de 0.214 a 0.230 y de 0.218 a 0.236). Es una prueba débil de
+cambio de distribución, porque los grupos comparten periodo y banco.</p>
+</section>
+<section id="recalibracion">
+<h3>Recalibración<a class="headerlink" href="#recalibracion" title="Link to this heading">#</a></h3>
+<p>Con pesos de clase, todos los modelos sobreestiman el riesgo (probabilidad media 0.40 a 0.44 frente a
+una tasa real de 0.22). Se ajustó una regresión isotónica con las probabilidades fuera de pliegue de 4
+pliegues y se aplicó al quinto, de modo que ninguna probabilidad se recalibra con sus propios datos.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelo</p></th>
+<th class="head"><p>Brier antes</p></th>
+<th class="head"><p>Brier después</p></th>
+<th class="head"><p>ECE antes</p></th>
+<th class="head"><p>ECE después</p></th>
+<th class="head"><p>AUC antes</p></th>
+<th class="head"><p>AUC después</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CS-FOF</p></td>
+<td><p>0.168</p></td>
+<td><p><strong>0.134</strong></p></td>
+<td><p>0.180</p></td>
+<td><p><strong>0.003</strong></p></td>
+<td><p>0.783</p></td>
+<td><p>0.781</p></td>
+</tr>
+<tr class="row-odd"><td><p>CatBoost</p></td>
+<td><p>0.179</p></td>
+<td><p><strong>0.134</strong></p></td>
+<td><p>0.204</p></td>
+<td><p><strong>0.003</strong></p></td>
+<td><p>0.784</p></td>
+<td><p>0.782</p></td>
+</tr>
+<tr class="row-even"><td><p>XGBoost</p></td>
+<td><p>0.175</p></td>
+<td><p>0.135</p></td>
+<td><p>0.196</p></td>
+<td><p>0.003</p></td>
+<td><p>0.783</p></td>
+<td><p>0.781</p></td>
+</tr>
+<tr class="row-odd"><td><p>LightGBM</p></td>
+<td><p>0.190</p></td>
+<td><p>0.138</p></td>
+<td><p>0.220</p></td>
+<td><p>0.023</p></td>
+<td><p>0.773</p></td>
+<td><p>0.764</p></td>
+</tr>
+<tr class="row-even"><td><p>Random Forest</p></td>
+<td><p>0.173</p></td>
+<td><p>0.134</p></td>
+<td><p>0.189</p></td>
+<td><p>0.003</p></td>
+<td><p>0.782</p></td>
+<td><p>0.781</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="align-default" id="fig-recalibracion">
+<a class="reference internal image-reference" href="_images/recalibracion_isotonica.png"><img alt="_images/recalibracion_isotonica.png" src="_images/recalibracion_isotonica.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Curvas de confiabilidad de CS-FOF y CatBoost antes y después de la regresión isotónica.</span><a class="headerlink" href="#fig-recalibracion" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>La regresión isotónica deja a los cinco modelos prácticamente calibrados (ECE de 0.003) y con el mismo
+Brier. La ventaja de calibración de CS-FOF que se vio arriba <strong>desaparece tras recalibrar</strong>: era una
+diferencia del puntaje sin calibrar, no de la información que contiene. El AUC baja muy poco porque la
+regresión isotónica es monótona pero crea empates.</p>
+</section>
+<section id="cuantificacion-de-incertidumbre-prediccion-conforme">
+<h3>Cuantificación de incertidumbre: predicción conforme<a class="headerlink" href="#cuantificacion-de-incertidumbre-prediccion-conforme" title="Link to this heading">#</a></h3>
+<p>Se construyeron conjuntos de predicción conformes por clase (Mondrian) con nivel nominal de 90 %
+(<span class="math notranslate nohighlight">\(\alpha=0.10\)</span>): el conjunto de un cliente contiene cada clase <span class="math notranslate nohighlight">\(c\)</span> cuyo puntaje de no conformidad
+<span class="math notranslate nohighlight">\(1-\hat p_c(x)\)</span> no supera el cuantil <span class="math notranslate nohighlight">\(\lceil (n_c+1)(1-\alpha)\rceil/n_c\)</span> de los puntajes de los
+clientes de la clase <span class="math notranslate nohighlight">\(c\)</span> en los otros 4 pliegues. La garantía es de cobertura marginal en cada clase,
+bajo intercambiabilidad.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelo</p></th>
+<th class="head"><p>Cobertura</p></th>
+<th class="head"><p>Cobertura en impago</p></th>
+<th class="head"><p>Cobertura en pago</p></th>
+<th class="head"><p>Tamaño medio</p></th>
+<th class="head"><p>Un solo valor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CS-FOF</p></td>
+<td><p>0.900</p></td>
+<td><p>0.899</p></td>
+<td><p>0.900</p></td>
+<td><p>1.50</p></td>
+<td><p>50.0 %</p></td>
+</tr>
+<tr class="row-odd"><td><p>CatBoost</p></td>
+<td><p>0.900</p></td>
+<td><p>0.901</p></td>
+<td><p>0.900</p></td>
+<td><p>1.50</p></td>
+<td><p>50.5 %</p></td>
+</tr>
+<tr class="row-even"><td><p>XGBoost</p></td>
+<td><p>0.900</p></td>
+<td><p>0.899</p></td>
+<td><p>0.900</p></td>
+<td><p>1.50</p></td>
+<td><p>50.4 %</p></td>
+</tr>
+<tr class="row-odd"><td><p>LightGBM</p></td>
+<td><p>0.901</p></td>
+<td><p>0.897</p></td>
+<td><p>0.903</p></td>
+<td><p>1.55</p></td>
+<td><p>44.7 %</p></td>
+</tr>
+<tr class="row-even"><td><p>Random Forest</p></td>
+<td><p>0.900</p></td>
+<td><p>0.901</p></td>
+<td><p>0.900</p></td>
+<td><p>1.50</p></td>
+<td><p>50.3 %</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>La cobertura empírica coincide con la nominal en las dos clases para los cinco modelos. El precio es el
+tamaño: con 90 % de confianza, la mitad de los clientes recibe el conjunto {pago, impago}. Es una forma
+honesta de decir que el techo de este problema (F1 ≈ 0.55) deja a uno de cada dos clientes en zona de
+duda. El tablero muestra este conjunto junto con cada predicción.</p>
+</section>
+<section id="analisis-de-errores">
+<h3>Análisis de errores<a class="headerlink" href="#analisis-de-errores" title="Link to this heading">#</a></h3>
+<p>F1 por subgrupo con las predicciones fuera de pliegue (umbral 0.5).</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Subgrupo</p></th>
+<th class="head"><p>n</p></th>
+<th class="head"><p>Tasa de impago</p></th>
+<th class="head"><p>F1 CS-FOF</p></th>
+<th class="head"><p>F1 CatBoost</p></th>
+<th class="head"><p>Diferencia</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Pago de septiembre al día o adelantado</p></td>
+<td><p>23,169</p></td>
+<td><p>0.138</p></td>
+<td><p>0.261</p></td>
+<td><p>0.298</p></td>
+<td><p><strong>−0.037</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pago de septiembre con 1 mes de atraso</p></td>
+<td><p>3,667</p></td>
+<td><p>0.340</p></td>
+<td><p>0.551</p></td>
+<td><p>0.547</p></td>
+<td><p>+0.004</p></td>
+</tr>
+<tr class="row-even"><td><p>Pago de septiembre con 2 o más meses</p></td>
+<td><p>3,129</p></td>
+<td><p>0.695</p></td>
+<td><p>0.821</p></td>
+<td><p>0.820</p></td>
+<td><p>+0.000</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cupo en el cuartil más bajo</p></td>
+<td><p>7,673</p></td>
+<td><p>0.318</p></td>
+<td><p>0.602</p></td>
+<td><p>0.593</p></td>
+<td><p>+0.008</p></td>
+</tr>
+<tr class="row-even"><td><p>Cupo en el cuartil más alto</p></td>
+<td><p>7,058</p></td>
+<td><p>0.140</p></td>
+<td><p>0.455</p></td>
+<td><p>0.457</p></td>
+<td><p>−0.002</p></td>
+</tr>
+<tr class="row-odd"><td><p>Edad ≤ 30</p></td>
+<td><p>10,997</p></td>
+<td><p>0.225</p></td>
+<td><p>0.561</p></td>
+<td><p>0.554</p></td>
+<td><p>+0.007</p></td>
+</tr>
+<tr class="row-even"><td><p>Edad &gt; 45</p></td>
+<td><p>4,666</p></td>
+<td><p>0.252</p></td>
+<td><p>0.572</p></td>
+<td><p>0.577</p></td>
+<td><p>−0.005</p></td>
+</tr>
+<tr class="row-odd"><td><p>Educación secundaria</p></td>
+<td><p>4,915</p></td>
+<td><p>0.252</p></td>
+<td><p>0.569</p></td>
+<td><p>0.566</p></td>
+<td><p>+0.004</p></td>
+</tr>
+<tr class="row-even"><td><p>Mujer</p></td>
+<td><p>18,091</p></td>
+<td><p>0.208</p></td>
+<td><p>0.540</p></td>
+<td><p>0.538</p></td>
+<td><p>+0.003</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hombre</p></td>
+<td><p>11,874</p></td>
+<td><p>0.242</p></td>
+<td><p>0.559</p></td>
+<td><p>0.559</p></td>
+<td><p>−0.000</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Dónde falla.</strong> El punto débil de todos los modelos son los clientes que están al día en septiembre:
+son el 77 % de la cartera, su tasa de impago es baja (13.8 %) y el F1 cae a 0.26 a 0.30. Ahí CS-FOF es
+claramente peor que CatBoost: deja pasar al 11.0 % de esos clientes como falsos negativos. La causa
+probable es que, dentro de este grupo, el impago depende de señales débiles y no lineales (pagos parciales
+en meses anteriores, tendencia de la factura) que el <em>boosting</em> capta mejor al corregir los errores de
+forma secuencial, mientras que el corte de Fisher busca una sola dirección lineal por nodo. En los grupos
+con atraso, donde la señal es fuerte, los dos modelos empatan. Entre sexos, edades y niveles educativos
+las diferencias son pequeñas (menos de 0.01) y no hay un subgrupo demográfico en el que CS-FOF se
+derrumbe, aunque el F1 es 0.02 menor en mujeres que en hombres en ambos modelos.</p>
+</section>
+</section>
+<section id="lo-que-no-se-ejecuto">
+<h2>Lo que no se ejecutó<a class="headerlink" href="#lo-que-no-se-ejecuto" title="Link to this heading">#</a></h2>
+<p>Por tiempo de cómputo no se ejecutaron la validación externa repetida (no cambiaría el veredicto, ver
+<code class="docutils literal notranslate"><span class="pre">experiments/protocolo.md</span></code>) ni la ablación con validación anidada 5 × 5. Se declaran como desviaciones y
+como trabajo futuro. Todos los estudios de esta sección se reproducen con
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">experiments/robustez/ampliada.py</span></code>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="validacion.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Validación estadística del modelo original</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="dashboard.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Dashboard y despliegue</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ablacion-y-sensibilidad-pruebas-de-diseno">Ablación y sensibilidad (pruebas de diseño)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estabilidad-entre-pliegues">Estabilidad entre pliegues</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conjuntos-de-datos-adicionales">Conjuntos de datos adicionales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robustez">Robustez</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estudios-complementarios">Estudios complementarios</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estabilidad-por-semilla">Estabilidad por semilla</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#escalabilidad">Escalabilidad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cambio-de-distribucion">Cambio de distribución</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recalibracion">Recalibración</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cuantificacion-de-incertidumbre-prediccion-conforme">Cuantificación de incertidumbre: predicción conforme</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-de-errores">Análisis de errores</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lo-que-no-se-ejecuto">Lo que no se ejecutó</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Katherin Barrera López y Valeria Florez Sarmiento
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

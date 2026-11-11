@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/dash_theme.css?v=16a22a96" />
@@ -67,6 +67,7 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Revisión de literatura y evidencia de novedad" href="../literatura.html" />
     <link rel="prev" title="09. Curvas anytime y multi-fidelidad" href="09_anytime_multifidelidad.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -228,6 +229,15 @@
 <li class="toctree-l1"><a class="reference internal" href="08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../literatura.html">Revisión de literatura y evidencia de novedad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelo_original.html">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validacion.html">Validación estadística del modelo original</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluacion_ampliada.html">Evaluación ampliada: ablación, robustez y limitaciones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dashboard.html">Dashboard y despliegue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../MODEL_CARD.html">Ficha del modelo: CS-FOF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DATA_STATEMENT.html">Declaración de los datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../conclusiones.html">Conclusiones y limitaciones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reproducibilidad.html">Reproducibilidad, archivo del repositorio y declaración de autoría</a></li>
 </ul>
 
     </div>
@@ -378,7 +388,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-diferencia-de-cs-fof-es-significativa">3. ¿La diferencia de CS-FOF es significativa?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ranking-global-friedman-y-nemenyi">4. Ranking global: Friedman y Nemenyi</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-sobre-las-mismas-predicciones-delong-y-mcnemar">5. Comparación sobre las mismas predicciones: DeLong y McNemar</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-parcial">6. Conclusión (parcial)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">6. Conclusión</a></li>
 </ul>
             </nav>
         </div>
@@ -398,7 +408,7 @@
 <li><p><strong>CS-FOF</strong> (<em>Cost-Sensitive Fisher Oblique Forest</em>), el modelo original del proyecto, programado desde cero con <code class="docutils literal notranslate"><span class="pre">numpy</span></code>.</p></li>
 <li><p><strong>LightGBM</strong> y <strong>CatBoost</strong>, dos métodos recientes de boosting, como referencia del estado del arte.</p></li>
 </ul>
-<p>Los resultados son parciales, porque las corridas de los modelos nuevos todavía no terminan. Hasta ahora se cuenta con 4 combinaciones de CS-FOF y 25 de los métodos de boosting (16 de LightGBM y 9 de CatBoost, sin ADASYN), que se unen a las 112 para un total de 141 combinaciones.</p>
+<p>Las corridas están completas: 4 combinaciones de CS-FOF (solo pesos de clase) y 32 de los métodos de boosting (las 16 de LightGBM y las 16 de CatBoost), que se suman a las 112 para un total de 148 combinaciones.</p>
 <section id="la-idea-de-cs-fof">
 <h2>1. La idea de CS-FOF<a class="headerlink" href="#la-idea-de-cs-fof" title="Link to this heading">#</a></h2>
 <p>Un árbol clásico corta sobre una sola variable a la vez. Pero el riesgo de <em>default</em> depende de combinaciones (por ejemplo, del límite de crédito junto con lo pagado el mes anterior), de modo que la frontera es oblicua. En cada nodo, CS-FOF compara dos tipos de corte y se queda con el mejor:</p>
@@ -456,17 +466,17 @@ G = 1 - p_0^2 - p_1^2, \qquad
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filas: 141 | {'tradicional': 112, 'nuevo': 29}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filas: 148 | {'tradicional': 112, 'nuevo': 36}
 model
-knn                    16
+catboost               16
 decision_tree          16
 naive_bayes            16
-random_forest          16
+knn                    16
 lightgbm               16
 logistic_regression    16
 svm                    16
+random_forest          16
 xgboost                16
-catboost                9
 cs_fof                  4
 </pre></div>
 </div>
@@ -1055,12 +1065,12 @@ Diferencia crítica de Nemenyi (CD) = 6.06
 </div>
 <p>El AUC de CS-FOF es indistinguible del de CatBoost, XGBoost y Random Forest (DeLong con <span class="math notranslate nohighlight">\(p &gt; 0.1\)</span>) y mayor que el de LightGBM (DeLong con <span class="math notranslate nohighlight">\(p &lt; 0.001\)</span>). McNemar sí marca diferencias en los aciertos individuales, pero esas diferencias se compensan: el F1 fuera de muestra de CS-FOF y de cada rival difiere en menos de 0.003.</p>
 </section>
-<section id="conclusion-parcial">
-<h2>6. Conclusión (parcial)<a class="headerlink" href="#conclusion-parcial" title="Link to this heading">#</a></h2>
+<section id="conclusion">
+<h2>6. Conclusión<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Ningún modelo nuevo supera de forma significativa al mejor de las 112 combinaciones. El mayor F1 medio es de CatBoost (0.5480), seguido de CS-FOF (0.5479); frente al mejor tradicional (XGBoost, 0.5466) la ventaja es de 0.001 a 0.002, menor que la desviación entre folds.</p></li>
 <li><p><strong>CS-FOF</strong> es competitivo, con el mayor ROC-AUC medio y la menor variación entre folds entre los cinco primeros, pero empata estadísticamente con CatBoost, XGBoost, LightGBM y Random Forest.</p></li>
-<li><p><strong>Estado de las corridas.</strong> Los resultados son parciales: las corridas de los modelos nuevos todavía no terminan (hasta ahora CS-FOF con 4 combinaciones, LightGBM con 16 y CatBoost con 9 de 16). Esta sección y las tablas se actualizan cuando se completen.</p></li>
+<li><p><strong>Corridas completas.</strong> CS-FOF tiene 4 combinaciones (pesos de clase con los 4 métodos de búsqueda) y LightGBM y CatBoost sus 16 cada uno; en ambos, pesos de clase es la mejor técnica, así que las conclusiones no cambian respecto a las corridas parciales.</p></li>
 <li><p><strong>Limitación metodológica.</strong> Con 5 folds las pruebas tienen poca potencia, así que la comparación entre los modelos de cabeza es descriptiva.</p></li>
 </ul>
 </section>
@@ -1105,6 +1115,15 @@ Diferencia crítica de Nemenyi (CD) = 6.06
         <p class="prev-next-title">09. Curvas anytime y multi-fidelidad</p>
       </div>
     </a>
+    <a class="right-next"
+       href="../literatura.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Revisión de literatura y evidencia de novedad</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -1128,7 +1147,7 @@ Diferencia crítica de Nemenyi (CD) = 6.06
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-diferencia-de-cs-fof-es-significativa">3. ¿La diferencia de CS-FOF es significativa?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ranking-global-friedman-y-nemenyi">4. Ranking global: Friedman y Nemenyi</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-sobre-las-mismas-predicciones-delong-y-mcnemar">5. Comparación sobre las mismas predicciones: DeLong y McNemar</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-parcial">6. Conclusión (parcial)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">6. Conclusión</a></li>
 </ul>
   </nav></div>
 

@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/dash_theme.css?v=16a22a96" />
@@ -67,7 +67,7 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="EDA: Análisis Exploratorio de Datos" href="notebooks/00_eda.html" />
+    <link rel="next" title="Trazabilidad de correcciones" href="correcciones.html" />
     <link rel="prev" title="Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning" href="portada.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -216,9 +216,21 @@
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. Introducción</span></p>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Marco del proyecto</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. Trazabilidad de correcciones</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="correcciones.html">Trazabilidad de correcciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Datos: ETL y EDA</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="notebooks/00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DATA_STATEMENT.html">Declaración de los datos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Modelos benchmark</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
@@ -228,7 +240,36 @@
 
 <li class="toctree-l1"><a class="reference internal" href="notebooks/08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Revisión de literatura y novedad</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="literatura.html">Revisión de literatura y evidencia de novedad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Modelo original</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="modelo_original.html">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="validacion.html">Validación estadística del modelo original</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. Evaluación ampliada y robustez</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="evaluacion_ampliada.html">Evaluación ampliada: ablación, robustez y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Dashboard y despliegue</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dashboard.html">Dashboard y despliegue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MODEL_CARD.html">Ficha del modelo: CS-FOF</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">9. Conclusiones y limitaciones</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="conclusiones.html">Conclusiones y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Reproducibilidad y bibliografía</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="reproducibilidad.html">Reproducibilidad, archivo del repositorio y declaración de autoría</a></li>
 </ul>
 
     </div>
@@ -690,7 +731,9 @@ los rangos de los datos,</p>
 \]</div>
 </div>
 <p>No exige linealidad ni normalidad y resiste los valores extremos, lo que la hace adecuada para montos muy
-asimétricos, variables <code class="docutils literal notranslate"><span class="pre">PAY_x</span></code> ordinales y un objetivo binario. La multicolinealidad se evalúa con el Factor de
+asimétricos, variables <code class="docutils literal notranslate"><span class="pre">PAY_x</span></code> ordinales y un objetivo binario. Es el único método de correlación del proyecto: entre
+los seis montos facturados (<code class="docutils literal notranslate"><span class="pre">BILL_AMT1</span></code> a <code class="docutils literal notranslate"><span class="pre">BILL_AMT6</span></code>) va de 0.73 a 0.91, la misma cifra del EDA y del tablero. La
+multicolinealidad se evalúa con el Factor de
 Inflación de la Varianza, donde <span class="math notranslate nohighlight">\(R_j^2\)</span> es el coeficiente de determinación al regresar la variable <span class="math notranslate nohighlight">\(j\)</span> sobre las demás
 predictoras:</p>
 <div class="cc-formula docutils">
@@ -884,42 +927,58 @@ métodos recientes de boosting (LightGBM y CatBoost) bajo el mismo protocolo de 
 </section>
 <section id="estructura-del-libro">
 <h2>Estructura del libro<a class="headerlink" href="#estructura-del-libro" title="Link to this heading">#</a></h2>
+<p>El libro sigue la estructura mínima del Entregable 3.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p>Capítulo</p></th>
+<tr class="row-odd"><th class="head"><p>N.°</p></th>
+<th class="head"><p>Capítulo</p></th>
 <th class="head"><p>Contenido</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>00. EDA</p></td>
-<td><p>Análisis exploratorio y construcción del conjunto de datos final</p></td>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Introducción</p></td>
+<td><p>Problema, motivación, objetivos, marco teórico y metodología</p></td>
 </tr>
-<tr class="row-odd"><td><p>01. Modelo base</p></td>
-<td><p>Regresión logística con partición 80/20</p></td>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Trazabilidad de correcciones</p></td>
+<td><p>Observaciones del Entregable 2, acciones realizadas y auditoría de fuga de información</p></td>
 </tr>
-<tr class="row-even"><td><p>02. Verificación del protocolo</p></td>
-<td><p>Protocolo experimental: semilla y validación cruzada anidada</p></td>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Datos: ETL y EDA</p></td>
+<td><p>Análisis exploratorio, construcción del conjunto final y declaración de los datos</p></td>
 </tr>
-<tr class="row-odd"><td><p>03. Desarrollo del pipeline</p></td>
-<td><p>Prueba del pipeline completo con datos sintéticos</p></td>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Modelos benchmark</p></td>
+<td><p>Modelo base, protocolo, pipeline, corrida de las 112 combinaciones, resultados, interpretabilidad, tabla maestra y curvas anytime</p></td>
 </tr>
-<tr class="row-even"><td><p>04. Experimentos</p></td>
-<td><p>Corrida de las combinaciones</p></td>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>Revisión de literatura y novedad</p></td>
+<td><p>Matriz de búsqueda, declaración de novedad y trabajos cercanos</p></td>
 </tr>
-<tr class="row-odd"><td><p>05. Análisis de resultados</p></td>
-<td><p>Resultados, comparación estadística, calibración y complejidad</p></td>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Modelo original</p></td>
+<td><p>CS-FOF: formulación, pseudocódigo, propiedades, complejidad, código, pruebas y ablación</p></td>
 </tr>
-<tr class="row-even"><td><p>06. Interpretabilidad</p></td>
-<td><p>SHAP y LIME</p></td>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>Protocolo y validación estadística</p></td>
+<td><p>Protocolo pre-registrado, pruebas de hipótesis, tamaños del efecto y veredicto</p></td>
 </tr>
-<tr class="row-odd"><td><p>08. Tabla maestra</p></td>
-<td><p>Tabla maestra, comparabilidad del SVM</p></td>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>Evaluación ampliada y robustez</p></td>
+<td><p>Conjuntos adicionales, semillas, ruido, tamaño, escalabilidad, cambio de distribución, calibración, incertidumbre y análisis de errores</p></td>
 </tr>
-<tr class="row-even"><td><p>09. Curvas anytime</p></td>
-<td><p>Curvas anytime y multi-fidelidad</p></td>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>Dashboard y despliegue</p></td>
+<td><p>Arquitectura del dashboard, URL pública y ficha del modelo</p></td>
 </tr>
-<tr class="row-odd"><td><p>10. Modelo original</p></td>
-<td><p>CS-FOF, LightGBM y CatBoost frente a las 112 combinaciones</p></td>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>Conclusiones y limitaciones</p></td>
+<td><p>Hallazgos, veredicto sobre R1, R2 y R3, limitaciones y trabajo futuro</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>Reproducibilidad y bibliografía</p></td>
+<td><p>Entorno, semillas, lista de verificación, archivo con DOI y declaración de autoría</p></td>
 </tr>
 </tbody>
 </table>
@@ -1011,11 +1070,11 @@ métodos recientes de boosting (LightGBM y CatBoost) bajo el mismo protocolo de 
       </div>
     </a>
     <a class="right-next"
-       href="notebooks/00_eda.html"
+       href="correcciones.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">EDA: Análisis Exploratorio de Datos</p>
+        <p class="prev-next-title">Trazabilidad de correcciones</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

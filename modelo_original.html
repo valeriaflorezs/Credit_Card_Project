@@ -1,0 +1,628 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF) &#8212; Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/dash_theme.css?v=16a22a96" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'modelo_original';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Validación estadística del modelo original" href="validacion.html" />
+    <link rel="prev" title="Revisión de literatura y evidencia de novedad" href="literatura.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="portada.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="portada.html">
+                    Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduccion.html">Marco del proyecto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Verificación del protocolo experimental</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/04_run_experiments.html">04. Ejecutar experimentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/05_results_analysis.html">05. Análisis de resultados</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="notebooks/08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="literatura.html">Revisión de literatura y evidencia de novedad</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validacion.html">Validación estadística del modelo original</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluacion_ampliada.html">Evaluación ampliada: ablación, robustez y limitaciones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard.html">Dashboard y despliegue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MODEL_CARD.html">Ficha del modelo: CS-FOF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DATA_STATEMENT.html">Declaración de los datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conclusiones.html">Conclusiones y limitaciones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reproducibilidad.html">Reproducibilidad, archivo del repositorio y declaración de autoría</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/modelo_original.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#idea-central">Idea central</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formulacion">Formulación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmo">Algoritmo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#propiedades">Propiedades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion">Implementación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-es-nuevo-y-que-se-reutiliza">Qué es nuevo y qué se reutiliza</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iteraciones-de-diseno">Iteraciones de diseño</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="modelo-original-cost-sensitive-fisher-oblique-forest-cs-fof">
+<h1>Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)<a class="headerlink" href="#modelo-original-cost-sensitive-fisher-oblique-forest-cs-fof" title="Link to this heading">#</a></h1>
+<section id="idea-central">
+<h2>Idea central<a class="headerlink" href="#idea-central" title="Link to this heading">#</a></h2>
+<p>Un árbol de decisión convencional solo pregunta por una variable a la vez. Cuando la frontera entre
+clientes que pagan y clientes que incumplen es diagonal entre variables correlacionadas, como los
+estados de pago de meses consecutivos, el árbol la aproxima con una escalera de cortes que fragmenta
+a la clase minoritaria. <strong>CS-FOF</strong> es un bosque aleatorio en el que cada nodo puede cortar también por
+una <strong>combinación lineal de variables</strong>: la dirección discriminante de Fisher <span class="bibtex-citation" id="id1">[<a class="reference internal" href="reproducibilidad.html#id22" title="R. A. Fisher. The use of multiple measurements in taxonomic problems. Annals of Eugenics, 7(2):179–188, 1936.">Fis36</a>]</span>,
+ponderada por el costo del incumplimiento y calculada solo con los clientes que llegan a ese nodo.
+El nodo compara ese corte con los cortes por ejes y conserva el mejor.</p>
+</section>
+<section id="formulacion">
+<h2>Formulación<a class="headerlink" href="#formulacion" title="Link to this heading">#</a></h2>
+<p>Sea <span class="math notranslate nohighlight">\(\mathcal{D}=\{(\mathbf{x}_i,y_i)\}_{i=1}^n\)</span>, con <span class="math notranslate nohighlight">\(\mathbf{x}_i\in\mathbb{R}^p\)</span> y <span class="math notranslate nohighlight">\(y_i\in\{0,1\}\)</span>
+(<span class="math notranslate nohighlight">\(1\)</span> = incumple). Cada cliente recibe un peso de costo</p>
+<div class="math notranslate nohighlight" id="equation-eq-pesos">
+<span class="eqno">(1)<a class="headerlink" href="#equation-eq-pesos" title="Link to this equation">#</a></span>\[
+w_i = c\,\mathbb{1}\{y_i=1\} + \mathbb{1}\{y_i=0\}, \qquad c=\frac{n_0}{n_1}.
+\]</div>
+<p>Un corte que divide los clientes de un nodo en <span class="math notranslate nohighlight">\(L\)</span> y <span class="math notranslate nohighlight">\(R\)</span> se evalúa con la impureza de Gini ponderada</p>
+<div class="math notranslate nohighlight" id="equation-eq-gini">
+<span class="eqno">(2)<a class="headerlink" href="#equation-eq-gini" title="Link to this equation">#</a></span>\[
+G(L,R)=W_L\,2p_L(1-p_L)+W_R\,2p_R(1-p_R),\qquad W_A=\sum_{i\in A}w_i,\quad p_A=\frac{\sum_{i\in A}w_iy_i}{W_A}.
+\]</div>
+<p><strong>Candidato oblicuo.</strong> Con las <span class="math notranslate nohighlight">\(q\)</span> variables sorteadas en el nodo, <span class="math notranslate nohighlight">\(F\)</span>, se calculan las medias por clase
+<span class="math notranslate nohighlight">\(\boldsymbol\mu_0,\boldsymbol\mu_1\)</span> y la dispersión intra-clase ponderada y regularizada</p>
+<div class="math notranslate nohighlight" id="equation-eq-sw">
+<span class="eqno">(3)<a class="headerlink" href="#equation-eq-sw" title="Link to this equation">#</a></span>\[
+S_w=\frac{1}{\sum_i w_i}\sum_{i}w_i(\mathbf{x}_{i,F}-\boldsymbol\mu_{y_i})(\mathbf{x}_{i,F}-\boldsymbol\mu_{y_i})^\top+\varepsilon\,\frac{\operatorname{tr}S}{q}\,I_q,
+\]</div>
+<p>y la dirección del corte es</p>
+<div class="math notranslate nohighlight" id="equation-eq-fisher">
+<span class="eqno">(4)<a class="headerlink" href="#equation-eq-fisher" title="Link to this equation">#</a></span>\[
+\mathbf{v}=\frac{S_w^{-1}(\boldsymbol\mu_1-\boldsymbol\mu_0)}{\lVert S_w^{-1}(\boldsymbol\mu_1-\boldsymbol\mu_0)\rVert}.
+\]</div>
+<p>El umbral se busca sobre las proyecciones <span class="math notranslate nohighlight">\(z_i=\mathbf{v}^\top\mathbf{x}_{i,F}\)</span> minimizando
+<a class="reference internal" href="#equation-eq-gini">(2)</a>. La probabilidad final es el promedio de las <span class="math notranslate nohighlight">\(T\)</span> probabilidades de hoja ponderadas:</p>
+<div class="math notranslate nohighlight" id="equation-eq-prediccion">
+<span class="eqno">(5)<a class="headerlink" href="#equation-eq-prediccion" title="Link to this equation">#</a></span>\[
+f(\mathbf{x})=\frac1T\sum_{t=1}^T\hat p_t(\mathbf{x}),\qquad \hat p_{\text{hoja}}=\frac{\sum_{i\in\text{hoja}}w_iy_i}{\sum_{i\in\text{hoja}}w_i}.
+\]</div>
+</section>
+<section id="algoritmo">
+<h2>Algoritmo<a class="headerlink" href="#algoritmo" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Calcular los pesos <span class="math notranslate nohighlight">\(w_i\)</span> con <a class="reference internal" href="#equation-eq-pesos">(1)</a>.</p></li>
+<li><p>Para cada árbol <span class="math notranslate nohighlight">\(t=1,\dots,T\)</span>: tomar una muestra <em>bootstrap</em> y crecer el árbol <strong>por niveles</strong>.</p></li>
+<li><p>En cada nodo, si no se alcanzó la profundidad <span class="math notranslate nohighlight">\(d\)</span> ni el mínimo de <span class="math notranslate nohighlight">\(2h\)</span> clientes y el nodo no es puro:</p>
+<ol class="arabic simple">
+<li><p>sortear <span class="math notranslate nohighlight">\(q=\lfloor\sqrt p\rfloor\)</span> variables y buscar el mejor umbral por eje con <a class="reference internal" href="#equation-eq-gini">(2)</a>;</p></li>
+<li><p>calcular <span class="math notranslate nohighlight">\(\mathbf v\)</span> con <a class="reference internal" href="#equation-eq-sw">(3)</a>–<a class="reference internal" href="#equation-eq-fisher">(4)</a> y el mejor umbral sobre la proyección;</p></li>
+<li><p>conservar el corte de menor <span class="math notranslate nohighlight">\(G\)</span> que deje al menos <span class="math notranslate nohighlight">\(h\)</span> clientes por lado; si no hay, hoja.</p></li>
+</ol>
+</li>
+<li><p>Predecir con <a class="reference internal" href="#equation-eq-prediccion">(5)</a>.</p></li>
+</ol>
+<p>Los umbrales se buscan con histogramas de 64 cuantiles, como en LightGBM o el modo <code class="docutils literal notranslate"><span class="pre">hist</span></code> de XGBoost.</p>
+</section>
+<section id="propiedades">
+<h2>Propiedades<a class="headerlink" href="#propiedades" title="Link to this heading">#</a></h2>
+<p><strong>Proposición 1.</strong> La impureza del corte elegido nunca supera la del mejor corte por ejes sobre las
+mismas variables. <em>Demostración:</em> el conjunto de candidatos contiene los cortes por ejes, y el mínimo
+sobre un conjunto es menor o igual que sobre cualquier subconjunto. ∎</p>
+<p><strong>Proposición 2.</strong> Para <span class="math notranslate nohighlight">\(\varepsilon=0\)</span> y <span class="math notranslate nohighlight">\(S_w\)</span> definida positiva, <span class="math notranslate nohighlight">\(\mathbf v\)</span> maximiza
+<span class="math notranslate nohighlight">\(J(\mathbf u)=(\mathbf u^\top(\boldsymbol\mu_1-\boldsymbol\mu_0))^2/\mathbf u^\top S_w\mathbf u\)</span>.
+<em>Demostración:</em> por Cauchy–Schwarz con el producto interno <span class="math notranslate nohighlight">\(\langle a,b\rangle=a^\top S_w b\)</span>,
+<span class="math notranslate nohighlight">\((\mathbf u^\top\mathbf d)^2\le(\mathbf u^\top S_w\mathbf u)(\mathbf d^\top S_w^{-1}\mathbf d)\)</span>, con
+igualdad si y solo si <span class="math notranslate nohighlight">\(\mathbf u\propto S_w^{-1}\mathbf d\)</span>. ∎</p>
+<p><strong>Proposición 3.</strong> Cada árbol termina y tiene a lo sumo <span class="math notranslate nohighlight">\(\lfloor n/h\rfloor\)</span> hojas, porque solo se
+aceptan cortes con al menos <span class="math notranslate nohighlight">\(h\)</span> clientes por lado y la profundidad está acotada. ∎</p>
+<p><strong>Complejidad.</strong> Un árbol cuesta <span class="math notranslate nohighlight">\(O(d\,n(q\log n+q^2))\)</span> en entrenamiento y la predicción de un cliente
+<span class="math notranslate nohighlight">\(O(T\,d\,p)\)</span>. Las tres proposiciones se verifican numéricamente en <code class="docutils literal notranslate"><span class="pre">tests/test_original_model.py</span></code>.</p>
+</section>
+<section id="implementacion">
+<h2>Implementación<a class="headerlink" href="#implementacion" title="Link to this heading">#</a></h2>
+<p>Clase <code class="docutils literal notranslate"><span class="pre">CSFisherObliqueForest</span></code> en <code class="docutils literal notranslate"><span class="pre">src/original_model.py</span></code>, escrita con numpy y compatible con
+scikit-learn (<code class="docutils literal notranslate"><span class="pre">fit</span></code>, <code class="docutils literal notranslate"><span class="pre">predict</span></code>, <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>). Los árboles se reparten en procesos (<code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>) con
+semillas propias, de modo que el resultado no depende del número de procesos. Las 14 pruebas unitarias
+cubren aprendizaje, reproducibilidad, entradas inválidas, <code class="docutils literal notranslate"><span class="pre">clone</span></code>, <em>pipelines</em> y las propiedades, y se
+ejecutan en cada <em>push</em> con GitHub Actions.</p>
+</section>
+<section id="que-es-nuevo-y-que-se-reutiliza">
+<h2>Qué es nuevo y qué se reutiliza<a class="headerlink" href="#que-es-nuevo-y-que-se-reutiliza" title="Link to this heading">#</a></h2>
+<p>Se reutilizan la estructura del bosque aleatorio <span class="bibtex-citation" id="id2">[<a class="reference internal" href="reproducibilidad.html#id19" title="L. Breiman. Random forests. Machine Learning, 45(1):5–32, 2001. doi:10.1023/A:1010933404324.">Bre01</a>]</span> y la idea de cortes oblicuos
+<span class="bibtex-citation" id="id3">[<a class="reference internal" href="reproducibilidad.html#id21" title="B. H. Menze, B. M. Kelm, D. N. Splitthoff, U. Koethe, and F. A. Hamprecht. On oblique random forests. In Machine Learning and Knowledge Discovery in Databases (ECML PKDD 2011), volume 6912 of Lecture Notes in Computer Science, 453–469. Springer, 2011.">MKS+11</a>, <a class="reference internal" href="reproducibilidad.html#id20" title="S. K. Murthy, S. Kasif, and S. Salzberg. A system for induction of oblique decision trees. Journal of Artificial Intelligence Research, 2:1–32, 1994.">MKS94</a>]</span>. Lo nuevo es la <strong>regla de partición</strong>: una dirección discriminante local,
+ponderada por costo, que compite con los cortes por ejes bajo el mismo criterio ponderado.</p>
+</section>
+<section id="iteraciones-de-diseno">
+<h2>Iteraciones de diseño<a class="headerlink" href="#iteraciones-de-diseno" title="Link to this heading">#</a></h2>
+<p>Se evaluaron 14 variantes, <strong>solo con el entrenamiento del pliegue externo 1</strong> (validación interna de
+3 pliegues), sin tocar los datos de prueba (<code class="docutils literal notranslate"><span class="pre">experiments/cs_fof_diseno/</span></code>). Las versiones con cortes
+oblicuos más fuertes (más variables o árboles más profundos) <strong>sobreajustaron</strong>; por eso se fijaron un
+candidato oblicuo por nodo con las mismas <span class="math notranslate nohighlight">\(q\)</span> variables y una profundidad máxima de 14.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="literatura.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Revisión de literatura y evidencia de novedad</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="validacion.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Validación estadística del modelo original</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#idea-central">Idea central</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formulacion">Formulación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmo">Algoritmo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#propiedades">Propiedades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion">Implementación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-es-nuevo-y-que-se-reutiliza">Qué es nuevo y qué se reutiliza</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iteraciones-de-diseno">Iteraciones de diseño</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Katherin Barrera López y Valeria Florez Sarmiento
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

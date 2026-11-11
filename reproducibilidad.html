@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Reproducibilidad, archivo del repositorio y declaración de autoría &#8212; Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/dash_theme.css?v=16a22a96" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reproducibilidad';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Conclusiones y limitaciones" href="conclusiones.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="portada.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="portada.html">
+                    Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. Introducción</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduccion.html">Marco del proyecto</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. Trazabilidad de correcciones</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="correcciones.html">Trazabilidad de correcciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Datos: ETL y EDA</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DATA_STATEMENT.html">Declaración de los datos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Modelos benchmark</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Verificación del protocolo experimental</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/04_run_experiments.html">04. Ejecutar experimentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/05_results_analysis.html">05. Análisis de resultados</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="notebooks/08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Revisión de literatura y novedad</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="literatura.html">Revisión de literatura y evidencia de novedad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Modelo original</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="modelo_original.html">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="validacion.html">Validación estadística del modelo original</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. Evaluación ampliada y robustez</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="evaluacion_ampliada.html">Evaluación ampliada: ablación, robustez y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Dashboard y despliegue</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dashboard.html">Dashboard y despliegue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MODEL_CARD.html">Ficha del modelo: CS-FOF</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">9. Conclusiones y limitaciones</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="conclusiones.html">Conclusiones y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Reproducibilidad y bibliografía</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Reproducibilidad, archivo del repositorio y declaración de autoría</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/reproducibilidad.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Reproducibilidad, archivo del repositorio y declaración de autoría</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lista-de-verificacion-de-reproducibilidad">Lista de verificación de reproducibilidad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#declaracion-de-autoria-y-uso-de-herramientas">Declaración de autoría y uso de herramientas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#referencias-del-entregable-3">Referencias del Entregable 3</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="reproducibilidad-archivo-del-repositorio-y-declaracion-de-autoria">
+<h1>Reproducibilidad, archivo del repositorio y declaración de autoría<a class="headerlink" href="#reproducibilidad-archivo-del-repositorio-y-declaracion-de-autoria" title="Link to this heading">#</a></h1>
+<section id="lista-de-verificacion-de-reproducibilidad">
+<h2>Lista de verificación de reproducibilidad<a class="headerlink" href="#lista-de-verificacion-de-reproducibilidad" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-reproducibilidad">
+<thead>
+<tr class="row-odd"><th class="head"><p>Elemento</p></th>
+<th class="head"><p>Detalle</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Código</p></td>
+<td><p>https://github.com/valeriaflorezs/Credit_Card_Project (licencia MIT)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Archivo con identificador persistente</p></td>
+<td><p>DOI de Zenodo: <em>pendiente de completar con el DOI de la release v3.0.0</em></p></td>
+</tr>
+<tr class="row-even"><td><p>Datos</p></td>
+<td><p>UCI <em>Default of Credit Card Clients</em> (CC BY 4.0); ver <code class="docutils literal notranslate"><span class="pre">DATA_STATEMENT.md</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Semilla global</p></td>
+<td><p>42 (<code class="docutils literal notranslate"><span class="pre">src/config.py</span></code>), usada en particiones, búsquedas y modelos</p></td>
+</tr>
+<tr class="row-even"><td><p>Validación</p></td>
+<td><p>Anidada estratificada, 5 pliegues externos × 5 internos</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ejecuciones</p></td>
+<td><p>Una corrida por combinación; dispersión reportada como desviación estándar entre pliegues (<code class="docutils literal notranslate"><span class="pre">ddof=1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>Rangos de hiperparámetros</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">src/models.py</span></code> (<code class="docutils literal notranslate"><span class="pre">MODEL_REGISTRY</span></code>), uno por modelo</p></td>
+</tr>
+<tr class="row-odd"><td><p>Presupuesto de búsqueda</p></td>
+<td><p>Malla ≤ 200 combinaciones, 25 aleatorias, 30 de Optuna, genético 16 × 10 (<code class="docutils literal notranslate"><span class="pre">src/config.py</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>Software</p></td>
+<td><p>Python 3.12, numpy 2.5.3, pandas 3.0.6, scikit-learn 1.9.1, xgboost 3.4.1, lightgbm 4.7.0, catboost 1.2.10, optuna 5.0.0, deap 1.4.3 (<code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hardware</p></td>
+<td><p>Windows, AMD Ryzen 7, 16 GB de RAM, sin GPU (modelos de árboles, CS-FOF y boosting); Google Colab con GPU T4 (SVM y KNN)</p></td>
+</tr>
+<tr class="row-even"><td><p>Tiempo de cómputo de CS-FOF</p></td>
+<td><p>Malla 2.7 h, aleatoria 2.5 h, Optuna 2.5 h y genético 9.6 h (5 × 5, 8 procesos)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pruebas automáticas</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pytest</span> <span class="pre">tests/</span> <span class="pre">-q</span></code> (14 pruebas) en GitHub Actions en cada <em>push</em></p></td>
+</tr>
+<tr class="row-even"><td><p>Modelo final</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.train_cs_fof_artifact</span></code> → <code class="docutils literal notranslate"><span class="pre">artifacts/cs_fof.joblib</span></code> y <code class="docutils literal notranslate"><span class="pre">artifacts/metadata.json</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Corridas</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-u</span> <span class="pre">-m</span> <span class="pre">src.run_cs_fof_5x5</span> <span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-u</span> <span class="pre">-m</span> <span class="pre">src.run_boosting_recientes_5x5</span> <span class="pre">--tecnicas</span> <span class="pre">class_weight</span> <span class="pre">--metodos</span> <span class="pre">grid_search</span> <span class="pre">random_search</span> <span class="pre">bayesian_optuna</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Conjuntos adicionales</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-u</span> <span class="pre">-m</span> <span class="pre">src.run_additional_datasets</span></code> (descarga German, Australian y Polish con <code class="docutils literal notranslate"><span class="pre">ucimlrepo</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tabla maestra y pruebas</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.build_master_table_e3</span></code>, luego <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">experiments/comparacion_final/pruebas.py</span></code>, <code class="docutils literal notranslate"><span class="pre">delong.py</span></code> y <code class="docutils literal notranslate"><span class="pre">entre_conjuntos.py</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Robustez (exploratoria)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">experiments/robustez/robustez.py</span></code> (calibración, ruido y tamaño de muestra; ~1 h en 4 núcleos)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Evaluación ampliada (exploratoria)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">experiments/robustez/ampliada.py</span></code> (diagrama de diferencia crítica, predicción conforme, recalibración, análisis de errores, cambio de distribución, escalabilidad y 10 semillas; ~35 min en 4 núcleos)</p></td>
+</tr>
+<tr class="row-even"><td><p>Protocolo</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">experiments/protocolo.md</span></code>, registrado el 8 de noviembre de 2026 en el commit <code class="docutils literal notranslate"><span class="pre">62ddeb7</span></code> (etiqueta <code class="docutils literal notranslate"><span class="pre">protocolo-2026-11-08</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="declaracion-de-autoria-y-uso-de-herramientas">
+<h2>Declaración de autoría y uso de herramientas<a class="headerlink" href="#declaracion-de-autoria-y-uso-de-herramientas" title="Link to this heading">#</a></h2>
+<p>Este trabajo fue realizado por <strong>Valeria Florez Sarmiento</strong> y <strong>Katherin Barrera López</strong>, quienes
+contribuyeron de manera conjunta al diseño, la ejecución de los experimentos, el análisis y la
+redacción.</p>
+<p>Durante el proyecto se utilizó la herramienta de inteligencia artificial generativa <strong>Claude
+(Anthropic)</strong> como apoyo en la búsqueda bibliográfica, la programación (incluida una implementación de
+referencia del modelo original y sus pruebas), el análisis estadístico y la redacción. Todo el contenido
+generado con apoyo de la herramienta fue revisado, verificado y editado por las autoras, quienes
+comprenden el código entregado, pueden explicarlo y modificarlo, y asumen la total responsabilidad por
+el contenido, los análisis y las conclusiones de este informe. La herramienta no figura como autora.</p>
+<p>Firmado:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Nombre</p></th>
+<th class="head"><p>Firma</p></th>
+<th class="head"><p>Fecha</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Valeria Florez Sarmiento</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Katherin Barrera López</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="referencias-del-entregable-3">
+<h2>Referencias del Entregable 3<a class="headerlink" href="#referencias-del-entregable-3" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id1">
+<div role="list" class="citation-list">
+<div class="citation" id="id11" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>ASH+20<span class="fn-bracket">]</span></span>
+<p>T. M. Alam, K. Shaukat, I. A. Hameed, S. Luo, M. U. Sarwar, S. Shabbir, J. Li, and M. Khushi. An investigation of credit card default prediction in the imbalanced datasets. <em>IEEE Access</em>, 8:201173–201198, 2020. <a class="reference external" href="https://doi.org/10.1109/ACCESS.2020.3033784">doi:10.1109/ACCESS.2020.3033784</a>.</p>
+</div>
+<div class="citation" id="id19" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Bre01<span class="fn-bracket">]</span></span>
+<p>L. Breiman. Random forests. <em>Machine Learning</em>, 45(1):5–32, 2001. <a class="reference external" href="https://doi.org/10.1023/A:1010933404324">doi:10.1023/A:1010933404324</a>.</p>
+</div>
+<div class="citation" id="id15" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CJ26<span class="fn-bracket">]</span></span>
+<p>T. Chab and J. Jeon. Csa-net: a type-aware dual-tower neural model for imbalanced tabular credit default prediction. <em>IEEE Access</em>, 14:118490–118509, 2026. <a class="reference external" href="https://doi.org/10.1109/ACCESS.2026.3717318">doi:10.1109/ACCESS.2026.3717318</a>.</p>
+</div>
+<div class="citation" id="id12" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CCN+26<span class="fn-bracket">]</span></span>
+<p>W. C. Choi, C. I. Chang, S. I. Ng, K. I. Leong, and H. F. Choi. A predictive accuracy comparison of machine learning models for credit card default prediction. In <em>Proceedings of the 8th Artificial Intelligence and Cloud Computing Conference (AICCC 2025)</em>, 31–39. 2026. <a class="reference external" href="https://doi.org/10.1145/3789982.3789987">doi:10.1145/3789982.3789987</a>.</p>
+</div>
+<div class="citation" id="id18" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DHHT22<span class="fn-bracket">]</span></span>
+<p>E. Dumitrescu, S. Hué, C. Hurlin, and S. Tokpavi. Machine learning for credit scoring: improving logistic regression with non-linear decision-tree effects. <em>European Journal of Operational Research</em>, 297(3):1178–1192, 2022. <a class="reference external" href="https://doi.org/10.1016/j.ejor.2021.06.053">doi:10.1016/j.ejor.2021.06.053</a>.</p>
+</div>
+<div class="citation" id="id22" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Fis36<span class="fn-bracket">]</span></span>
+<p>R. A. Fisher. The use of multiple measurements in taxonomic problems. <em>Annals of Eugenics</em>, 7(2):179–188, 1936.</p>
+</div>
+<div class="citation" id="id14" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HY26<span class="fn-bracket">]</span></span>
+<p>Z. Q. Hu and C. K. Yeo. A transformer-based neural network to predict credit card default. <em>Electronics</em>, 15(12):2656, 2026. <a class="reference external" href="https://doi.org/10.3390/electronics15122656">doi:10.3390/electronics15122656</a>.</p>
+</div>
+<div class="citation" id="id16" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>JLL+19<span class="fn-bracket">]</span></span>
+<p>B. C. Jaeger, D. L. Long, D. M. Long, M. Sims, J. M. Szychowski, Y.-I. Min, L. A. McClure, G. Howard, and N. Simon. Oblique random survival forests. <em>The Annals of Applied Statistics</em>, 13(3):1847–1883, 2019. <a class="reference external" href="https://doi.org/10.1214/19-AOAS1261">doi:10.1214/19-AOAS1261</a>.</p>
+</div>
+<div class="citation" id="id21" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>MKS+11<span class="fn-bracket">]</span></span>
+<p>B. H. Menze, B. M. Kelm, D. N. Splitthoff, U. Koethe, and F. A. Hamprecht. On oblique random forests. In <em>Machine Learning and Knowledge Discovery in Databases (ECML PKDD 2011)</em>, volume 6912 of Lecture Notes in Computer Science, 453–469. Springer, 2011.</p>
+</div>
+<div class="citation" id="id20" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>MKS94<span class="fn-bracket">]</span></span>
+<p>S. K. Murthy, S. Kasif, and S. Salzberg. A system for induction of oblique decision trees. <em>Journal of Artificial Intelligence Research</em>, 2:1–32, 1994.</p>
+</div>
+<div class="citation" id="id13" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Ogu19<span class="fn-bracket">]</span></span>
+<p>E. O. Ogundimu. Prediction of default probability by using statistical models for rare events. <em>Journal of the Royal Statistical Society: Series A</em>, 182(4):1143–1162, 2019. <a class="reference external" href="https://doi.org/10.1111/rssa.12467">doi:10.1111/rssa.12467</a>.</p>
+</div>
+<div class="citation" id="id17" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>ZCD25<span class="fn-bracket">]</span></span>
+<p>J. Zhang, R. Calabrese, and Y. Dong. A novel generalised extreme value gradient boosting decision tree for the class imbalanced problem in credit scoring. <em>Journal of the Operational Research Society</em>, 76(8):1513–1530, 2025. <a class="reference external" href="https://doi.org/10.1080/01605682.2024.2418882">doi:10.1080/01605682.2024.2418882</a>.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="conclusiones.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Conclusiones y limitaciones</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lista-de-verificacion-de-reproducibilidad">Lista de verificación de reproducibilidad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#declaracion-de-autoria-y-uso-de-herramientas">Declaración de autoría y uso de herramientas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#referencias-del-entregable-3">Referencias del Entregable 3</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Katherin Barrera López y Valeria Florez Sarmiento
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
