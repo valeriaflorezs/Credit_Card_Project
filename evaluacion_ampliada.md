@@ -287,7 +287,31 @@ hay que entrenar, los hiperparámetros que cada modelo eligió en cada pliegue, 
 
 ### Estabilidad por semilla
 
-Estudio en ejecución (10 semillas × 5 pliegues × 5 modelos); los resultados se agregan al terminar.
+Se repitió el ajuste de los cinco mejores modelos con 10 semillas distintas (0 a 9) sobre los mismos
+5 pliegues externos y los mismos hiperparámetros, es decir, 50 ajustes por modelo. La semilla cambia el
+*bootstrap*, el sorteo de variables y, en el *boosting*, el submuestreo.
+
+| Modelo | F1 medio (10 semillas) | D.e. entre semillas | Mínimo y máximo | Intervalo 95 % (percentiles) | Semillas en que CS-FOF gana |
+|---|---|---|---|---|---|
+| CS-FOF | **0.5469** | 0.0008 | 0.5453 a 0.5477 | 0.5454 a 0.5476 | — |
+| CatBoost | 0.5468 | 0.0011 | 0.5446 a 0.5485 | 0.5449 a 0.5484 | 7 de 10 |
+| LightGBM | 0.5457 | 0.0006 | 0.5449 a 0.5467 | 0.5449 a 0.5467 | 8 de 10 |
+| XGBoost | 0.5447 | 0.0008 | 0.5437 a 0.5462 | 0.5438 a 0.5460 | 10 de 10 |
+| Random Forest | 0.5440 | 0.0007 | 0.5433 a 0.5457 | 0.5434 a 0.5455 | 10 de 10 |
+
+```{figure} results/figures/semillas_boxplot.png
+:name: fig-semillas
+:width: 100%
+
+F1 de la clase de impago en 10 semillas × 5 pliegues externos. Las cajas resumen los 50 valores; los
+puntos dorados son la media de cada semilla.
+```
+
+La variación por semilla (desviación de 0.0006 a 0.0011) es unas 10 veces menor que la variación entre
+pliegues (0.005 a 0.009): la incertidumbre del F1 viene sobre todo de la partición, no de la semilla.
+CS-FOF y CatBoost quedan empatados (0.5469 frente a 0.5468, con intervalos que se solapan casi por
+completo); CS-FOF gana en 7 de 10 semillas a CatBoost y en todas a XGBoost y Random Forest. El resultado
+confirma el empate del bucle externo y que la posición de CS-FOF no depende de una semilla favorable.
 
 ### Escalabilidad
 
