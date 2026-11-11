@@ -73,6 +73,36 @@ pero solo aparecieron aplicados en otros dominios, como el análisis de superviv
   - 102
   - ≈10
   - El bosque oblicuo solo aparece en supervivencia médica
+* - arXiv
+  - `oblique forest credit` (resumen)
+  - 11-nov-2026
+  - 0
+  - 0
+  - —
+* - arXiv
+  - `oblique tree default` (resumen)
+  - 11-nov-2026
+  - 0
+  - 0
+  - —
+* - arXiv
+  - `Fisher split forest` (resumen)
+  - 11-nov-2026
+  - 1
+  - 0
+  - Modelo ecológico de Wright-Fisher, ajeno al problema
+* - arXiv
+  - `credit card default random forest` (resumen)
+  - 11-nov-2026
+  - 7
+  - 0
+  - Incumplimiento con LLM, GAN, circuitos cuánticos o bosques por ejes; ningún corte oblicuo. Tres usan este mismo conjunto de Taiwán
+* - arXiv
+  - `Taiwan credit card` (resumen)
+  - 11-nov-2026
+  - 2
+  - 0
+  - Redes bayesianas en el conjunto de Taiwán y una prueba de calibración; ningún corte oblicuo
 ```
 
 ## Diferenciación frente al trabajo más cercano
@@ -105,13 +135,13 @@ pero solo aparecieron aplicados en otros dominios, como el análisis de superviv
 ```
 
 **Declaración de novedad.** Al mejor de nuestro conocimiento y según la búsqueda descrita en Web of
-Science y Scopus (octubre de 2026), no se encontraron estudios que apliquen un bosque oblicuo con cortes
+Science y Scopus (octubre de 2026) y arXiv (11 de noviembre de 2026), no se encontraron estudios que apliquen un bosque oblicuo con cortes
 de Fisher ponderados por costo a la predicción del incumplimiento en tarjetas de crédito. El trabajo
 más cercano en método es el bosque oblicuo de {cite:t}`menze2011`; CS-FOF se diferencia en que pondera
 la dirección y el criterio de partición por el costo del incumplimiento y en que el corte oblicuo
 compite con los cortes por ejes bajo ese mismo criterio.
 
 ```{note}
-Pendiente antes de la versión final: repetir las búsquedas con fecha, agregar una tercera base de
-datos (arXiv o IEEE Xplore) y completar la búsqueda por citas a partir de los trabajos más cercanos.
+Pendiente antes de la versión final: completar la búsqueda por citas (*snowballing*) a partir de los
+trabajos más cercanos, Menze et al. (2011) y Murthy et al. (1994).
 ```
