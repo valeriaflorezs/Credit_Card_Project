@@ -74,5 +74,9 @@ Australian 0.874 (XGBoost 0.880) y Polish año 1 0.430 (CatBoost 0.733).
 
 ## Interpretabilidad
 Los coeficientes de cada corte oblicuo se pueden leer como reglas de riesgo (por ejemplo, cuánto
-pesa el atraso reciente frente al del mes anterior). Para explicaciones globales y locales se usa
-SHAP por permutación.
+pesa el atraso reciente frente al del mes anterior).
+
+- **SHAP global:** SHAP por permutación en 300 clientes de prueba, con el mismo explicador que para CatBoost.
+  Las dos importancias se parecen mucho (Spearman 0.95). Las variables principales son PAY_0, el cupo y PAY_2.
+  CS-FOF reparte más peso entre los meses de atraso (capítulo del modelo original).
+- **SHAP local:** el tablero muestra, para cada cliente, valores de Shapley exactos por grupo de variables.

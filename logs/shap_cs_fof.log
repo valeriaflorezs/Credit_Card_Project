@@ -1,0 +1,30 @@
+cs_fof: 400 s, error de aditividad máx 1.11e-15
+catboost: 3 s, error de aditividad máx 1.11e-15
+model                    catboost  cs_fof
+variable                                 
+PAY_0                      0.0847  0.0690
+LIMIT_BAL_LOG              0.0373  0.0255
+BILL_AMT_MEAN_6M_LOG       0.0232  0.0160
+PAY_AMT1_LOG               0.0230  0.0158
+PAY_2                      0.0197  0.0263
+PAY_3                      0.0180  0.0161
+BILL_AMT_TREND_6M_LOG      0.0176  0.0100
+PAY_AMT2_LOG               0.0163  0.0127
+PAY_AMT4_LOG               0.0161  0.0108
+PAY_6                      0.0136  0.0092
+PAY_AMT3_LOG               0.0132  0.0138
+PAY_4                      0.0121  0.0096
+PAY_AMT6_LOG               0.0098  0.0076
+PAY_AMT5_LOG               0.0097  0.0080
+SEX_2                      0.0086  0.0063
+MARRIAGE_2                 0.0083  0.0061
+EDUCATION_4                0.0083  0.0026
+PAY_5                      0.0076  0.0089
+AGE                        0.0056  0.0040
+MARRIAGE_1                 0.0043  0.0052
+N_CREDIT_BALANCE_MONTHS    0.0034  0.0015
+EDUCATION_1                0.0027  0.0026
+EDUCATION_2                0.0025  0.0038
+EDUCATION_3                0.0006  0.0018
+MARRIAGE_3                 0.0002  0.0004
+{"spearman_importancias": 0.953, "p": 1.993927391443841e-13, "top5": {"cs_fof": ["PAY_0", "PAY_2", "LIMIT_BAL_LOG", "PAY_3", "BILL_AMT_MEAN_6M_LOG"], "catboost": ["PAY_0", "LIMIT_BAL_LOG", "BILL_AMT_MEAN_6M_LOG", "PAY_AMT1_LOG", "PAY_2"]}, "top5_comunes": ["BILL_AMT_MEAN_6M_LOG", "LIMIT_BAL_LOG", "PAY_0", "PAY_2"], "concordancia_signo_top": 0.884}

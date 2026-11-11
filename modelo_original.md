@@ -95,3 +95,46 @@ Se evaluaron 14 variantes, **solo con el entrenamiento del pliegue externo 1** (
 3 pliegues), sin tocar los datos de prueba (`experiments/cs_fof_diseno/`). Las versiones con cortes
 oblicuos más fuertes (más variables o árboles más profundos) **sobreajustaron**; por eso se fijaron un
 candidato oblicuo por nodo con las mismas $q$ variables y una profundidad máxima de 14.
+
+## Interpretabilidad: SHAP frente al mejor benchmark
+
+Para ver si CS-FOF decide con las mismas variables que CatBoost, el mejor modelo de referencia, se calcularon
+valores SHAP para los dos (`experiments/robustez/shap_cs_fof.py`):
+
+- **Mismo método.** Se usa SHAP por permutación para los dos, porque CS-FOF no es un árbol de scikit-learn y no
+  admite el explicador exacto de árboles. Usar el mismo explicador evita que las diferencias vengan del método.
+- **Datos que el modelo no vio.** Se explican 300 clientes de la prueba del pliegue externo 1, en una muestra
+  estratificada. Cada modelo se entrenó con el entrenamiento de ese pliegue y los hiperparámetros que eligió
+  ahí.
+- **Fondo y evaluaciones.** El fondo son 50 clientes del entrenamiento; se usan 101 evaluaciones por cliente.
+  Los valores suman exactamente la probabilidad de cada cliente: el error de aditividad es menor que $10^{-14}$.
+
+```{figure} results/figures/shap_cs_fof_vs_catboost.png
+:name: fig-shap-csfof
+:width: 100%
+
+Izquierda: importancia media |SHAP| de las 12 variables más importantes. Centro y derecha: valor SHAP de cada
+cliente; el color indica si el valor de la variable es alto (rojo) o bajo (azul).
+```
+
+**Usan casi las mismas variables.** La correlación de Spearman entre las importancias de las 25 columnas es
+0.95 ($p < 10^{-12}$). Las dos variables principales coinciden: el estado de pago de septiembre (PAY_0) y el
+cupo. Cuatro de las cinco primeras variables son comunes a los dos modelos. En los clientes y variables
+principales, el signo del aporte coincide en el 88 % de los casos. En los dos modelos, la demografía (sexo,
+educación, estado civil y edad) pesa lo mismo: el 11 % de la importancia total.
+
+**Diferencias, y cómo se explican.**
+
+- **CS-FOF reparte más peso entre meses de atraso.** PAY_2 (agosto) pesa el 38 % de PAY_0 en CS-FOF y el 23 %
+  en CatBoost. Los estados de pago suman el 47 % de la importancia de CS-FOF frente al 43 % de CatBoost. Es lo
+  que se espera de un corte oblicuo: la dirección de Fisher combina en un solo corte los atrasos de varios
+  meses, que están muy correlacionados (Spearman 0.47 a 0.82), en lugar de separarlos en cortes sucesivos.
+- **La factura media.** En CatBoost, una factura alta sube el riesgo. En CS-FOF el efecto es pequeño y de signo
+  mixto. Como la factura está correlacionada con el cupo y con los pagos, la dirección de Fisher puede
+  absorber su efecto dentro de esas combinaciones. Esto es interacción con otras variables y no un error, pero
+  hace que la lectura variable por variable de CS-FOF sea menos directa.
+- **Valores SHAP más pequeños.** En total, las importancias de CS-FOF son un 20 % menores (0.29 frente a
+  0.37) porque sus probabilidades son menos extremas. Esto concuerda con su mejor calibración sin recalibrar.
+
+Las dos lecturas se apoyan en la misma evidencia que el EDA: el atraso reciente es la señal dominante, el cupo
+y los pagos la modulan, y la demografía aporta poco.
