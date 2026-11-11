@@ -1,7 +1,7 @@
 {
   "modelo": "naive_bayes",
   "archivo": "naive_bayes.joblib",
-  "fecha_entrenamiento_utc": "2026-11-11T19:26:19+00:00",
+  "fecha_entrenamiento_utc": "2026-11-11T19:59:41+00:00",
   "semilla": 42,
   "tecnica_balanceo": "smote",
   "metodo_busqueda_anidada": "grid_search",
@@ -220,7 +220,7 @@
   },
   "prueba_ida_y_vuelta": true,
   "tamano_archivo_mb": 0.33,
-  "tiempo_entrenamiento_s": 1.2,
+  "tiempo_entrenamiento_s": 0.6,
   "versiones": {
     "python": "3.13.17",
     "numpy": "2.5.3",

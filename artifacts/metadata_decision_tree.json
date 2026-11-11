@@ -1,7 +1,7 @@
 {
   "modelo": "decision_tree",
   "archivo": "decision_tree.joblib",
-  "fecha_entrenamiento_utc": "2026-11-11T19:26:25+00:00",
+  "fecha_entrenamiento_utc": "2026-11-11T19:59:44+00:00",
   "semilla": 42,
   "tecnica_balanceo": "class_weight",
   "metodo_busqueda_anidada": "bayesian_optuna",
@@ -250,7 +250,7 @@
   },
   "prueba_ida_y_vuelta": true,
   "tamano_archivo_mb": 0.01,
-  "tiempo_entrenamiento_s": 3.3,
+  "tiempo_entrenamiento_s": 3.2,
   "versiones": {
     "python": "3.13.17",
     "numpy": "2.5.3",

@@ -31,7 +31,8 @@ Conclusiones). Además incluye Enlaces, Equipo y un asistente conversacional (Ky
   - **Metodología:** formulación, pseudocódigo y propiedades.
   - **Código:** la clase real, con colores de sintaxis.
   - **Resultados:**
-    - comparación animada con Random Forest;
+    - comparación animada con el rival que se elija (Random Forest, CatBoost, XGBoost o LightGBM) en tres
+      escenarios: los 5 pliegues, menos datos y más ruido;
     - tabla de pruebas de hipótesis con p-valores ajustados y tamaños del efecto;
     - conjuntos adicionales, robustez y calibración;
     - veredicto de superioridad.
@@ -57,7 +58,14 @@ Detalles de esta comparación:
 
 Para cada cliente, el tablero muestra:
 
-- **Puntaje y veredicto:** la probabilidad estimada de incumplimiento y la decisión con umbral 0.5.
+- **Puntaje y veredicto con umbral ajustable:**
+  - El umbral de decisión se mueve con un control de 5 % a 95 %. Arranca en el recomendado de cada modelo
+    (el de máximo F1: 52 % en Random Forest y CS-FOF, 53 % en CatBoost).
+  - El recomendado se elige con una mitad de la partición de prueba. Para el umbral elegido, el tablero
+    muestra recall, precisión, porcentaje de clientes marcados, falsas alarmas por cada 100 clientes y F1,
+    todo medido en la otra mitad.
+  - Así se ve el intercambio entre detectar más incumplimientos y dar más falsas alarmas. Las métricas de la
+    validación usan 0.5 para que los modelos se comparen en igualdad de condiciones.
 - **Conjunto de predicción conforme al 90 %:**
   - Se calcula por clase (Mondrian). Se calibró con la mitad de la partición de prueba y su cobertura se
     verificó con la otra mitad (tabla de arriba).
