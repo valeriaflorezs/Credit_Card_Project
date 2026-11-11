@@ -1,0 +1,235 @@
+{
+  "modelo": "naive_bayes",
+  "archivo": "naive_bayes.joblib",
+  "fecha_entrenamiento_utc": "2026-11-11T19:59:41+00:00",
+  "semilla": 42,
+  "tecnica_balanceo": "smote",
+  "metodo_busqueda_anidada": "grid_search",
+  "seleccion_final": {
+    "criterio": "mayor F1 medio en CV estratificada de 5 pliegues sobre todos los datos, entre las configuraciones elegidas por el bucle interno",
+    "candidatos": [
+      {
+        "var_smoothing": 1e-06
+      },
+      {
+        "var_smoothing": 1e-12
+      }
+    ],
+    "f1_candidatos": [
+      0.4988359301566093,
+      0.4985945070695573
+    ],
+    "elegido": 0
+  },
+  "hiperparametros_finales": {
+    "var_smoothing": 1e-06
+  },
+  "metricas_bucle_externo_5x5": {
+    "f1": {
+      "media": 0.49865988836213787,
+      "desviacion_estandar": 0.007806420407981511,
+      "por_pliegue": [
+        0.5027590435315757,
+        0.4941808415398389,
+        0.49538002980625934,
+        0.5102222222222222,
+        0.4907573047107931
+      ]
+    },
+    "precision": {
+      "media": 0.4136054973290288,
+      "desviacion_estandar": 0.007774290925474882,
+      "por_pliegue": [
+        0.42355371900826444,
+        0.4088888888888889,
+        0.40956136027599804,
+        0.42020497803806733,
+        0.40581854043392507
+      ]
+    },
+    "recall": {
+      "media": 0.6279034690799397,
+      "desviacion_estandar": 0.012398795550604776,
+      "por_pliegue": [
+        0.6184012066365008,
+        0.6244343891402715,
+        0.6266968325791855,
+        0.6493212669683258,
+        0.6206636500754148
+      ]
+    },
+    "roc_auc": {
+      "media": 0.745396062530763,
+      "desviacion_estandar": 0.011482688699205415,
+      "por_pliegue": [
+        0.7494702220688179,
+        0.7358649398346142,
+        0.7425692928850266,
+        0.7632795944439651,
+        0.735796263421391
+      ]
+    },
+    "accuracy": {
+      "media": 0.7206407475387953,
+      "desviacion_estandar": 0.005959776866061154,
+      "por_pliegue": [
+        0.7293509093942934,
+        0.7171700317036542,
+        0.7175037543801102,
+        0.7241782079092274,
+        0.7150008343066911
+      ]
+    }
+  },
+  "n_filas_entrenamiento": 29965,
+  "tasa_default": 0.22125813449023862,
+  "columnas_entrada": [
+    {
+      "nombre": "SEX",
+      "tipo": "categorica",
+      "valores": [
+        1,
+        2
+      ]
+    },
+    {
+      "nombre": "EDUCATION",
+      "tipo": "categorica",
+      "valores": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "nombre": "MARRIAGE",
+      "tipo": "categorica",
+      "valores": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "nombre": "AGE",
+      "tipo": "numerica",
+      "min": 21.0,
+      "max": 79.0
+    },
+    {
+      "nombre": "PAY_0",
+      "tipo": "numerica",
+      "min": -2.0,
+      "max": 8.0
+    },
+    {
+      "nombre": "PAY_2",
+      "tipo": "numerica",
+      "min": -2.0,
+      "max": 8.0
+    },
+    {
+      "nombre": "PAY_3",
+      "tipo": "numerica",
+      "min": -2.0,
+      "max": 8.0
+    },
+    {
+      "nombre": "PAY_4",
+      "tipo": "numerica",
+      "min": -2.0,
+      "max": 8.0
+    },
+    {
+      "nombre": "PAY_5",
+      "tipo": "numerica",
+      "min": -2.0,
+      "max": 8.0
+    },
+    {
+      "nombre": "PAY_6",
+      "tipo": "numerica",
+      "min": -2.0,
+      "max": 8.0
+    },
+    {
+      "nombre": "BILL_AMT_MEAN_6M_LOG",
+      "tipo": "numerica",
+      "min": -10.933895349340577,
+      "max": 13.68462119591077
+    },
+    {
+      "nombre": "BILL_AMT_TREND_6M_LOG",
+      "tipo": "numerica",
+      "min": -11.506663039711574,
+      "max": 11.814100806715205
+    },
+    {
+      "nombre": "N_CREDIT_BALANCE_MONTHS",
+      "tipo": "numerica",
+      "min": 0.0,
+      "max": 6.0
+    },
+    {
+      "nombre": "LIMIT_BAL_LOG",
+      "tipo": "numerica",
+      "min": 9.210440366976517,
+      "max": 13.815511557963774
+    },
+    {
+      "nombre": "PAY_AMT1_LOG",
+      "tipo": "numerica",
+      "min": 0.0,
+      "max": 13.680324082159185
+    },
+    {
+      "nombre": "PAY_AMT2_LOG",
+      "tipo": "numerica",
+      "min": 0.0,
+      "max": 14.336836856166123
+    },
+    {
+      "nombre": "PAY_AMT3_LOG",
+      "tipo": "numerica",
+      "min": 0.0,
+      "max": 13.705741449838731
+    },
+    {
+      "nombre": "PAY_AMT4_LOG",
+      "tipo": "numerica",
+      "min": 0.0,
+      "max": 13.339087971220277
+    },
+    {
+      "nombre": "PAY_AMT5_LOG",
+      "tipo": "numerica",
+      "min": 0.0,
+      "max": 12.963437983416684
+    },
+    {
+      "nombre": "PAY_AMT6_LOG",
+      "tipo": "numerica",
+      "min": 0.0,
+      "max": 13.178114023025646
+    }
+  ],
+  "clases": {
+    "0": "no incumple",
+    "1": "incumple el pago del mes siguiente"
+  },
+  "prueba_ida_y_vuelta": true,
+  "tamano_archivo_mb": 0.33,
+  "tiempo_entrenamiento_s": 0.6,
+  "versiones": {
+    "python": "3.13.17",
+    "numpy": "2.5.3",
+    "pandas": "3.0.5",
+    "scikit-learn": "1.9.1",
+    "joblib": "1.6.0",
+    "imblearn": "0.14.2",
+    "xgboost": "3.4.1",
+    "lightgbm": "4.7.0",
+    "catboost": "1.2.10"
+  }
+}

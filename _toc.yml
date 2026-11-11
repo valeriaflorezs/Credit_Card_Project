@@ -21,6 +21,7 @@ parts:
       - file: notebooks/06_interpretability
       - file: notebooks/08_tabla_maestra_svm
       - file: notebooks/09_anytime_multifidelidad
+      - file: optimizacion_dejong
   - caption: "4. Revisión de literatura y novedad"
     chapters:
       - file: literatura

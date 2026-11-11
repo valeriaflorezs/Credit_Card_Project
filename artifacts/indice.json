@@ -1,0 +1,92 @@
+[
+  {
+    "modelo": "cs_fof",
+    "archivo": "cs_fof.joblib",
+    "metadata": "metadata.json",
+    "f1_externo_media": 0.5479383428680349,
+    "f1_externo_de": 0.005422988126936451,
+    "prueba_ida_y_vuelta": true,
+    "tamano_archivo_mb": 4.96
+  },
+  {
+    "modelo": "catboost",
+    "archivo": "catboost.joblib",
+    "metadata": "metadata_catboost.json",
+    "f1_externo_media": 0.548042315732788,
+    "f1_externo_de": 0.008808505522480308,
+    "prueba_ida_y_vuelta": true,
+    "tamano_archivo_mb": 0.16
+  },
+  {
+    "modelo": "xgboost",
+    "archivo": "xgboost.joblib",
+    "metadata": "metadata_xgboost.json",
+    "f1_externo_media": 0.5465672852970946,
+    "f1_externo_de": 0.009141950094947044,
+    "prueba_ida_y_vuelta": true,
+    "tamano_archivo_mb": 2.2
+  },
+  {
+    "modelo": "lightgbm",
+    "archivo": "lightgbm.joblib",
+    "metadata": "metadata_lightgbm.json",
+    "f1_externo_media": 0.5461784284264913,
+    "f1_externo_de": 0.008648035674152094,
+    "prueba_ida_y_vuelta": true,
+    "tamano_archivo_mb": 2.06
+  },
+  {
+    "modelo": "random_forest",
+    "archivo": "random_forest.joblib",
+    "metadata": "metadata_random_forest.json",
+    "f1_externo_media": 0.5452495554202816,
+    "f1_externo_de": 0.007684918915805332,
+    "prueba_ida_y_vuelta": true,
+    "tamano_archivo_mb": 5.96
+  },
+  {
+    "modelo": "svm",
+    "archivo": "svm.joblib",
+    "metadata": "metadata_svm.json",
+    "f1_externo_media": 0.5387341377198729,
+    "f1_externo_de": 0.004845541344996886,
+    "prueba_ida_y_vuelta": true,
+    "tamano_archivo_mb": 2.36
+  },
+  {
+    "modelo": "knn",
+    "archivo": "knn.joblib",
+    "metadata": "metadata_knn.json",
+    "f1_externo_media": 0.5263741205756126,
+    "f1_externo_de": 0.01220757769860535,
+    "prueba_ida_y_vuelta": true,
+    "tamano_archivo_mb": 1.74
+  },
+  {
+    "modelo": "decision_tree",
+    "archivo": "decision_tree.joblib",
+    "metadata": "metadata_decision_tree.json",
+    "f1_externo_media": 0.5254334739304573,
+    "f1_externo_de": 0.004319360325837249,
+    "prueba_ida_y_vuelta": true,
+    "tamano_archivo_mb": 0.01
+  },
+  {
+    "modelo": "logistic_regression",
+    "archivo": "logistic_regression.joblib",
+    "metadata": "metadata_logistic_regression.json",
+    "f1_externo_media": 0.5182311404283266,
+    "f1_externo_de": 0.010405563276080667,
+    "prueba_ida_y_vuelta": true,
+    "tamano_archivo_mb": 0.0
+  },
+  {
+    "modelo": "naive_bayes",
+    "archivo": "naive_bayes.joblib",
+    "metadata": "metadata_naive_bayes.json",
+    "f1_externo_media": 0.49865988836213787,
+    "f1_externo_de": 0.007806420407981511,
+    "prueba_ida_y_vuelta": true,
+    "tamano_archivo_mb": 0.33
+  }
+]

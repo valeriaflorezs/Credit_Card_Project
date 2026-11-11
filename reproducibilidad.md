@@ -44,6 +44,8 @@
   - `python experiments/robustez/robustez.py` (calibración, ruido y tamaño de muestra; ~1 h en 4 núcleos)
 * - Evaluación ampliada (exploratoria)
   - `python experiments/robustez/ampliada.py` (diagrama de diferencia crítica, predicción conforme, recalibración, análisis de errores, cambio de distribución, escalabilidad y 10 semillas; ~35 min en 4 núcleos)
+* - Validación del genético (De Jong)
+  - `python -m src.dejong` (5 funciones, 10 semillas, presupuesto del proyecto y 50 × 50; unos 2 min)
 * - Protocolo
   - `experiments/protocolo.md`, registrado el 8 de noviembre de 2026 en el commit `62ddeb7` (etiqueta `protocolo-2026-11-08`)
 ```
