@@ -269,7 +269,7 @@ def check_label_conflicts(
 def save_final_dataset(path=None) -> dict:
     """Regenera ``data/processed/dataset_final.csv`` desde el archivo original.
 
-    Hace lo mismo que la Parte 5 de ``00_eda.ipynb``. Desde la raíz del
+    Hace lo mismo que la Parte 4 de ``00_eda.ipynb``. Desde la raíz del
     proyecto: ``python -m src.preprocessing``.
     """
     out_path = path if path is not None else config.PROCESSED_DATA_PATH

@@ -76,7 +76,7 @@ Credit_Card_Project/
 
 | Notebook | Contenido |
 |---|---|
-| `00_eda.ipynb` | EDA y construcción de `data/processed/dataset_final.csv` (Parte 5) |
+| `00_eda.ipynb` | EDA y construcción de `data/processed/dataset_final.csv` (Parte 4) |
 | `01_baseline_logistic.ipynb` | Baseline: regresión logística con partición 80/20 |
 | `02_setup_check.ipynb`, `03_pipeline_dev.ipynb` | Verificación del entorno y desarrollo del pipeline (datos sintéticos) |
 | `04_run_experiments.ipynb` | Corrida 3 x 3 inicial (6 modelos, local); la corrida vigente 5 x 5 se hizo con `src/run_local_5x5.py` y Colab (`12_colab_5x5.ipynb`) a `results/experiments_master_5x5.csv` |

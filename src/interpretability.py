@@ -70,7 +70,7 @@ no garantiza.
    EDA de la compañera).
 2. **No linealidad local fuerte**: si la frontera de decisión es muy
    no lineal en la vecindad de la observación (ej. el efecto no lineal de
-   `PAY_0` que el EDA detectó en SHAP dependence plots), un sustituto
+   `PAY_0`), un sustituto
    LINEAL como el de LIME la aproxima pobremente, mientras que SHAP
    (exacto para árboles) sigue reflejando la no linealidad real del modelo.
 3. **Sensibilidad a hiperparámetros de LIME**: el ancho del kernel y el
