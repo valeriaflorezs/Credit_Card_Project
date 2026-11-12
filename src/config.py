@@ -14,7 +14,7 @@ RANDOM_STATE = 42
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 RAW_DATA_PATH = DATA_DIR / "raw" / "default_of_credit_card_clients.xls"  # dataset original (UCI), usado por el EDA
-PROCESSED_DATA_PATH = DATA_DIR / "processed" / "dataset_final.csv"  # lo genera la Parte 5 de notebooks/00_eda.ipynb (o `python -m src.preprocessing`)
+PROCESSED_DATA_PATH = DATA_DIR / "processed" / "dataset_final.csv"  # lo genera la Parte 4 de notebooks/00_eda.ipynb (o `python -m src.preprocessing`)
 RESULTS_DIR = PROJECT_ROOT / "results"
 # Tabla maestra vigente: validación anidada 5 x 5 (ver N_OUTER_FOLDS/N_INNER_FOLDS).
 EXPERIMENTS_MASTER_PATH = RESULTS_DIR / "experiments_master_5x5.csv"
