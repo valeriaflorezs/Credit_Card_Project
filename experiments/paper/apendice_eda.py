@@ -116,10 +116,11 @@ def main():
 
     lab = {"1": "Graduate", "2": "University", "3": "High school", "4": "Others"}
     tasas = R["chi2"]["EDUCATION"]["tasas"]
-    fig, ax = plt.subplots(figsize=(3.8, 2.8))
+    fig, ax = plt.subplots(figsize=(4.8, 2.9))
     ax.bar([lab[k] for k in sorted(tasas)], [tasas[k] for k in sorted(tasas)], color=NAVY)
     ax.axhline(R["clase"]["tasa"], ls="--", color=GOLD, label=f"Overall rate ({R['clase']['tasa']:.1%})")
-    ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1)); ax.set_ylabel("Default rate"); ax.legend(fontsize=7)
+    ax.yaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1)); ax.set_ylabel("Default rate"); ax.legend(fontsize=7, frameon=False)
+    ax.spines[["top", "right"]].set_visible(False)
     fig.tight_layout(); fig.savefig(FIGS / "fig_eda_rate_educ.pdf"); plt.close(fig)
 
     fig, ax = plt.subplots(figsize=(6.4, 5.4))
