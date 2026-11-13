@@ -61,6 +61,8 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'literatura';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -545,9 +547,35 @@ pero solo aparecieron aplicados en otros dominios, como el análisis de superviv
 <td><p>0</p></td>
 <td><p>Redes bayesianas en el conjunto de Taiwán y una prueba de calibración; ningún corte oblicuo</p></td>
 </tr>
+<tr class="row-even"><td><p>Google Scholar (citas hacia adelante)</p></td>
+<td><p>Artículos que citan a <span class="bibtex-citation" id="id8">Menze <em>et al.</em> [<a class="reference internal" href="reproducibilidad.html#id21" title="B. H. Menze, B. M. Kelm, D. N. Splitthoff, U. Koethe, and F. A. Hamprecht. On oblique random forests. In Machine Learning and Knowledge Discovery in Databases (ECML PKDD 2011), volume 6912 of Lecture Notes in Computer Science, 453–469. Springer, 2011.">MKS+11</a>]</span>, filtrados con <code class="docutils literal notranslate"><span class="pre">credit</span></code></p></td>
+<td><p>12-nov-2026</p></td>
+<td><p>373 citas; 10 revisados (primera página del filtro)</p></td>
+<td><p>0</p></td>
+<td><p>Incendios, antenas, cromatografía, mercados agrícolas; ningún bosque oblicuo en crédito</p></td>
+</tr>
+<tr class="row-odd"><td><p>Google Scholar (citas hacia adelante)</p></td>
+<td><p>Artículos que citan a <span class="bibtex-citation" id="id9">Murthy <em>et al.</em> [<a class="reference internal" href="reproducibilidad.html#id20" title="S. K. Murthy, S. Kasif, and S. Salzberg. A system for induction of oblique decision trees. Journal of Artificial Intelligence Research, 2:1–32, 1994.">MKS94</a>]</span>, filtrados con <code class="docutils literal notranslate"><span class="pre">credit</span></code></p></td>
+<td><p>12-nov-2026</p></td>
+<td><p>1,475 citas; 17 revisados</p></td>
+<td><p>0</p></td>
+<td><p>Árboles en general y optimización; destaca Bollwein y Westphal (2022), árbol oblicuo sin costo ni crédito</p></td>
+</tr>
+<tr class="row-even"><td><p>Google Scholar (citas hacia adelante)</p></td>
+<td><p>Artículos que citan a <span class="bibtex-citation" id="id10">Murthy <em>et al.</em> [<a class="reference internal" href="reproducibilidad.html#id20" title="S. K. Murthy, S. Kasif, and S. Salzberg. A system for induction of oblique decision trees. Journal of Artificial Intelligence Research, 2:1–32, 1994.">MKS94</a>]</span>, filtrados con <code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span> <span class="pre">loan</span></code></p></td>
+<td><p>12-nov-2026</p></td>
+<td><p>1,475 citas; 13 revisados</p></td>
+<td><p>0 en la aplicación; 1 cercano en método</p></td>
+<td><p><strong>CSNL</strong> <span class="bibtex-citation" id="id11">[<a class="reference internal" href="reproducibilidad.html#id25" title="Sunil Vadera. CSNL: a cost-sensitive non-linear decision tree algorithm. ACM Transactions on Knowledge Discovery from Data, 4(2):6:1–6:25, 2010. doi:10.1145/1754428.1754429.">Vad10</a>]</span>: árbol con nodos discriminantes sensibles al costo (se leyó el texto completo)</p></td>
+</tr>
 </tbody>
 </table>
 </div>
+<p>La búsqueda por citas (<em>snowballing</em>) se hizo hacia adelante desde los dos trabajos más cercanos en
+método, Menze et al. (2011) y Murthy et al. (1994). No encontró ninguna aplicación de cortes oblicuos al
+incumplimiento en tarjetas de crédito. Sí encontró el antecedente más cercano en método, CSNL
+<span class="bibtex-citation" id="id12">[<a class="reference internal" href="reproducibilidad.html#id25" title="Sunil Vadera. CSNL: a cost-sensitive non-linear decision tree algorithm. ACM Transactions on Knowledge Discovery from Data, 4(2):6:1–6:25, 2010. doi:10.1145/1754428.1754429.">Vad10</a>]</span>, que se analiza en la siguiente sección. La búsqueda hacia atrás en las referencias de
+Menze et al. no se completó porque no se consiguió el texto completo; se declara como limitación.</p>
 </section>
 <section id="diferenciacion-frente-al-trabajo-mas-cercano">
 <h2>Diferenciación frente al trabajo más cercano<a class="headerlink" href="#diferenciacion-frente-al-trabajo-mas-cercano" title="Link to this heading">#</a></h2>
@@ -560,44 +588,83 @@ pero solo aparecieron aplicados en otros dominios, como el análisis de superviv
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>OC1 <span class="bibtex-citation" id="id8">[<a class="reference internal" href="reproducibilidad.html#id20" title="S. K. Murthy, S. Kasif, and S. Salzberg. A system for induction of oblique decision trees. Journal of Artificial Intelligence Research, 2:1–32, 1994.">MKS94</a>]</span></p></td>
+<tr class="row-even"><td><p>OC1 <span class="bibtex-citation" id="id13">[<a class="reference internal" href="reproducibilidad.html#id20" title="S. K. Murthy, S. Kasif, and S. Salzberg. A system for induction of oblique decision trees. Journal of Artificial Intelligence Research, 2:1–32, 1994.">MKS94</a>]</span></p></td>
 <td><p>Búsqueda local aleatoria</p></td>
 <td><p>Un solo árbol, sin costo</p></td>
 </tr>
-<tr class="row-odd"><td><p>Forest-RC <span class="bibtex-citation" id="id9">[<a class="reference internal" href="reproducibilidad.html#id19" title="L. Breiman. Random forests. Machine Learning, 45(1):5–32, 2001. doi:10.1023/A:1010933404324.">Bre01</a>]</span></p></td>
+<tr class="row-odd"><td><p>Forest-RC <span class="bibtex-citation" id="id14">[<a class="reference internal" href="reproducibilidad.html#id19" title="L. Breiman. Random forests. Machine Learning, 45(1):5–32, 2001. doi:10.1023/A:1010933404324.">Bre01</a>]</span></p></td>
 <td><p>Combinaciones lineales aleatorias</p></td>
 <td><p>Dirección no supervisada</p></td>
 </tr>
-<tr class="row-even"><td><p>Oblique RF <span class="bibtex-citation" id="id10">[<a class="reference internal" href="reproducibilidad.html#id21" title="B. H. Menze, B. M. Kelm, D. N. Splitthoff, U. Koethe, and F. A. Hamprecht. On oblique random forests. In Machine Learning and Knowledge Discovery in Databases (ECML PKDD 2011), volume 6912 of Lecture Notes in Computer Science, 453–469. Springer, 2011.">MKS+11</a>]</span></p></td>
+<tr class="row-even"><td><p>Oblique RF <span class="bibtex-citation" id="id15">[<a class="reference internal" href="reproducibilidad.html#id21" title="B. H. Menze, B. M. Kelm, D. N. Splitthoff, U. Koethe, and F. A. Hamprecht. On oblique random forests. In Machine Learning and Knowledge Discovery in Databases (ECML PKDD 2011), volume 6912 of Lecture Notes in Computer Science, 453–469. Springer, 2011.">MKS+11</a>]</span></p></td>
 <td><p>Discriminante lineal o ridge por nodo</p></td>
 <td><p>Sin ponderación por costo ni competencia con cortes por ejes; no evaluado en crédito</p></td>
 </tr>
-<tr class="row-odd"><td><p>ORSF <span class="bibtex-citation" id="id11">[<a class="reference internal" href="reproducibilidad.html#id16" title="B. C. Jaeger, D. L. Long, D. M. Long, M. Sims, J. M. Szychowski, Y.-I. Min, L. A. McClure, G. Howard, and N. Simon. Oblique random survival forests. The Annals of Applied Statistics, 13(3):1847–1883, 2019. doi:10.1214/19-AOAS1261.">JLL+19</a>]</span></p></td>
+<tr class="row-odd"><td><p>ORSF <span class="bibtex-citation" id="id16">[<a class="reference internal" href="reproducibilidad.html#id16" title="B. C. Jaeger, D. L. Long, D. M. Long, M. Sims, J. M. Szychowski, Y.-I. Min, L. A. McClure, G. Howard, and N. Simon. Oblique random survival forests. The Annals of Applied Statistics, 13(3):1847–1883, 2019. doi:10.1214/19-AOAS1261.">JLL+19</a>]</span></p></td>
 <td><p>Cox penalizado por nodo</p></td>
 <td><p>Supervivencia médica, otra tarea</p></td>
 </tr>
-<tr class="row-even"><td><p>PLTR <span class="bibtex-citation" id="id12">[<a class="reference internal" href="reproducibilidad.html#id18" title="E. Dumitrescu, S. Hué, C. Hurlin, and S. Tokpavi. Machine learning for credit scoring: improving logistic regression with non-linear decision-tree effects. European Journal of Operational Research, 297(3):1178–1192, 2022. doi:10.1016/j.ejor.2021.06.053.">DHHT22</a>]</span></p></td>
+<tr class="row-even"><td><p>PLTR <span class="bibtex-citation" id="id17">[<a class="reference internal" href="reproducibilidad.html#id18" title="E. Dumitrescu, S. Hué, C. Hurlin, and S. Tokpavi. Machine learning for credit scoring: improving logistic regression with non-linear decision-tree effects. European Journal of Operational Research, 297(3):1178–1192, 2022. doi:10.1016/j.ejor.2021.06.053.">DHHT22</a>]</span></p></td>
 <td><p>Reglas de árboles en una logística penalizada</p></td>
 <td><p>Crédito, pero sin cortes oblicuos</p></td>
 </tr>
-<tr class="row-odd"><td><p>GEV-GBDT <span class="bibtex-citation" id="id13">[<a class="reference internal" href="reproducibilidad.html#id17" title="J. Zhang, R. Calabrese, and Y. Dong. A novel generalised extreme value gradient boosting decision tree for the class imbalanced problem in credit scoring. Journal of the Operational Research Society, 76(8):1513–1530, 2025. doi:10.1080/01605682.2024.2418882.">ZCD25</a>]</span></p></td>
+<tr class="row-odd"><td><p>GEV-GBDT <span class="bibtex-citation" id="id18">[<a class="reference internal" href="reproducibilidad.html#id17" title="J. Zhang, R. Calabrese, and Y. Dong. A novel generalised extreme value gradient boosting decision tree for the class imbalanced problem in credit scoring. Journal of the Operational Research Society, 76(8):1513–1530, 2025. doi:10.1080/01605682.2024.2418882.">ZCD25</a>]</span></p></td>
 <td><p>Cortes por ejes con pérdida de valor extremo</p></td>
 <td><p>Cambia la pérdida, no la geometría del corte</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>CSNL</strong> <span class="bibtex-citation" id="id19">[<a class="reference internal" href="reproducibilidad.html#id25" title="Sunil Vadera. CSNL: a cost-sensitive non-linear decision tree algorithm. ACM Transactions on Knowledge Discovery from Data, 4(2):6:1–6:25, 2010. doi:10.1145/1754428.1754429.">Vad10</a>]</span></p></td>
+<td><p>Discriminante <strong>cuadrático</strong> sensible al costo, sobre <strong>2 variables</strong> elegidas por ganancia de información individual</p></td>
+<td><p>El más cercano. Es un solo árbol podado; MC+CSNL usa <em>bagging</em> solo para reetiquetar y entrega un árbol. El costo entra en el umbral de Bayes; los cortes por ejes solo se usan si la covarianza no se puede invertir, no compiten. Probado en 17 conjuntos, uno de crédito (<em>Credit Approval</em>), medido por costo y no por F1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Oblique DT con von Mises–Fisher <span class="bibtex-citation" id="id20">[<a class="reference internal" href="reproducibilidad.html#id26" title="Ferdinand Bollwein and Stephan Westphal. Oblique decision tree induction by cross-entropy optimization based on the von Mises–Fisher distribution. Computational Statistics, 37(5):2203–2229, 2022.">BW22</a>]</span></p></td>
+<td><p>Optimización por entropía cruzada de la dirección (distribución de von Mises–Fisher, no discriminante de Fisher)</p></td>
+<td><p>Un solo árbol, sin costo ni aplicación a crédito</p></td>
+</tr>
+<tr class="row-even"><td><p>Canonical correlation forests <span class="bibtex-citation" id="id21">[<a class="reference internal" href="reproducibilidad.html#id27" title="Tom Rainforth and Frank Wood. Canonical correlation forests. 2015. arXiv:1507.05444.">RW15</a>]</span></p></td>
+<td><p>Correlación canónica entre variables y clases por nodo</p></td>
+<td><p>Bosque oblicuo sin costo ni competencia con cortes por ejes; no evaluado en crédito</p></td>
+</tr>
+<tr class="row-odd"><td><p>Revisión de árboles sensibles al costo <span class="bibtex-citation" id="id22">[<a class="reference internal" href="reproducibilidad.html#id28" title="Susan Lomax and Sunil Vadera. A survey of cost-sensitive decision tree induction algorithms. ACM Computing Surveys, 45(2):1–35, 2013.">LV13</a>]</span></p></td>
+<td><p>(revisión de métodos)</p></td>
+<td><p>Ubica a CSNL dentro de los árboles sensibles al costo; ninguno es un bosque de cortes de Fisher ponderados</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p><strong>Declaración de novedad.</strong> Al mejor de nuestro conocimiento y según la búsqueda descrita en Web of
-Science y Scopus (octubre de 2026) y arXiv (11 de noviembre de 2026), no se encontraron estudios que apliquen un bosque oblicuo con cortes
-de Fisher ponderados por costo a la predicción del incumplimiento en tarjetas de crédito. El trabajo
-más cercano en método es el bosque oblicuo de <span class="bibtex-citation" id="id14">Menze <em>et al.</em> [<a class="reference internal" href="reproducibilidad.html#id21" title="B. H. Menze, B. M. Kelm, D. N. Splitthoff, U. Koethe, and F. A. Hamprecht. On oblique random forests. In Machine Learning and Knowledge Discovery in Databases (ECML PKDD 2011), volume 6912 of Lecture Notes in Computer Science, 453–469. Springer, 2011.">MKS+11</a>]</span>; CS-FOF se diferencia en que pondera
-la dirección y el criterio de partición por el costo del incumplimiento y en que el corte oblicuo
-compite con los cortes por ejes bajo ese mismo criterio.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Pendiente antes de la versión final: completar la búsqueda por citas (<em>snowballing</em>) a partir de los
-trabajos más cercanos, Menze et al. (2011) y Murthy et al. (1994).</p>
-</div>
+<p><strong>Qué cambia CSNL en la declaración de novedad.</strong> La idea de usar <strong>análisis discriminante sensible al
+costo</strong> en los nodos de un árbol no es nueva: CSNL la propuso en 2010 y la probó, entre otros, en un
+conjunto de aprobación de crédito (<em>Credit Approval</em>), casi el mismo que el conjunto <em>Australian</em> que
+este proyecto usa como adicional. Lo que distingue a CS-FOF de CSNL es:</p>
+<ol class="arabic simple">
+<li><p><strong>Es un bosque aleatorio:</strong> bootstrap, sorteo de variables por nodo y promedio de probabilidades. CSNL es
+un solo árbol.</p></li>
+<li><p><strong>El corte es lineal (Fisher) sobre <span class="math notranslate nohighlight">\(q\)</span> variables sorteadas</strong>, con dispersión intra-clase ponderada por
+costo y regularizada. CSNL usa una frontera cuadrática sobre las dos mejores variables.</p></li>
+<li><p><strong>El corte oblicuo compite con los cortes por ejes bajo el mismo Gini ponderado</strong>, lo que da la
+Proposición 1 (nunca es peor que el mejor corte por ejes). En CSNL el corte discriminante siempre gana,
+salvo que la covarianza sea singular.</p></li>
+<li><p><strong>El costo entra en los pesos</strong>, tanto de la dirección como del criterio de partición. En CSNL entra en el
+umbral de la regla de Bayes.</p></li>
+<li><p><strong>Se aplica al incumplimiento de pago de clientes de tarjeta</strong>, con validación anidada, F1 y pruebas de
+hipótesis frente al estado del arte. CSNL se aplicó a la aprobación de solicitudes de crédito, que es otra
+tarea, con otra métrica.</p></li>
+</ol>
+<p><strong>Declaración de novedad.</strong> Al mejor de nuestro conocimiento, y según la búsqueda descrita en Web of
+Science y Scopus (octubre de 2026), arXiv (11 de noviembre de 2026) y la búsqueda por citas en Google
+Scholar (12 de noviembre de 2026), no se encontraron estudios que apliquen un <strong>bosque aleatorio</strong> cuyos
+nodos usen cortes de <strong>Fisher ponderados por costo en competencia con los cortes por ejes</strong> a la
+predicción del incumplimiento de pago en tarjetas de crédito.</p>
+<p>Los trabajos más cercanos son:</p>
+<ul class="simple">
+<li><p><strong>Por la estructura de bosque oblicuo:</strong> el bosque oblicuo de <span class="bibtex-citation" id="id23">Menze <em>et al.</em> [<a class="reference internal" href="reproducibilidad.html#id21" title="B. H. Menze, B. M. Kelm, D. N. Splitthoff, U. Koethe, and F. A. Hamprecht. On oblique random forests. In Machine Learning and Knowledge Discovery in Databases (ECML PKDD 2011), volume 6912 of Lecture Notes in Computer Science, 453–469. Springer, 2011.">MKS+11</a>]</span>, que no pondera por costo
+ni hace competir los cortes.</p></li>
+<li><p><strong>Por los nodos discriminantes sensibles al costo:</strong> CSNL <span class="bibtex-citation" id="id24">[<a class="reference internal" href="reproducibilidad.html#id25" title="Sunil Vadera. CSNL: a cost-sensitive non-linear decision tree algorithm. ACM Transactions on Knowledge Discovery from Data, 4(2):6:1–6:25, 2010. doi:10.1145/1754428.1754429.">Vad10</a>]</span>, que es un solo árbol con
+fronteras cuadráticas sobre dos variables y se evaluó en aprobación de crédito, no en incumplimiento de
+pago.</p></li>
+</ul>
+<p>La contribución de CS-FOF no es la idea de un corte discriminante sensible al costo, que ya existía, sino
+su combinación dentro de un bosque aleatorio con una regla de competencia que tiene una garantía demostrada
+(Proposición 1).</p>
 </section>
 </section>
 

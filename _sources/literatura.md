@@ -103,7 +103,31 @@ pero solo aparecieron aplicados en otros dominios, como el análisis de superviv
   - 2
   - 0
   - Redes bayesianas en el conjunto de Taiwán y una prueba de calibración; ningún corte oblicuo
+* - Google Scholar (citas hacia adelante)
+  - Artículos que citan a {cite:t}`menze2011`, filtrados con `credit`
+  - 12-nov-2026
+  - 373 citas; 10 revisados (primera página del filtro)
+  - 0
+  - Incendios, antenas, cromatografía, mercados agrícolas; ningún bosque oblicuo en crédito
+* - Google Scholar (citas hacia adelante)
+  - Artículos que citan a {cite:t}`murthy1994`, filtrados con `credit`
+  - 12-nov-2026
+  - 1,475 citas; 17 revisados
+  - 0
+  - Árboles en general y optimización; destaca Bollwein y Westphal (2022), árbol oblicuo sin costo ni crédito
+* - Google Scholar (citas hacia adelante)
+  - Artículos que citan a {cite:t}`murthy1994`, filtrados con `"default" loan`
+  - 12-nov-2026
+  - 1,475 citas; 13 revisados
+  - 0 en la aplicación; 1 cercano en método
+  - **CSNL** {cite:p}`vadera2010`: árbol con nodos discriminantes sensibles al costo (se leyó el texto completo)
 ```
+
+La búsqueda por citas (*snowballing*) se hizo hacia adelante desde los dos trabajos más cercanos en
+método, Menze et al. (2011) y Murthy et al. (1994). No encontró ninguna aplicación de cortes oblicuos al
+incumplimiento en tarjetas de crédito. Sí encontró el antecedente más cercano en método, CSNL
+{cite:p}`vadera2010`, que se analiza en la siguiente sección. La búsqueda hacia atrás en las referencias de
+Menze et al. no se completó porque no se consiguió el texto completo; se declara como limitación.
 
 ## Diferenciación frente al trabajo más cercano
 
@@ -132,16 +156,52 @@ pero solo aparecieron aplicados en otros dominios, como el análisis de superviv
 * - GEV-GBDT {cite:p}`zhang2025`
   - Cortes por ejes con pérdida de valor extremo
   - Cambia la pérdida, no la geometría del corte
+* - **CSNL** {cite:p}`vadera2010`
+  - Discriminante **cuadrático** sensible al costo, sobre **2 variables** elegidas por ganancia de información individual
+  - El más cercano. Es un solo árbol podado; MC+CSNL usa *bagging* solo para reetiquetar y entrega un árbol. El costo entra en el umbral de Bayes; los cortes por ejes solo se usan si la covarianza no se puede invertir, no compiten. Probado en 17 conjuntos, uno de crédito (*Credit Approval*), medido por costo y no por F1
+* - Oblique DT con von Mises–Fisher {cite:p}`bollwein2022`
+  - Optimización por entropía cruzada de la dirección (distribución de von Mises–Fisher, no discriminante de Fisher)
+  - Un solo árbol, sin costo ni aplicación a crédito
+* - Canonical correlation forests {cite:p}`rainforth2015`
+  - Correlación canónica entre variables y clases por nodo
+  - Bosque oblicuo sin costo ni competencia con cortes por ejes; no evaluado en crédito
+* - Revisión de árboles sensibles al costo {cite:p}`lomax2013`
+  - (revisión de métodos)
+  - Ubica a CSNL dentro de los árboles sensibles al costo; ninguno es un bosque de cortes de Fisher ponderados
 ```
 
-**Declaración de novedad.** Al mejor de nuestro conocimiento y según la búsqueda descrita en Web of
-Science y Scopus (octubre de 2026) y arXiv (11 de noviembre de 2026), no se encontraron estudios que apliquen un bosque oblicuo con cortes
-de Fisher ponderados por costo a la predicción del incumplimiento en tarjetas de crédito. El trabajo
-más cercano en método es el bosque oblicuo de {cite:t}`menze2011`; CS-FOF se diferencia en que pondera
-la dirección y el criterio de partición por el costo del incumplimiento y en que el corte oblicuo
-compite con los cortes por ejes bajo ese mismo criterio.
+**Qué cambia CSNL en la declaración de novedad.** La idea de usar **análisis discriminante sensible al
+costo** en los nodos de un árbol no es nueva: CSNL la propuso en 2010 y la probó, entre otros, en un
+conjunto de aprobación de crédito (*Credit Approval*), casi el mismo que el conjunto *Australian* que
+este proyecto usa como adicional. Lo que distingue a CS-FOF de CSNL es:
 
-```{note}
-Pendiente antes de la versión final: completar la búsqueda por citas (*snowballing*) a partir de los
-trabajos más cercanos, Menze et al. (2011) y Murthy et al. (1994).
-```
+1. **Es un bosque aleatorio:** bootstrap, sorteo de variables por nodo y promedio de probabilidades. CSNL es
+   un solo árbol.
+2. **El corte es lineal (Fisher) sobre $q$ variables sorteadas**, con dispersión intra-clase ponderada por
+   costo y regularizada. CSNL usa una frontera cuadrática sobre las dos mejores variables.
+3. **El corte oblicuo compite con los cortes por ejes bajo el mismo Gini ponderado**, lo que da la
+   Proposición 1 (nunca es peor que el mejor corte por ejes). En CSNL el corte discriminante siempre gana,
+   salvo que la covarianza sea singular.
+4. **El costo entra en los pesos**, tanto de la dirección como del criterio de partición. En CSNL entra en el
+   umbral de la regla de Bayes.
+5. **Se aplica al incumplimiento de pago de clientes de tarjeta**, con validación anidada, F1 y pruebas de
+   hipótesis frente al estado del arte. CSNL se aplicó a la aprobación de solicitudes de crédito, que es otra
+   tarea, con otra métrica.
+
+**Declaración de novedad.** Al mejor de nuestro conocimiento, y según la búsqueda descrita en Web of
+Science y Scopus (octubre de 2026), arXiv (11 de noviembre de 2026) y la búsqueda por citas en Google
+Scholar (12 de noviembre de 2026), no se encontraron estudios que apliquen un **bosque aleatorio** cuyos
+nodos usen cortes de **Fisher ponderados por costo en competencia con los cortes por ejes** a la
+predicción del incumplimiento de pago en tarjetas de crédito.
+
+Los trabajos más cercanos son:
+
+- **Por la estructura de bosque oblicuo:** el bosque oblicuo de {cite:t}`menze2011`, que no pondera por costo
+  ni hace competir los cortes.
+- **Por los nodos discriminantes sensibles al costo:** CSNL {cite:p}`vadera2010`, que es un solo árbol con
+  fronteras cuadráticas sobre dos variables y se evaluó en aprobación de crédito, no en incumplimiento de
+  pago.
+
+La contribución de CS-FOF no es la idea de un corte discriminante sensible al costo, que ya existía, sino
+su combinación dentro de un bosque aleatorio con una regla de competencia que tiene una garantía demostrada
+(Proposición 1).

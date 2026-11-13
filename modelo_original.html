@@ -519,9 +519,17 @@ ejecutan en cada <em>push</em> con GitHub Actions.</p>
 </section>
 <section id="que-es-nuevo-y-que-se-reutiliza">
 <h2>Qué es nuevo y qué se reutiliza<a class="headerlink" href="#que-es-nuevo-y-que-se-reutiliza" title="Link to this heading">#</a></h2>
-<p>Se reutilizan la estructura del bosque aleatorio <span class="bibtex-citation" id="id2">[<a class="reference internal" href="reproducibilidad.html#id19" title="L. Breiman. Random forests. Machine Learning, 45(1):5–32, 2001. doi:10.1023/A:1010933404324.">Bre01</a>]</span> y la idea de cortes oblicuos
-<span class="bibtex-citation" id="id3">[<a class="reference internal" href="reproducibilidad.html#id21" title="B. H. Menze, B. M. Kelm, D. N. Splitthoff, U. Koethe, and F. A. Hamprecht. On oblique random forests. In Machine Learning and Knowledge Discovery in Databases (ECML PKDD 2011), volume 6912 of Lecture Notes in Computer Science, 453–469. Springer, 2011.">MKS+11</a>, <a class="reference internal" href="reproducibilidad.html#id20" title="S. K. Murthy, S. Kasif, and S. Salzberg. A system for induction of oblique decision trees. Journal of Artificial Intelligence Research, 2:1–32, 1994.">MKS94</a>]</span>. Lo nuevo es la <strong>regla de partición</strong>: una dirección discriminante local,
-ponderada por costo, que compite con los cortes por ejes bajo el mismo criterio ponderado.</p>
+<p>Se reutilizan:</p>
+<ul class="simple">
+<li><p>la estructura del bosque aleatorio <span class="bibtex-citation" id="id2">[<a class="reference internal" href="reproducibilidad.html#id19" title="L. Breiman. Random forests. Machine Learning, 45(1):5–32, 2001. doi:10.1023/A:1010933404324.">Bre01</a>]</span>;</p></li>
+<li><p>la idea de cortes oblicuos <span class="bibtex-citation" id="id3">[<a class="reference internal" href="reproducibilidad.html#id21" title="B. H. Menze, B. M. Kelm, D. N. Splitthoff, U. Koethe, and F. A. Hamprecht. On oblique random forests. In Machine Learning and Knowledge Discovery in Databases (ECML PKDD 2011), volume 6912 of Lecture Notes in Computer Science, 453–469. Springer, 2011.">MKS+11</a>, <a class="reference internal" href="reproducibilidad.html#id20" title="S. K. Murthy, S. Kasif, and S. Salzberg. A system for induction of oblique decision trees. Journal of Artificial Intelligence Research, 2:1–32, 1994.">MKS94</a>]</span>;</p></li>
+<li><p>la idea de usar análisis discriminante sensible al costo en los nodos de un árbol, que propuso CSNL
+<span class="bibtex-citation" id="id4">[<a class="reference internal" href="reproducibilidad.html#id25" title="Sunil Vadera. CSNL: a cost-sensitive non-linear decision tree algorithm. ACM Transactions on Knowledge Discovery from Data, 4(2):6:1–6:25, 2010. doi:10.1145/1754428.1754429.">Vad10</a>]</span> con fronteras cuadráticas en un solo árbol.</p></li>
+</ul>
+<p>Lo nuevo es la <strong>regla de partición dentro de un bosque aleatorio</strong>: la dirección de Fisher, calculada con
+las <span class="math notranslate nohighlight">\(q\)</span> variables sorteadas en el nodo y ponderada por costo tanto en la dirección como en el criterio,
+<strong>compite</strong> con los cortes por ejes bajo el mismo Gini ponderado. Esa competencia es la que da la
+Proposición 1. La comparación detallada con CSNL está en el capítulo de revisión de literatura.</p>
 </section>
 <section id="iteraciones-de-diseno">
 <h2>Iteraciones de diseño<a class="headerlink" href="#iteraciones-de-diseno" title="Link to this heading">#</a></h2>
