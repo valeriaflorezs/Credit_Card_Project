@@ -99,9 +99,19 @@ def main():
     ax.set_ylabel("Clients"); ax.set_ylim(0, max(v) * 1.2); ax.set_title("Target variable (n = 29,965)")
     fig.tight_layout(); fig.savefig(FIGS / "fig_eda_target.pdf"); plt.close(fig)
 
-    fig, ax = plt.subplots(figsize=(3.6, 2.8))
-    ax.boxplot([g0.PAY_0, g1.PAY_0], tick_labels=["No default", "Default"])
-    ax.set_ylabel("PAY_0 (September repayment status)"); ax.set_title("PAY_0 by class")
+    # PAY_0 es discreta: barras agrupadas con la distribución dentro de cada clase (un diagrama de caja no la muestra bien)
+    vals = [-2, -1, 0, 1, 2, 3, "4+"]; w = 0.4   # 4 a 8 meses se agrupan: son menos del 1 % de cada clase
+    d0 = g0.PAY_0.clip(upper=4).value_counts(normalize=True).reindex(range(-2, 5), fill_value=0).to_numpy() * 100
+    d1 = g1.PAY_0.clip(upper=4).value_counts(normalize=True).reindex(range(-2, 5), fill_value=0).to_numpy() * 100
+    fig, ax = plt.subplots(figsize=(6.0, 3.1)); x = np.arange(len(vals))
+    b0 = ax.bar(x - w / 2, d0, w, color=NAVY, label="No default"); b1 = ax.bar(x + w / 2, d1, w, color=GOLD, label="Default")
+    for bars in (b0, b1):
+        for r in bars:
+            if r.get_height() >= 0.5:
+                ax.text(r.get_x() + r.get_width() / 2, r.get_height() + 0.6, f"{r.get_height():.0f}", ha="center", va="bottom", fontsize=6.5)
+    ax.set_xticks(x, vals); ax.set_xlabel("PAY_0: September repayment status (months of delay; -2, -1, 0 = no delay)")
+    ax.set_ylabel("Clients within each class (%)"); ax.set_ylim(0, max(d0.max(), d1.max()) * 1.15)
+    ax.spines[["top", "right"]].set_visible(False); ax.grid(axis="y", alpha=.3); ax.set_axisbelow(True); ax.legend(frameon=False)
     fig.tight_layout(); fig.savefig(FIGS / "fig_eda_pay0.pdf"); plt.close(fig)
 
     lab = {"1": "Graduate", "2": "University", "3": "High school", "4": "Others"}
