@@ -19,8 +19,26 @@ de Taiwán observados entre abril y septiembre de 2005. Para cada cliente se con
 características demográficas, su historial de pagos de seis meses, los montos facturados, los montos pagados y si
 incumplió el pago del mes siguiente (variable objetivo). El proyecto se desarrolló en etapas: comprensión del
 problema, proceso ETL, análisis exploratorio (EDA), modelo base de regresión logística, comparación sistemática de
-112 configuraciones de modelos, análisis de resultados e interpretabilidad. El resumen de resultados está en la
-portada y cada etapa se documenta en los capítulos siguientes.
+112 configuraciones de modelos, un modelo original con su validación estadística y evaluación ampliada, y un tablero
+interactivo desplegado. El resumen de resultados está en la portada y cada etapa se documenta en los capítulos
+siguientes.
+
+**Contribuciones.**
+
+1. Un modelo original, el *Cost-Sensitive Fisher Oblique Forest* (CS-FOF): un bosque aleatorio programado desde
+   cero cuyos nodos pueden cortar por la dirección discriminante de Fisher ponderada por el costo del incumplimiento.
+   Se demuestran tres propiedades (nunca peor que los cortes por ejes, optimalidad de Fisher y terminación) y se
+   verifican con pruebas unitarias.
+2. Una comparación justa de 148 combinaciones de 10 modelos, con validación cruzada anidada 5 × 5, las mismas
+   particiones y el mismo presupuesto de búsqueda, que incluye dos métodos recientes (LightGBM y CatBoost).
+3. Una validación estadística con protocolo registrado, al menos tres pruebas de hipótesis con corrección por
+   comparaciones múltiples y tamaños del efecto, más tres conjuntos de crédito adicionales. El veredicto se reporta
+   tal cual: CS-FOF empata con CatBoost y no es superior de forma significativa.
+4. Una evaluación ampliada: robustez al ruido y al tamaño de muestra, 10 semillas, escalabilidad, cambio de
+   distribución, calibración, predicción conforme, análisis de errores por subgrupo y SHAP del modelo original.
+5. Un tablero interactivo desplegado en https://dash-credit-kv.onrender.com, con predicción en vivo, explicación
+   local SHAP, conjunto de predicción conforme y umbral de decisión ajustable, y un paquete de reproducibilidad
+   completo (artefactos con prueba de ida y vuelta, integración continua y archivo con DOI).
 
 ::::{grid} 2 2 4 4
 :gutter: 3
@@ -175,7 +193,8 @@ crédito, a partir de un análisis exploratorio univariado y multivariado.
 - El análisis es asociativo; una correlación no implica causalidad.
 - Los códigos `-2` y `0` de `PAY_x` no están documentados con precisión en la fuente; se conservan sin recodificar.
 - Existen grupos de clientes con predictoras idénticas pero etiqueta distinta (ruido propio de la fuente), lo que
-  impone un techo al desempeño de cualquier modelo con estas variables.
+  hace imposible clasificar bien a todos esos clientes con estas variables (es un error irreducible, aunque
+  pequeño).
 - Las cifras monetarias están en dólares taiwaneses (NT$).
 :::
 

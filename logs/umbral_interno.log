@@ -1,0 +1,37 @@
+cs_fof         pliegue 1: umbral 0.52  F1 0.5 0.5514 -> ajustado 0.5519
+cs_fof         pliegue 2: umbral 0.51  F1 0.5 0.5450 -> ajustado 0.5453
+cs_fof         pliegue 3: umbral 0.50  F1 0.5 0.5416 -> ajustado 0.5416
+cs_fof         pliegue 4: umbral 0.53  F1 0.5 0.5606 -> ajustado 0.5592
+cs_fof         pliegue 5: umbral 0.51  F1 0.5 0.5432 -> ajustado 0.5423
+catboost       pliegue 1: umbral 0.54  F1 0.5 0.5508 -> ajustado 0.5464
+catboost       pliegue 2: umbral 0.57  F1 0.5 0.5495 -> ajustado 0.5472
+catboost       pliegue 3: umbral 0.53  F1 0.5 0.5347 -> ajustado 0.5443
+catboost       pliegue 4: umbral 0.54  F1 0.5 0.5603 -> ajustado 0.5646
+catboost       pliegue 5: umbral 0.57  F1 0.5 0.5400 -> ajustado 0.5460
+xgboost        pliegue 1: umbral 0.51  F1 0.5 0.5473 -> ajustado 0.5509
+xgboost        pliegue 2: umbral 0.53  F1 0.5 0.5442 -> ajustado 0.5393
+xgboost        pliegue 3: umbral 0.56  F1 0.5 0.5393 -> ajustado 0.5474
+xgboost        pliegue 4: umbral 0.54  F1 0.5 0.5579 -> ajustado 0.5634
+xgboost        pliegue 5: umbral 0.51  F1 0.5 0.5352 -> ajustado 0.5358
+lightgbm       pliegue 1: umbral 0.52  F1 0.5 0.5458 -> ajustado 0.5513
+lightgbm       pliegue 2: umbral 0.54  F1 0.5 0.5459 -> ajustado 0.5407
+lightgbm       pliegue 3: umbral 0.57  F1 0.5 0.5363 -> ajustado 0.5419
+lightgbm       pliegue 4: umbral 0.53  F1 0.5 0.5593 -> ajustado 0.5620
+lightgbm       pliegue 5: umbral 0.52  F1 0.5 0.5420 -> ajustado 0.5436
+random_forest  pliegue 1: umbral 0.54  F1 0.5 0.5466 -> ajustado 0.5494
+random_forest  pliegue 2: umbral 0.54  F1 0.5 0.5413 -> ajustado 0.5392
+random_forest  pliegue 3: umbral 0.52  F1 0.5 0.5345 -> ajustado 0.5358
+random_forest  pliegue 4: umbral 0.54  F1 0.5 0.5546 -> ajustado 0.5585
+random_forest  pliegue 5: umbral 0.52  F1 0.5 0.5398 -> ajustado 0.5431
+               umbral_medio  umbral_min  umbral_max   f1_05  f1_05_de  f1_ajustado  f1_ajustado_de  ganancia
+model                                                                                                       
+cs_fof                0.514        0.50        0.53  0.5483    0.0078       0.5481          0.0074   -0.0003
+catboost              0.550        0.53        0.57  0.5471    0.0100       0.5497          0.0084    0.0026
+xgboost               0.530        0.51        0.56  0.5448    0.0087       0.5474          0.0108    0.0026
+lightgbm              0.536        0.52        0.57  0.5459    0.0085       0.5479          0.0089    0.0020
+random_forest         0.532        0.52        0.54  0.5434    0.0076       0.5452          0.0090    0.0019
+        rival  dif_f1  gana  p_nadeau_bengio  p_wilcoxon  p_nb_holm  p_w_holm  f1_global_cs_fof  dif_f1_global  ic95_bajo  ic95_alto
+     catboost -0.0016     1           0.6008      0.6250     1.0000      1.00             0.548        -0.0018    -0.0055     0.0022
+      xgboost  0.0007     3           0.8588      0.6250     1.0000      1.00             0.548         0.0006    -0.0033     0.0046
+     lightgbm  0.0002     2           0.9157      1.0000     1.0000      1.00             0.548         0.0002    -0.0030     0.0035
+random_forest  0.0029     4           0.2335      0.1875     0.9342      0.75             0.548         0.0028    -0.0005     0.0061
