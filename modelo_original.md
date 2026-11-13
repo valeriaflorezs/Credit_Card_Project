@@ -85,9 +85,17 @@ ejecutan en cada *push* con GitHub Actions.
 
 ## Qué es nuevo y qué se reutiliza
 
-Se reutilizan la estructura del bosque aleatorio {cite:p}`breiman2001` y la idea de cortes oblicuos
-{cite:p}`murthy1994,menze2011`. Lo nuevo es la **regla de partición**: una dirección discriminante local,
-ponderada por costo, que compite con los cortes por ejes bajo el mismo criterio ponderado.
+Se reutilizan:
+
+- la estructura del bosque aleatorio {cite:p}`breiman2001`;
+- la idea de cortes oblicuos {cite:p}`murthy1994,menze2011`;
+- la idea de usar análisis discriminante sensible al costo en los nodos de un árbol, que propuso CSNL
+  {cite:p}`vadera2010` con fronteras cuadráticas en un solo árbol.
+
+Lo nuevo es la **regla de partición dentro de un bosque aleatorio**: la dirección de Fisher, calculada con
+las $q$ variables sorteadas en el nodo y ponderada por costo tanto en la dirección como en el criterio,
+**compite** con los cortes por ejes bajo el mismo Gini ponderado. Esa competencia es la que da la
+Proposición 1. La comparación detallada con CSNL está en el capítulo de revisión de literatura.
 
 ## Iteraciones de diseño
 
