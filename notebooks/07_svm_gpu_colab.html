@@ -214,9 +214,21 @@
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. Introducción</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../introduccion.html">Marco del proyecto</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. Trazabilidad de correcciones</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../correcciones.html">Trazabilidad de correcciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Datos: ETL y EDA</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../DATA_STATEMENT.html">Declaración de los datos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Modelos benchmark</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
@@ -226,15 +238,36 @@
 
 <li class="toctree-l1"><a class="reference internal" href="08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
-<li class="toctree-l1"><a class="reference internal" href="10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimizacion_dejong.html">Validación del algoritmo genético con las funciones de De Jong</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Revisión de literatura y novedad</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../literatura.html">Revisión de literatura y evidencia de novedad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Modelo original</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../modelo_original.html">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../validacion.html">Validación estadística del modelo original</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. Evaluación ampliada y robustez</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../evaluacion_ampliada.html">Evaluación ampliada: ablación, robustez y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Dashboard y despliegue</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../dashboard.html">Dashboard y despliegue</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../MODEL_CARD.html">Ficha del modelo: CS-FOF</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../DATA_STATEMENT.html">Declaración de los datos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">9. Conclusiones y limitaciones</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../conclusiones.html">Conclusiones y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Reproducibilidad y bibliografía</span></p>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../reproducibilidad.html">Reproducibilidad, archivo del repositorio y declaración de autoría</a></li>
 </ul>
 
@@ -1074,7 +1107,7 @@ scope.google.colab._files = {
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATASET_PATH</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dataset cargado: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">29965</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span> <span class="sa">f</span><span class="s2">"forma inesperada: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> (se esperaba (29965, 21): dataset_final.csv de la Parte 5 del EDA)"</span>
+<span class="k">assert</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">29965</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span> <span class="sa">f</span><span class="s2">"forma inesperada: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> (se esperaba (29965, 21): dataset_final.csv de la Parte 4 del EDA)"</span>
 
 <span class="n">n_before</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="s2">"first"</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
