@@ -249,7 +249,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Modelo original</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../modelo_original.html">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
 <ul class="nav bd-sidenav">
@@ -426,7 +426,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calibracion-brier-ece-reliability-diagram-recalibracion-si-corresponde">Calibración: Brier, ECE, reliability diagram (+ recalibración si corresponde)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complejidad-computacional-estandar-vs-optimizado">Complejidad computacional: estándar vs. optimizado</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#siguiente-paso">Siguiente Paso</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#siguiente-paso-modelo-original-y-metodos-recientes">Siguiente paso: modelo original y métodos recientes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#siguiente-paso-modelo-original">Siguiente paso: modelo original</a></li>
 </ul>
             </nav>
         </div>
@@ -2088,9 +2088,9 @@ DeLong (pares dentro del top, corrección Holm):
 <h2>Siguiente Paso<a class="headerlink" href="#siguiente-paso" title="Link to this heading">#</a></h2>
 <p>Con la combinación de mayor F1 medio identificada (su ventaja sobre otras cercanas no es estadísticamente distinguible), avanzamos al capítulo 06: allí se interpreta con SHAP el Random Forest de esa combinación (100 observaciones de un fold en las secciones 1 a 4, y los 5 folds en la sección 5) y se compara LIME frente a SHAP en 120 observaciones por modelo (sección 6). La tabla maestra consolidada y la comparabilidad del SVM están en el capítulo 08, y las curvas anytime y la multi-fidelidad en el 09.</p>
 </section>
-<section id="siguiente-paso-modelo-original-y-metodos-recientes">
-<h2>Siguiente paso: modelo original y métodos recientes<a class="headerlink" href="#siguiente-paso-modelo-original-y-metodos-recientes" title="Link to this heading">#</a></h2>
-<p>Todas las conclusiones de este notebook son sobre las 112 combinaciones de modelos tradicionales. Si algún modelo nuevo supera su mejor F1 medio (XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y optimización bayesiana, 0.5466) se estudia en el capítulo 10, que compara CS-FOF, LightGBM y CatBoost con el mismo protocolo.</p>
+<section id="siguiente-paso-modelo-original">
+<h2>Siguiente paso: modelo original<a class="headerlink" href="#siguiente-paso-modelo-original" title="Link to this heading">#</a></h2>
+<p>Todas las conclusiones de este notebook son sobre las 112 combinaciones de modelos de referencia. Si el modelo original supera su mejor F1 medio (XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y optimización bayesiana, 0.5466) se estudia en el capítulo 10, que evalúa CS-FOF con el mismo protocolo.</p>
 </section>
 </section>
 
@@ -2170,7 +2170,7 @@ DeLong (pares dentro del top, corrección Holm):
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calibracion-brier-ece-reliability-diagram-recalibracion-si-corresponde">Calibración: Brier, ECE, reliability diagram (+ recalibración si corresponde)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complejidad-computacional-estandar-vs-optimizado">Complejidad computacional: estándar vs. optimizado</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#siguiente-paso">Siguiente Paso</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#siguiente-paso-modelo-original-y-metodos-recientes">Siguiente paso: modelo original y métodos recientes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#siguiente-paso-modelo-original">Siguiente paso: modelo original</a></li>
 </ul>
   </nav></div>
 

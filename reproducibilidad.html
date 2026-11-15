@@ -246,7 +246,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Modelo original</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="modelo_original.html">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
 <ul class="nav bd-sidenav">
@@ -463,10 +463,10 @@
 <td><p>Malla ≤ 200 combinaciones, 25 aleatorias, 30 de Optuna, genético 16 × 10 (<code class="docutils literal notranslate"><span class="pre">src/config.py</span></code>)</p></td>
 </tr>
 <tr class="row-even"><td><p>Software</p></td>
-<td><p>Python 3.12, numpy 2.5.3, pandas 3.0.6, scikit-learn 1.9.1, xgboost 3.4.1, lightgbm 4.7.0, catboost 1.2.10, optuna 5.0.0, deap 1.4.3 (<code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>)</p></td>
+<td><p>Python 3.12 y 3.13 según el equipo, numpy 2.5.3, pandas 3.0.6, scikit-learn 1.9.1, xgboost 3.4.1, optuna 5.0.0, deap 1.4.3 (<code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>)</p></td>
 </tr>
 <tr class="row-odd"><td><p>Hardware</p></td>
-<td><p>Windows, AMD Ryzen 7, 16 GB de RAM, sin GPU (modelos de árboles, CS-FOF y boosting); Google Colab con GPU T4 (SVM y KNN)</p></td>
+<td><p>Windows 11, AMD Ryzen AI 7 445, 16 GB de RAM (modelos de árboles, regresión logística y Naive Bayes); Google Colab con GPU T4 (SVM y KNN); Windows 11, Intel Core i5-1235U, 8 GB de RAM (validación anidada de CS-FOF); máquina virtual con Linux, Intel Xeon a 2.30 GHz con 4 núcleos y 15 GB de RAM (ablación, robustez, conjuntos adicionales, SHAP y medición de tiempos). Los tiempos de búsqueda de modelos distintos no son comparables entre equipos</p></td>
 </tr>
 <tr class="row-even"><td><p>Tiempo de cómputo de CS-FOF</p></td>
 <td><p>Malla 2.7 h, aleatoria 2.5 h, Optuna 2.5 h y genético 9.6 h (5 × 5, 8 procesos)</p></td>

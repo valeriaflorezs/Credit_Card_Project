@@ -249,7 +249,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Modelo original</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="modelo_original.html">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
 <ul class="nav bd-sidenav">
@@ -440,7 +440,7 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-exploratorio">Análisis exploratorio</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-base">Modelo base</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diseno-experimental">Diseño experimental</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-original-y-metodos-recientes">Modelo original y métodos recientes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-original">Modelo original</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad">Interpretabilidad</a></li>
 </ul>
 </li>
@@ -485,11 +485,12 @@ siguientes.</p>
 cero cuyos nodos pueden cortar por la dirección discriminante de Fisher ponderada por el costo del incumplimiento.
 Se demuestran tres propiedades (nunca peor que los cortes por ejes, optimalidad de Fisher y terminación) y se
 verifican con pruebas unitarias.</p></li>
-<li><p>Una comparación justa de 148 combinaciones de 10 modelos, con validación cruzada anidada 5 × 5, las mismas
-particiones y el mismo presupuesto de búsqueda, que incluye dos métodos recientes (LightGBM y CatBoost).</p></li>
+<li><p>Una comparación justa de 116 combinaciones de 8 modelos, con validación cruzada anidada 5 × 5, las mismas
+particiones y el mismo presupuesto de búsqueda.</p></li>
 <li><p>Una validación estadística con protocolo registrado, al menos tres pruebas de hipótesis con corrección por
 comparaciones múltiples y tamaños del efecto, más tres conjuntos de crédito adicionales. El veredicto se reporta
-tal cual: CS-FOF empata con CatBoost y no es superior de forma significativa.</p></li>
+tal cual: CS-FOF obtiene el mayor F1 medio, pero no es superior de forma significativa a XGBoost ni a
+Random Forest.</p></li>
 <li><p>Una evaluación ampliada: robustez al ruido y al tamaño de muestra, 10 semillas, escalabilidad, cambio de
 distribución, calibración, predicción conforme, análisis de errores por subgrupo y SHAP del modelo original.</p></li>
 <li><p>Un tablero interactivo desplegado en https://dash-credit-kv.onrender.com, con predicción en vivo, explicación
@@ -933,12 +934,12 @@ de cabeza, y la comparación entre ellas se interpreta de manera descriptiva.</p
 computacional de cada configuración.</p></li>
 </ul>
 </section>
-<section id="modelo-original-y-metodos-recientes">
-<h3>Modelo original y métodos recientes<a class="headerlink" href="#modelo-original-y-metodos-recientes" title="Link to this heading">#</a></h3>
+<section id="modelo-original">
+<h3>Modelo original<a class="headerlink" href="#modelo-original" title="Link to this heading">#</a></h3>
 <p>Las 112 configuraciones anteriores son los modelos tradicionales y fijan el punto de comparación: su mejor F1 medio
 es 0.547 (XGBoost con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y optimización bayesiana). Con ese valor como referencia se busca un modelo que
-lo supere: un bosque aleatorio propio con cortes oblicuos sensibles al costo (CS-FOF), contrastado además con dos
-métodos recientes de boosting (LightGBM y CatBoost) bajo el mismo protocolo de validación anidada 5 x 5.</p>
+lo supere: un bosque aleatorio propio con cortes oblicuos sensibles al costo (CS-FOF), evaluado bajo el mismo
+protocolo de validación anidada 5 x 5.</p>
 </section>
 <section id="interpretabilidad">
 <h3>Interpretabilidad<a class="headerlink" href="#interpretabilidad" title="Link to this heading">#</a></h3>
@@ -1140,7 +1141,7 @@ métodos recientes de boosting (LightGBM y CatBoost) bajo el mismo protocolo de 
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-exploratorio">Análisis exploratorio</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-base">Modelo base</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diseno-experimental">Diseño experimental</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-original-y-metodos-recientes">Modelo original y métodos recientes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-original">Modelo original</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad">Interpretabilidad</a></li>
 </ul>
 </li>

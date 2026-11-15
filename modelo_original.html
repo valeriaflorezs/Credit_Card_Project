@@ -67,7 +67,7 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="10. Modelo original (CS-FOF) y métodos recientes" href="notebooks/10_modelo_original_cs_fof.html" />
+    <link rel="next" title="10. Modelo original (CS-FOF)" href="notebooks/10_modelo_original_cs_fof.html" />
     <link rel="prev" title="Revisión de literatura y evidencia de novedad" href="literatura.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -249,7 +249,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Modelo original</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
 <ul class="nav bd-sidenav">
@@ -423,7 +423,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion">Implementación</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-es-nuevo-y-que-se-reutiliza">Qué es nuevo y qué se reutiliza</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iteraciones-de-diseno">Iteraciones de diseño</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad-shap-frente-al-mejor-benchmark">Interpretabilidad: SHAP frente al mejor benchmark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad-shap-frente-al-mejor-modelo-de-referencia">Interpretabilidad: SHAP frente al mejor modelo de referencia</a></li>
 </ul>
             </nav>
         </div>
@@ -538,9 +538,9 @@ Proposición 1. La comparación detallada con CSNL está en el capítulo de revi
 oblicuos más fuertes (más variables o árboles más profundos) <strong>sobreajustaron</strong>; por eso se fijaron un
 candidato oblicuo por nodo con las mismas <span class="math notranslate nohighlight">\(q\)</span> variables y una profundidad máxima de 14.</p>
 </section>
-<section id="interpretabilidad-shap-frente-al-mejor-benchmark">
-<h2>Interpretabilidad: SHAP frente al mejor benchmark<a class="headerlink" href="#interpretabilidad-shap-frente-al-mejor-benchmark" title="Link to this heading">#</a></h2>
-<p>Para ver si CS-FOF decide con las mismas variables que CatBoost, el mejor modelo de referencia, se calcularon
+<section id="interpretabilidad-shap-frente-al-mejor-modelo-de-referencia">
+<h2>Interpretabilidad: SHAP frente al mejor modelo de referencia<a class="headerlink" href="#interpretabilidad-shap-frente-al-mejor-modelo-de-referencia" title="Link to this heading">#</a></h2>
+<p>Para ver si CS-FOF decide con las mismas variables que XGBoost, el mejor modelo de referencia, se calcularon
 valores SHAP para los dos (<code class="docutils literal notranslate"><span class="pre">experiments/robustez/shap_cs_fof.py</span></code>):</p>
 <ul class="simple">
 <li><p><strong>Mismo método.</strong> Se usa SHAP por permutación para los dos, porque CS-FOF no es un árbol de scikit-learn y no
@@ -552,7 +552,7 @@ ahí.</p></li>
 Los valores suman exactamente la probabilidad de cada cliente: el error de aditividad es menor que <span class="math notranslate nohighlight">\(10^{-14}\)</span>.</p></li>
 </ul>
 <figure class="align-default" id="fig-shap-csfof">
-<a class="reference internal image-reference" href="_images/shap_cs_fof_vs_catboost.png"><img alt="_images/shap_cs_fof_vs_catboost.png" src="_images/shap_cs_fof_vs_catboost.png" style="width: 100%;" />
+<a class="reference internal image-reference" href="_images/shap_cs_fof_vs_xgboost.png"><img alt="_images/shap_cs_fof_vs_xgboost.png" src="_images/shap_cs_fof_vs_xgboost.png" style="width: 100%;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 2 </span><span class="caption-text">Izquierda: importancia media |SHAP| de las 12 variables más importantes. Centro y derecha: valor SHAP de cada
@@ -560,22 +560,22 @@ cliente; el color indica si el valor de la variable es alto (rojo) o bajo (azul)
 </figcaption>
 </figure>
 <p><strong>Usan casi las mismas variables.</strong> La correlación de Spearman entre las importancias de las 25 columnas es
-0.95 (<span class="math notranslate nohighlight">\(p &lt; 10^{-12}\)</span>). Las dos variables principales coinciden: el estado de pago de septiembre (PAY_0) y el
-cupo. Cuatro de las cinco primeras variables son comunes a los dos modelos. En los clientes y variables
-principales, el signo del aporte coincide en el 88 % de los casos. En los dos modelos, la demografía (sexo,
-educación, estado civil y edad) pesa lo mismo: el 11 % de la importancia total.</p>
+0.94 (<span class="math notranslate nohighlight">\(p &lt; 10^{-11}\)</span>). La variable principal coincide: el estado de pago de septiembre (PAY_0). Cuatro de las
+cinco primeras variables son comunes a los dos modelos (PAY_0, el cupo, PAY_2 y la factura media). En los
+clientes y variables principales, el signo del aporte coincide en el 90 % de los casos. La demografía (sexo,
+educación, estado civil y edad) pesa poco en los dos: el 11 % de la importancia total en CS-FOF y el 9 % en
+XGBoost.</p>
 <p><strong>Diferencias, y cómo se explican.</strong></p>
 <ul class="simple">
-<li><p><strong>CS-FOF reparte más peso entre meses de atraso.</strong> PAY_2 (agosto) pesa el 38 % de PAY_0 en CS-FOF y el 23 %
-en CatBoost. Los estados de pago suman el 47 % de la importancia de CS-FOF frente al 43 % de CatBoost. Es lo
-que se espera de un corte oblicuo: la dirección de Fisher combina en un solo corte los atrasos de varios
-meses, que están muy correlacionados (Spearman 0.47 a 0.82), en lugar de separarlos en cortes sucesivos.</p></li>
-<li><p><strong>La factura media.</strong> En CatBoost, una factura alta sube el riesgo. En CS-FOF el efecto es pequeño y de signo
-mixto. Como la factura está correlacionada con el cupo y con los pagos, la dirección de Fisher puede
-absorber su efecto dentro de esas combinaciones. Esto es interacción con otras variables y no un error, pero
-hace que la lectura variable por variable de CS-FOF sea menos directa.</p></li>
-<li><p><strong>Valores SHAP más pequeños.</strong> En total, las importancias de CS-FOF son un 20 % menores (0.29 frente a
-0.37) porque sus probabilidades son menos extremas. Esto concuerda con su mejor calibración sin recalibrar.</p></li>
+<li><p><strong>CS-FOF concentra más importancia en los estados de pago.</strong> Los seis estados de pago suman el 47 % de la
+importancia de CS-FOF frente al 39 % de XGBoost. Es lo que se espera de un corte oblicuo: la dirección de
+Fisher combina en un solo corte los atrasos de varios meses, que están muy correlacionados (Spearman 0.47 a
+0.82). El peso relativo de agosto frente a septiembre es casi igual en los dos (PAY_2 pesa el 38 % de PAY_0
+en CS-FOF y el 36 % en XGBoost).</p></li>
+<li><p><strong>XGBoost reparte más entre el cupo y los montos.</strong> El cupo, las facturas y los pagos suman el 52 % de la
+importancia de XGBoost frente al 42 % de CS-FOF.</p></li>
+<li><p><strong>Valores SHAP algo más pequeños.</strong> En total, las importancias de CS-FOF son un 7 % menores (0.29 frente a
+0.31) porque sus probabilidades son menos extremas. Esto concuerda con su mejor calibración sin recalibrar.</p></li>
 </ul>
 <p>Las dos lecturas se apoyan en la misma evidencia que el EDA: el atraso reciente es la señal dominante, el cupo
 y los pagos la modulan, y la demografía aporta poco.</p>
@@ -626,7 +626,7 @@ y los pagos la modulan, y la demografía aporta poco.</p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">10. Modelo original (CS-FOF) y métodos recientes</p>
+        <p class="prev-next-title">10. Modelo original (CS-FOF)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -655,7 +655,7 @@ y los pagos la modulan, y la demografía aporta poco.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion">Implementación</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-es-nuevo-y-que-se-reutiliza">Qué es nuevo y qué se reutiliza</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iteraciones-de-diseno">Iteraciones de diseño</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad-shap-frente-al-mejor-benchmark">Interpretabilidad: SHAP frente al mejor benchmark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretabilidad-shap-frente-al-mejor-modelo-de-referencia">Interpretabilidad: SHAP frente al mejor modelo de referencia</a></li>
 </ul>
   </nav></div>
 

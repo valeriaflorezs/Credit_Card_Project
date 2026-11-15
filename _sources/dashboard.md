@@ -16,9 +16,9 @@ Conclusiones). Además incluye Enlaces, Equipo y un asistente conversacional (Ky
 
 ## Modelos
 
-- **Tabla de líderes** (`dash_table.DataTable`) con las 148 combinaciones. Se puede ordenar y filtrar, y
+- **Tabla de líderes** (`dash_table.DataTable`) con las 116 combinaciones. Se puede ordenar y filtrar, y
   muestra modelo, balanceo, búsqueda, F1 como media ± desviación estándar del bucle externo, AUC-ROC,
-  *recall*, precisión y tiempo de inferencia de los cinco mejores. Una estrella marca la mejor combinación
+  *recall*, precisión y tiempo de inferencia de los tres mejores. Una estrella marca la mejor combinación
   de cada modelo.
 - **Diagnóstico del mejor modelo:**
   - matriz de confusión fuera de pliegue;
@@ -31,7 +31,7 @@ Conclusiones). Además incluye Enlaces, Equipo y un asistente conversacional (Ky
   - **Metodología:** formulación, pseudocódigo y propiedades.
   - **Código:** la clase real, con colores de sintaxis.
   - **Resultados:**
-    - comparación animada con el rival que se elija (Random Forest, CatBoost, XGBoost o LightGBM) en tres
+    - comparación animada con el rival que se elija (Random Forest o XGBoost) en tres
       escenarios: los 5 pliegues, menos datos y más ruido;
     - tabla de pruebas de hipótesis con p-valores ajustados y tamaños del efecto;
     - conjuntos adicionales, robustez y calibración;
@@ -40,19 +40,18 @@ Conclusiones). Además incluye Enlaces, Equipo y un asistente conversacional (Ky
 ## Predicción en vivo
 
 El formulario se genera a partir de las 23 variables originales y valida rangos y tipos. Un **selector de
-modelo** permite elegir entre tres modelos:
+modelo** permite elegir entre dos modelos:
 
 | Modelo | F1 en prueba | AUC-ROC en prueba | Cobertura conforme (nominal 90 %) |
 |---|---|---|---|
 | Random Forest | 0.533 | 0.774 | 89.4 % |
-| CatBoost (mejor global) | 0.536 | 0.775 | 89.6 % |
 | CS-FOF (modelo original) | 0.540 | 0.775 | 89.5 % |
 
 Detalles de esta comparación:
 
-- Los tres modelos usan la misma partición 80/20 (semilla 42), las mismas variables y pesos de clase.
+- Los dos modelos usan la misma partición 80/20 (semilla 42), las mismas variables y pesos de clase.
 - El Random Forest eligió sus hiperparámetros con búsqueda aleatoria sobre el 80 % de entrenamiento.
-- CatBoost y CS-FOF usan los hiperparámetros finales de la validación anidada, sin búsqueda nueva.
+- CS-FOF usa los hiperparámetros finales de la validación anidada, sin búsqueda nueva.
 - Las cifras son de una sola partición: sirven para mostrar el modelo en uso, no para compararlos. La
   comparación válida es la del capítulo de validación.
 
@@ -60,7 +59,7 @@ Para cada cliente, el tablero muestra:
 
 - **Puntaje y veredicto con umbral ajustable:**
   - El umbral de decisión se mueve con un control de 5 % a 95 %. Arranca en el recomendado de cada modelo
-    (el de máximo F1: 52 % en Random Forest y CS-FOF, 53 % en CatBoost).
+    (el de máximo F1: 52 % en Random Forest y en CS-FOF).
   - El recomendado se elige con una mitad de la partición de prueba. Para el umbral elegido, el tablero
     muestra recall, precisión, porcentaje de clientes marcados, falsas alarmas por cada 100 clientes y F1,
     todo medido en la otra mitad.
@@ -83,7 +82,7 @@ Para cada cliente, el tablero muestra:
 ## Artefactos
 
 La carpeta `artifacts/` del proyecto contiene el pipeline final (preprocesamiento + balanceo + modelo) de
-la mejor combinación de cada uno de los 10 modelos.
+la mejor combinación de cada modelo.
 
 - **Archivos de cada modelo:** un `.joblib` comprimido y un `metadata_<modelo>.json`, que documenta:
   - versiones de las librerías y semilla;

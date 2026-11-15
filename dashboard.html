@@ -238,6 +238,7 @@
 
 <li class="toctree-l1"><a class="reference internal" href="notebooks/08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizacion_dejong.html">Validación del algoritmo genético con las funciones de De Jong</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Revisión de literatura y novedad</span></p>
 <ul class="nav bd-sidenav">
@@ -246,7 +247,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Modelo original</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="modelo_original.html">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
 <ul class="nav bd-sidenav">
@@ -449,9 +450,9 @@ nunca reentrena ni busca hiperparámetros.</p></li>
 <section id="modelos">
 <h2>Modelos<a class="headerlink" href="#modelos" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>Tabla de líderes</strong> (<code class="docutils literal notranslate"><span class="pre">dash_table.DataTable</span></code>) con las 148 combinaciones. Se puede ordenar y filtrar, y
+<li><p><strong>Tabla de líderes</strong> (<code class="docutils literal notranslate"><span class="pre">dash_table.DataTable</span></code>) con las 116 combinaciones. Se puede ordenar y filtrar, y
 muestra modelo, balanceo, búsqueda, F1 como media ± desviación estándar del bucle externo, AUC-ROC,
-<em>recall</em>, precisión y tiempo de inferencia de los cinco mejores. Una estrella marca la mejor combinación
+<em>recall</em>, precisión y tiempo de inferencia de los tres mejores. Una estrella marca la mejor combinación
 de cada modelo.</p></li>
 <li><p><strong>Diagnóstico del mejor modelo:</strong></p>
 <ul>
@@ -469,7 +470,7 @@ de cada modelo.</p></li>
 <li><p><strong>Código:</strong> la clase real, con colores de sintaxis.</p></li>
 <li><p><strong>Resultados:</strong></p>
 <ul>
-<li><p>comparación animada con el rival que se elija (Random Forest, CatBoost, XGBoost o LightGBM) en tres
+<li><p>comparación animada con el rival que se elija (Random Forest o XGBoost) en tres
 escenarios: los 5 pliegues, menos datos y más ruido;</p></li>
 <li><p>tabla de pruebas de hipótesis con p-valores ajustados y tamaños del efecto;</p></li>
 <li><p>conjuntos adicionales, robustez y calibración;</p></li>
@@ -483,7 +484,7 @@ escenarios: los 5 pliegues, menos datos y más ruido;</p></li>
 <section id="prediccion-en-vivo">
 <h2>Predicción en vivo<a class="headerlink" href="#prediccion-en-vivo" title="Link to this heading">#</a></h2>
 <p>El formulario se genera a partir de las 23 variables originales y valida rangos y tipos. Un <strong>selector de
-modelo</strong> permite elegir entre tres modelos:</p>
+modelo</strong> permite elegir entre dos modelos:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
@@ -498,12 +499,7 @@ modelo</strong> permite elegir entre tres modelos:</p>
 <td><p>0.774</p></td>
 <td><p>89.4 %</p></td>
 </tr>
-<tr class="row-odd"><td><p>CatBoost (mejor global)</p></td>
-<td><p>0.536</p></td>
-<td><p>0.775</p></td>
-<td><p>89.6 %</p></td>
-</tr>
-<tr class="row-even"><td><p>CS-FOF (modelo original)</p></td>
+<tr class="row-odd"><td><p>CS-FOF (modelo original)</p></td>
 <td><p>0.540</p></td>
 <td><p>0.775</p></td>
 <td><p>89.5 %</p></td>
@@ -513,9 +509,9 @@ modelo</strong> permite elegir entre tres modelos:</p>
 </div>
 <p>Detalles de esta comparación:</p>
 <ul class="simple">
-<li><p>Los tres modelos usan la misma partición 80/20 (semilla 42), las mismas variables y pesos de clase.</p></li>
+<li><p>Los dos modelos usan la misma partición 80/20 (semilla 42), las mismas variables y pesos de clase.</p></li>
 <li><p>El Random Forest eligió sus hiperparámetros con búsqueda aleatoria sobre el 80 % de entrenamiento.</p></li>
-<li><p>CatBoost y CS-FOF usan los hiperparámetros finales de la validación anidada, sin búsqueda nueva.</p></li>
+<li><p>CS-FOF usa los hiperparámetros finales de la validación anidada, sin búsqueda nueva.</p></li>
 <li><p>Las cifras son de una sola partición: sirven para mostrar el modelo en uso, no para compararlos. La
 comparación válida es la del capítulo de validación.</p></li>
 </ul>
@@ -524,7 +520,7 @@ comparación válida es la del capítulo de validación.</p></li>
 <li><p><strong>Puntaje y veredicto con umbral ajustable:</strong></p>
 <ul>
 <li><p>El umbral de decisión se mueve con un control de 5 % a 95 %. Arranca en el recomendado de cada modelo
-(el de máximo F1: 52 % en Random Forest y CS-FOF, 53 % en CatBoost).</p></li>
+(el de máximo F1: 52 % en Random Forest y en CS-FOF).</p></li>
 <li><p>El recomendado se elige con una mitad de la partición de prueba. Para el umbral elegido, el tablero
 muestra recall, precisión, porcentaje de clientes marcados, falsas alarmas por cada 100 clientes y F1,
 todo medido en la otra mitad.</p></li>
@@ -556,7 +552,7 @@ puntaje al mover una sola variable.</p></li>
 <section id="artefactos">
 <h2>Artefactos<a class="headerlink" href="#artefactos" title="Link to this heading">#</a></h2>
 <p>La carpeta <code class="docutils literal notranslate"><span class="pre">artifacts/</span></code> del proyecto contiene el pipeline final (preprocesamiento + balanceo + modelo) de
-la mejor combinación de cada uno de los 10 modelos.</p>
+la mejor combinación de cada modelo.</p>
 <ul class="simple">
 <li><p><strong>Archivos de cada modelo:</strong> un <code class="docutils literal notranslate"><span class="pre">.joblib</span></code> comprimido y un <code class="docutils literal notranslate"><span class="pre">metadata_&lt;modelo&gt;.json</span></code>, que documenta:</p>
 <ul>

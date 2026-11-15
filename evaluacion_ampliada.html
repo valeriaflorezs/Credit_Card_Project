@@ -249,7 +249,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Modelo original</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="modelo_original.html">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF) y métodos recientes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
 <ul class="nav bd-sidenav">
@@ -493,13 +493,13 @@ un ajuste fino</strong> de sus hiperparámetros, una señal de estabilidad frent
 </section>
 <section id="estabilidad-entre-pliegues">
 <h2>Estabilidad entre pliegues<a class="headerlink" href="#estabilidad-entre-pliegues" title="Link to this heading">#</a></h2>
-<p>En la validación anidada 5 × 5, CS-FOF tiene la menor desviación estándar del F1 entre los cinco mejores
-modelos (0.0054, frente a 0.0077–0.0091 de CatBoost, XGBoost, LightGBM y Random Forest), y sus cuatro
+<p>En la validación anidada 5 × 5, CS-FOF tiene la menor desviación estándar del F1 entre los tres mejores
+modelos (0.0054, frente a 0.0091 de XGBoost y 0.0077 de Random Forest), y sus cuatro
 métodos de búsqueda dan resultados cercanos (0.5456 a 0.5479).</p>
 </section>
 <section id="conjuntos-de-datos-adicionales">
 <h2>Conjuntos de datos adicionales<a class="headerlink" href="#conjuntos-de-datos-adicionales" title="Link to this heading">#</a></h2>
-<p>Para comprobar la consistencia, los 10 modelos se evaluaron en tres conjuntos de crédito del repositorio
+<p>Para comprobar la consistencia, los 8 modelos se evaluaron en tres conjuntos de crédito del repositorio
 UCI con el mismo procedimiento: validación anidada 5 × 5, <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y búsqueda aleatoria de 25
 configuraciones (<code class="docutils literal notranslate"><span class="pre">src/run_additional_datasets.py</span></code>).</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-conjuntos">
@@ -514,99 +514,85 @@ configuraciones (<code class="docutils literal notranslate"><span class="pre">sr
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>CatBoost</p></td>
-<td><p><strong>0.548</strong></p></td>
-<td><p><strong>0.605</strong></p></td>
-<td><p>0.878</p></td>
-<td><p><strong>0.733</strong></p></td>
-<td><p><strong>1.25</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p>XGBoost</p></td>
+<tr class="row-even"><td><p>XGBoost</p></td>
 <td><p>0.547</p></td>
 <td><p>0.599</p></td>
 <td><p><strong>0.880</strong></p></td>
-<td><p>0.682</p></td>
-<td><p>2.75</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>CS-FOF</strong></p></td>
-<td><p><strong>0.548</strong></p></td>
-<td><p>0.589</p></td>
-<td><p>0.874</p></td>
-<td><p>0.430</p></td>
-<td><p>4.75</p></td>
+<td><p><strong>0.682</strong></p></td>
+<td><p><strong>2.00</strong></p></td>
 </tr>
 <tr class="row-odd"><td><p>Random Forest</p></td>
 <td><p>0.545</p></td>
 <td><p>0.600</p></td>
 <td><p>0.874</p></td>
 <td><p>0.446</p></td>
-<td><p>4.75</p></td>
+<td><p>3.00</p></td>
 </tr>
-<tr class="row-even"><td><p>LightGBM</p></td>
-<td><p>0.546</p></td>
-<td><p>0.575</p></td>
+<tr class="row-even"><td><p><strong>CS-FOF</strong></p></td>
+<td><p><strong>0.548</strong></p></td>
+<td><p>0.589</p></td>
 <td><p>0.874</p></td>
-<td><p>0.658</p></td>
-<td><p>4.75</p></td>
+<td><p>0.430</p></td>
+<td><p>3.25</p></td>
 </tr>
 <tr class="row-odd"><td><p>SVM</p></td>
 <td><p>0.539</p></td>
-<td><p>0.601</p></td>
+<td><p><strong>0.601</strong></p></td>
 <td><p>0.862</p></td>
 <td><p>0.167</p></td>
-<td><p>5.75</p></td>
+<td><p>4.00</p></td>
 </tr>
 <tr class="row-even"><td><p>KNN</p></td>
 <td><p>0.526</p></td>
 <td><p>0.560</p></td>
 <td><p>0.877</p></td>
 <td><p>0.138</p></td>
-<td><p>6.75</p></td>
+<td><p>5.00</p></td>
 </tr>
 <tr class="row-odd"><td><p>Regresión logística</p></td>
 <td><p>0.518</p></td>
 <td><p>0.600</p></td>
 <td><p>0.872</p></td>
 <td><p>0.130</p></td>
-<td><p>7.00</p></td>
+<td><p>5.25</p></td>
 </tr>
 <tr class="row-even"><td><p>Árbol de decisión</p></td>
 <td><p>0.525</p></td>
 <td><p>0.521</p></td>
 <td><p>0.860</p></td>
 <td><p>0.429</p></td>
-<td><p>8.25</p></td>
+<td><p>6.25</p></td>
 </tr>
 <tr class="row-odd"><td><p>Naive Bayes</p></td>
 <td><p>0.499</p></td>
 <td><p>0.591</p></td>
 <td><p>0.837</p></td>
 <td><p>0.074</p></td>
-<td><p>9.00</p></td>
+<td><p>7.25</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>La prueba de Friedman con la corrección de Iman–Davenport rechaza la igualdad de los 10 modelos en los
-4 conjuntos (<span class="math notranslate nohighlight">\(F=4.38\)</span>, <span class="math notranslate nohighlight">\(p=0.0013\)</span>), con CatBoost en el primer lugar. Ninguna comparación de CS-FOF con
-Wilcoxon y Holm es significativa (con 4 conjuntos el p mínimo es 0.125). Lectura por conjunto:</p>
+<p>La prueba de Friedman con la corrección de Iman–Davenport rechaza la igualdad de los 8 modelos en los
+4 conjuntos (<span class="math notranslate nohighlight">\(F=3.22\)</span>, <span class="math notranslate nohighlight">\(p=0.018\)</span>), con XGBoost en el primer lugar. La diferencia crítica de Nemenyi (5.25)
+solo separa a XGBoost de Naive Bayes. Ninguna comparación de CS-FOF con Wilcoxon y Holm es significativa
+(con 4 conjuntos el p mínimo es 0.125). Lectura por conjunto:</p>
 <ul class="simple">
-<li><p><strong>German:</strong> CS-FOF tiene el mayor AUC-ROC de los 10 (0.790) y un AUC-PR de 0.627, pero su F1 a umbral
-0.5 queda en el puesto 7 (0.589).</p></li>
-<li><p><strong>Australian:</strong> todos los modelos basados en árboles quedan dentro de 0.006 en F1; CS-FOF es cuarto.</p></li>
-<li><p><strong>Polish:</strong> con 4 % de quiebras y razones financieras de colas muy pesadas, los tres métodos de
-<em>boosting</em> superan con amplitud a los dos bosques (CatBoost 0.733 frente a CS-FOF 0.430 y Random
-Forest 0.446). El <em>boosting</em> corrige iterativamente los casos raros mal clasificados, mientras que el
-promedio de árboles independientes los diluye; la ponderación por costo de CS-FOF no basta para
-compensarlo.</p></li>
+<li><p><strong>German:</strong> CS-FOF tiene el mayor AUC-ROC de los 8 (0.790) y un AUC-PR de 0.627, pero su F1 a umbral
+0.5 queda en el puesto 6 (0.589).</p></li>
+<li><p><strong>Australian:</strong> todos los modelos basados en árboles quedan dentro de 0.006 en F1; CS-FOF empata con
+Random Forest en el tercer lugar.</p></li>
+<li><p><strong>Polish:</strong> con 4 % de quiebras y razones financieras de colas muy pesadas, XGBoost supera con amplitud
+a los dos bosques (0.682 frente a 0.430 de CS-FOF y 0.446 de Random Forest). El <em>boosting</em> corrige
+iterativamente los casos raros mal clasificados, mientras que el promedio de árboles independientes los
+diluye; la ponderación por costo de CS-FOF no basta para compensarlo.</p></li>
 </ul>
 <p><strong>CS-FOF no es consistentemente superior en los conjuntos adicionales.</strong> Su desempeño es equivalente al
-de Random Forest, el modelo del que parte, y queda por detrás de CatBoost y XGBoost cuando el
-desbalance es extremo.</p>
+de Random Forest, el modelo del que parte, y queda por detrás de XGBoost cuando el desbalance es extremo.</p>
 </section>
 <section id="robustez">
 <h2>Robustez<a class="headerlink" href="#robustez" title="Link to this heading">#</a></h2>
-<p>Estudios <strong>exploratorios</strong> (no estaban en el protocolo original) sobre los cinco mejores modelos en
+<p>Estudios <strong>exploratorios</strong> (no estaban en el protocolo original) sobre los tres mejores modelos en
 Taiwán (<code class="docutils literal notranslate"><span class="pre">experiments/robustez/robustez.py</span></code>). Para no hacer una búsqueda nueva, cada modelo usa los
 hiperparámetros que eligió en cada pliegue externo; el ruido y el submuestreo se aplican solo al
 entrenamiento, y la prueba siempre es limpia y completa. Son 5 pliegues por nivel, sin pruebas de
@@ -626,27 +612,15 @@ para todos los modelos).</p>
 <tbody>
 <tr class="row-even"><td><p><strong>CS-FOF</strong></p></td>
 <td><p><strong>0.5483</strong></p></td>
-<td><p>0.5455</p></td>
+<td><p><strong>0.5455</strong></p></td>
 <td><p><strong>0.5455</strong></p></td>
 <td><p><strong>0.5336</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p>CatBoost</p></td>
-<td><p>0.5471</p></td>
-<td><p><strong>0.5469</strong></p></td>
-<td><p>0.5416</p></td>
-<td><p>0.5301</p></td>
-</tr>
-<tr class="row-even"><td><p>XGBoost</p></td>
+<tr class="row-odd"><td><p>XGBoost</p></td>
 <td><p>0.5448</p></td>
 <td><p>0.5430</p></td>
 <td><p>0.5401</p></td>
 <td><p>0.5252</p></td>
-</tr>
-<tr class="row-odd"><td><p>LightGBM</p></td>
-<td><p>0.5459</p></td>
-<td><p>0.5443</p></td>
-<td><p>0.5408</p></td>
-<td><p>0.5304</p></td>
 </tr>
 <tr class="row-even"><td><p>Random Forest</p></td>
 <td><p>0.5434</p></td>
@@ -657,9 +631,8 @@ para todos los modelos).</p>
 </tbody>
 </table>
 </div>
-<p>Todos pierden entre 0.013 y 0.020 de F1 con 20 % de ruido. CS-FOF tiene el mayor F1 en tres de los cuatro
-niveles y pierde menos que los tres métodos de <em>boosting</em> (−0.015 frente a −0.016 a −0.020); Random Forest
-es el que menos pierde (−0.013).</p>
+<p>Todos pierden entre 0.013 y 0.020 de F1 con 20 % de ruido. CS-FOF tiene el mayor F1 en los cuatro
+niveles y pierde menos que XGBoost (−0.015 frente a −0.020); Random Forest es el que menos pierde (−0.013).</p>
 <p><strong>Tamaño de la muestra.</strong> Se entrena con una fracción estratificada del entrenamiento de cada pliegue.</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-tamano">
 <caption><span class="caption-number">Table 13 </span><span class="caption-text">F1 medio en 5 pliegues según la fracción del entrenamiento usada.</span><a class="headerlink" href="#tab-tamano" title="Link to this table">#</a></caption>
@@ -678,23 +651,11 @@ es el que menos pierde (−0.013).</p>
 <td><p><strong>0.5473</strong></p></td>
 <td><p><strong>0.5483</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p>CatBoost</p></td>
-<td><p>0.5290</p></td>
-<td><p>0.5379</p></td>
-<td><p>0.5442</p></td>
-<td><p>0.5471</p></td>
-</tr>
-<tr class="row-even"><td><p>XGBoost</p></td>
+<tr class="row-odd"><td><p>XGBoost</p></td>
 <td><p>0.5244</p></td>
 <td><p>0.5370</p></td>
 <td><p>0.5392</p></td>
 <td><p>0.5448</p></td>
-</tr>
-<tr class="row-odd"><td><p>LightGBM</p></td>
-<td><p>0.5363</p></td>
-<td><p>0.5415</p></td>
-<td><p>0.5437</p></td>
-<td><p>0.5459</p></td>
 </tr>
 <tr class="row-even"><td><p>Random Forest</p></td>
 <td><p><strong>0.5375</strong></p></td>
@@ -705,12 +666,12 @@ es el que menos pierde (−0.013).</p>
 </tbody>
 </table>
 </div>
-<p>Con 25 % o más de los datos CS-FOF queda primero; con 10 % (unos 2 400 clientes) Random Forest y LightGBM
-quedan ligeramente por encima. Los métodos de <em>boosting</em> son los que más pierden con pocos datos (XGBoost
-−0.020 y CatBoost −0.018 entre 100 % y 10 %, frente a −0.013 de CS-FOF). Hay un sesgo a favor de todos los
-modelos por igual: sus hiperparámetros se eligieron con el entrenamiento completo.</p>
+<p>Con 25 % o más de los datos CS-FOF queda primero; con 10 % (unos 2 400 clientes) Random Forest queda
+ligeramente por encima. XGBoost es el que más pierde con pocos datos (−0.020 entre 100 % y 10 %, frente a
+−0.013 de CS-FOF). Hay un sesgo a favor de todos los modelos por igual: sus hiperparámetros se eligieron con
+el entrenamiento completo.</p>
 <p><strong>Calibración.</strong> Con los pesos de clase, todos los modelos sobreestiman la probabilidad de
-incumplimiento (probabilidad media de 0.40 a 0.44 frente a una tasa real de 0.22).</p>
+incumplimiento (probabilidad media de 0.40 a 0.42 frente a una tasa real de 0.22).</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-calibracion">
 <caption><span class="caption-number">Table 14 </span><span class="caption-text">Calibración de las probabilidades fuera de pliegue (29 965 clientes; tasa real 0.221).</span><a class="headerlink" href="#tab-calibracion" title="Link to this table">#</a></caption>
 <thead>
@@ -740,25 +701,13 @@ incumplimiento (probabilidad media de 0.40 a 0.44 frente a una tasa real de 0.22
 <td><p>0.1962</p></td>
 <td><p>0.417</p></td>
 </tr>
-<tr class="row-odd"><td><p>CatBoost</p></td>
-<td><p>0.1785</p></td>
-<td><p>0.5435</p></td>
-<td><p>0.2042</p></td>
-<td><p>0.425</p></td>
-</tr>
-<tr class="row-even"><td><p>LightGBM</p></td>
-<td><p>0.1899</p></td>
-<td><p>0.5674</p></td>
-<td><p>0.2197</p></td>
-<td><p>0.441</p></td>
-</tr>
 </tbody>
 </table>
 </div>
-<p>CS-FOF tiene las probabilidades mejor calibradas de los cinco en las tres métricas, aunque ninguno está
+<p>CS-FOF tiene las probabilidades mejor calibradas de los tres en las tres métricas, aunque ninguno está
 bien calibrado; para usar las probabilidades como riesgo real hace falta recalibrarlas; la sección de recalibración
 muestra que la regresión isotónica lo resuelve para todos.</p>
-<p><strong>Costo.</strong> CS-FOF es el más lento: unos 13 s por ajuste con 4 procesos, frente a 1–3 s de los demás.</p>
+<p><strong>Costo.</strong> CS-FOF es el más lento: unos 13 s por ajuste con 4 procesos, frente a 1–3 s de los otros dos.</p>
 </section>
 <section id="estudios-complementarios">
 <h2>Estudios complementarios<a class="headerlink" href="#estudios-complementarios" title="Link to this heading">#</a></h2>
@@ -767,9 +716,9 @@ original) y no sustentan por sí solos la condición R3. Usan las mismas 5 parti
 hay que entrenar, los hiperparámetros que cada modelo eligió en cada pliegue, sin búsqueda nueva.</p>
 <section id="estabilidad-por-semilla">
 <h3>Estabilidad por semilla<a class="headerlink" href="#estabilidad-por-semilla" title="Link to this heading">#</a></h3>
-<p>Se repitió el ajuste de los cinco mejores modelos con 10 semillas distintas (0 a 9) sobre los mismos
+<p>Se repitió el ajuste de los tres mejores modelos con 10 semillas distintas (0 a 9) sobre los mismos
 5 pliegues externos y los mismos hiperparámetros, es decir, 50 ajustes por modelo. La semilla cambia el
-<em>bootstrap</em>, el sorteo de variables y, en el <em>boosting</em>, el submuestreo.</p>
+<em>bootstrap</em>, el sorteo de variables y, en XGBoost, el submuestreo.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
@@ -787,20 +736,6 @@ hay que entrenar, los hiperparámetros que cada modelo eligió en cada pliegue, 
 <td><p>0.5453 a 0.5477</p></td>
 <td><p>0.5454 a 0.5476</p></td>
 <td><p>—</p></td>
-</tr>
-<tr class="row-odd"><td><p>CatBoost</p></td>
-<td><p>0.5468</p></td>
-<td><p>0.0011</p></td>
-<td><p>0.5446 a 0.5485</p></td>
-<td><p>0.5449 a 0.5484</p></td>
-<td><p>7 de 10</p></td>
-</tr>
-<tr class="row-even"><td><p>LightGBM</p></td>
-<td><p>0.5457</p></td>
-<td><p>0.0006</p></td>
-<td><p>0.5449 a 0.5467</p></td>
-<td><p>0.5449 a 0.5467</p></td>
-<td><p>8 de 10</p></td>
 </tr>
 <tr class="row-odd"><td><p>XGBoost</p></td>
 <td><p>0.5447</p></td>
@@ -827,11 +762,11 @@ hay que entrenar, los hiperparámetros que cada modelo eligió en cada pliegue, 
 puntos dorados son la media de cada semilla.</span><a class="headerlink" href="#fig-semillas" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>La variación por semilla (desviación de 0.0006 a 0.0011) es unas 10 veces menor que la variación entre
+<p>La variación por semilla (desviación de 0.0007 a 0.0008) es unas 10 veces menor que la variación entre
 pliegues (0.005 a 0.009): la incertidumbre del F1 viene sobre todo de la partición, no de la semilla.
-CS-FOF y CatBoost quedan empatados (0.5469 frente a 0.5468, con intervalos que se solapan casi por
-completo); CS-FOF gana en 7 de 10 semillas a CatBoost y en todas a XGBoost y Random Forest. El resultado
-confirma el empate del bucle externo y que la posición de CS-FOF no depende de una semilla favorable.</p>
+CS-FOF (0.5469) queda por encima de XGBoost (0.5447) y de Random Forest (0.5440) en las 10 semillas. El
+resultado confirma que la posición de CS-FOF no depende de una semilla favorable; no cambia el veredicto,
+porque la variación entre pliegues sigue siendo mayor que esas diferencias.</p>
 </section>
 <section id="escalabilidad">
 <h3>Escalabilidad<a class="headerlink" href="#escalabilidad" title="Link to this heading">#</a></h3>
@@ -840,53 +775,39 @@ confirma el empate del bucle externo y que la posición de CS-FOF no depende de 
 <thead>
 <tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(n\)</span> (con <span class="math notranslate nohighlight">\(p=25\)</span>)</p></th>
 <th class="head"><p>CS-FOF</p></th>
-<th class="head"><p>CatBoost</p></th>
 <th class="head"><p>XGBoost</p></th>
-<th class="head"><p>LightGBM</p></th>
 <th class="head"><p>Random Forest</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>2,397 (10 %)</p></td>
 <td><p>1.26 s</p></td>
-<td><p>0.46 s</p></td>
 <td><p>0.26 s</p></td>
-<td><p>0.15 s</p></td>
 <td><p>0.48 s</p></td>
 </tr>
 <tr class="row-odd"><td><p>5,993 (25 %)</p></td>
 <td><p>2.26 s</p></td>
-<td><p>0.72 s</p></td>
 <td><p>0.30 s</p></td>
-<td><p>0.38 s</p></td>
 <td><p>0.57 s</p></td>
 </tr>
 <tr class="row-even"><td><p>11,986 (50 %)</p></td>
 <td><p>3.84 s</p></td>
-<td><p>1.03 s</p></td>
 <td><p>0.43 s</p></td>
-<td><p>0.62 s</p></td>
 <td><p>0.88 s</p></td>
 </tr>
 <tr class="row-odd"><td><p>23,972 (100 %)</p></td>
 <td><p>6.56 s</p></td>
-<td><p>1.35 s</p></td>
 <td><p>0.55 s</p></td>
-<td><p>0.90 s</p></td>
 <td><p>1.46 s</p></td>
 </tr>
 <tr class="row-even"><td><p>Pendiente log-log en <span class="math notranslate nohighlight">\(n\)</span></p></td>
 <td><p>0.72</p></td>
-<td><p>0.47</p></td>
 <td><p>0.34</p></td>
-<td><p>0.78</p></td>
 <td><p>0.49</p></td>
 </tr>
 <tr class="row-odd"><td><p>Inferencia (ms / 1,000 clientes)</p></td>
 <td><p>253.1</p></td>
-<td><p>0.4</p></td>
 <td><p>4.8</p></td>
-<td><p>5.5</p></td>
 <td><p>9.4</p></td>
 </tr>
 </tbody>
@@ -899,11 +820,10 @@ confirma el empate del bucle externo y que la posición de CS-FOF no depende de 
 <p><span class="caption-number">Fig. 5 </span><span class="caption-text">Tiempo de ajuste frente a <span class="math notranslate nohighlight">\(n\)</span> (izquierda, escala logarítmica) y frente a <span class="math notranslate nohighlight">\(p\)</span> (derecha), pliegue 0.</span><a class="headerlink" href="#fig-escalabilidad" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>El tiempo de CS-FOF crece de forma sublineal en <span class="math notranslate nohighlight">\(n\)</span> en este rango (pendiente 0.72), como predice el
-término <span class="math notranslate nohighlight">\(O(n\log n)\)</span> de la complejidad cuando la profundidad está acotada y la constante del ordenamiento
-domina. Con <span class="math notranslate nohighlight">\(p\)</span> crece poco (de 4.4 s con 6 columnas a 6.5 s con 25) porque cada nodo solo examina
-<span class="math notranslate nohighlight">\(q=\lfloor\sqrt p\rfloor\)</span> variables. Es el modelo más lento: unas 5 veces CatBoost al entrenar y unas
-600 veces al predecir, porque está escrito en numpy y no en código compilado. Para el tablero esto no es
+<p>El tiempo de CS-FOF crece de forma sublineal en <span class="math notranslate nohighlight">\(n\)</span> en este rango (pendiente 0.72), por debajo de la cota
+<span class="math notranslate nohighlight">\(O(n\log n)\)</span> de la complejidad. Con <span class="math notranslate nohighlight">\(p\)</span> crece poco (de 4.4 s con 6 columnas a 6.5 s con 25) porque cada nodo solo examina
+<span class="math notranslate nohighlight">\(q=\lfloor\sqrt p\rfloor\)</span> variables. Es el modelo más lento: unas 12 veces XGBoost al entrenar y unas
+50 veces al predecir, porque está escrito en numpy y no en código compilado. Para el tablero esto no es
 un problema (un cliente se predice en milisegundos), pero sí lo sería para puntuar millones de clientes.</p>
 </section>
 <section id="cambio-de-distribucion">
@@ -915,25 +835,19 @@ grupo y probar con el otro (hiperparámetros del pliegue 0).</p>
 <thead>
 <tr class="row-odd"><th class="head"><p>Escenario</p></th>
 <th class="head"><p>CS-FOF</p></th>
-<th class="head"><p>CatBoost</p></th>
 <th class="head"><p>XGBoost</p></th>
-<th class="head"><p>LightGBM</p></th>
 <th class="head"><p>Random Forest</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Edad: entrena ≤ 35 (16,787), prueba &gt; 35 (13,178)</p></td>
 <td><p><strong>0.558</strong></p></td>
-<td><p>0.553</p></td>
 <td><p>0.545</p></td>
-<td><p>0.558</p></td>
 <td><p>0.556</p></td>
 </tr>
 <tr class="row-odd"><td><p>Educación: entrena universidad/posgrado (24,582), prueba secundaria/otros (5,383)</p></td>
 <td><p><strong>0.557</strong></p></td>
-<td><p>0.546</p></td>
 <td><p>0.552</p></td>
-<td><p>0.549</p></td>
 <td><p>0.555</p></td>
 </tr>
 </tbody>
@@ -941,14 +855,13 @@ grupo y probar con el otro (hiperparámetros del pliegue 0).</p>
 </div>
 <p>F1 de la clase de impago en el grupo de prueba. Brier de CS-FOF: 0.170 y 0.190, el menor o empatado con
 el menor en ambos escenarios.</p>
-<p>CS-FOF conserva el primer lugar en los dos escenarios (en edad, empatado con LightGBM a la tercera
-cifra) y ningún modelo se degrada respecto a la validación cruzada: el cambio de grupo de edad o de
+<p>CS-FOF conserva el primer lugar en los dos escenarios y ningún modelo se degrada respecto a la validación cruzada: el cambio de grupo de edad o de
 educación mueve poco la tasa de impago (de 0.214 a 0.230 y de 0.218 a 0.236). Es una prueba débil de
 cambio de distribución, porque los grupos comparten periodo y banco.</p>
 </section>
 <section id="recalibracion">
 <h3>Recalibración<a class="headerlink" href="#recalibracion" title="Link to this heading">#</a></h3>
-<p>Con pesos de clase, todos los modelos sobreestiman el riesgo (probabilidad media 0.40 a 0.44 frente a
+<p>Con pesos de clase, todos los modelos sobreestiman el riesgo (probabilidad media 0.40 a 0.42 frente a
 una tasa real de 0.22). Se ajustó una regresión isotónica con las probabilidades fuera de pliegue de 4
 pliegues y se aplicó al quinto, de modo que ninguna probabilidad se recalibra con sus propios datos.</p>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -971,29 +884,13 @@ pliegues y se aplicó al quinto, de modo que ninguna probabilidad se recalibra c
 <td><p>0.783</p></td>
 <td><p>0.781</p></td>
 </tr>
-<tr class="row-odd"><td><p>CatBoost</p></td>
-<td><p>0.179</p></td>
-<td><p><strong>0.134</strong></p></td>
-<td><p>0.204</p></td>
-<td><p><strong>0.003</strong></p></td>
-<td><p>0.784</p></td>
-<td><p>0.782</p></td>
-</tr>
-<tr class="row-even"><td><p>XGBoost</p></td>
+<tr class="row-odd"><td><p>XGBoost</p></td>
 <td><p>0.175</p></td>
 <td><p>0.135</p></td>
 <td><p>0.196</p></td>
 <td><p>0.003</p></td>
 <td><p>0.783</p></td>
 <td><p>0.781</p></td>
-</tr>
-<tr class="row-odd"><td><p>LightGBM</p></td>
-<td><p>0.190</p></td>
-<td><p>0.138</p></td>
-<td><p>0.220</p></td>
-<td><p>0.023</p></td>
-<td><p>0.773</p></td>
-<td><p>0.764</p></td>
 </tr>
 <tr class="row-even"><td><p>Random Forest</p></td>
 <td><p>0.173</p></td>
@@ -1010,10 +907,10 @@ pliegues y se aplicó al quinto, de modo que ninguna probabilidad se recalibra c
 <a class="reference internal image-reference" href="_images/recalibracion_isotonica.png"><img alt="_images/recalibracion_isotonica.png" src="_images/recalibracion_isotonica.png" style="width: 100%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Curvas de confiabilidad de CS-FOF y CatBoost antes y después de la regresión isotónica.</span><a class="headerlink" href="#fig-recalibracion" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Curvas de confiabilidad de CS-FOF y XGBoost antes y después de la regresión isotónica.</span><a class="headerlink" href="#fig-recalibracion" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>La regresión isotónica deja a los cinco modelos prácticamente calibrados (ECE de 0.003) y con el mismo
+<p>La regresión isotónica deja a los tres modelos prácticamente calibrados (ECE de 0.003) y con el mismo
 Brier. La ventaja de calibración de CS-FOF que se vio arriba <strong>desaparece tras recalibrar</strong>: era una
 diferencia del puntaje sin calibrar, no de la información que contiene. El AUC baja muy poco porque la
 regresión isotónica es monótona pero crea empates.</p>
@@ -1043,26 +940,12 @@ bajo intercambiabilidad.</p>
 <td><p>1.50</p></td>
 <td><p>50.0 %</p></td>
 </tr>
-<tr class="row-odd"><td><p>CatBoost</p></td>
-<td><p>0.900</p></td>
-<td><p>0.901</p></td>
-<td><p>0.900</p></td>
-<td><p>1.50</p></td>
-<td><p>50.5 %</p></td>
-</tr>
-<tr class="row-even"><td><p>XGBoost</p></td>
+<tr class="row-odd"><td><p>XGBoost</p></td>
 <td><p>0.900</p></td>
 <td><p>0.899</p></td>
 <td><p>0.900</p></td>
 <td><p>1.50</p></td>
 <td><p>50.4 %</p></td>
-</tr>
-<tr class="row-odd"><td><p>LightGBM</p></td>
-<td><p>0.901</p></td>
-<td><p>0.897</p></td>
-<td><p>0.903</p></td>
-<td><p>1.55</p></td>
-<td><p>44.7 %</p></td>
 </tr>
 <tr class="row-even"><td><p>Random Forest</p></td>
 <td><p>0.900</p></td>
@@ -1074,7 +957,7 @@ bajo intercambiabilidad.</p>
 </tbody>
 </table>
 </div>
-<p>La cobertura empírica coincide con la nominal en las dos clases para los cinco modelos. El precio es el
+<p>La cobertura empírica coincide con la nominal en las dos clases para los tres modelos. El precio es el
 tamaño: con 90 % de confianza, la mitad de los clientes recibe el conjunto {pago, impago}. Es una forma
 honesta de decir que, con estas variables y modelos (F1 ≈ 0.55), uno de cada dos clientes queda en zona de
 duda. El tablero muestra este conjunto junto con cada predicción.</p>
@@ -1088,7 +971,7 @@ duda. El tablero muestra este conjunto junto con cada predicción.</p>
 <th class="head"><p>n</p></th>
 <th class="head"><p>Tasa de impago</p></th>
 <th class="head"><p>F1 CS-FOF</p></th>
-<th class="head"><p>F1 CatBoost</p></th>
+<th class="head"><p>F1 XGBoost</p></th>
 <th class="head"><p>Diferencia</p></th>
 </tr>
 </thead>
@@ -1097,83 +980,83 @@ duda. El tablero muestra este conjunto junto con cada predicción.</p>
 <td><p>23,169</p></td>
 <td><p>0.138</p></td>
 <td><p>0.261</p></td>
-<td><p>0.298</p></td>
-<td><p><strong>−0.037</strong></p></td>
+<td><p>0.289</p></td>
+<td><p><strong>−0.027</strong></p></td>
 </tr>
 <tr class="row-odd"><td><p>Pago de septiembre con 1 mes de atraso</p></td>
 <td><p>3,667</p></td>
 <td><p>0.340</p></td>
 <td><p>0.551</p></td>
 <td><p>0.547</p></td>
-<td><p>+0.004</p></td>
+<td><p>+0.005</p></td>
 </tr>
 <tr class="row-even"><td><p>Pago de septiembre con 2 o más meses</p></td>
 <td><p>3,129</p></td>
 <td><p>0.695</p></td>
 <td><p>0.821</p></td>
 <td><p>0.820</p></td>
-<td><p>+0.000</p></td>
+<td><p>+0.001</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cupo en el cuartil más bajo</p></td>
 <td><p>7,673</p></td>
 <td><p>0.318</p></td>
 <td><p>0.602</p></td>
-<td><p>0.593</p></td>
-<td><p>+0.008</p></td>
+<td><p>0.589</p></td>
+<td><p>+0.013</p></td>
 </tr>
 <tr class="row-even"><td><p>Cupo en el cuartil más alto</p></td>
 <td><p>7,058</p></td>
 <td><p>0.140</p></td>
 <td><p>0.455</p></td>
-<td><p>0.457</p></td>
-<td><p>−0.002</p></td>
+<td><p>0.455</p></td>
+<td><p>−0.000</p></td>
 </tr>
 <tr class="row-odd"><td><p>Edad ≤ 30</p></td>
 <td><p>10,997</p></td>
 <td><p>0.225</p></td>
 <td><p>0.561</p></td>
-<td><p>0.554</p></td>
-<td><p>+0.007</p></td>
+<td><p>0.552</p></td>
+<td><p>+0.009</p></td>
 </tr>
 <tr class="row-even"><td><p>Edad &gt; 45</p></td>
 <td><p>4,666</p></td>
 <td><p>0.252</p></td>
 <td><p>0.572</p></td>
-<td><p>0.577</p></td>
-<td><p>−0.005</p></td>
+<td><p>0.572</p></td>
+<td><p>+0.000</p></td>
 </tr>
 <tr class="row-odd"><td><p>Educación secundaria</p></td>
 <td><p>4,915</p></td>
 <td><p>0.252</p></td>
 <td><p>0.569</p></td>
-<td><p>0.566</p></td>
-<td><p>+0.004</p></td>
+<td><p>0.568</p></td>
+<td><p>+0.002</p></td>
 </tr>
 <tr class="row-even"><td><p>Mujer</p></td>
 <td><p>18,091</p></td>
 <td><p>0.208</p></td>
 <td><p>0.540</p></td>
-<td><p>0.538</p></td>
-<td><p>+0.003</p></td>
+<td><p>0.534</p></td>
+<td><p>+0.006</p></td>
 </tr>
 <tr class="row-odd"><td><p>Hombre</p></td>
 <td><p>11,874</p></td>
 <td><p>0.242</p></td>
 <td><p>0.559</p></td>
-<td><p>0.559</p></td>
-<td><p>−0.000</p></td>
+<td><p>0.558</p></td>
+<td><p>+0.001</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p><strong>Dónde falla.</strong> El punto débil de todos los modelos son los clientes que están al día en septiembre:
-son el 77 % de la cartera, su tasa de impago es baja (13.8 %) y el F1 cae a 0.26 a 0.30. Ahí CS-FOF es
-claramente peor que CatBoost: deja pasar al 11.0 % de esos clientes como falsos negativos. La causa
+son el 77 % de la cartera, su tasa de impago es baja (13.8 %) y el F1 cae a 0.26 a 0.29. Ahí CS-FOF es
+claramente peor que XGBoost: deja pasar al 11.0 % de esos clientes como falsos negativos. La causa
 probable es que, dentro de este grupo, el impago depende de señales débiles y no lineales (pagos parciales
 en meses anteriores, tendencia de la factura) que el <em>boosting</em> capta mejor al corregir los errores de
 forma secuencial, mientras que el corte de Fisher busca una sola dirección lineal por nodo. En los grupos
 con atraso, donde la señal es fuerte, los dos modelos empatan. Entre sexos, edades y niveles educativos
-las diferencias son pequeñas (menos de 0.01) y no hay un subgrupo demográfico en el que CS-FOF se
+las diferencias son pequeñas (0.01 o menos) y no hay un subgrupo demográfico en el que CS-FOF se
 derrumbe, aunque el F1 es 0.02 menor en mujeres que en hombres en ambos modelos.</p>
 </section>
 </section>
