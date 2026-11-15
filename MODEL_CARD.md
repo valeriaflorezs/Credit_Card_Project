@@ -34,15 +34,15 @@ Implementación propia con numpy: `src/original_model.py`. Artefacto: `artifacts
 ## Métricas (validación anidada 5 × 5, mismos pliegues para todos los modelos)
 | Modelo (mejor combinación) | F1 clase default | AUC-ROC |
 |---|---|---|
-| CatBoost (class_weight, búsqueda aleatoria) | 0.5480 ± 0.0088 | 0.7838 |
 | **CS-FOF** (class_weight, búsqueda aleatoria) | **0.5479 ± 0.0054** | **0.7847** |
 | XGBoost (class_weight, Optuna) | 0.5466 ± 0.0091 | 0.7828 |
-| LightGBM (class_weight, Optuna) | 0.5462 ± 0.0086 | 0.7843 |
 | Random Forest (class_weight, aleatoria) | 0.5452 ± 0.0077 | 0.7831 |
+| Adicional: CatBoost (class_weight, búsqueda aleatoria) | 0.5480 ± 0.0088 | 0.7838 |
+| Adicional: LightGBM (class_weight, Optuna) | 0.5462 ± 0.0086 | 0.7843 |
 
 Desviaciones con `ddof=1`. CS-FOF es significativamente mejor que SVM, árbol de decisión, regresión
-logística y Naive Bayes (t corregida de Nadeau–Bengio con Holm, p < 0.05), pero **no** que CatBoost,
-XGBoost, LightGBM ni Random Forest. Probabilidades fuera de pliegue: Brier 0.168 y ECE 0.180, las
+logística y Naive Bayes (t corregida de Nadeau–Bengio con Holm, p < 0.05), pero **no** que XGBoost ni Random
+Forest (exigidos por el curso) ni que CatBoost ni LightGBM (modelos adicionales). Probabilidades fuera de pliegue: Brier 0.168 y ECE 0.180, las
 mejores de los cinco modelos de la tabla.
 
 **Otros conjuntos de crédito** (F1, class_weight y búsqueda aleatoria): German 0.589 (CatBoost 0.605),

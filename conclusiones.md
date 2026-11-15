@@ -3,11 +3,12 @@
 1. **Se propuso e implementó un modelo original**, CS-FOF, un bosque aleatorio con cortes oblicuos de
    Fisher ponderados por costo, programado desde cero con numpy, con tres propiedades demostradas y
    verificadas con pruebas unitarias.
-2. **Empata con el mejor método del estado del arte en el problema principal.** En la validación anidada
-   5 × 5 obtiene un F1 de 0.5479 ± 0.0054, a 0.0001 de CatBoost (0.5480), con el mayor AUC-ROC (0.7847)
-   y la menor variabilidad entre pliegues de los 10 modelos.
-3. **No es superior de forma significativa al mejor modelo de referencia.** Frente a CatBoost, XGBoost,
-   LightGBM y Random Forest, ni Nadeau–Bengio, ni Wilcoxon, ni DeLong son significativas. Sí supera con
+2. **Obtiene el mayor F1 entre los modelos exigidos, sin diferencia significativa.** En la validación anidada
+   5 × 5 obtiene un F1 de 0.5479 ± 0.0054, por encima de XGBoost (0.5466) y de Random Forest (0.5452), con el
+   mayor AUC-ROC (0.7847) de los 10 modelos y la menor variabilidad entre pliegues de los cinco mejores.
+   CatBoost, evaluado como modelo adicional junto con LightGBM, queda 0.0001 por encima (0.5480).
+3. **No es superior de forma significativa a los mejores modelos.** Frente a XGBoost y Random Forest (exigidos)
+   y frente a CatBoost y LightGBM (adicionales), ni Nadeau–Bengio, ni Wilcoxon, ni DeLong son significativas. Sí supera con
    significancia y efecto grande a SVM, árbol de decisión, regresión logística y Naive Bayes.
    Con el umbral elegido dentro del entrenamiento de cada modelo, el empate se mantiene: CatBoost queda
    0.0016 por delante, sin significancia.

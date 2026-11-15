@@ -5,9 +5,19 @@
 Todos los modelos se evalúan con la misma validación cruzada anidada estratificada (5 pliegues externos ×
 5 internos, semilla 42), el mismo preprocesamiento y el mismo presupuesto de búsqueda
 (`experiments/protocolo.md`). La métrica principal es el F1 de la clase *default*. Las desviaciones
-estándar usan `ddof=1`. Se comparan los 7 modelos base, dos métodos recientes del estado del arte
-(LightGBM y CatBoost) y CS-FOF. Las cifras se reproducen con `experiments/comparacion_final/pruebas.py`
+estándar usan `ddof=1`. Se comparan los 7 modelos de referencia exigidos por el curso, dos variantes recientes de *boosting*
+evaluadas como modelos adicionales (LightGBM y CatBoost) y CS-FOF. Las cifras se reproducen con `experiments/comparacion_final/pruebas.py`
 y `experiments/comparacion_final/delong.py`.
+
+:::{admonition} Modelos exigidos y modelos adicionales
+:class: note
+
+El curso exige comparar el modelo original con siete modelos de referencia: regresión logística, KNN, Naive
+Bayes, SVM, árbol de decisión, Random Forest y XGBoost. Además se evaluaron dos variantes recientes de
+*boosting*, LightGBM y CatBoost, que se reportan como **modelos adicionales**. Todas las tablas y pruebas
+incluyen los diez modelos. La separación entre exigidos y adicionales se hizo después de ver los resultados,
+por indicación del profesor del curso, y no cambia ninguna cifra.
+:::
 
 ## Resultados
 
@@ -72,8 +82,9 @@ y `experiments/comparacion_final/delong.py`.
   - 0.7454
 ```
 
-CS-FOF queda prácticamente empatado con CatBoost en F1 (diferencia de 0.0001), con el mayor AUC-ROC y la
-menor variabilidad entre los cinco mejores modelos. Sus cuatro métodos de búsqueda dan resultados
+CS-FOF obtiene el mayor F1 medio entre los modelos exigidos (0.5479 frente a 0.5466 de XGBoost) y queda
+prácticamente empatado con CatBoost, modelo adicional (diferencia de 0.0001), con el mayor AUC-ROC y la
+menor variabilidad entre los cinco mejores modelos. Ninguna de esas diferencias es significativa. Sus cuatro métodos de búsqueda dan resultados
 cercanos: aleatoria 0.5479, genético 0.5476, malla 0.5468 y Optuna 0.5456.
 
 ## Pruebas de hipótesis
@@ -379,8 +390,8 @@ reportan como información complementaria: no evalúan la métrica principal.
 ## Veredicto de superioridad
 
 Según la definición operativa del Entregable 3 (sección 6.4), **CS-FOF no es superior de forma
-estadísticamente significativa al mejor modelo de referencia** (CatBoost): frente a CatBoost, XGBoost,
-LightGBM y Random Forest, Nadeau–Bengio y Wilcoxon no son significativas, el intervalo bootstrap de la
+estadísticamente significativa a los mejores modelos**, ni entre los exigidos (XGBoost y Random Forest) ni
+entre los adicionales (CatBoost y LightGBM): frente a los cuatro, Nadeau–Bengio y Wilcoxon no son significativas, el intervalo bootstrap de la
 diferencia de F1 frente a CatBoost contiene el cero ([−0.003, +0.006]) y el tamaño del efecto es despreciable
 o pequeño. El único intervalo que excluye el cero es frente a Random Forest (+0.005 de F1), pero está
 condicionado a los modelos ya entrenados y la prueba que considera el reentrenamiento (Nadeau–Bengio) no lo

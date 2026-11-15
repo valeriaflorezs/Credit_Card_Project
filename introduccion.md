@@ -33,7 +33,8 @@ siguientes.
    particiones y el mismo presupuesto de búsqueda, que incluye dos métodos recientes (LightGBM y CatBoost).
 3. Una validación estadística con protocolo registrado, al menos tres pruebas de hipótesis con corrección por
    comparaciones múltiples y tamaños del efecto, más tres conjuntos de crédito adicionales. El veredicto se reporta
-   tal cual: CS-FOF empata con CatBoost y no es superior de forma significativa.
+   tal cual: CS-FOF obtiene el mayor F1 entre los modelos exigidos, empata con CatBoost (modelo adicional) y no es
+   superior de forma significativa.
 4. Una evaluación ampliada: robustez al ruido y al tamaño de muestra, 10 semillas, escalabilidad, cambio de
    distribución, calibración, predicción conforme, análisis de errores por subgrupo y SHAP del modelo original.
 5. Un tablero interactivo desplegado en https://dash-credit-kv.onrender.com, con predicción en vivo, explicación
