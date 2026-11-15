@@ -1,6 +1,6 @@
 # Default of Credit Card Clients
 
-[![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Python 3.13](https://img.shields.io/badge/Python-3.13-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Conda](https://img.shields.io/badge/Environment-Conda-44A833?style=for-the-badge&logo=anaconda&logoColor=white)](https://www.anaconda.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
@@ -24,9 +24,9 @@ Asegúrate de contar con **Anaconda** o **Miniconda** instalado en tu equipo ant
 <br>
 
 1. **Abrir Anaconda Prompt** desde el menú de inicio de tu sistema operativo.
-2. **Crear el entorno virtual** con Python 3.12:
+2. **Crear el entorno virtual** con Python 3.13:
    ```bash
-   conda create --name creditcard python=3.12 -y
+   conda create --name creditcard python=3.13 -y
 
 ```
 
