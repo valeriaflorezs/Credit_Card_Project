@@ -217,7 +217,9 @@ def escalabilidad():
 # ---------------------------------------------------------------- diagrama de diferencia crítica
 def cd():
     import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
-    J = json.load(open(RAIZ / "experiments" / "comparacion_final" / "friedman.json"))
+    # CS-FOF y los siete modelos de referencia exigidos (experiments/paper/resultados_paper.py friedman)
+    J = json.load(open(RAIZ / "experiments" / "paper" / "friedman_exigidos.json"))["taiwan"]
+    J = dict(rangos=J["rangos"], nemenyi_cd=J["nemenyi_cd"], friedman_chi2=J["chi2"], friedman_p=J["p_chi2"])
     r = pd.Series(J["rangos"]).sort_values(); cdv = J["nemenyi_cd"]; k = len(r)
     fig, ax = plt.subplots(figsize=(9, 3.6)); ax.set_xlim(0.5, k + .5); ax.set_ylim(0, 1); ax.axis("off")
     ax.hlines(0.8, 1, k, color="k")
@@ -238,7 +240,7 @@ def cd():
         if b > a and (not grupos or b > grupos[-1][1]): grupos.append((a, b))
     for n_g, (a, b) in enumerate(grupos):
         ax.hlines(0.72 - 0.035 * n_g, vals[a] - .05, vals[b] + .05, color="#3b6ea5", lw=4, alpha=.8)
-    ax.set_title(f"Diferencia crítica de Nemenyi (10 modelos, 5 pliegues; Friedman χ² = {J['friedman_chi2']:.1f}, p = {J['friedman_p']:.1e})", fontsize=10)
+    ax.set_title(f"Diferencia crítica de Nemenyi ({k} modelos, 5 pliegues; Friedman χ² = {J['friedman_chi2']:.1f}, p = {J['friedman_p']:.1e})", fontsize=10)
     fig.tight_layout(); fig.savefig(FIG / "cd_diagram_final.png", dpi=150); plt.close(fig); print(r.to_string(), "\nDC", cdv, grupos)
 
 

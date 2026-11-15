@@ -1,0 +1,27 @@
+{
+  "spearman_importancias": 0.942,
+  "p": 2.3605155328203274e-12,
+  "top5": {
+    "cs_fof": [
+      "PAY_0",
+      "PAY_2",
+      "LIMIT_BAL_LOG",
+      "PAY_3",
+      "BILL_AMT_MEAN_6M_LOG"
+    ],
+    "xgboost": [
+      "PAY_0",
+      "LIMIT_BAL_LOG",
+      "PAY_2",
+      "BILL_AMT_MEAN_6M_LOG",
+      "PAY_AMT1_LOG"
+    ]
+  },
+  "top5_comunes": [
+    "BILL_AMT_MEAN_6M_LOG",
+    "LIMIT_BAL_LOG",
+    "PAY_0",
+    "PAY_2"
+  ],
+  "concordancia_signo_top": 0.896
+}

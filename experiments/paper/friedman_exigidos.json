@@ -1,0 +1,97 @@
+{
+ "taiwan": {
+  "k": 8,
+  "n": 5,
+  "chi2": 32.93333333333332,
+  "p_chi2": 2.724435009631701e-05,
+  "iman_davenport_F": 63.74193548387063,
+  "p_F": 1.606809212180744e-15,
+  "nemenyi_cd": 4.695416703894232,
+  "rangos": {
+   "cs_fof": 1.4,
+   "xgboost": 2.2,
+   "random_forest": 2.4,
+   "svm": 4.0,
+   "knn": 5.6,
+   "decision_tree": 5.6,
+   "logistic_regression": 6.8,
+   "naive_bayes": 8.0
+  }
+ },
+ "conjuntos": {
+  "k": 8,
+  "n": 4,
+  "chi2": 14.5,
+  "p_chi2": 0.04297030801550577,
+  "iman_davenport_F": 3.2222222222222223,
+  "p_F": 0.017557261114084257,
+  "nemenyi_cd": 5.249635466297751,
+  "rangos": {
+   "cs_fof": 3.25,
+   "xgboost": 2.0,
+   "random_forest": 3.0,
+   "svm": 4.0,
+   "knn": 5.0,
+   "decision_tree": 6.25,
+   "logistic_regression": 5.25,
+   "naive_bayes": 7.25
+  },
+  "f1": {
+   "cs_fof": {
+    "taiwan": 0.5479,
+    "german": 0.5889,
+    "australian": 0.8741,
+    "polish": 0.4297
+   },
+   "xgboost": {
+    "taiwan": 0.5466,
+    "german": 0.599,
+    "australian": 0.8801,
+    "polish": 0.6825
+   },
+   "random_forest": {
+    "taiwan": 0.5452,
+    "german": 0.5997,
+    "australian": 0.8741,
+    "polish": 0.4462
+   },
+   "svm": {
+    "taiwan": 0.5387,
+    "german": 0.6012,
+    "australian": 0.8619,
+    "polish": 0.167
+   },
+   "knn": {
+    "taiwan": 0.5264,
+    "german": 0.5601,
+    "australian": 0.8772,
+    "polish": 0.1382
+   },
+   "decision_tree": {
+    "taiwan": 0.5254,
+    "german": 0.5206,
+    "australian": 0.8599,
+    "polish": 0.4287
+   },
+   "logistic_regression": {
+    "taiwan": 0.5182,
+    "german": 0.5999,
+    "australian": 0.8718,
+    "polish": 0.13
+   },
+   "naive_bayes": {
+    "taiwan": 0.4987,
+    "german": 0.5912,
+    "australian": 0.8368,
+    "polish": 0.0739
+   }
+  }
+ },
+ "vs_xgboost": {
+  "dif_f1": 0.001371057570940426,
+  "gana_en": 4,
+  "p_wilcoxon": 0.4375,
+  "cliff": 0.36,
+  "p_nadeau_bengio": 0.6266271451418102
+ }
+}

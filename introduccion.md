@@ -29,11 +29,12 @@ siguientes.
    cero cuyos nodos pueden cortar por la dirección discriminante de Fisher ponderada por el costo del incumplimiento.
    Se demuestran tres propiedades (nunca peor que los cortes por ejes, optimalidad de Fisher y terminación) y se
    verifican con pruebas unitarias.
-2. Una comparación justa de 148 combinaciones de 10 modelos, con validación cruzada anidada 5 × 5, las mismas
-   particiones y el mismo presupuesto de búsqueda, que incluye dos métodos recientes (LightGBM y CatBoost).
+2. Una comparación justa de 116 combinaciones de 8 modelos, con validación cruzada anidada 5 × 5, las mismas
+   particiones y el mismo presupuesto de búsqueda.
 3. Una validación estadística con protocolo registrado, al menos tres pruebas de hipótesis con corrección por
    comparaciones múltiples y tamaños del efecto, más tres conjuntos de crédito adicionales. El veredicto se reporta
-   tal cual: CS-FOF empata con CatBoost y no es superior de forma significativa.
+   tal cual: CS-FOF obtiene el mayor F1 medio, pero no es superior de forma significativa a XGBoost ni a
+   Random Forest.
 4. Una evaluación ampliada: robustez al ruido y al tamaño de muestra, 10 semillas, escalabilidad, cambio de
    distribución, calibración, predicción conforme, análisis de errores por subgrupo y SHAP del modelo original.
 5. Un tablero interactivo desplegado en https://dash-credit-kv.onrender.com, con predicción en vivo, explicación
@@ -405,12 +406,12 @@ Diseño factorial de **7 x 4 x 4 = 112 configuraciones**:
 - **Calibración y complejidad:** curvas de calibración, error de calibración esperado (ECE) y costo
   computacional de cada configuración.
 
-### Modelo original y métodos recientes
+### Modelo original
 
 Las 112 configuraciones anteriores son los modelos tradicionales y fijan el punto de comparación: su mejor F1 medio
 es 0.547 (XGBoost con `class_weight` y optimización bayesiana). Con ese valor como referencia se busca un modelo que
-lo supere: un bosque aleatorio propio con cortes oblicuos sensibles al costo (CS-FOF), contrastado además con dos
-métodos recientes de boosting (LightGBM y CatBoost) bajo el mismo protocolo de validación anidada 5 x 5.
+lo supere: un bosque aleatorio propio con cortes oblicuos sensibles al costo (CS-FOF), evaluado bajo el mismo
+protocolo de validación anidada 5 x 5.
 
 ### Interpretabilidad
 
