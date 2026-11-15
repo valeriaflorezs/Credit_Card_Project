@@ -1,4 +1,4 @@
-"""SHAP del modelo original (CS-FOF) frente al mejor benchmark (CatBoost). Entregable 3, sección 5.4.
+"""SHAP del modelo original (CS-FOF) frente al mejor modelo de referencia (XGBoost). Entregable 3, sección 5.4.
 
 - Mismo método para los dos: ``shap.PermutationExplainer`` (agnóstico al modelo), porque CS-FOF no es un
   árbol de scikit-learn y TreeExplainer no aplica. Usar el mismo explicador evita que las diferencias vengan
@@ -10,9 +10,9 @@
   (dos permutaciones antitéticas de las 25 columnas).
 - Se explica la probabilidad de incumplimiento (clase 1).
 
-Salidas: ``shap_cs_fof_catboost.csv`` (importancia media |SHAP| por variable y modelo),
-``shap_valores.npz`` y la figura ``results/figures/shap_cs_fof_vs_catboost.png``.
-Uso (desde la raíz): python experiments/robustez/shap_cs_fof.py
+Salidas: ``shap_cs_fof_<rival>.csv`` (importancia media |SHAP| por variable y modelo), ``shap_resumen_<rival>.json``,
+``shap_valores_<rival>.npz`` y la figura ``results/figures/shap_cs_fof_vs_<rival>.png``.
+Uso (desde la raíz): python experiments/robustez/shap_cs_fof.py [rival]   (rival por defecto: xgboost)
 """
 import json
 import sys
@@ -30,8 +30,9 @@ sys.path.insert(0, str(AQUI))
 from ampliada import _datos, _params, FIG  # noqa: E402
 from robustez import fabrica  # noqa: E402
 
-MODELOS = ("cs_fof", "catboost")
-NOMBRE = {"cs_fof": "CS-FOF", "catboost": "CatBoost"}
+RIVAL = sys.argv[1] if len(sys.argv) > 1 else "xgboost"
+MODELOS = ("cs_fof", RIVAL)
+NOMBRE = {"cs_fof": "CS-FOF", "catboost": "CatBoost", "xgboost": "XGBoost", "random_forest": "Random Forest"}
 
 
 def main():
@@ -55,19 +56,19 @@ def main():
             filas.append(dict(model=m, variable=c, media_abs=float(np.abs(sv[:, j]).mean()),
                               media=float(sv[:, j].mean())))
     T = pd.DataFrame(filas)
-    W = T.pivot(index="variable", columns="model", values="media_abs").sort_values("catboost", ascending=False)
-    W.to_csv(AQUI / "shap_cs_fof_catboost.csv")
-    np.savez(AQUI / "shap_valores.npz", X=X[idx], y=y[idx], columnas=np.array(cols), **valores)
+    W = T.pivot(index="variable", columns="model", values="media_abs").sort_values(RIVAL, ascending=False)
+    W.to_csv(AQUI / f"shap_cs_fof_{RIVAL}.csv")
+    np.savez(AQUI / f"shap_valores_{RIVAL}.npz", X=X[idx], y=y[idx], columnas=np.array(cols), **valores)
 
-    rho, p = spearmanr(W["cs_fof"], W["catboost"])
+    rho, p = spearmanr(W["cs_fof"], W[RIVAL])
     top = {m: list(W[m].sort_values(ascending=False).index[:5]) for m in MODELOS}
-    comunes = sorted(set(top["cs_fof"]) & set(top["catboost"]))
+    comunes = sorted(set(top["cs_fof"]) & set(top[RIVAL]))
     # concordancia de signo por cliente en las 5 variables principales de cada modelo
-    j5 = [cols.index(c) for c in set(top["cs_fof"]) | set(top["catboost"])]
-    signo = float((np.sign(valores["cs_fof"][:, j5]) == np.sign(valores["catboost"][:, j5])).mean())
+    j5 = [cols.index(c) for c in set(top["cs_fof"]) | set(top[RIVAL])]
+    signo = float((np.sign(valores["cs_fof"][:, j5]) == np.sign(valores[RIVAL][:, j5])).mean())
     res = dict(spearman_importancias=round(float(rho), 3), p=float(p), top5=top, top5_comunes=comunes,
                concordancia_signo_top=round(signo, 3))
-    (AQUI / "shap_resumen.json").write_text(json.dumps(res, indent=2, ensure_ascii=False), encoding="utf-8")
+    (AQUI / f"shap_resumen_{RIVAL}.json").write_text(json.dumps(res, indent=2, ensure_ascii=False), encoding="utf-8")
     print(W.round(4).to_string()); print(json.dumps(res, ensure_ascii=False))
 
     import matplotlib
@@ -77,7 +78,7 @@ def main():
     fig, ax = plt.subplots(1, 3, figsize=(16, 5.2), gridspec_kw=dict(width_ratios=[1.1, 1, 1]))
     yy = np.arange(len(orden))
     ax[0].barh(yy + 0.2, W.loc[orden, "cs_fof"], 0.4, color="#B88F3D", label="CS-FOF")
-    ax[0].barh(yy - 0.2, W.loc[orden, "catboost"], 0.4, color="#36456D", label="CatBoost")
+    ax[0].barh(yy - 0.2, W.loc[orden, RIVAL], 0.4, color="#36456D", label=NOMBRE[RIVAL])
     ax[0].set_yticks(yy, orden, fontsize=9); ax[0].set_xlabel("Importancia media |SHAP| (probabilidad)")
     ax[0].legend(loc="lower right"); ax[0].set_title(f"12 variables más importantes (Spearman ρ = {rho:.2f})", fontsize=10)
     for a, m in zip(ax[1:], MODELOS):
@@ -88,7 +89,7 @@ def main():
         a.axvline(0, color="grey", lw=.8); a.set_yticks(yy, orden if m == "cs_fof" else [], fontsize=9)
         a.set_title(f"{NOMBRE[m]}: efecto por cliente (rojo = valor alto)", fontsize=10); a.set_xlabel("Valor SHAP")
     fig.suptitle("SHAP por permutación en 300 clientes del pliegue externo 1 (mismo explicador y fondo para los dos)")
-    fig.tight_layout(); fig.savefig(FIG / "shap_cs_fof_vs_catboost.png", dpi=150); plt.close(fig)
+    fig.tight_layout(); fig.savefig(FIG / f"shap_cs_fof_vs_{RIVAL}.png", dpi=150); plt.close(fig)
 
 
 if __name__ == "__main__":

@@ -44,8 +44,8 @@ EN = {k: v.replace(" (proposed)", "") for k, v in NOMBRE.items()}
 EN.update({"logistic_regression": "Logistic reg. (tuned)", "lr_none": "Logistic reg. (no penalty)",
            "ridge": "Ridge (L2 logistic)", "lasso": "Lasso (L1 logistic)"})
 # Estilo por modelo: color + estilo de línea + marcador, para que se distingan también en escala de grises
-ESTILO = {"cs_fof": (GOLD, "-", "o"), "catboost": (NAVY, "--", "s"), "xgboost": ("#5B8DB8", "-.", "^"),
-          "lightgbm": ("#4F7F58", ":", "D"), "random_forest": (GREY, (0, (5, 1, 1, 1)), "v")}
+ESTILO = {"cs_fof": (GOLD, "-", "o"), "xgboost": (NAVY, "--", "s"), "random_forest": ("#4F7F58", "-.", "^")}
+RIVAL = "xgboost"   # mejor modelo de referencia exigido: comparador de las curvas, las matrices de confusión y SHAP
 
 
 def guardar(fig, nombre):
@@ -192,7 +192,7 @@ def intervalos():
 
 
 def roc_pr_cal_cm():
-    d = np.load(CF / "probabilidades_oof.npz"); y = d["y"]; mods = ("cs_fof", "catboost")
+    d = np.load(CF / "probabilidades_oof.npz"); y = d["y"]; mods = ("cs_fof", RIVAL)
     fig, ax = plt.subplots(2, 2, figsize=(ANCHO, 6.0)); ax = ax.ravel()
     for m in mods:
         col, ls, mk = ESTILO[m]
@@ -240,7 +240,7 @@ def ablacion():
 
 def sensibilidad():
     ruido = pd.read_csv(RB / "ruido.csv"); tam = pd.read_csv(RB / "tamano.csv"); sem = pd.read_csv(RB / "semillas.csv")
-    mods = ["cs_fof", "catboost", "xgboost", "lightgbm", "random_forest"]
+    mods = ["cs_fof", "xgboost", "random_forest"]
     fig, ax = plt.subplots(2, 2, figsize=(ANCHO, 6.2)); ax = ax.ravel()
     for m in mods:
         col, ls, mk = ESTILO[m]
@@ -253,7 +253,7 @@ def sensibilidad():
     bp = ax[2].boxplot([ms[ms.model == m].f1 for m in mods], patch_artist=True, widths=0.6, medianprops=dict(color="k", lw=2))
     for caja, m in zip(bp["boxes"], mods):
         caja.set(facecolor=ESTILO[m][0], alpha=0.45, edgecolor=ESTILO[m][0])
-    ax[2].set_xticks(range(1, 6), ["CS-FOF", "CatB.", "XGB.", "LGBM", "RF"]); ax[2].tick_params(axis="x", labelsize=11)
+    ax[2].set_xticks(range(1, 4), ["CS-FOF", "XGBoost", "RF"])
     ax[2].set(xlabel="Model (10 random seeds)", ylabel="F1 (mean of 5 folds)"); ax[2].grid(axis="x", visible=False)
     etiqueta(ax[0], "(a)", 0.84, 0.14); etiqueta(ax[1], "(b)", 0.84); etiqueta(ax[2], "(c)", 0.84)
     leyenda_modelos(ax[3], mods)
@@ -261,10 +261,10 @@ def sensibilidad():
 
 
 def shap():
-    W = pd.read_csv(RB / "shap_cs_fof_catboost.csv", index_col=0).head(10)[::-1]
+    W = pd.read_csv(RB / f"shap_cs_fof_{RIVAL}.csv", index_col=0).head(10)[::-1]
     fig, ax = plt.subplots(figsize=(ANCHO, 4.6)); yy = np.arange(len(W))
     ax.barh(yy + .2, W.cs_fof, .4, color=GOLD, hatch="//", edgecolor="white", label="CS-FOF")
-    ax.barh(yy - .2, W.catboost, .4, color=NAVY, label="CatBoost")
+    ax.barh(yy - .2, W[RIVAL], .4, color=NAVY, label=EN[RIVAL])
     ax.set_yticks(yy, W.index); ax.tick_params(axis="y", labelsize=10.5)
     ax.set_xlabel("Mean |SHAP value| (probability of default)"); ax.legend(frameon=False, loc="lower right"); ax.grid(axis="y", visible=False)
     guardar(fig, "fig_shap")

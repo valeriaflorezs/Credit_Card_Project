@@ -41,6 +41,11 @@ OOF5 = CF / "probabilidades_oof.npz"
 OOF_EXTRA = AQUI / "probabilidades_oof_extra.npz"
 SEED = 42
 ROPE = 0.01
+# Alcance del paper: el modelo propuesto frente a los modelos de referencia exigidos por el curso. CatBoost y LightGBM
+# se corrieron (sus resultados siguen en comparacion_final/), pero quedan fuera de la comparación por indicación del
+# profesor del curso.
+FUERA_DE_ALCANCE = ("catboost", "lightgbm")
+EXIGIDOS = ["xgboost", "random_forest", "svm", "knn", "decision_tree", "logistic_regression", "naive_bayes"]
 
 
 def metricas(y, p, u=0.5):
@@ -140,6 +145,8 @@ def tabla():
     oof5 = np.load(OOF5)
     filas = []
     for m in best.index:
+        if m in FUERA_DE_ALCANCE:
+            continue
         r = best.loc[m]
         f1 = json.loads(r.f1_per_fold); pr = json.loads(r.precision_per_fold); rc = json.loads(r.recall_per_fold)
         auc = json.loads(r.roc_auc_per_fold)
@@ -238,6 +245,34 @@ def pruebas():
     AB.to_csv(AQUI / "ablacion_pruebas.csv", index=False); print(AB.round(4).to_string(index=False))
 
 
+# --------------------------------------------------------------------- pruebas de la metodología
+def friedman():
+    """Friedman + Nemenyi (pliegues de Taiwán y entre conjuntos) y contrastes frente a XGBoost, el mejor modelo exigido."""
+    from scipy.stats import studentized_range
+    T = pd.read_csv(AQUI / "metricas_pliegues.csv")
+    mods = ["cs_fof"] + EXIGIDOS
+    M = np.array([T[T.model == m].sort_values("fold").f1.to_numpy() for m in mods]).T      # pliegues x modelos
+
+    def bloque(M):
+        N, k = M.shape
+        R = stats.rankdata(-M, axis=1).mean(0)
+        chi2 = 12 * N / (k * (k + 1)) * (np.sum(R ** 2) - k * (k + 1) ** 2 / 4)
+        F = (N - 1) * chi2 / (N * (k - 1) - chi2)
+        cd = studentized_range.ppf(0.95, k, np.inf) / np.sqrt(2) * np.sqrt(k * (k + 1) / (6 * N))
+        return dict(k=k, n=N, chi2=float(chi2), p_chi2=float(stats.chi2.sf(chi2, k - 1)), iman_davenport_F=float(F),
+                    p_F=float(stats.f.sf(F, k - 1, (k - 1) * (N - 1))), nemenyi_cd=float(cd)), R
+    out = {}
+    r, R = bloque(M); r["rangos"] = dict(zip(mods, map(float, R))); out["taiwan"] = r
+    ec = pd.read_csv(CF / "entre_conjuntos_f1.csv").set_index("model").loc[mods, ["taiwan", "german", "australian", "polish"]]
+    r, R = bloque(ec.to_numpy().T); r["rangos"] = dict(zip(mods, map(float, R))); r["f1"] = ec.round(4).T.to_dict(); out["conjuntos"] = r
+    a, b = M[:, 0], M[:, 1]
+    d = a - b; n = len(d); gt = sum(x > y for x in a for y in b); lt = sum(x < y for x in a for y in b)
+    out["vs_xgboost"] = dict(dif_f1=float(d.mean()), gana_en=int((d > 0).sum()), p_wilcoxon=float(stats.wilcoxon(a, b).pvalue),
+                             cliff=float((gt - lt) / n ** 2), p_nadeau_bengio=float(nadeau_bengio(a, b)[1]))
+    (AQUI / "friedman_exigidos.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
+    print(json.dumps(out, indent=1))
+
+
 if __name__ == "__main__":
-    for etapa in sys.argv[1:] or ["lr", "ablacion", "oof", "tabla", "pruebas"]:
+    for etapa in sys.argv[1:] or ["lr", "ablacion", "oof", "tabla", "pruebas", "friedman"]:
         globals()[etapa]()
