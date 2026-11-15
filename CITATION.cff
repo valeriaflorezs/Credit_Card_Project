@@ -13,8 +13,8 @@ authors:
     affiliation: "Universidad del Norte, Barranquilla, Colombia"
 repository-code: "https://github.com/valeriaflorezs/Credit_Card_Project"
 license: MIT
-version: "3.0.0"
-date-released: "2026-11-08"
+version: "3.1.0"
+date-released: "2026-11-15"
 keywords:
   - credit risk
   - credit card default

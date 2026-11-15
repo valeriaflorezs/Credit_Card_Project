@@ -11,7 +11,7 @@
 * - Código
   - https://github.com/valeriaflorezs/Credit_Card_Project (licencia MIT)
 * - Archivo con identificador persistente
-  - DOI de Zenodo: *pendiente de completar con el DOI de la release v3.0.0*
+  - DOI de Zenodo: *pendiente de completar con el DOI de la release v3.1.0*
 * - Datos
   - UCI *Default of Credit Card Clients* (CC BY 4.0); ver `DATA_STATEMENT.md`
 * - Semilla global
