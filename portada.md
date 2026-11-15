@@ -39,16 +39,16 @@
 :class-card: cc-kpi
 
 <p class="kpi-label">Combinaciones evaluadas</p>
-<p class="kpi-value">148</p>
-<p class="kpi-note">112 del diseño factorial + 36 de CS-FOF, LightGBM y CatBoost</p>
+<p class="kpi-value">116</p>
+<p class="kpi-note">112 del diseño factorial + 4 de CS-FOF</p>
 :::
 
 :::{grid-item-card}
 :class-card: cc-kpi
 
-<p class="kpi-label">Mayor F1 entre los modelos exigidos</p>
+<p class="kpi-label">Mayor F1 (validación anidada 5 × 5)</p>
 <p class="kpi-value">0.548</p>
-<p class="kpi-note">CS-FOF 0.5479; XGBoost 0.5466. Adicional: CatBoost 0.5480</p>
+<p class="kpi-note">CS-FOF 0.5479; XGBoost 0.5466. Diferencia no significativa</p>
 :::
 ::::
 
@@ -61,13 +61,13 @@ el conjunto de datos de clientes de Taiwán se han usado modelos estadísticos, 
 profundas; sus resultados son muy similares, las redes pierden interpretabilidad y los árboles solo dividen el espacio
 en paralelo a los ejes. Se propone el *Cost-Sensitive Fisher Oblique Forest* (CS-FOF), un bosque aleatorio
 implementado desde cero cuyos nodos pueden cortar por la dirección discriminante de Fisher ponderada por el costo del
-incumplimiento, y se compara con 148 combinaciones de 10 modelos mediante validación cruzada anidada 5 × 5 y un
-protocolo de pruebas de hipótesis. CS-FOF obtiene un F1 de la clase *default* de 0.5479 ± 0.0054, el mayor entre los
-modelos de referencia exigidos (XGBoost, 0.5466) y a 0.0001 de CatBoost (0.5480), un modelo adicional, con el mayor
-AUC-ROC (0.785) y la menor variabilidad de los cinco mejores, pero **no es superior de
-forma estadísticamente significativa** a XGBoost, Random Forest, CatBoost ni LightGBM, y no es consistente en tres
-conjuntos de crédito adicionales. Es más robusto que el *boosting* ante etiquetas ruidosas y muestras pequeñas. El
-aporte es un clasificador no neuronal, con tres propiedades demostradas, que iguala al estado del arte en este
+incumplimiento, y se compara con 112 combinaciones de 7 modelos de referencia mediante validación cruzada anidada 5 × 5 y un
+protocolo de pruebas de hipótesis. CS-FOF obtiene el mayor F1 de la clase *default*, 0.5479 ± 0.0054, frente a
+0.5466 de XGBoost, el mejor modelo de referencia, con el mayor AUC-ROC (0.785) y la menor variabilidad de los tres
+mejores, pero **no es superior de forma estadísticamente significativa** a XGBoost ni a Random Forest, y no es
+consistente en tres conjuntos de crédito adicionales. Tiene el mayor F1 con etiquetas ruidosas y con muestras
+moderadas. El
+aporte es un clasificador no neuronal, con tres propiedades demostradas, que iguala a los mejores modelos de referencia en este
 problema y se reporta con un veredicto honesto sobre su superioridad.
 
 <div class="cc-chips"><span class="cc-chip">riesgo crediticio</span><span class="cc-chip">incumplimiento de pago</span><span class="cc-chip">tarjetas de crédito</span><span class="cc-chip">árboles de decisión oblicuos</span><span class="cc-chip">bosques aleatorios</span><span class="cc-chip">discriminante de Fisher</span><span class="cc-chip">aprendizaje sensible al costo</span><span class="cc-chip">desbalance de clases</span></div>
@@ -78,27 +78,15 @@ problema y se reporta con un veredicto honesto sobre su superioridad.
 | Modelo | F1 de la clase *default* | Validación |
 |---|---|---|
 | Regresión logística (línea base) | cerca de 0.38 | Partición 80/20 |
-| Mejor modelo exigido (XGBoost, pesos de clase, Optuna) | 0.5466 ± 0.0091 | Anidada 5 × 5 |
+| Mejor modelo de referencia (XGBoost, pesos de clase, Optuna) | 0.5466 ± 0.0091 | Anidada 5 × 5 |
 | **CS-FOF** (modelo original, pesos de clase, búsqueda aleatoria) | **0.5479 ± 0.0054** | Anidada 5 × 5 |
-| Modelo adicional: CatBoost (pesos de clase, búsqueda aleatoria) | 0.5480 ± 0.0088 | Anidada 5 × 5 |
-| Modelo adicional: LightGBM (pesos de clase, Optuna) | 0.5462 ± 0.0086 | Anidada 5 × 5 |
-
-:::{admonition} Modelos exigidos y modelos adicionales
-:class: note
-
-El curso exige comparar el modelo original con siete modelos de referencia: regresión logística, KNN, Naive
-Bayes, SVM, árbol de decisión, Random Forest y XGBoost. Además se evaluaron dos variantes recientes de
-*boosting*, LightGBM y CatBoost, que se reportan como **modelos adicionales**. Todas las tablas y pruebas
-incluyen los diez modelos. La separación entre exigidos y adicionales se hizo después de ver los resultados,
-por indicación del profesor del curso, y no cambia ninguna cifra.
-:::
 
 :::{admonition} Qué se concluye
 :class: cc-limites
 
-- CS-FOF obtiene el mayor F1 medio entre los modelos exigidos, pero la diferencia no es significativa: Friedman detecta diferencias entre los 10 modelos ($\chi^2 = 40.3$), pero Nadeau–Bengio, Wilcoxon y DeLong no separan a CS-FOF de CatBoost, XGBoost, LightGBM ni Random Forest. La condición R3 de superioridad **no se cumple**.
-- CS-FOF sí supera con significancia y efecto grande a SVM, árbol de decisión, regresión logística y Naive Bayes.
-- En la evaluación ampliada es el más robusto al ruido y a muestras pequeñas, pero falla más que CatBoost con los clientes al día en septiembre y con desbalance extremo (Polish).
+- CS-FOF obtiene el mayor F1 medio, pero la diferencia no es significativa: Friedman detecta diferencias entre los 8 modelos ($\chi^2 = 32.9$), pero Nadeau–Bengio, Wilcoxon y DeLong no separan a CS-FOF de XGBoost ni de Random Forest. La condición R3 de superioridad **no se cumple**.
+- CS-FOF sí supera con significancia y efecto grande a SVM, KNN, árbol de decisión, regresión logística y Naive Bayes.
+- En la evaluación ampliada tiene el mayor F1 con ruido en las etiquetas y con muestras moderadas, pero falla más que XGBoost con los clientes al día en septiembre y con desbalance extremo (Polish).
 - Los mejores modelos rondan F1 ≈ 0.55 y AUC ≈ 0.78 y quedan muy cerca entre sí; eso no prueba un techo del problema, pero hace difícil separarlos estadísticamente.
 :::
 

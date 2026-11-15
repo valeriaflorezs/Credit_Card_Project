@@ -25,7 +25,7 @@
 * - Presupuesto de búsqueda
   - Malla ≤ 200 combinaciones, 25 aleatorias, 30 de Optuna, genético 16 × 10 (`src/config.py`)
 * - Software
-  - Python 3.12, numpy 2.5.3, pandas 3.0.6, scikit-learn 1.9.1, xgboost 3.4.1, lightgbm 4.7.0, catboost 1.2.10, optuna 5.0.0, deap 1.4.3 (`requirements.txt`)
+  - Python 3.12, numpy 2.5.3, pandas 3.0.6, scikit-learn 1.9.1, xgboost 3.4.1, optuna 5.0.0, deap 1.4.3 (`requirements.txt`)
 * - Hardware
   - Windows, AMD Ryzen 7, 16 GB de RAM, sin GPU (modelos de árboles, CS-FOF y boosting); Google Colab con GPU T4 (SVM y KNN)
 * - Tiempo de cómputo de CS-FOF
