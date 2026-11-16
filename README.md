@@ -2,6 +2,7 @@
 
 [![Python 3.13](https://img.shields.io/badge/Python-3.13-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Conda](https://img.shields.io/badge/Environment-Conda-44A833?style=for-the-badge&logo=anaconda&logoColor=white)](https://www.anaconda.com/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24266557.svg)](https://doi.org/10.5281/zenodo.24266557)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
 > **Resumen del Proyecto:** Este proyecto desarrolla un flujo completo e integral de ciencia de datos y aprendizaje automático para predecir el riesgo de incumplimiento de pago (*default*) en clientes de tarjetas de crédito. A partir del conjunto de datos del repositorio UCI (30,000 registros; 29,965 y 21 columnas tras eliminar 35 duplicados exactos y transformar variables), la solución abarca un pipeline de extracción, limpieza y transformación de datos (ETL) y un análisis exploratorio (EDA) orientado al desbalance de clases (cerca del 22 % de *default*) y a la multicolinealidad entre montos facturados, hasta un diseño experimental factorial de 112 configuraciones: 7 modelos x 4 técnicas de balanceo x 4 métodos de optimización, con validación cruzada anidada (5 folds externos x 5 internos). Cinco modelos se ejecutan localmente en CPU (80 combinaciones) y SVM y KNN en Colab con GPU T4 (32 combinaciones, ver la nota de comparabilidad en `05_results_analysis.ipynb`).
