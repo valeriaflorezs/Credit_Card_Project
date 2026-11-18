@@ -36,7 +36,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=6a604523" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/dash_theme.css?v=16a22a96" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../_static/design-tabs.js?v=fcb327ea"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -65,7 +65,7 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="04. Ejecutar experimentos" href="04_run_experiments.html" />
+    <link rel="next" title="04. Ejecutar experimentos: validación cruzada anidada 5 × 5" href="04_run_experiments.html" />
     <link rel="prev" title="02. Verificación del protocolo experimental" href="02_setup_check.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -232,7 +232,7 @@
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">03. Desarrollo y prueba del pipeline completo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos: validación cruzada anidada 5 × 5</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
 
@@ -477,6 +477,8 @@
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+</div>
 </div>
 <section id="datos-sinteticos">
 <h2>1. Datos sintéticos<a class="headerlink" href="#datos-sinteticos" title="Link to this heading">#</a></h2>
@@ -563,9 +565,11 @@ Balance del target: {0: 0.766, 1: 0.234}
   random_forest: ['none', 'smote', 'adasyn', 'class_weight']
   xgboost: ['none', 'smote', 'adasyn', 'class_weight']
   svm: ['none', 'smote', 'adasyn', 'class_weight']
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OK: decision_tree entrenado con sus 4 técnicas compatibles.
+  cs_fof: ['none', 'smote', 'adasyn', 'class_weight']
+  lightgbm: ['none', 'smote', 'adasyn', 'class_weight']
+  catboost: ['none', 'smote', 'adasyn', 'class_weight']
+
+OK: decision_tree entrenado con sus 4 técnicas compatibles.
 </pre></div>
 </div>
 </div>
@@ -587,7 +591,7 @@ Balance del target: {0: 0.766, 1: 0.234}
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Modelos registrados: ['knn', 'naive_bayes', 'logistic_regression', 'decision_tree', 'random_forest', 'xgboost', 'svm']
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Modelos registrados: ['knn', 'naive_bayes', 'logistic_regression', 'decision_tree', 'random_forest', 'xgboost', 'svm', 'cs_fof', 'lightgbm', 'catboost']
 param_grid (decision_tree): {'max_depth': [2, 11, 21, 30], 'min_samples_split': [2, 18, 34, 50], 'min_samples_leaf': [1, 7, 14, 20], 'criterion': ['gini', 'entropy']}
 </pre></div>
 </div>
@@ -655,7 +659,7 @@ param_grid (decision_tree): {'max_depth': [2, 11, 21, 30], 'min_samples_split': 
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../_images/b601fe4d903e1980333de0ad3d7e42dc5c00951dfc1492aa5d22b125a0c3d29c.png" src="../_images/b601fe4d903e1980333de0ad3d7e42dc5c00951dfc1492aa5d22b125a0c3d29c.png" />
+<img alt="../_images/8bccba3d0e626fb32dbba5be13a4ffc48cdcaab9e7dc02e0353e0df9c7322eef.png" src="../_images/8bccba3d0e626fb32dbba5be13a4ffc48cdcaab9e7dc02e0353e0df9c7322eef.png" />
 </div>
 </div>
 </section>
@@ -721,16 +725,16 @@ metrics_summary: {'accuracy': (0.72, 0.028), 'precision': (0.4379, 0.0358), 'rec
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] 4 combinaciones a ejecutar.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK logistic_regression/none/random_search: f1=0.5299±0.0415 (0.5s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK logistic_regression/none/random_search, f1=0.5299±0.0415 (0.4s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK logistic_regression/class_weight/random_search: f1=0.5524±0.0402 (0.4s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK logistic_regression/class_weight/random_search, f1=0.5524±0.0402 (0.3s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK decision_tree/none/random_search: f1=0.5547±0.0547 (0.3s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK decision_tree/none/random_search, f1=0.5547±0.0547 (0.3s)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK decision_tree/class_weight/random_search: f1=0.5183±0.0151 (0.3s)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK decision_tree/class_weight/random_search, f1=0.5183±0.0151 (0.3s)
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -892,7 +896,7 @@ Brier: 0.2087  ECE: 0.2208  (deficiente: True)
 <p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Nota: el mensaje guardado en la salida dice N_OUTER_FOLDS=3 (valor de config, escrito en src/stats_comparison.py), pero esta corrida de desarrollo usó 2 folds externos (n_outer_folds=2).</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prueba de humo con datos sintéticos y 2 pliegues externos: solo verifica que la comparación corre.</span>
 <span class="n">comparison</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">run_hierarchical_comparison</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">"f1"</span><span class="p">,</span> <span class="n">top_k_for_delong</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">friedman</span> <span class="o">=</span> <span class="n">comparison</span><span class="p">[</span><span class="s2">"friedman"</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Friedman: p=</span><span class="si">{</span><span class="n">friedman</span><span class="p">[</span><span class="s1">'p_value'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, significativo=</span><span class="si">{</span><span class="n">friedman</span><span class="p">[</span><span class="s1">'significant'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -904,7 +908,7 @@ Brier: 0.2087  ECE: 0.2208  (deficiente: True)
 </details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Friedman: p=0.7530, significativo=False
-Friedman no significativo (p=0.7530 &gt;= alpha=0.05): no se reporta evidencia de superioridad de ninguna combinación. Dado que N_OUTER_FOLDS=3 (pocos bloques), esto puede reflejar falta de potencia estadística tanto como equivalencia real, ver limitación documentada en el docstring del módulo.
+Friedman no significativo (p=0.7530 &gt;= alpha=0.05): no se reporta evidencia de superioridad de ninguna combinación. Con solo 2 pliegues externos (pocos bloques), esto puede reflejar falta de potencia estadística tanto como equivalencia real, ver limitación documentada en el docstring del módulo.
 </pre></div>
 </div>
 </div>
@@ -956,7 +960,7 @@ Friedman no significativo (p=0.7530 &gt;= alpha=0.05): no se reporta evidencia d
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">04. Ejecutar experimentos</p>
+        <p class="prev-next-title">04. Ejecutar experimentos: validación cruzada anidada 5 × 5</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

@@ -99,10 +99,13 @@ Proposición 1. La comparación detallada con CSNL está en el capítulo de revi
 
 ## Iteraciones de diseño
 
-Se evaluaron 14 variantes, **solo con el entrenamiento del pliegue externo 1** (validación interna de
-3 pliegues), sin tocar los datos de prueba (`experiments/cs_fof_diseno/`). Las versiones con cortes
-oblicuos más fuertes (más variables o árboles más profundos) **sobreajustaron**; por eso se fijaron un
-candidato oblicuo por nodo con las mismas $q$ variables y una profundidad máxima de 14.
+Antes de la evaluación se probaron 14 variantes para decidir los rangos de búsqueda, **solo con el
+entrenamiento del pliegue externo 1** y sin tocar ningún pliegue de prueba (`experiments/cs_fof_diseno/`).
+Para comparar las variantes rápido se usó una validación interna de 3 subpliegues dentro de ese
+entrenamiento. Las versiones con cortes oblicuos más fuertes (más variables o árboles más profundos)
+**sobreajustaron**; por eso se fijaron un candidato oblicuo por nodo con las mismas $q$ variables y una
+profundidad máxima de 14. Estas pruebas solo orientaron el espacio de búsqueda: todas las cifras de
+desempeño de CS-FOF salen de la validación anidada 5 × 5 (capítulo 10 y Evaluación ampliada).
 
 ## Interpretabilidad: SHAP frente al mejor modelo de referencia
 

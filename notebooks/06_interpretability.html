@@ -36,7 +36,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=6a604523" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/dash_theme.css?v=16a22a96" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../_static/design-tabs.js?v=fcb327ea"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -232,7 +232,7 @@
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_run_experiments.html">04. Ejecutar experimentos: validación cruzada anidada 5 × 5</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">06. Interpretabilidad (SHAP y LIME)</a></li>
 
@@ -495,6 +495,8 @@
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+</div>
 </div>
 <section id="elegir-el-mejor-modelo-y-ajustar-su-pipeline">
 <h2>1. Elegir el mejor modelo y ajustar su pipeline<a class="headerlink" href="#elegir-el-mejor-modelo-y-ajustar-su-pipeline" title="Link to this heading">#</a></h2>
@@ -571,7 +573,7 @@
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../_images/db4a60a9e62587317c422f7b66a929667679029ad702da49dac62aff2c1eea94.png" src="../_images/db4a60a9e62587317c422f7b66a929667679029ad702da49dac62aff2c1eea94.png" />
+<img alt="../_images/9da4bebdcfa4125abdf17ca9fd2dadbfc6670c59a1bc82dde1f51bfd2dbf9fa7.png" src="../_images/9da4bebdcfa4125abdf17ca9fd2dadbfc6670c59a1bc82dde1f51bfd2dbf9fa7.png" />
 </div>
 </div>
 <ul class="simple">
@@ -614,17 +616,17 @@
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{'well_classified': 2512, 'high_error': 2900}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{'well_classified': 1628, 'high_error': 2900}
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>well_classified: y_true=1, y_pred=1, proba=0.954
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>well_classified: y_true=1, y_pred=1, proba=0.960
 </pre></div>
 </div>
-<img alt="../_images/ab07ee4d9074deadc1936684a03df5e1158ebcdb47a0b9d4b8284f444c9b877d.png" src="../_images/ab07ee4d9074deadc1936684a03df5e1158ebcdb47a0b9d4b8284f444c9b877d.png" />
+<img alt="../_images/d68ef2595ff14fe233494ff954006ce35420e670bb898c6960105a5744940bd6.png" src="../_images/d68ef2595ff14fe233494ff954006ce35420e670bb898c6960105a5744940bd6.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>high_error: y_true=0, y_pred=1, proba=0.952
 </pre></div>
 </div>
-<img alt="../_images/f2010471cb80cb6826bf2700a8e07d70d5fc23f24bdbc7c4ac62b81b203a1cad.png" src="../_images/f2010471cb80cb6826bf2700a8e07d70d5fc23f24bdbc7c4ac62b81b203a1cad.png" />
+<img alt="../_images/9259f1638619d1c004834282ce0f8d9308ae5ead6e0588ac069907bdebeb2cf6.png" src="../_images/9259f1638619d1c004834282ce0f8d9308ae5ead6e0588ac069907bdebeb2cf6.png" />
 </div>
 </div>
 <p>Se analizaron dos clientes del fold de prueba (los aportes están en log-odds). El valor base del modelo es 0.5 de probabilidad y cada barra indica cuánto sube o baja el margen.</p>
@@ -728,62 +730,62 @@
     <tr>
       <th>0</th>
       <td>remainder__PAY_0</td>
-      <td>1.271134</td>
-      <td>0.151140</td>
+      <td>1.284720</td>
+      <td>0.149157</td>
     </tr>
     <tr>
       <th>1</th>
       <td>remainder__BILL_AMT_MEAN_6M_LOG</td>
-      <td>0.645500</td>
-      <td>0.069701</td>
+      <td>0.736366</td>
+      <td>0.073350</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>remainder__BILL_AMT_TREND_6M_LOG</td>
-      <td>0.279066</td>
-      <td>NaN</td>
+      <td>remainder__LIMIT_BAL_LOG</td>
+      <td>-0.249122</td>
+      <td>-0.090678</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>remainder__LIMIT_BAL_LOG</td>
-      <td>-0.233314</td>
-      <td>-0.090640</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>remainder__PAY_3</td>
-      <td>0.212533</td>
-      <td>0.085833</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>remainder__PAY_5</td>
-      <td>0.151020</td>
+      <td>remainder__BILL_AMT_TREND_6M_LOG</td>
+      <td>0.209142</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>6</th>
+      <th>4</th>
       <td>remainder__PAY_4</td>
-      <td>0.142220</td>
-      <td>0.048580</td>
+      <td>0.171139</td>
+      <td>0.049091</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>remainder__PAY_3</td>
+      <td>0.165945</td>
+      <td>0.083738</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>remainder__PAY_5</td>
+      <td>0.132755</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>remainder__PAY_2</td>
-      <td>0.125343</td>
-      <td>0.053187</td>
+      <td>remainder__PAY_AMT4_LOG</td>
+      <td>0.117732</td>
+      <td>0.033522</td>
     </tr>
     <tr>
       <th>8</th>
       <td>remainder__PAY_AMT1_LOG</td>
-      <td>0.120100</td>
-      <td>0.047900</td>
+      <td>0.107981</td>
+      <td>0.051586</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>remainder__PAY_AMT4_LOG</td>
-      <td>0.102073</td>
-      <td>0.027926</td>
+      <td>remainder__PAY_AMT2_LOG</td>
+      <td>0.094448</td>
+      <td>0.033722</td>
     </tr>
   </tbody>
 </table>
@@ -868,7 +870,7 @@ xgboost: combinación class_weight | bayesian_optuna; 300 filas explicadas por f
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../_images/2ee0319aea44972f8b244c043658589560272d2ecf8a06e75f1a2e03ab27c057.png" src="../_images/2ee0319aea44972f8b244c043658589560272d2ecf8a06e75f1a2e03ab27c057.png" />
+<img alt="../_images/27b0f35c4d5f5dfdf30f19402186e7af0a59301656a122839b762035ca26effa.png" src="../_images/27b0f35c4d5f5dfdf30f19402186e7af0a59301656a122839b762035ca26effa.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>random_forest: Spearman medio entre folds = 0.963; Jaccard medio del top-5 = 0.767; siempre en el top-5: ['LIMIT_BAL_LOG', 'PAY_0', 'PAY_2', 'PAY_3']
 </pre></div>
 </div>
@@ -1060,15 +1062,15 @@ xgboost: combinación class_weight | bayesian_optuna; 300 filas explicadas por f
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2"> (n = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">])</span><span class="si">}</span><span class="s2"> observaciones, 3 folds)"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2"> (n = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">])</span><span class="si">}</span><span class="s2"> observaciones de los </span><span class="si">{</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="s1">'fold'</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">}</span><span class="s2"> pliegues externos)"</span><span class="p">)</span>
     <span class="n">display</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">summarize_agreement</span><span class="p">(</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../_images/3a8a8f55fa45f351070556d8ee81600bcc461e603f1c45dd6b4aba586447c4ad.png" src="../_images/3a8a8f55fa45f351070556d8ee81600bcc461e603f1c45dd6b4aba586447c4ad.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>random_forest (n = 200 observaciones, 3 folds)
+<img alt="../_images/b958eb0769ae4d7438808d6831601cbae4820e8a8706c130a389121d3ad058da.png" src="../_images/b958eb0769ae4d7438808d6831601cbae4820e8a8706c130a389121d3ad058da.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>random_forest (n = 200 observaciones de los 5 pliegues externos)
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1188,7 +1190,7 @@ xgboost: combinación class_weight | bayesian_optuna; 300 filas explicadas por f
     </tr>
   </tbody>
 </table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>xgboost (n = 200 observaciones, 3 folds)
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>xgboost (n = 200 observaciones de los 5 pliegues externos)
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1389,7 +1391,7 @@ xgboost: combinación class_weight | bayesian_optuna; 300 filas explicadas por f
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../_images/2ee0319aea44972f8b244c043658589560272d2ecf8a06e75f1a2e03ab27c057.png" src="../_images/2ee0319aea44972f8b244c043658589560272d2ecf8a06e75f1a2e03ab27c057.png" />
+<img alt="../_images/27b0f35c4d5f5dfdf30f19402186e7af0a59301656a122839b762035ca26effa.png" src="../_images/27b0f35c4d5f5dfdf30f19402186e7af0a59301656a122839b762035ca26effa.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>random_forest: Spearman medio entre folds = 0.963; Jaccard medio del top-5 = 0.767; siempre en el top-5: ['LIMIT_BAL_LOG', 'PAY_0', 'PAY_2', 'PAY_3']
 </pre></div>
 </div>
@@ -1599,15 +1601,15 @@ xgboost: combinación class_weight | bayesian_optuna; 300 filas explicadas por f
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2"> (n = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">])</span><span class="si">}</span><span class="s2"> observaciones, 3 folds)"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2"> (n = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">])</span><span class="si">}</span><span class="s2"> observaciones de los </span><span class="si">{</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="s1">'fold'</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">}</span><span class="s2"> pliegues externos)"</span><span class="p">)</span>
     <span class="n">display</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">summarize_agreement</span><span class="p">(</span><span class="n">agreement</span><span class="p">[</span><span class="n">m</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../_images/3a8a8f55fa45f351070556d8ee81600bcc461e603f1c45dd6b4aba586447c4ad.png" src="../_images/3a8a8f55fa45f351070556d8ee81600bcc461e603f1c45dd6b4aba586447c4ad.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>random_forest (n = 200 observaciones, 3 folds)
+<img alt="../_images/b958eb0769ae4d7438808d6831601cbae4820e8a8706c130a389121d3ad058da.png" src="../_images/b958eb0769ae4d7438808d6831601cbae4820e8a8706c130a389121d3ad058da.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>random_forest (n = 200 observaciones de los 5 pliegues externos)
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1727,7 +1729,7 @@ xgboost: combinación class_weight | bayesian_optuna; 300 filas explicadas por f
     </tr>
   </tbody>
 </table>
-</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>xgboost (n = 200 observaciones, 3 folds)
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>xgboost (n = 200 observaciones de los 5 pliegues externos)
 </pre></div>
 </div>
 <div class="output text_html"><div>

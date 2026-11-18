@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>04. Ejecutar experimentos &#8212; Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</title>
+    <title>04. Ejecutar experimentos: validación cruzada anidada 5 × 5 &#8212; Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</title>
   
   
   
@@ -36,7 +36,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=6a604523" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/dash_theme.css?v=16a22a96" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../_static/design-tabs.js?v=fcb327ea"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -232,7 +232,7 @@
 <li class="toctree-l1"><a class="reference internal" href="01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">04. Ejecutar experimentos</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">04. Ejecutar experimentos: validación cruzada anidada 5 × 5</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05_results_analysis.html">05. Análisis de resultados</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
 
@@ -404,7 +404,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>04. Ejecutar experimentos</h1>
+    <h1>04. Ejecutar experimentos: validación cruzada anidada 5 × 5</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -414,9 +414,11 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos">Cargar datos</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-de-la-corrida">Configuración de la corrida</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado">Resultado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datos">Datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-esquema-de-validacion">El esquema de validación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-se-ejecuto">Cómo se ejecutó</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verificacion-de-la-tabla-maestra">Verificación de la tabla maestra</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mejor-combinacion-de-cada-modelo">Mejor combinación de cada modelo</a></li>
 </ul>
             </nav>
         </div>
@@ -428,319 +430,94 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <blockquote>
-<div><p><strong>Nota (corrida vigente 5 x 5).</strong> Este capítulo conserva la corrida inicial 3 x 3 de seis modelos y sus salidas, como registro. La corrida vigente es 5 x 5 con los siete modelos: cinco (80 combinaciones) se ejecutaron en CPU local, y SVM y KNN (32 combinaciones) en Colab con GPU T4. Las cifras de este capítulo NO son las vigentes; las vigentes están en los capítulos siguientes.</p>
-</div></blockquote>
-<section class="tex2jax_ignore mathjax_ignore" id="ejecutar-experimentos">
-<h1>04. Ejecutar experimentos<a class="headerlink" href="#ejecutar-experimentos" title="Link to this heading">#</a></h1>
-<p>Se usaron 29,965 clientes y 20 variables predictoras, con 22.13 % de <em>default</em>. Ya no había duplicados por eliminar y se mantienen los 21 grupos con variables idénticas y etiqueta distinta (ruido del dataset). Se ejecutaron 96 combinaciones (6 modelos x 4 balanceos x 4 métodos de búsqueda de hiperparámetros) con validación cruzada anidada y el F1 como métrica de selección. La SVM se corrió aparte en Colab con GPU y completa las 112 combinaciones.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="ejecutar-experimentos-validacion-cruzada-anidada-5-5">
+<h1>04. Ejecutar experimentos: validación cruzada anidada 5 × 5<a class="headerlink" href="#ejecutar-experimentos-validacion-cruzada-anidada-5-5" title="Link to this heading">#</a></h1>
+<p>Este capítulo documenta cómo se ejecutaron las <strong>112 combinaciones</strong> de los modelos de referencia: 7 modelos × 4 técnicas de balanceo × 4 métodos de búsqueda de hiperparámetros. Todas usan la misma <strong>validación cruzada anidada estratificada de 5 pliegues externos y 5 internos</strong>, con semilla 42.</p>
 <ul class="simple">
-<li><p><strong>El balanceo es lo que más influye en la mayoría de los modelos.</strong> <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> obtuvo el mayor F1 en Random Forest (0.544 a 0.546), XGBoost (0.544 a 0.545) y KNN (0.524 a 0.527). SMOTE y ADASYN quedaron en un nivel intermedio y sin balanceo el F1 fue el más bajo (por ejemplo, 0.473 a 0.479 en Random Forest). No se generaliza a todos: en Naive Bayes el balanceo casi no cambia el F1 (0.494 a 0.499), en regresión logística SMOTE (0.5154 en promedio) y <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> (0.5147) quedan prácticamente igualados, y en árbol de decisión sus rangos se solapan (0.510 a 0.519 frente a 0.510 a 0.518).</p></li>
-<li><p><strong>El método de búsqueda importa poco en F1, pero mucho en tiempo.</strong> Con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> las diferencias entre métodos son menores que la desviación estándar. En cambio, el algoritmo genético tardó mucho más: 2,432 s frente a 178 s con búsqueda en malla en Random Forest, y hasta 10,880 s en KNN sin balanceo.</p></li>
-<li><p><strong>Combinación con mayor F1 medio:</strong> Random Forest con <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y búsqueda genética, con F1 de 0.5460 (desviación 0.0088). La diferencia con las siguientes es menor que la dispersión entre folds: de las 96 combinaciones de esta corrida, 8 (incluida esta) quedan a menos de una desviación estándar (0.0088) y 6 a menos de 0.0016 de F1; con la SVM, 15 de 112 quedan dentro de una desviación estándar. No hay base para declarar una única mejor configuración.</p></li>
+<li><p>El <strong>bucle externo</strong> estima el desempeño. Cada uno de los 5 pliegues deja fuera el 20 % de los clientes como prueba, y la prueba solo se usa una vez, al final.</p></li>
+<li><p>El <strong>bucle interno</strong> elige los hiperparámetros. Divide el 80 % de entrenamiento de cada pliegue externo en 5 subpliegues, prueba cada configuración con validación cruzada y reajusta la mejor sobre todo ese 80 %.</p></li>
 </ul>
-<p>Las salidas guardadas de este capítulo muestran solo las 40 combinaciones ejecutadas en la última sesión; las cifras de arriba corresponden a las 96. La tabla completa y la comparación estadística están en el capítulo 05.</p>
-<div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
-<summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
-</summary>
+<p>Todas las cifras del proyecto (tabla maestra, pruebas estadísticas, paper, libro y tablero) salen de esta validación 5 × 5.</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
 <span class="n">PROJECT_ROOT</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
-<span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">PROJECT_ROOT</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">PROJECT_ROOT</span><span class="p">))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">[:</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">PROJECT_ROOT</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">PROJECT_ROOT</span> <span class="o">/</span> <span class="s2">"experiments"</span> <span class="o">/</span> <span class="s2">"paper"</span><span class="p">)]</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">StratifiedKFold</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">src</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">src.data_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_processed_dataset</span><span class="p">,</span> <span class="n">split_features_target</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">src.synthetic_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_synthetic_dataset</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">src.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">remove_duplicate_rows</span><span class="p">,</span> <span class="n">check_label_conflicts</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">src.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">MODEL_REGISTRY</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">src.experiment_runner</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_experiments</span><span class="p">,</span> <span class="n">get_all_combinations</span><span class="p">,</span> <span class="n">MODEL_COST_ORDER</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">src.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_metrics_table</span>
 
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">float_format</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{:,.4f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Validación anidada: </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">N_OUTER_FOLDS</span><span class="si">}</span><span class="s2"> pliegues externos × </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">N_INNER_FOLDS</span><span class="si">}</span><span class="s2"> internos, "</span>
+      <span class="sa">f</span><span class="s2">"semilla </span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">RANDOM_STATE</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validación anidada: 5 pliegues externos × 5 internos, semilla 42
+</pre></div>
 </div>
-<section id="cargar-datos">
-<h2>Cargar datos<a class="headerlink" href="#cargar-datos" title="Link to this heading">#</a></h2>
-<div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
-<summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
-</summary>
+</div>
+</div>
+<section id="datos">
+<h2>Datos<a class="headerlink" href="#datos" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">load_processed_dataset</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dataset real cargado: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="k">except</span> <span class="ne">FileNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Dataset real aun no disponible, usando datos sinteticos para desarrollo/pruebas:"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">generate_synthetic_dataset</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dataset sintetico generado: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="n">df</span><span class="p">,</span> <span class="n">n_removed</span> <span class="o">=</span> <span class="n">remove_duplicate_rows</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Filas duplicadas eliminadas: </span><span class="si">{</span><span class="n">n_removed</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="n">n_conflicts</span> <span class="o">=</span> <span class="n">check_label_conflicts</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">n_conflicts</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">"AVISO: </span><span class="si">{</span><span class="n">n_conflicts</span><span class="si">}</span><span class="s2"> grupos de filas con features identicas pero target distinto "</span>
-        <span class="s2">"(ruido irreducible del dataset, no se resuelve automaticamente)."</span>
-    <span class="p">)</span>
-
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">,</span> <span class="n">n_dup</span> <span class="o">=</span> <span class="n">remove_duplicate_rows</span><span class="p">(</span><span class="n">load_processed_dataset</span><span class="p">())</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">split_features_target</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"X: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, balance del target: </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> clientes × </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> variables · duplicados eliminados ahora: </span><span class="si">{</span><span class="n">n_dup</span><span class="si">}</span><span class="s2"> "</span>
+      <span class="sa">f</span><span class="s2">"(ya se quitaron en el ETL) · tasa de default </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Grupos con variables idénticas y etiqueta distinta (ruido del dataset): </span><span class="si">{</span><span class="n">check_label_conflicts</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset real cargado: (29965, 21)
-Filas duplicadas eliminadas: 0
-AVISO: 21 grupos de filas con features identicas pero target distinto (ruido irreducible del dataset, no se resuelve automaticamente).
-X: (29965, 20), balance del target: {0: 0.7787, 1: 0.2213}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>29,965 clientes × 20 variables · duplicados eliminados ahora: 0 (ya se quitaron en el ETL) · tasa de default 22.13%
+Grupos con variables idénticas y etiqueta distinta (ruido del dataset): 21
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="configuracion-de-la-corrida">
-<h2>Configuración de la corrida<a class="headerlink" href="#configuracion-de-la-corrida" title="Link to this heading">#</a></h2>
-<div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
-<summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
-</summary>
+<section id="el-esquema-de-validacion">
+<h2>El esquema de validación<a class="headerlink" href="#el-esquema-de-validacion" title="Link to this heading">#</a></h2>
+<p>La figura muestra el esquema. En el panel (a), cada fila es una iteración del bucle externo: el pliegue dorado es la prueba y los azules son el entrenamiento. El panel (b) muestra el bucle interno, que se repite dentro del entrenamiento de cada pliegue externo. La misma figura está en la Sección 2.9 del paper.</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Todos los modelos menos SVM (se corre en Colab con GPU, ver 07_svm_gpu_colab.ipynb).</span>
-<span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">spec</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">MODEL_REGISTRY</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">"svm"</span><span class="p">]</span>
-
-<span class="c1"># Las 4 técnicas de balanceo y los 4 métodos de optimización (None = todos).</span>
-<span class="n">techniques</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">methods</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">n_outer_folds</span><span class="p">,</span> <span class="n">n_inner_folds</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">N_OUTER_FOLDS</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">N_INNER_FOLDS</span>
-
-<span class="c1"># n_jobs por método (ver config.OPTIMIZATION_N_JOBS): paraleliza el eje de</span>
-<span class="c1"># evaluaciones independientes de CADA método (candidatos de grid/random</span>
-<span class="c1"># search, trials de Optuna, individuos de la población en genetic_deap).</span>
-<span class="c1"># No cambia folds/rangos/tamaño de población/iteraciones, solo el tiempo de</span>
-<span class="c1"># pared -- ver EXPERIMENT_STATUS.md sección "Paralelismo (2026-09-22)".</span>
-<span class="n">optimizer_kwargs_by_method</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"grid_search"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"n_jobs"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">},</span>
-    <span class="s2">"random_search"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"n_iter"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">RANDOM_SEARCH_ITER</span><span class="p">,</span> <span class="s2">"n_jobs"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">},</span>
-    <span class="s2">"bayesian_optuna"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"n_trials"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTUNA_N_TRIALS</span><span class="p">,</span> <span class="s2">"n_jobs"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">},</span>
-    <span class="s2">"genetic_deap"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">"population_size"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">GA_POPULATION_SIZE</span><span class="p">,</span>
-        <span class="s2">"n_generations"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">GA_N_GENERATIONS</span><span class="p">,</span>
-        <span class="s2">"n_jobs"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">OPTIMIZATION_N_JOBS</span><span class="p">,</span>
-    <span class="p">},</span>
-<span class="p">}</span>
-<span class="c1"># n_jobs=1 aquí (bucle EXTERNO sobre combinaciones, secuencial): el</span>
-<span class="c1"># paralelismo real vive dentro de cada método, para no anidar paralelismo.</span>
-<span class="n">n_jobs</span> <span class="o">=</span> <span class="mi">1</span>
-
-<span class="c1"># timeout_seconds=None: desactivado (ver EXPERIMENT_STATUS.md sección 8d).</span>
-<span class="n">timeout_seconds</span> <span class="o">=</span> <span class="kc">None</span>
-
-<span class="n">combos</span> <span class="o">=</span> <span class="n">get_all_combinations</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">techniques</span><span class="p">,</span> <span class="n">methods</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">combos</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones a considerar."</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Orden por costo computacional: </span><span class="si">{</span><span class="n">MODEL_COST_ORDER</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"matplotlib.font_manager"</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">figuras_paper</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">fp</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">fig</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">validacion_anidada</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">fig</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>96 combinaciones a considerar.
-Orden por costo computacional: ('naive_bayes', 'logistic_regression', 'decision_tree', 'xgboost', 'random_forest', 'knn', 'svm')
-</pre></div>
+<img alt="../_images/bc1b7cf1ca09af674f77224eced0f2b40ba2b073897c00d7e42bba5536b0d8ec.png" src="../_images/bc1b7cf1ca09af674f77224eced0f2b40ba2b073897c00d7e42bba5536b0d8ec.png" />
 </div>
 </div>
-</div>
-<div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
-<summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
-</summary>
+<p>Los 5 pliegues externos son los mismos para todos los modelos. Cada uno tiene unos 5 993 clientes de prueba con la misma tasa de <em>default</em>:</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">run_experiments</span><span class="p">(</span>
-    <span class="n">X</span><span class="p">,</span>
-    <span class="n">y</span><span class="p">,</span>
-    <span class="n">models</span><span class="o">=</span><span class="n">models</span><span class="p">,</span>
-    <span class="n">techniques</span><span class="o">=</span><span class="n">techniques</span><span class="p">,</span>
-    <span class="n">methods</span><span class="o">=</span><span class="n">methods</span><span class="p">,</span>
-    <span class="n">n_outer_folds</span><span class="o">=</span><span class="n">n_outer_folds</span><span class="p">,</span>
-    <span class="n">n_inner_folds</span><span class="o">=</span><span class="n">n_inner_folds</span><span class="p">,</span>
-    <span class="n">optimizer_kwargs_by_method</span><span class="o">=</span><span class="n">optimizer_kwargs_by_method</span><span class="p">,</span>
-    <span class="n">checkpoint_path</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">EXPERIMENTS_MASTER_PATH</span><span class="p">,</span>
-    <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
-    <span class="n">timeout_seconds</span><span class="o">=</span><span class="n">timeout_seconds</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinaciones nuevas corridas en esta sesion."</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="si">}</span><span class="s2"> filas totales en la tabla maestra (</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">EXPERIMENTS_MASTER_PATH</span><span class="si">}</span><span class="s2">)."</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">externo</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">N_OUTER_FOLDS</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
+<span class="n">filas</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">te</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">externo</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">filas</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"pliegue externo"</span><span class="p">:</span> <span class="n">k</span><span class="p">,</span> <span class="s2">"entrenamiento"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr</span><span class="p">),</span> <span class="s2">"prueba"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">te</span><span class="p">),</span>
+                  <span class="s2">"default en entrenamiento"</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">tr</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="s2">"default en prueba"</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">te</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()})</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">filas</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"pliegue externo"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</details>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] 40 combinaciones a ejecutar.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/grid_search: f1=0.5366±0.0091 (459.6s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/random_search: f1=0.5255±0.0043 (134.8s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/bayesian_optuna: f1=0.5222±0.0092 (136.4s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/adasyn/genetic_deap: f1=0.5206±0.0087 (414.4s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/grid_search: f1=0.5444±0.0052 (250.6s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/random_search: f1=0.5438±0.0093 (86.8s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/bayesian_optuna: f1=0.5451±0.0099 (94.4s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK xgboost/class_weight/genetic_deap: f1=0.5440±0.0104 (335.5s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/grid_search: f1=0.4735±0.0035 (208.9s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/random_search: f1=0.4750±0.0031 (194.9s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/bayesian_optuna: f1=0.4759±0.0048 (406.0s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/none/genetic_deap: f1=0.4790±0.0039 (2044.7s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/grid_search: f1=0.5298±0.0050 (308.5s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/random_search: f1=0.5280±0.0047 (266.3s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/bayesian_optuna: f1=0.5301±0.0028 (400.3s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/smote/genetic_deap: f1=0.5321±0.0013 (1877.1s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/grid_search: f1=0.5259±0.0051 (313.3s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/random_search: f1=0.5303±0.0046 (298.1s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/bayesian_optuna: f1=0.5305±0.0043 (550.0s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/adasyn/genetic_deap: f1=0.5289±0.0019 (1819.4s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/grid_search: f1=0.5448±0.0074 (178.3s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/random_search: f1=0.5453±0.0088 (163.6s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/bayesian_optuna: f1=0.5444±0.0079 (344.0s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK random_forest/class_weight/genetic_deap: f1=0.5460±0.0088 (2432.4s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/grid_search: f1=0.4421±0.0024 (34.9s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/random_search: f1=0.4415±0.0039 (44.0s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/bayesian_optuna: f1=0.4334±0.0038 (1335.4s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/none/genetic_deap: f1=0.4422±0.0035 (10880.4s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/grid_search: f1=0.5076±0.0008 (40.0s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/random_search: f1=0.5046±0.0021 (53.3s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/bayesian_optuna: f1=0.5082±0.0010 (4246.3s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/smote/genetic_deap: f1=0.5080±0.0010 (1920.7s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/grid_search: f1=0.4880±0.0027 (41.2s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/random_search: f1=0.4860±0.0026 (55.7s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/bayesian_optuna: f1=0.4879±0.0028 (4413.4s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/adasyn/genetic_deap: f1=0.4891±0.0046 (1997.1s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/grid_search: f1=0.5260±0.0058 (27.0s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/random_search: f1=0.5265±0.0050 (33.6s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/bayesian_optuna: f1=0.5266±0.0051 (1813.6s)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[experiment_runner] OK knn/class_weight/genetic_deap: f1=0.5238±0.0039 (3995.8s)
-
-40 combinaciones nuevas corridas en esta sesion.
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="resultado">
-<h2>Resultado<a class="headerlink" href="#resultado" title="Link to this heading">#</a></h2>
-<p>Tabla de métricas (media y desviación estándar del outer loop, nunca un valor puntual), ordenada por la métrica principal de validación.</p>
-<div class="cell tag_hide-input docutils container">
-<details class="admonition hide above-input">
-<summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell source</p>
-<p class="expanded admonition-title">Hide code cell source</p>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metric_for_ranking</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DEFAULT_SCORING</span>
-<span class="n">table_sorted</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">metric_for_ranking</span><span class="si">}</span><span class="s2">_mean"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">format_metrics_table</span><span class="p">(</span><span class="n">table_sorted</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</details>
 <div class="cell_output docutils container">
 <div class="output text_html"><div>
 <style scoped>
@@ -760,144 +537,362 @@ Orden por costo computacional: ('naive_bayes', 'logistic_regression', 'decision_
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>model</th>
-      <th>technique</th>
-      <th>method</th>
-      <th>accuracy</th>
-      <th>precision</th>
-      <th>recall</th>
-      <th>f1</th>
-      <th>roc_auc</th>
+      <th>entrenamiento</th>
+      <th>prueba</th>
+      <th>default en entrenamiento</th>
+      <th>default en prueba</th>
+    </tr>
+    <tr>
+      <th>pliegue externo</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>79</th>
-      <td>random_forest</td>
-      <td>class_weight</td>
-      <td>genetic_deap</td>
-      <td>0.7776 ± 0.0053</td>
-      <td>0.498 ± 0.0098</td>
-      <td>0.6042 ± 0.0092</td>
-      <td>0.546 ± 0.0088</td>
-      <td>0.7813 ± 0.0056</td>
+      <th>1</th>
+      <td>23972</td>
+      <td>5993</td>
+      <td>0.2213</td>
+      <td>0.2213</td>
     </tr>
     <tr>
-      <th>77</th>
-      <td>random_forest</td>
-      <td>class_weight</td>
-      <td>random_search</td>
-      <td>0.7759 ± 0.007</td>
-      <td>0.4951 ± 0.0129</td>
-      <td>0.6071 ± 0.006</td>
-      <td>0.5453 ± 0.0088</td>
-      <td>0.782 ± 0.0045</td>
+      <th>2</th>
+      <td>23972</td>
+      <td>5993</td>
+      <td>0.2213</td>
+      <td>0.2213</td>
     </tr>
     <tr>
-      <th>62</th>
-      <td>xgboost</td>
-      <td>class_weight</td>
-      <td>bayesian_optuna</td>
-      <td>0.7726 ± 0.0094</td>
-      <td>0.4896 ± 0.0161</td>
-      <td>0.6154 ± 0.0089</td>
-      <td>0.5451 ± 0.0099</td>
-      <td>0.7817 ± 0.0041</td>
+      <th>3</th>
+      <td>23972</td>
+      <td>5993</td>
+      <td>0.2213</td>
+      <td>0.2213</td>
     </tr>
     <tr>
-      <th>76</th>
-      <td>random_forest</td>
-      <td>class_weight</td>
-      <td>grid_search</td>
-      <td>0.7743 ± 0.004</td>
-      <td>0.492 ± 0.0072</td>
-      <td>0.6103 ± 0.0112</td>
-      <td>0.5448 ± 0.0074</td>
-      <td>0.7833 ± 0.0039</td>
+      <th>4</th>
+      <td>23972</td>
+      <td>5993</td>
+      <td>0.2213</td>
+      <td>0.2213</td>
     </tr>
     <tr>
-      <th>78</th>
-      <td>random_forest</td>
-      <td>class_weight</td>
-      <td>bayesian_optuna</td>
-      <td>0.7785 ± 0.0068</td>
-      <td>0.4998 ± 0.0126</td>
-      <td>0.598 ± 0.0035</td>
-      <td>0.5444 ± 0.0079</td>
-      <td>0.7804 ± 0.0055</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>82</th>
-      <td>knn</td>
-      <td>none</td>
-      <td>bayesian_optuna</td>
-      <td>0.8023 ± 0.0028</td>
-      <td>0.5924 ± 0.0134</td>
-      <td>0.3418 ± 0.0019</td>
-      <td>0.4334 ± 0.0038</td>
-      <td>0.7318 ± 0.0146</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>logistic_regression</td>
-      <td>none</td>
-      <td>genetic_deap</td>
-      <td>0.8071 ± 0.0017</td>
-      <td>0.6599 ± 0.0114</td>
-      <td>0.2647 ± 0.0024</td>
-      <td>0.3778 ± 0.0037</td>
-      <td>0.75 ± 0.0096</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>logistic_regression</td>
-      <td>none</td>
-      <td>grid_search</td>
-      <td>0.8071 ± 0.0017</td>
-      <td>0.6597 ± 0.0113</td>
-      <td>0.2647 ± 0.0024</td>
-      <td>0.3778 ± 0.0037</td>
-      <td>0.75 ± 0.0096</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>logistic_regression</td>
-      <td>none</td>
-      <td>random_search</td>
-      <td>0.8071 ± 0.0017</td>
-      <td>0.6597 ± 0.0113</td>
-      <td>0.2647 ± 0.0024</td>
-      <td>0.3778 ± 0.0037</td>
-      <td>0.75 ± 0.0096</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>logistic_regression</td>
-      <td>none</td>
-      <td>bayesian_optuna</td>
-      <td>0.8071 ± 0.0017</td>
-      <td>0.6597 ± 0.0113</td>
-      <td>0.2647 ± 0.0024</td>
-      <td>0.3778 ± 0.0037</td>
-      <td>0.75 ± 0.0096</td>
+      <th>5</th>
+      <td>23972</td>
+      <td>5993</td>
+      <td>0.2213</td>
+      <td>0.2213</td>
     </tr>
   </tbody>
 </table>
-<p>96 rows × 8 columns</p>
 </div></div></div>
 </div>
-<p>El análisis de resultados continúa en el capítulo 05.</p>
+</section>
+<section id="como-se-ejecuto">
+<h2>Cómo se ejecutó<a class="headerlink" href="#como-se-ejecuto" title="Link to this heading">#</a></h2>
+<p>La corrida completa tomó más de 30 horas de cómputo, así que no se repite aquí: se lanzó con scripts y cada combinación terminada se guardó en un archivo de control, para poder reanudar la corrida.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelos</p></th>
+<th class="head"><p>Dónde</p></th>
+<th class="head"><p>Script</p></th>
+<th class="head"><p>Resultado</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Naive Bayes, regresión logística, árbol de decisión, Random Forest y XGBoost (80 combinaciones)</p></td>
+<td><p>CPU local</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-u</span> <span class="pre">-m</span> <span class="pre">src.run_local_5x5</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">results/experiments_5x5__local.csv</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>KNN y SVM (32 combinaciones)</p></td>
+<td><p>Google Colab, GPU T4 con cuML</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">notebooks/12_colab_5x5.ipynb</span></code> (<code class="docutils literal notranslate"><span class="pre">src/run_colab_5x5.py</span></code>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">results/experiments_5x5__colab_knn.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">results/svm_gpu_results_colab_5x5.csv</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>CS-FOF, el modelo original (capítulo 10)</p></td>
+<td><p>CPU local</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-u</span> <span class="pre">-m</span> <span class="pre">src.run_cs_fof_5x5</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">results/experiments_5x5__cs_fof.csv</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Después, <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.master_table</span></code> une todo en la tabla maestra <code class="docutils literal notranslate"><span class="pre">results/master_table_112.csv</span></code>.</p>
+<p>La llamada que hace cada script es la misma:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">run_experiments</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">models</span><span class="o">=...</span><span class="p">,</span> <span class="n">techniques</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>   <span class="c1"># None = las 4 técnicas y los 4 métodos</span>
+    <span class="n">n_outer_folds</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">N_OUTER_FOLDS</span><span class="p">,</span>                <span class="c1"># 5</span>
+    <span class="n">n_inner_folds</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">N_INNER_FOLDS</span><span class="p">,</span>                <span class="c1"># 5</span>
+    <span class="n">optimizer_kwargs_by_method</span><span class="o">=</span><span class="p">{</span><span class="o">...</span><span class="p">},</span>                  <span class="c1"># malla, 25 aleatorias, 30 de Optuna, genético 16 × 10</span>
+    <span class="n">checkpoint_path</span><span class="o">=...</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="verificacion-de-la-tabla-maestra">
+<h2>Verificación de la tabla maestra<a class="headerlink" href="#verificacion-de-la-tabla-maestra" title="Link to this heading">#</a></h2>
+<p>Se comprueba que las 112 combinaciones usan 5 pliegues externos y 5 internos y que cada una tiene 5 valores de F1:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">PROJECT_ROOT</span> <span class="o">/</span> <span class="s2">"results"</span> <span class="o">/</span> <span class="s2">"master_table_112.csv"</span><span class="p">)</span>
+<span class="n">n_f1</span> <span class="o">=</span> <span class="n">M</span><span class="p">[</span><span class="s2">"f1_per_fold"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">s</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Combinaciones: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">)</span><span class="si">}</span><span class="s2"> · modelos: </span><span class="si">{</span><span class="n">M</span><span class="p">[</span><span class="s1">'model'</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Pliegues externos: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="s1">'n_outer_folds'</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span><span class="si">}</span><span class="s2"> · internos: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="s1">'n_inner_folds'</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span><span class="si">}</span><span class="s2"> · "</span>
+      <span class="sa">f</span><span class="s2">"valores de F1 por combinación: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">n_f1</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">resumen</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"model"</span><span class="p">)</span>
+             <span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">combinaciones</span><span class="o">=</span><span class="p">(</span><span class="s2">"f1_mean"</span><span class="p">,</span> <span class="s2">"size"</span><span class="p">),</span> <span class="n">mejor_F1</span><span class="o">=</span><span class="p">(</span><span class="s2">"f1_mean"</span><span class="p">,</span> <span class="s2">"max"</span><span class="p">),</span> <span class="n">peor_F1</span><span class="o">=</span><span class="p">(</span><span class="s2">"f1_mean"</span><span class="p">,</span> <span class="s2">"min"</span><span class="p">),</span>
+                  <span class="n">horas</span><span class="o">=</span><span class="p">(</span><span class="s2">"total_time_seconds"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">),</span> <span class="n">origen</span><span class="o">=</span><span class="p">(</span><span class="s2">"source"</span><span class="p">,</span> <span class="s2">"first"</span><span class="p">))</span>
+             <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"mejor_F1"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<span class="n">resumen</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Combinaciones: 112 · modelos: 7
+Pliegues externos: [np.int64(5)] · internos: [np.int64(5)] · valores de F1 por combinación: [np.int64(5)]
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>combinaciones</th>
+      <th>mejor_F1</th>
+      <th>peor_F1</th>
+      <th>horas</th>
+      <th>origen</th>
+    </tr>
+    <tr>
+      <th>model</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>xgboost</th>
+      <td>16</td>
+      <td>0.5466</td>
+      <td>0.4728</td>
+      <td>3.2477</td>
+      <td>local_cpu_sklearn</td>
+    </tr>
+    <tr>
+      <th>random_forest</th>
+      <td>16</td>
+      <td>0.5452</td>
+      <td>0.4759</td>
+      <td>12.0953</td>
+      <td>local_cpu_sklearn</td>
+    </tr>
+    <tr>
+      <th>svm</th>
+      <td>16</td>
+      <td>0.5387</td>
+      <td>0.4368</td>
+      <td>12.5454</td>
+      <td>colab_gpu_cuml</td>
+    </tr>
+    <tr>
+      <th>knn</th>
+      <td>16</td>
+      <td>0.5264</td>
+      <td>0.4470</td>
+      <td>0.3295</td>
+      <td>colab_gpu_cuml</td>
+    </tr>
+    <tr>
+      <th>decision_tree</th>
+      <td>16</td>
+      <td>0.5254</td>
+      <td>0.4658</td>
+      <td>0.3299</td>
+      <td>local_cpu_sklearn</td>
+    </tr>
+    <tr>
+      <th>logistic_regression</th>
+      <td>16</td>
+      <td>0.5182</td>
+      <td>0.3777</td>
+      <td>1.6774</td>
+      <td>local_cpu_sklearn</td>
+    </tr>
+    <tr>
+      <th>naive_bayes</th>
+      <td>16</td>
+      <td>0.4987</td>
+      <td>0.4949</td>
+      <td>0.3409</td>
+      <td>local_cpu_sklearn</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="mejor-combinacion-de-cada-modelo">
+<h2>Mejor combinación de cada modelo<a class="headerlink" href="#mejor-combinacion-de-cada-modelo" title="Link to this heading">#</a></h2>
+<p>La tabla muestra media ± desviación estándar en los 5 pliegues externos, con <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code>. El análisis estadístico completo está en el capítulo 05.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mejor</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">M</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"model"</span><span class="p">)[</span><span class="s2">"f1_mean"</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"f1_mean"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">fmt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">m</span><span class="p">,</span> <span class="n">s</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">m</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">s</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">"modelo"</span><span class="p">:</span> <span class="n">mejor</span><span class="p">[</span><span class="s2">"model"</span><span class="p">],</span> <span class="s2">"balanceo"</span><span class="p">:</span> <span class="n">mejor</span><span class="p">[</span><span class="s2">"technique"</span><span class="p">],</span> <span class="s2">"búsqueda"</span><span class="p">:</span> <span class="n">mejor</span><span class="p">[</span><span class="s2">"method"</span><span class="p">],</span>
+    <span class="s2">"F1"</span><span class="p">:</span> <span class="p">[</span><span class="n">fmt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">mejor</span><span class="p">[</span><span class="s2">"f1_mean"</span><span class="p">],</span> <span class="n">mejor</span><span class="p">[</span><span class="s2">"f1_std"</span><span class="p">])],</span>
+    <span class="s2">"precisión"</span><span class="p">:</span> <span class="p">[</span><span class="n">fmt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">mejor</span><span class="p">[</span><span class="s2">"precision_mean"</span><span class="p">],</span> <span class="n">mejor</span><span class="p">[</span><span class="s2">"precision_std"</span><span class="p">])],</span>
+    <span class="s2">"recall"</span><span class="p">:</span> <span class="p">[</span><span class="n">fmt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">mejor</span><span class="p">[</span><span class="s2">"recall_mean"</span><span class="p">],</span> <span class="n">mejor</span><span class="p">[</span><span class="s2">"recall_std"</span><span class="p">])],</span>
+    <span class="s2">"AUC-ROC"</span><span class="p">:</span> <span class="p">[</span><span class="n">fmt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">mejor</span><span class="p">[</span><span class="s2">"roc_auc_mean"</span><span class="p">],</span> <span class="n">mejor</span><span class="p">[</span><span class="s2">"roc_auc_std"</span><span class="p">])],</span>
+<span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>modelo</th>
+      <th>balanceo</th>
+      <th>búsqueda</th>
+      <th>F1</th>
+      <th>precisión</th>
+      <th>recall</th>
+      <th>AUC-ROC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>xgboost</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.5466 ± 0.0091</td>
+      <td>0.4927 ± 0.0140</td>
+      <td>0.6149 ± 0.0282</td>
+      <td>0.7828 ± 0.0089</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>random_forest</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5452 ± 0.0077</td>
+      <td>0.4974 ± 0.0116</td>
+      <td>0.6041 ± 0.0214</td>
+      <td>0.7831 ± 0.0095</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>svm</td>
+      <td>smote</td>
+      <td>random_search</td>
+      <td>0.5387 ± 0.0048</td>
+      <td>0.4795 ± 0.0074</td>
+      <td>0.6148 ± 0.0097</td>
+      <td>0.7638 ± 0.0096</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>knn</td>
+      <td>class_weight</td>
+      <td>random_search</td>
+      <td>0.5264 ± 0.0122</td>
+      <td>0.4569 ± 0.0111</td>
+      <td>0.6208 ± 0.0162</td>
+      <td>0.7629 ± 0.0081</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>decision_tree</td>
+      <td>class_weight</td>
+      <td>bayesian_optuna</td>
+      <td>0.5254 ± 0.0043</td>
+      <td>0.4788 ± 0.0235</td>
+      <td>0.5854 ± 0.0388</td>
+      <td>0.7569 ± 0.0101</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>logistic_regression</td>
+      <td>class_weight</td>
+      <td>genetic_deap</td>
+      <td>0.5182 ± 0.0104</td>
+      <td>0.4484 ± 0.0116</td>
+      <td>0.6139 ± 0.0104</td>
+      <td>0.7449 ± 0.0147</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>naive_bayes</td>
+      <td>smote</td>
+      <td>grid_search</td>
+      <td>0.4987 ± 0.0078</td>
+      <td>0.4136 ± 0.0078</td>
+      <td>0.6279 ± 0.0124</td>
+      <td>0.7454 ± 0.0115</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">orden</span> <span class="o">=</span> <span class="n">mejor</span><span class="p">[</span><span class="s2">"model"</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">datos</span> <span class="o">=</span> <span class="p">[</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">M</span><span class="o">.</span><span class="n">model</span> <span class="o">==</span> <span class="n">m</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"f1_mean"</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">"f1_per_fold"</span><span class="p">])</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">orden</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">datos</span><span class="p">,</span> <span class="n">tick_labels</span><span class="o">=</span><span class="n">orden</span><span class="p">,</span> <span class="n">showmeans</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">patch_artist</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+           <span class="n">boxprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s2">"#E6D3A8"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#1A233D"</span><span class="p">),</span> <span class="n">medianprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"#1A233D"</span><span class="p">),</span>
+           <span class="n">meanprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s2">"D"</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">"#B88F3D"</span><span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">"#B88F3D"</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">datos</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">0.12</span><span class="p">,</span> <span class="mf">0.12</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)),</span> <span class="n">d</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#36456D"</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"F1 (clase default)"</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"F1 en los 5 pliegues externos (mejor combinación de cada modelo)"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">"x"</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">20</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">"y"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">();</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6456f3e504c993a40f99e26583b6f3c4595fea09beb62a0331328bf26000e9c5.png" src="../_images/6456f3e504c993a40f99e26583b6f3c4595fea09beb62a0331328bf26000e9c5.png" />
+</div>
+</div>
+<blockquote>
+<div><p><strong>Sobre la corrida preliminar 3 × 3.</strong> Antes de esta corrida se hizo una preliminar con 3 pliegues externos y 3 internos. Se reemplazó por la 5 × 5 porque la guía pide al menos 5 pliegues, y para tener 5 valores por combinación en las pruebas estadísticas. Esa corrida se conserva solo como registro en <code class="docutils literal notranslate"><span class="pre">notebooks/legacy/04_run_experiments_3x3.ipynb</span></code> y <code class="docutils literal notranslate"><span class="pre">results/legacy_3x3/</span></code>. <strong>Ningún resultado del proyecto sale de ella.</strong></p>
+</div></blockquote>
 </section>
 </section>
 
@@ -967,9 +962,11 @@ Orden por costo computacional: ('naive_bayes', 'logistic_regression', 'decision_
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-datos">Cargar datos</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-de-la-corrida">Configuración de la corrida</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultado">Resultado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datos">Datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-esquema-de-validacion">El esquema de validación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-se-ejecuto">Cómo se ejecutó</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verificacion-de-la-tabla-maestra">Verificación de la tabla maestra</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mejor-combinacion-de-cada-modelo">Mejor combinación de cada modelo</a></li>
 </ul>
   </nav></div>
 

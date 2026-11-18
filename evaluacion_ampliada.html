@@ -36,7 +36,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/dash_theme.css?v=16a22a96" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="_static/design-tabs.js?v=fcb327ea"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -234,7 +234,7 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Verificación del protocolo experimental</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/04_run_experiments.html">04. Ejecutar experimentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/04_run_experiments.html">04. Ejecutar experimentos: validación cruzada anidada 5 × 5</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/05_results_analysis.html">05. Análisis de resultados</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
 
@@ -416,7 +416,8 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ablacion-y-sensibilidad-pruebas-de-diseno">Ablación y sensibilidad (pruebas de diseño)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ablacion-5-pliegues-externos">Ablación (5 pliegues externos)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-de-diseno-antes-de-la-evaluacion">Etapa de diseño (antes de la evaluación)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estabilidad-entre-pliegues">Estabilidad entre pliegues</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conjuntos-de-datos-adicionales">Conjuntos de datos adicionales</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robustez">Robustez</a></li>
@@ -443,12 +444,78 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="evaluacion-ampliada-ablacion-robustez-y-limitaciones">
 <h1>Evaluación ampliada: ablación, robustez y limitaciones<a class="headerlink" href="#evaluacion-ampliada-ablacion-robustez-y-limitaciones" title="Link to this heading">#</a></h1>
-<section id="ablacion-y-sensibilidad-pruebas-de-diseno">
-<h2>Ablación y sensibilidad (pruebas de diseño)<a class="headerlink" href="#ablacion-y-sensibilidad-pruebas-de-diseno" title="Link to this heading">#</a></h2>
-<p>Las variantes se evaluaron <strong>solo con el entrenamiento del pliegue externo 1</strong>, con validación interna
-estratificada de 3 pliegues, sin usar ningún pliegue de prueba (<code class="docutils literal notranslate"><span class="pre">experiments/cs_fof_diseno/</span></code>).</p>
+<section id="ablacion-5-pliegues-externos">
+<h2>Ablación (5 pliegues externos)<a class="headerlink" href="#ablacion-5-pliegues-externos" title="Link to this heading">#</a></h2>
+<p>Cada variante quita un solo componente de CS-FOF y mantiene todo lo demás igual: los <strong>5 pliegues
+externos</strong> de la validación anidada 5 × 5, los hiperparámetros que eligió el bucle interno de CS-FOF en
+cada pliegue, las semillas y las métricas (<code class="docutils literal notranslate"><span class="pre">experiments/paper/resultados_paper.py</span></code>, archivos
+<code class="docutils literal notranslate"><span class="pre">ablacion_pliegues.csv</span></code> y <code class="docutils literal notranslate"><span class="pre">ablacion_pruebas.csv</span></code>). Es la misma ablación de la Sección 3.5 del paper.</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-ablacion">
-<caption><span class="caption-number">Table 10 </span><span class="caption-text">Variantes de diseño de CS-FOF (F1 de la clase <em>default</em>, validación interna).</span><a class="headerlink" href="#tab-ablacion" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 10 </span><span class="caption-text">Ablación de CS-FOF: media ± desviación estándar en los 5 pliegues externos (umbral 0.5). <span class="math notranslate nohighlight">\(p_{adj}\)</span>: t corregida de Nadeau–Bengio con Holm sobre las 3 variantes.</span><a class="headerlink" href="#tab-ablacion" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Variante</p></th>
+<th class="head"><p>F1</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(p_{adj}\)</span> (F1)</p></th>
+<th class="head"><p>AUC-ROC</p></th>
+<th class="head"><p>AUC-PR</p></th>
+<th class="head"><p>El completo gana en</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>CS-FOF completo</strong></p></td>
+<td><p><strong>0.5483 ± 0.0078</strong></p></td>
+<td><p>—</p></td>
+<td><p><strong>0.7845</strong></p></td>
+<td><p>0.5613</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sin corte oblicuo</p></td>
+<td><p>0.5460 ± 0.0082</p></td>
+<td><p>0.396</p></td>
+<td><p>0.7822</p></td>
+<td><p>0.5563</p></td>
+<td><p>4 de 5 pliegues</p></td>
+</tr>
+<tr class="row-even"><td><p>Dirección con todas las variables (<span class="math notranslate nohighlight">\(q=p\)</span>)</p></td>
+<td><p>0.5443 ± 0.0104</p></td>
+<td><p>0.270</p></td>
+<td><p>0.7793</p></td>
+<td><p>0.5520</p></td>
+<td><p>4 de 5 pliegues</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sin costo (<span class="math notranslate nohighlight">\(c=1\)</span>)</p></td>
+<td><p>0.4773 ± 0.0124</p></td>
+<td><p><strong>0.001</strong></p></td>
+<td><p>0.7836</p></td>
+<td><p>0.5615</p></td>
+<td><p>5 de 5 pliegues</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul class="simple">
+<li><p><strong>Hipótesis 1 (los cortes oblicuos mejoran el F1): no confirmada.</strong> Quitarlos baja el F1 en 0.0024, en
+cuatro de los cinco pliegues, pero sin significancia (<span class="math notranslate nohighlight">\(p_{adj}=0.40\)</span>).</p></li>
+<li><p><strong>Hipótesis 2 (la ponderación por costo mejora la detección): confirmada para el F1.</strong> Sin costo el F1
+cae 0.071 (<span class="math notranslate nohighlight">\(p_{adj}=0.001\)</span>), mientras el AUC-ROC no cambia: el costo desplaza las probabilidades para que
+el umbral 0.5 detecte más incumplimientos, no mejora el orden de los clientes.</p></li>
+<li><p><strong>Hipótesis 3 (el subespacio aleatorio aporta diversidad): no confirmada.</strong> Usar todas las variables
+baja el F1 en 0.004, sin significancia tras Holm.</p></li>
+<li><p>La variante «solo cortes oblicuos» no se ejecutó, porque la implementación no permite desactivar los
+cortes por ejes. Se declara como desviación.</p></li>
+</ul>
+</section>
+<section id="etapa-de-diseno-antes-de-la-evaluacion">
+<h2>Etapa de diseño (antes de la evaluación)<a class="headerlink" href="#etapa-de-diseno-antes-de-la-evaluacion" title="Link to this heading">#</a></h2>
+<p>Antes de lanzar la validación anidada 5 × 5 hubo que decidir los <strong>rangos de búsqueda</strong> de CS-FOF. Para
+eso se probaron 14 variantes solo con el <strong>entrenamiento del pliegue externo 1</strong>, sin tocar ningún pliegue
+de prueba. Cada variante se comparó con una validación interna rápida de 3 subpliegues dentro de ese
+entrenamiento (<code class="docutils literal notranslate"><span class="pre">experiments/cs_fof_diseno/</span></code>).</p>
+<p>Estas pruebas <strong>no son resultados del proyecto</strong>: solo fijaron los rangos del espacio de búsqueda y la
+estructura del corte oblicuo. Todas las cifras de desempeño de CS-FOF (tabla maestra, pruebas, ablación
+de arriba, paper y tablero) salen de los 5 pliegues externos.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-diseno">
+<caption><span class="caption-number">Table 11 </span><span class="caption-text">Pruebas de diseño de CS-FOF (F1 de validación interna en el entrenamiento del pliegue externo 1; solo orientaron el espacio de búsqueda).</span><a class="headerlink" href="#tab-diseno" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Variante</p></th>
 <th class="head"><p>F1</p></th>
@@ -460,7 +527,7 @@ estratificada de 3 pliegues, sin usar ningún pliegue de prueba (<code class="do
 <td><p><strong>0.5493</strong></p></td>
 <td><p>Referencia</p></td>
 </tr>
-<tr class="row-odd"><td><p>Sin corte oblicuo (ablación)</p></td>
+<tr class="row-odd"><td><p>Sin corte oblicuo</p></td>
 <td><p>0.5452</p></td>
 <td><p>El corte oblicuo aporta +0.004</p></td>
 </tr>
@@ -503,7 +570,7 @@ métodos de búsqueda dan resultados cercanos (0.5456 a 0.5479).</p>
 UCI con el mismo procedimiento: validación anidada 5 × 5, <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> y búsqueda aleatoria de 25
 configuraciones (<code class="docutils literal notranslate"><span class="pre">src/run_additional_datasets.py</span></code>).</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-conjuntos">
-<caption><span class="caption-number">Table 11 </span><span class="caption-text">F1 medio de la clase de riesgo en los 5 pliegues externos y rango medio en los 4 conjuntos.</span><a class="headerlink" href="#tab-conjuntos" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 12 </span><span class="caption-text">F1 medio de la clase de riesgo en los 5 pliegues externos y rango medio en los 4 conjuntos.</span><a class="headerlink" href="#tab-conjuntos" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
 <th class="head"><p>Taiwán</p></th>
@@ -600,7 +667,7 @@ hipótesis, así que las diferencias pequeñas deben leerse con cautela.</p>
 <p><strong>Ruido en las etiquetas.</strong> Se invierte al azar una fracción de las etiquetas de entrenamiento (la misma
 para todos los modelos).</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-ruido">
-<caption><span class="caption-number">Table 12 </span><span class="caption-text">F1 medio en 5 pliegues según el porcentaje de etiquetas de entrenamiento invertidas.</span><a class="headerlink" href="#tab-ruido" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 13 </span><span class="caption-text">F1 medio en 5 pliegues según el porcentaje de etiquetas de entrenamiento invertidas.</span><a class="headerlink" href="#tab-ruido" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
 <th class="head"><p>0 %</p></th>
@@ -635,7 +702,7 @@ para todos los modelos).</p>
 niveles y pierde menos que XGBoost (−0.015 frente a −0.020); Random Forest es el que menos pierde (−0.013).</p>
 <p><strong>Tamaño de la muestra.</strong> Se entrena con una fracción estratificada del entrenamiento de cada pliegue.</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-tamano">
-<caption><span class="caption-number">Table 13 </span><span class="caption-text">F1 medio en 5 pliegues según la fracción del entrenamiento usada.</span><a class="headerlink" href="#tab-tamano" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 14 </span><span class="caption-text">F1 medio en 5 pliegues según la fracción del entrenamiento usada.</span><a class="headerlink" href="#tab-tamano" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
 <th class="head"><p>10 %</p></th>
@@ -673,7 +740,7 @@ el entrenamiento completo.</p>
 <p><strong>Calibración.</strong> Con los pesos de clase, todos los modelos sobreestiman la probabilidad de
 incumplimiento (probabilidad media de 0.40 a 0.42 frente a una tasa real de 0.22).</p>
 <div class="pst-scrollable-table-container"><table class="table" id="tab-calibracion">
-<caption><span class="caption-number">Table 14 </span><span class="caption-text">Calibración de las probabilidades fuera de pliegue (29 965 clientes; tasa real 0.221).</span><a class="headerlink" href="#tab-calibracion" title="Link to this table">#</a></caption>
+<caption><span class="caption-number">Table 15 </span><span class="caption-text">Calibración de las probabilidades fuera de pliegue (29 965 clientes; tasa real 0.221).</span><a class="headerlink" href="#tab-calibracion" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Modelo</p></th>
 <th class="head"><p>Brier</p></th>
@@ -1063,7 +1130,8 @@ derrumbe, aunque el F1 es 0.02 menor en mujeres que en hombres en ambos modelos.
 <section id="lo-que-no-se-ejecuto">
 <h2>Lo que no se ejecutó<a class="headerlink" href="#lo-que-no-se-ejecuto" title="Link to this heading">#</a></h2>
 <p>Por tiempo de cómputo no se ejecutaron la validación externa repetida (no cambiaría el veredicto, ver
-<code class="docutils literal notranslate"><span class="pre">experiments/protocolo.md</span></code>) ni la ablación con validación anidada 5 × 5. Se declaran como desviaciones y
+<code class="docutils literal notranslate"><span class="pre">experiments/protocolo.md</span></code>) ni una búsqueda de hiperparámetros propia para cada variante de la ablación:
+las variantes se evaluaron en los 5 pliegues externos con los hiperparámetros de CS-FOF de cada pliegue. Se declaran como desviaciones y
 como trabajo futuro. Todos los estudios de esta sección se reproducen con
 <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">experiments/robustez/ampliada.py</span></code>.</p>
 </section>
@@ -1135,7 +1203,8 @@ como trabajo futuro. Todos los estudios de esta sección se reproducen con
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ablacion-y-sensibilidad-pruebas-de-diseno">Ablación y sensibilidad (pruebas de diseño)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ablacion-5-pliegues-externos">Ablación (5 pliegues externos)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-de-diseno-antes-de-la-evaluacion">Etapa de diseño (antes de la evaluación)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estabilidad-entre-pliegues">Estabilidad entre pliegues</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conjuntos-de-datos-adicionales">Conjuntos de datos adicionales</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robustez">Robustez</a></li>
