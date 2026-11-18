@@ -30,9 +30,9 @@ MODEL_COST_ORDER = ("naive_bayes", "logistic_regression", "decision_tree", "xgbo
 
 INTERVALO = 20
 SALIDA = ROOT / "logs" / "progreso.html"
-MAESTRA = ROOT / "results" / "experiments_master.csv"
+MAESTRA = ROOT / "results" / "legacy_3x3" / "experiments_master_3x3.csv"
 MAESTRA_V1 = ROOT / "results" / "experiments_master_v1_dataset_anterior.csv"
-COLAB_CSV = ROOT / "results" / "svm_gpu_results_colab.csv"  # SVM corrido en Colab, aún sin pegar a la tabla maestra
+COLAB_CSV = ROOT / "results" / "legacy_3x3" / "svm_gpu_results_colab_3x3.csv"  # SVM corrido en Colab, aún sin pegar a la tabla maestra
 LANZADOR_LOG = ROOT / "logs" / "04_v2_lanzador.log"
 MODELOS_COLAB = {"svm"}  # se corren fuera de esta máquina
 

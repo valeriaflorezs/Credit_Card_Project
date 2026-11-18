@@ -1,6 +1,6 @@
 """Chequeo de comparabilidad de las 16 filas de SVM corridas en Colab (cuML).
 
-Las filas de SVM de ``results/svm_gpu_results_colab.csv`` salieron de
+Las filas de SVM de ``results/svm_gpu_results_colab_5x5.csv`` salieron de
 ``cuml.svm.SVC`` en GPU, no de ``sklearn.svm.SVC`` como los otros seis
 modelos. Repetir la búsqueda completa en CPU no es viable (la corrida local
 de ``svm/none/genetic_deap`` tardó más de 4 horas). Lo que sí se puede

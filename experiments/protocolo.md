@@ -80,3 +80,13 @@ Estudios **exploratorios** agregados después de los anteriores, con las mismas 
 hiperparámetros elegidos en cada pliegue (`experiments/robustez/ampliada.py`): 10 semillas, escalabilidad
 en $n$ y $p$, cambio de distribución por grupos de edad y educación, recalibración isotónica, predicción
 conforme por clase (α = 0.10) y análisis de errores por subgrupo. No sustentan por sí solos la condición R3.
+
+## 9. Actualización del 18 de noviembre de 2026
+Aclaraciones posteriores a la revisión del docente. No cambian ningún resultado; se registran aquí sin
+modificar las tablas anteriores:
+
+| Tema | Estado |
+|---|---|
+| Ablación | Desde el 13 de noviembre se evalúa en los **5 pliegues externos** de la validación anidada, con los hiperparámetros que eligió el bucle interno de CS-FOF en cada pliegue (sin búsqueda propia por variante; `experiments/paper/ablacion_pliegues.csv`). Reemplaza la nota «sigue solo en el pliegue 1» de la sección 7. Las 14 pruebas con el entrenamiento del pliegue 1 (validación interna de 3 subpliegues) fueron solo de diseño: fijaron los rangos de búsqueda y no son resultados. |
+| Corrida preliminar 3 × 3 | Se movió a `results/legacy_3x3/` y `notebooks/legacy/`. Ninguna cifra del paper, del libro ni del tablero sale de ella; todas salen de la validación anidada 5 × 5 (`results/master_table_112.csv` y `results/master_table_e3.csv`). |
+| Curvas anytime (capítulo 09) | Estudio complementario de costo de los optimizadores en 3 de los 5 pliegues externos de la misma partición; no entra en la comparación de modelos. |

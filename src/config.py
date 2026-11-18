@@ -18,9 +18,10 @@ PROCESSED_DATA_PATH = DATA_DIR / "processed" / "dataset_final.csv"  # lo genera 
 RESULTS_DIR = PROJECT_ROOT / "results"
 # Tabla maestra vigente: validación anidada 5 x 5 (ver N_OUTER_FOLDS/N_INNER_FOLDS).
 EXPERIMENTS_MASTER_PATH = RESULTS_DIR / "experiments_master_5x5.csv"
-# Corrida anterior (3 x 3), conservada como registro; no se mezcla con la vigente.
-LEGACY_MASTER_PATH_3X3 = RESULTS_DIR / "experiments_master.csv"
-LEGACY_SVM_COLAB_PATH_3X3 = RESULTS_DIR / "svm_gpu_results_colab.csv"
+# Corrida preliminar (3 x 3), conservada solo como registro en results/legacy_3x3/; ningún resultado
+# del paper, del libro ni del tablero sale de ella.
+LEGACY_MASTER_PATH_3X3 = RESULTS_DIR / "legacy_3x3" / "experiments_master_3x3.csv"
+LEGACY_SVM_COLAB_PATH_3X3 = RESULTS_DIR / "legacy_3x3" / "svm_gpu_results_colab_3x3.csv"
 # SVM 5 x 5 (cuML en Colab, 07_svm_gpu_colab.ipynb): descargar svm_gpu_results.csv con este nombre.
 SVM_COLAB_PATH = RESULTS_DIR / "svm_gpu_results_colab_5x5.csv"
 FIGURES_DIR = RESULTS_DIR / "figures"

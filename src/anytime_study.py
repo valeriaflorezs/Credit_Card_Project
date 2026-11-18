@@ -1,6 +1,6 @@
 """Estudio de curvas *anytime* y de multi-fidelidad.
 
-La tabla maestra (``results/experiments_master.csv``) guarda solo el resultado
+La tabla maestra (``results/master_table_112.csv``) guarda solo el resultado
 final de cada búsqueda; no dice cuánto tardó en encontrar un buen candidato.
 Este estudio responde esa pregunta repitiendo, para un subconjunto de modelos
 baratos, la optimización de las partes de entrenamiento de los mismos folds
