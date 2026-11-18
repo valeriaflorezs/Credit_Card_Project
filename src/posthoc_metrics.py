@@ -5,7 +5,7 @@ proyecto (``config.DEFAULT_SCORING``): es la que optimizan los cuatro
 métodos de búsqueda y la que ordena los resultados. Este módulo agrega, solo
 para reportar, métricas que NO dependen del umbral de decisión de 0.5
 (ROC-AUC y PR-AUC / *average precision*) y la precisión/recall por fold, sin
-modificar el esquema de ``results/experiments_master.csv`` (agregar columnas
+modificar el esquema de ``results/experiments_master_5x5.csv`` (agregar columnas
 a un CSV que se escribe de forma incremental rompería la reanudación).
 
 Para cada fila de la tabla maestra se REAJUSTA el pipeline con los

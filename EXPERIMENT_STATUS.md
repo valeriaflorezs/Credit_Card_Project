@@ -1,5 +1,10 @@
 # Estado de la corrida de experimentos (04_run_experiments.ipynb)
 
+> **Validación vigente: anidada 5 × 5.** Todas las cifras del paper, del Jupyter Book, del tablero y de la tabla
+> maestra (`results/master_table_112.csv`, `results/master_table_e3.csv`) salen de la validación anidada con 5
+> pliegues externos y 5 internos. La corrida preliminar 3 × 3 que se describe en las secciones históricas de este
+> registro se conserva solo como respaldo en `results/legacy_3x3/` y no se usa en ningún resultado.
+
 Última revisión de este encabezado: 2026-10-05.
 
 ## Cambio a validación anidada 5 x 5 (2026-10-31, completado 2026-11-02)

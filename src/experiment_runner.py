@@ -12,7 +12,7 @@ ejecuta aparte en Colab (16 combinaciones), por lo que esta tabla maestra
 contiene 96.
 
 **Registro incremental / reanudable:** cada combinación se agrega a
-``results/experiments_master.csv`` apenas termina (no se espera a que
+``config.EXPERIMENTS_MASTER_PATH`` (``results/experiments_master_5x5.csv``) apenas termina (no se espera a que
 termine todo el batch), y ``run_experiments(resume=True)`` (default) salta
 las combinaciones que ya aparecen en ese CSV. Esto permite correr un
 subconjunto ahora (ej. modelos baratos en local), interrumpir, y correr el
@@ -44,7 +44,7 @@ from src.models import MODEL_REGISTRY, ModelSpec
 from src.nested_cv import NestedCVResult, run_nested_cv
 from src.optimization import OPTIMIZATION_METHODS
 
-# Log separado (nunca en experiments_master.csv) para combinaciones
+# Log separado (nunca en la tabla maestra) para combinaciones
 # canceladas por exceder ``timeout_seconds`` en ``run_experiments``, ver
 # docstring de esa funcion. Se excluyen de "pendientes" en corridas
 # posteriores con resume=True, igual que las ya completadas, para no

@@ -629,7 +629,7 @@ def run_hierarchical_comparison(
     if not friedman["significant"]:
         output["stage_2_note"] = (
             f"Friedman no significativo (p={friedman['p_value']:.4f} >= alpha={alpha}): no se reporta "
-            "evidencia de superioridad de ninguna combinación. Dado que N_OUTER_FOLDS=3 (pocos bloques), "
+            f"evidencia de superioridad de ninguna combinación. Con solo {friedman['n_blocks']} pliegues externos (pocos bloques), "
             "esto puede reflejar falta de potencia estadística tanto como equivalencia real, ver "
             "limitación documentada en el docstring del módulo."
         )
@@ -717,7 +717,7 @@ def run_hierarchical_comparison_from_table(
     if not friedman["significant"]:
         output["stage_2_note"] = (
             f"Friedman no significativo (p={friedman['p_value']:.4f} >= alpha={alpha}): no se reporta "
-            "evidencia de superioridad de ninguna combinación. Dado que N_OUTER_FOLDS=3 (pocos bloques), "
+            f"evidencia de superioridad de ninguna combinación. Con solo {friedman['n_blocks']} pliegues externos (pocos bloques), "
             "esto puede reflejar falta de potencia estadística tanto como equivalencia real, ver "
             "limitación documentada en el docstring del módulo."
         )

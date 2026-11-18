@@ -2,8 +2,8 @@
 por modelo.
 
 Une en UN solo archivo versionado (``results/master_table_112.csv``) lo que
-estaba repartido en tres: las 96 filas locales (``experiments_master.csv``),
-las 16 de SVM (``svm_gpu_results_colab.csv``) y las métricas complementarias
+estaba repartido en tres: las 96 filas locales (``experiments_master_5x5.csv``),
+las 16 de SVM (``svm_gpu_results_colab_5x5.csv``) y las métricas complementarias
 (``experiments_posthoc_metrics.csv``). Cada fila lleva el origen del cálculo,
 la semilla, el tiempo, F1 y complementarias como media y desviación estándar
 entre los folds externos (``ddof=1``, la misma convención en todas las

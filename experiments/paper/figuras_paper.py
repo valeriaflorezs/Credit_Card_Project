@@ -270,6 +270,49 @@ def shap():
     guardar(fig, "fig_shap")
 
 
+def validacion_anidada():
+    """Esquema de la validación cruzada anidada 5 x 5: bucle externo (evaluación) e interno (búsqueda)."""
+    from matplotlib.patches import FancyArrowPatch, Rectangle
+    K, PALE = 5, "#E6D3A8"
+    fig, (a, b) = plt.subplots(1, 2, figsize=(ANCHO, 3.5), gridspec_kw={"width_ratios": [1, 1.12], "wspace": 0.12})
+    for ax in (a, b):
+        ax.set_xlim(0, 1); ax.axis("off")
+    # (a) Bucle externo: 5 iteraciones, cada una con un pliegue de prueba distinto
+    a.set_ylim(-0.6, K + 0.9)
+    a.text(0.5, K + 0.55, "(a) Outer loop: model evaluation", ha="center", fontsize=11, fontweight="bold")
+    w = 0.8 / K
+    for i in range(K):
+        yy = K - 1 - i
+        a.text(0.0, yy + 0.35, f"Fold {i + 1}", ha="left", va="center", fontsize=10)
+        for j in range(K):
+            test = j == i
+            a.add_patch(Rectangle((0.2 + j * w, yy + 0.05), w * 0.94, 0.6, facecolor=GOLD if test else NAVY,
+                                  edgecolor="white", hatch="///" if test else None, lw=0.8))
+    a.text(0.6, -0.35, "29,965 clients, stratified, seed 42", ha="center", fontsize=9.5)
+    a.add_patch(FancyArrowPatch((0.995, K - 1 + 0.35), (1.12, K - 1 + 0.35), transform=a.transData,
+                                arrowstyle="-|>", mutation_scale=12, color=GREY, clip_on=False))
+    # (b) Bucle interno dentro del entrenamiento externo (80 %)
+    b.set_ylim(-0.6, K + 0.9)
+    b.text(0.5, K + 0.55, "(b) Inner loop: hyperparameter search", ha="center", fontsize=11, fontweight="bold")
+    wi = 0.6 / K
+    for i in range(K):
+        yy = K - 1 - i
+        for j in range(K):
+            val = j == i
+            b.add_patch(Rectangle((0.02 + j * wi, yy + 0.05), wi * 0.94, 0.6, facecolor=PALE if val else "#7A86A8",
+                                  edgecolor="white", hatch="..." if val else None, lw=0.8))
+    b.text(0.655, K - 0.65, "4 search methods\n× 4 balancing\n(same budget)", ha="left", va="top", fontsize=9)
+    b.text(0.655, 1.75, "Refit best\nconfiguration\non the 80 %", ha="left", va="top", fontsize=9)
+    b.text(0.655, 0.25, "F1 on the\nouter test fold", ha="left", va="center", fontsize=9, color=GOLD, fontweight="bold")
+    b.text(0.32, -0.35, "Training part of one outer fold (80 %)", ha="center", fontsize=9.5)
+    h = [Rectangle((0, 0), 1, 1, facecolor=NAVY), Rectangle((0, 0), 1, 1, facecolor=GOLD, hatch="///"),
+         Rectangle((0, 0), 1, 1, facecolor="#7A86A8"), Rectangle((0, 0), 1, 1, facecolor=PALE, hatch="...")]
+    fig.legend(h, ["outer training", "outer test", "inner training", "inner validation"], loc="lower center",
+               ncol=4, frameon=False, fontsize=9.5, bbox_to_anchor=(0.5, -0.02), handlelength=1.6)
+    fig.subplots_adjust(left=0.01, right=0.99, top=0.97, bottom=0.12)
+    fig.savefig(FIGS / "fig_nested_cv.pdf"); return fig
+
+
 if __name__ == "__main__":
-    for f in (eda, corte_oblicuo, f1_por_pliegue, intervalos, roc_pr_cal_cm, ablacion, sensibilidad, shap):
+    for f in (validacion_anidada, eda, corte_oblicuo, f1_por_pliegue, intervalos, roc_pr_cal_cm, ablacion, sensibilidad, shap):
         f(); print("ok", f.__name__)

@@ -1,13 +1,72 @@
 # Evaluación ampliada: ablación, robustez y limitaciones
 
-## Ablación y sensibilidad (pruebas de diseño)
+## Ablación (5 pliegues externos)
 
-Las variantes se evaluaron **solo con el entrenamiento del pliegue externo 1**, con validación interna
-estratificada de 3 pliegues, sin usar ningún pliegue de prueba (`experiments/cs_fof_diseno/`).
+Cada variante quita un solo componente de CS-FOF y mantiene todo lo demás igual: los **5 pliegues
+externos** de la validación anidada 5 × 5, los hiperparámetros que eligió el bucle interno de CS-FOF en
+cada pliegue, las semillas y las métricas (`experiments/paper/resultados_paper.py`, archivos
+`ablacion_pliegues.csv` y `ablacion_pruebas.csv`). Es la misma ablación de la Sección 3.5 del paper.
 
-```{list-table} Variantes de diseño de CS-FOF (F1 de la clase *default*, validación interna).
+```{list-table} Ablación de CS-FOF: media ± desviación estándar en los 5 pliegues externos (umbral 0.5). $p_{adj}$: t corregida de Nadeau–Bengio con Holm sobre las 3 variantes.
 :header-rows: 1
 :name: tab-ablacion
+
+* - Variante
+  - F1
+  - $p_{adj}$ (F1)
+  - AUC-ROC
+  - AUC-PR
+  - El completo gana en
+* - **CS-FOF completo**
+  - **0.5483 ± 0.0078**
+  - —
+  - **0.7845**
+  - 0.5613
+  - —
+* - Sin corte oblicuo
+  - 0.5460 ± 0.0082
+  - 0.396
+  - 0.7822
+  - 0.5563
+  - 4 de 5 pliegues
+* - Dirección con todas las variables ($q=p$)
+  - 0.5443 ± 0.0104
+  - 0.270
+  - 0.7793
+  - 0.5520
+  - 4 de 5 pliegues
+* - Sin costo ($c=1$)
+  - 0.4773 ± 0.0124
+  - **0.001**
+  - 0.7836
+  - 0.5615
+  - 5 de 5 pliegues
+```
+
+- **Hipótesis 1 (los cortes oblicuos mejoran el F1): no confirmada.** Quitarlos baja el F1 en 0.0024, en
+  cuatro de los cinco pliegues, pero sin significancia ($p_{adj}=0.40$).
+- **Hipótesis 2 (la ponderación por costo mejora la detección): confirmada para el F1.** Sin costo el F1
+  cae 0.071 ($p_{adj}=0.001$), mientras el AUC-ROC no cambia: el costo desplaza las probabilidades para que
+  el umbral 0.5 detecte más incumplimientos, no mejora el orden de los clientes.
+- **Hipótesis 3 (el subespacio aleatorio aporta diversidad): no confirmada.** Usar todas las variables
+  baja el F1 en 0.004, sin significancia tras Holm.
+- La variante «solo cortes oblicuos» no se ejecutó, porque la implementación no permite desactivar los
+  cortes por ejes. Se declara como desviación.
+
+## Etapa de diseño (antes de la evaluación)
+
+Antes de lanzar la validación anidada 5 × 5 hubo que decidir los **rangos de búsqueda** de CS-FOF. Para
+eso se probaron 14 variantes solo con el **entrenamiento del pliegue externo 1**, sin tocar ningún pliegue
+de prueba. Cada variante se comparó con una validación interna rápida de 3 subpliegues dentro de ese
+entrenamiento (`experiments/cs_fof_diseno/`).
+
+Estas pruebas **no son resultados del proyecto**: solo fijaron los rangos del espacio de búsqueda y la
+estructura del corte oblicuo. Todas las cifras de desempeño de CS-FOF (tabla maestra, pruebas, ablación
+de arriba, paper y tablero) salen de los 5 pliegues externos.
+
+```{list-table} Pruebas de diseño de CS-FOF (F1 de validación interna en el entrenamiento del pliegue externo 1; solo orientaron el espacio de búsqueda).
+:header-rows: 1
+:name: tab-diseno
 
 * - Variante
   - F1
@@ -15,7 +74,7 @@ estratificada de 3 pliegues, sin usar ningún pliegue de prueba (`experiments/cs
 * - CS-FOF base (un candidato oblicuo, $q=\sqrt p$, $d=10$, $h=20$)
   - **0.5493**
   - Referencia
-* - Sin corte oblicuo (ablación)
+* - Sin corte oblicuo
   - 0.5452
   - El corte oblicuo aporta +0.004
 * - Oblicuo con $p/2$ variables
@@ -385,6 +444,7 @@ derrumbe, aunque el F1 es 0.02 menor en mujeres que en hombres en ambos modelos.
 ## Lo que no se ejecutó
 
 Por tiempo de cómputo no se ejecutaron la validación externa repetida (no cambiaría el veredicto, ver
-`experiments/protocolo.md`) ni la ablación con validación anidada 5 × 5. Se declaran como desviaciones y
+`experiments/protocolo.md`) ni una búsqueda de hiperparámetros propia para cada variante de la ablación:
+las variantes se evaluaron en los 5 pliegues externos con los hiperparámetros de CS-FOF de cada pliegue. Se declaran como desviaciones y
 como trabajo futuro. Todos los estudios de esta sección se reproducen con
 `python experiments/robustez/ampliada.py`.
