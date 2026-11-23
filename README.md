@@ -57,7 +57,7 @@ Credit_Card_Project/
 ├── data/                     # Datos del proyecto
 │   └── processed/            # Conjuntos de datos procesados y transformados
 │
-├── logs/                     # Registros de ejecución y monitoreo
+├── logs/                     # Registros de ejecución y monitoreo (los más pesados, en .log.gz: se leen con zcat)
 ├── notebooks/                # Jupyter Notebooks de análisis exploratorio y modelado
 ├── results/                  # Resultados de experimentos, métricas y gráficas
 ├── src/                      # Código fuente modular reutilizable
