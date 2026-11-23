@@ -28,24 +28,17 @@ Asegúrate de contar con **Anaconda** o **Miniconda** instalado en tu equipo ant
 2. **Crear el entorno virtual** con Python 3.13:
    ```bash
    conda create --name creditcard python=3.13 -y
-
-```
-
+   ```
 3. **Activar el entorno virtual**:
-```bash
-conda activate creditcard
+   ```bash
+   conda activate creditcard
+   ```
+4. **Instalar las dependencias**: navega a la carpeta raíz del repositorio e instala las librerías necesarias:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```
-
-
-4. **Instalar las dependencias**:
-Navega a la carpeta raíz del repositorio e instala las librerías necesarias:
-```bash
-pip install -r requirements.txt
-
-```
-
-
+</details>
 
 ---
 
