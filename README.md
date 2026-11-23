@@ -123,6 +123,12 @@ conda activate creditcard
 * Selecciona el intérprete de Python correspondiente al entorno `creditcard` (presiona `Ctrl + Shift + P` -> **Python: Select Interpreter**).
 * Abre cualquier cuaderno dentro de la carpeta `notebooks/` y ejecútalo directamente.
 
+3. **Estudio de stacking con validación repetida** (protocolo en `experiments/protocolo_stacking.md`):
+```bash
+python -u -m src.run_stacking_repeated      # 10 x 5, unas 1.5 h con 4 núcleos; reanudable
+python -m src.stacking_analysis             # pruebas de Nadeau-Bengio, bayesiana y Holm
+```
+
 
 
 ---

@@ -32,3 +32,6 @@ colab_package.zip
 
 # Conjuntos de datos adicionales descargados de UCI (se regeneran con src/run_additional_datasets.py)
 data/external/
+
+# Predicciones de prueba del estudio de stacking (pesadas, se regeneran con src.run_stacking_repeated)
+results/stacking_repeated/predicciones/
