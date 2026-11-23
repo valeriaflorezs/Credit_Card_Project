@@ -25,7 +25,7 @@
 * - Presupuesto de búsqueda
   - Malla ≤ 200 combinaciones, 25 aleatorias, 30 de Optuna, genético 16 × 10 (`src/config.py`)
 * - Software
-  - Python 3.12 y 3.13 según el equipo, numpy 2.5.3, pandas 3.0.6, scikit-learn 1.9.1, xgboost 3.4.1, optuna 5.0.0, deap 1.4.3 (`requirements.txt`)
+  - Python 3.13, numpy 2.5.3, pandas 3.0.5 (la versión con la que se serializaron los artefactos), scikit-learn 1.9.1, xgboost 3.4.1, optuna 5.0.0, deap 1.4.3 (`requirements.txt`)
 * - Hardware
   - Windows 11, AMD Ryzen AI 7 445, 16 GB de RAM (modelos de árboles, regresión logística y Naive Bayes); Google Colab con GPU T4 (SVM y KNN); Windows 11, Intel Core i5-1235U, 8 GB de RAM (validación anidada de CS-FOF); máquina virtual con Linux, Intel Xeon a 2.30 GHz con 4 núcleos y 15 GB de RAM (ablación, robustez, conjuntos adicionales, SHAP y medición de tiempos). Los tiempos de búsqueda de modelos distintos no son comparables entre equipos
 * - Tiempo de cómputo de CS-FOF
