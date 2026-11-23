@@ -1,5 +1,5 @@
 # Integración continua (Entregable 3, sección 7.4): en cada push y pull request
-# instala las dependencias y ejecuta las pruebas del modelo original y de los artefactos.
+# instala requirements.txt con Python 3.13 (la versión de los artefactos) y ejecuta las pruebas del modelo original y de los artefactos.
 name: Pruebas del modelo original
 
 on:
@@ -13,9 +13,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
           cache: pip
-      - name: Instalar dependencias del modelo, los artefactos y las pruebas
-        run: pip install numpy==2.5.3 pandas==3.0.6 scikit-learn==1.9.1 joblib==1.6.0 imbalanced-learn==0.14.2 xgboost==3.4.1 lightgbm==4.7.0 catboost==1.2.10 optuna==5.0.0 deap==1.4.3 pytest
+      # Se instala requirements.txt completo para que el CI use exactamente las mismas versiones
+      # que el proyecto (y que los artefactos serializados) y no se desactualice al cambiarlas.
+      - name: Instalar dependencias del proyecto (requirements.txt)
+        run: pip install -r requirements.txt
       - name: Ejecutar pytest
         run: python -m pytest tests/ -q
