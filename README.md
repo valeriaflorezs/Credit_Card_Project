@@ -129,6 +129,13 @@ python -u -m src.run_stacking_repeated      # 10 x 5, unas 1.5 h con 4 núcleos;
 python -m src.stacking_analysis             # pruebas de Nadeau-Bengio, bayesiana y Holm
 ```
 
+4. **Redes neuronales (TabM-Fisher, TabM, TabPFN)** con las mismas particiones, en Colab con GPU:
+   `notebooks/14_redes_neuronales_colab.ipynb` (protocolo en `experiments/protocolo_redes.md`). Requiere
+   además `pip install tabm tabpfn`. La comparación final entre las dos opciones:
+```bash
+python -m src.comparacion_final
+```
+
 
 
 ---

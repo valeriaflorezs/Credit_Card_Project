@@ -35,6 +35,13 @@ Uso (desde la raíz del repositorio)::
     python -u -m src.run_stacking_repeated --repeticiones 2      # prueba corta
     python -u -m src.run_stacking_repeated --muestra 3000 --repeticiones 1 --salida results/stacking_prueba
     python -m src.stacking_analysis                              # pruebas estadísticas al terminar
+
+Redes neuronales (mismas particiones, para compararlas con el stacking; ver
+``experiments/protocolo_redes.md`` y ``notebooks/14_redes_neuronales_colab.ipynb``)::
+
+    python -u -m src.run_stacking_repeated --modelos tabm_fisher tabm tabpfn xgboost --solo-base --internos 3 \
+        --salida results/redes_repeated
+    python -m src.comparacion_final
 """
 from __future__ import annotations
 
@@ -55,7 +62,7 @@ from sklearn.model_selection import RandomizedSearchCV, StratifiedKFold, cross_v
 from src import config
 from src.balancing import build_pipeline
 from src.data_loader import load_processed_dataset, split_features_target
-from src.models import MODEL_REGISTRY, get_param_distributions
+from src.models import ALL_MODELS, NEURAL_MODEL_REGISTRY, get_param_distributions
 from src.preprocessing import get_preprocessing_steps, remove_duplicate_rows
 from src.stacking import Promedio, SeleccionCaruana, StackingLogistico, StackingPorSegmento, umbral_f1
 
@@ -77,23 +84,30 @@ COMBINADORES = {
 SALIDA_POR_DEFECTO = config.RESULTS_DIR / "stacking_repeated"
 
 
+def secuencial(modelo: str) -> bool:
+    """CS-FOF reparte sus árboles en procesos y las redes usan la GPU: sus pliegues van de a uno."""
+    return modelo == MODELO_PROPIO or modelo in NEURAL_MODEL_REGISTRY
+
+
 def hiperparametros_artefacto(modelo: str) -> dict:
+    if modelo in NEURAL_MODEL_REGISTRY:
+        return {}  # valores por defecto de src/neural_models.py (los recomendados por cada artículo)
     archivo = ARCHIVO_METADATA.get(modelo, f"metadata_{modelo}.json")
     datos = json.loads((config.PROJECT_ROOT / "artifacts" / archivo).read_text(encoding="utf-8"))
     return dict(datos["hiperparametros_finales"])
 
 
 def pipeline_base(modelo: str, y_tr: pd.Series, semilla: int, hp: dict):
-    spec = MODEL_REGISTRY[modelo]
+    spec = ALL_MODELS[modelo]
     return build_pipeline(spec, "class_weight", y_train=y_tr, preprocessing_steps=get_preprocessing_steps(spec),
                           random_state=semilla, **hp)
 
 
 def buscar_hiperparametros(modelo, X_tr, y_tr, semilla, n_iter, cv, n_jobs) -> dict:
-    spec = MODEL_REGISTRY[modelo]
+    spec = ALL_MODELS[modelo]
     dist = {f"model__{k}": v for k, v in get_param_distributions(spec).items()}
     busqueda = RandomizedSearchCV(pipeline_base(modelo, y_tr, semilla, {}), dist, n_iter=n_iter, scoring="f1",
-                                  cv=cv, random_state=semilla, n_jobs=1 if modelo == MODELO_PROPIO else n_jobs,
+                                  cv=cv, random_state=semilla, n_jobs=1 if secuencial(modelo) else n_jobs,
                                   refit=False)
     busqueda.fit(X_tr, y_tr)
     return {k.removeprefix("model__"): v for k, v in busqueda.best_params_.items()}
@@ -121,7 +135,7 @@ def correr_pliegue(X_tr, y_tr, X_te, y_te, modelos, semilla, k, args) -> tuple[l
         hp = (buscar_hiperparametros(m, X_tr, y_tr, semilla, args.busqueda, cv_int, args.n_jobs)
               if args.busqueda else hiperparametros_artefacto(m))
         pipe = pipeline_base(m, y_tr, semilla, hp)
-        nj = 1 if m == MODELO_PROPIO else args.n_jobs
+        nj = 1 if secuencial(m) else args.n_jobs
         oof[m] = cross_val_predict(clone(pipe), X_tr, y_tr, cv=cv_int, method="predict_proba", n_jobs=nj)[:, 1]
         prueba[m] = pipe.fit(X_tr, y_tr).predict_proba(X_te)[:, 1]
         segundos[m], hps[m] = time.perf_counter() - t0, hp
@@ -137,6 +151,8 @@ def correr_pliegue(X_tr, y_tr, X_te, y_te, modelos, semilla, k, args) -> tuple[l
         filas.append({"candidato": m, "tipo": "base", **metricas(yte, prueba[m], umbral_f1(ytr, oof[m])),
                       "segundos": segundos[m], "pesos": json.dumps(hps[m], default=str)})
 
+    if args.solo_base:
+        return filas, puntajes
     variantes = {"con": list(modelos)}
     if MODELO_PROPIO in modelos and len(modelos) > 2:
         variantes["sin"] = [m for m in modelos if m != MODELO_PROPIO]
@@ -167,10 +183,12 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--repeticiones", type=int, default=10)
     ap.add_argument("--pliegues", type=int, default=config.N_OUTER_FOLDS)
     ap.add_argument("--internos", type=int, default=config.N_INNER_FOLDS)
-    ap.add_argument("--modelos", nargs="+", default=list(MODELOS_BASE), choices=sorted(MODEL_REGISTRY))
+    ap.add_argument("--modelos", nargs="+", default=list(MODELOS_BASE), choices=sorted(ALL_MODELS))
     ap.add_argument("--busqueda", type=int, default=0, help="0 = hiperparámetros de artifacts/; N = búsqueda aleatoria interna")
     ap.add_argument("--n-jobs", type=int, default=int(os.environ.get("STACKING_N_JOBS", 4)),
                     help="procesos para los pliegues internos de los modelos rápidos (CS-FOF usa CSFOF_N_JOBS)")
+    ap.add_argument("--solo-base", action="store_true",
+                    help="evalúa solo los modelos base, sin combinadores (corrida de redes neuronales)")
     ap.add_argument("--muestra", type=int, default=0, help="submuestra estratificada para pruebas rápidas (0 = todo)")
     ap.add_argument("--salida", type=Path, default=SALIDA_POR_DEFECTO)
     args = ap.parse_args(argv)

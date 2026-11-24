@@ -46,7 +46,7 @@ def nadeau_bengio(d: np.ndarray, n_train: float, n_test: float) -> dict:
     var = d.var(ddof=1)
     se = np.sqrt((1 / J + n_test / n_train) * var)
     if se == 0:
-        return {"t": np.inf * np.sign(d.mean()), "p": 0.0 if d.mean() else 1.0, "gl": J - 1, "ic_inf": d.mean(),
+        return {"t": float(np.sign(d.mean())) * np.inf if d.mean() else 0.0, "p": 0.0 if d.mean() else 1.0, "gl": J - 1, "ic_inf": d.mean(),
                 "ic_sup": d.mean(), "se": 0.0}
     t = d.mean() / se
     crit = tdist.ppf(0.975, J - 1)

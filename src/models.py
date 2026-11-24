@@ -406,6 +406,25 @@ def _catboost_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
     )
 
 
+def _tabm_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
+    # Red neuronal TabM sensible al costo (src/neural_models.py). Usa GPU si existe.
+    from src.neural_models import TabMClassifier
+    return TabMClassifier(random_state=random_state, **kwargs)
+
+
+def _tabm_fisher_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
+    # Modelo original neuronal: TabM con las distancias a los cortes de Fisher de un CS-FOF auxiliar.
+    from src.neural_models import TabMClassifier
+    kwargs.setdefault("fisher_features", 16)
+    return TabMClassifier(random_state=random_state, **kwargs)
+
+
+def _tabpfn_factory(random_state: int = RANDOM_STATE, **kwargs: Any):
+    # TabPFN v2.5 (aprendizaje en contexto). Requiere aceptar la licencia en Hugging Face (HF_TOKEN).
+    from src.neural_models import TabPFNClasificador
+    return TabPFNClasificador(random_state=random_state, **kwargs)
+
+
 MODEL_REGISTRY: dict[str, ModelSpec] = {
     "knn": ModelSpec(
         name="knn",
@@ -618,7 +637,54 @@ MODEL_REGISTRY: dict[str, ModelSpec] = {
             "a 5 s con depth=6 (valor por defecto de CatBoost)."
         ),
     ),
+    "tabm": ModelSpec(
+        name="tabm",
+        estimator_factory=_tabm_factory,
+        hyperparameters=[
+            HyperparamSpec("n_blocks", "int", low=1, high=4),
+            HyperparamSpec("d_block", "int", low=64, high=1024),
+            HyperparamSpec("dropout", "float", low=0.0, high=0.5),
+            HyperparamSpec("lr", "float", low=1e-4, high=5e-3, log=True),
+            HyperparamSpec("weight_decay", "float", low=1e-5, high=1e-2, log=True),
+        ],
+        supports_class_weight=True,
+        requires_scaling=True,
+        notes="TabM (Gorishniy et al., ICLR 2025) con entropía cruzada ponderada por costo. Espacio de "
+              "búsqueda del artículo de TabM, reducido a 5 hiperparámetros.",
+    ),
+    "tabm_fisher": ModelSpec(
+        name="tabm_fisher",
+        estimator_factory=_tabm_fisher_factory,
+        hyperparameters=[
+            HyperparamSpec("n_blocks", "int", low=1, high=4),
+            HyperparamSpec("d_block", "int", low=64, high=1024),
+            HyperparamSpec("dropout", "float", low=0.0, high=0.5),
+            HyperparamSpec("lr", "float", low=1e-4, high=5e-3, log=True),
+            HyperparamSpec("weight_decay", "float", low=1e-5, high=1e-2, log=True),
+        ] + [HyperparamSpec("fisher_features", "int", low=4, high=32)],
+        supports_class_weight=True,
+        requires_scaling=True,
+        notes="Modelo original neuronal: TabM + distancias a los cortes oblicuos de Fisher de un CS-FOF "
+              "auxiliar ajustado con el mismo entrenamiento (ver src/neural_models.py).",
+    ),
+    "tabpfn": ModelSpec(
+        name="tabpfn",
+        estimator_factory=_tabpfn_factory,
+        hyperparameters=[HyperparamSpec("n_estimators", "int", low=4, high=16)],
+        supports_class_weight=True,
+        requires_scaling=False,
+        notes="TabPFN v2.5: aprende en contexto, sin entrenamiento ni búsqueda. class_weight='balanced' se "
+              "traduce a balance_probabilities=True.",
+    ),
 }
+
+# Los modelos neuronales viven en un registro aparte para que ``experiment_runner`` (que recorre
+# MODEL_REGISTRY cuando no se le pasan modelos) y la tabla maestra no cambien. Se usan desde
+# ``src/run_stacking_repeated.py`` con ``ALL_MODELS``.
+NEURAL_MODEL_REGISTRY: dict[str, ModelSpec] = {
+    nombre: MODEL_REGISTRY.pop(nombre) for nombre in ("tabm", "tabm_fisher", "tabpfn")
+}
+ALL_MODELS: dict[str, ModelSpec] = {**MODEL_REGISTRY, **NEURAL_MODEL_REGISTRY}
 
 
 def get_param_grid(
