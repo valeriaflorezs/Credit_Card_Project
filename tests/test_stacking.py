@@ -95,3 +95,15 @@ def test_contrastar_pares_por_repeticion_y_pliegue():
     assert res["n_pares"] == 10
     assert res["dif_media"] == pytest.approx(0.01)
     assert res["gana_a"] == 10
+
+
+def test_reporte_de_progreso(tmp_path):
+    from src.progreso import generar_html
+    filas = [dict(repeticion=0, semilla=1000, pliegue=k, n_train=8, n_test=2, candidato=c, tipo="base",
+                  f1_umbral=0.5 + 0.01 * k, roc_auc=0.78, segundos=30.0)
+             for k in range(2) for c in ("xgboost", "tabm_fisher")]
+    pd.DataFrame(filas).to_csv(tmp_path / "metricas.csv", index=False)
+    (tmp_path / "configuracion.json").write_text('{"repeticiones": 2, "pliegues": 5}')
+    pagina = generar_html(tmp_path, corriendo=True)
+    assert "2 / 10" in pagina and "tabm_fisher" in pagina and "Corriendo" in pagina
+    assert "p_holm" not in pagina  # sin significancia a mitad de camino
