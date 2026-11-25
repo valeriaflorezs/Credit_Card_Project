@@ -83,4 +83,13 @@ después de ver los pliegues de prueba.
   vez en CPU (repetición 0, pliegue 0) para medir el tiempo. Sus resultados se descartan y no se cambió
   nada del protocolo después de verlos.
 
+- **Interrupciones de la corrida (2026-11-24 y 25).** La corrida se detuvo varias veces: por un corte de
+  internet; porque al reinstalar librerías con la corrida en marcha se dañó scikit-learn
+  (`ImportError: libgomp`); y porque Colab retiró la GPU por límite de uso. Un pliegue a medias (repetición
+  6, pliegue 1) llegó a ejecutarse en CPU y se **detuvo antes de guardarse**. La corrida se reanudó en otra
+  cuenta de Google con GPU T4, a partir del archivo con los 31 pliegues ya guardados. Cada pliegue se guarda
+  completo o no se guarda, así que **ningún pliegue se repitió ni se descartó**: el archivo final tiene 50
+  pliegues sin duplicados, los 31 primeros idénticos a la copia previa, y todos se ajustaron con GPU (máximo
+  119 s por pliegue para TabM-Fisher).
+
 _(Anotar aquí cualquier otro cambio posterior, con fecha y motivo.)_
