@@ -1,7 +1,7 @@
 # Protocolo confirmatorio v2 (Taiwán, semillas nuevas) — pre-registro congelado antes de generar los datos
 
 ## Motivo y transparencia
-El docente respondió por escrito: (i) el tope exige >= 3 pruebas significativas y el criterio de conjuntos adicionales; (ii) un ensamble con regla de
+El docente respondió por escrito: (i) el tope exige >= 3 pruebas significativas; (ii) un ensamble con regla de
 combinación nueva es válido; (iii) **Wilcoxon con Holm es aceptado como prueba pareada**. La corrida confirmatoria 1 (semillas 5000-5004) usó como pruebas
 la t de Nadeau-Bengio, Wilcoxon y Nemenyi. Después de ver sus resultados exploramos McNemar y DeLong sobre esas mismas predicciones (exploratorio, no
 confirmatorio): salieron significativos en la mayoría de las repeticiones. Como esa elección de pruebas se hizo mirando datos, **esta v2 es una

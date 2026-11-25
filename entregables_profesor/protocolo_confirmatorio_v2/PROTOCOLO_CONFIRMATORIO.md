@@ -22,6 +22,6 @@ Miembros (8): cs_fof, xgb, cat, lgbm, rf, et, hgb, lr. Variante de ablación HIB
 
 ## Reglas
 - Una sola corrida (solo Taiwán). Nada se ajusta tras ver resultados. Se reportan todos los resultados, incluidos los desfavorables.
-- Iteraciones de diseño previas a este protocolo: 18 candidatos del cribado + 2 sondas + 24 variantes de Polish + 2 582 combinaciones (13 confirmadas)
+- Iteraciones de diseño previas a este protocolo: 18 candidatos del cribado + 2 sondas + 2 582 combinaciones (13 confirmadas)
   + 3 reglas/conjuntos en desarrollo (4000-4001) + pruebas de codificación categórica y de razones (6000-6001).
 Congelado: 2026-11-25 04:25:21 UTC
