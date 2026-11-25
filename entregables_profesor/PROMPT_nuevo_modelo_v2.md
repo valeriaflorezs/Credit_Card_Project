@@ -36,7 +36,7 @@ No prometas significancia: demuestra, con un piloto barato, si es alcanzable.
   medirse con ablación y debe ser significativo por sí mismo.
 - R3 Superioridad frente a los 7 modelos base (XGBoost, Random Forest, SVM, KNN, Regresión Logística, Árbol de decisión, Naive Bayes), con ≥ 3 pruebas
   (p ajustado por Holm/BH < 0.05): una global tipo Friedman-Nemenyi, una pareada (t de Nadeau-Bengio o Wilcoxon) y otra (McNemar/DeLong); |Cliff δ| ≥ 0.147;
-  y en los conjuntos adicionales (German, Australian, Polish año 1): mejor en al menos la mitad y no significativamente peor en ninguno.
+  y, si el docente lo exige, en conjuntos adicionales. En este proyecto se trabaja solo con el dataset de Taiwán (decisión del equipo).
   Las pruebas se fijan ANTES de ver resultados; elegir la que pasa después no es válido.
 - Protocolo pre-registrado y congelado (hash/tag) antes de la corrida definitiva; semillas nuevas (ya usadas: 42, 1-4, 1000-1009, 2000-2004, 3000-3004,
   4000-4001, 5000-5004, 6000-6001; usar 7000+); desarrollo y confirmación separados; mismo presupuesto de búsqueda para todos; ≥ 10 semillas si el modelo es
@@ -56,7 +56,7 @@ No prometas significancia: demuestra, con un piloto barato, si es alcanzable.
 3. **Piloto barato antes de implementar a fondo.** Para cada candidato mide en desarrollo (semillas 7000-7001): (a) AUC y F1 individuales, (b) correlación de
    Spearman con XGB y CatBoost, (c) ganancia de F1 de un ensamble simple (promedio en logit) con y sin el candidato frente a CatBoost solo y XGBoost@umbral.
    **Regla de parada fijada de antemano:** no se implementa el modelo completo si el candidato no cumple a la vez AUC ≥ 0.78, correlación < 0.90 y
-   ganancia media ≥ +0.006 de F1 sobre XGBoost@umbral en desarrollo. Polish debe quedar no significativamente peor que XGBoost: basta que una condición falle para parar.
+   ganancia media ≥ +0.006 de F1 sobre XGBoost@umbral en desarrollo. Basta que una condición falle para parar.
 4. Solo si el piloto pasa: implementación en numpy/scipy, pruebas unitarias y protocolo pre-registrado (hipótesis única principal, métrica, semillas nuevas,
    pruebas y corrección fijadas), congelado antes de la corrida confirmatoria.
 5. Conclusión honesta: probabilidad estimada de lograr R3 y, si es baja, plan de cierre (empate documentado, análisis por régimen, tope de 4.0, y qué

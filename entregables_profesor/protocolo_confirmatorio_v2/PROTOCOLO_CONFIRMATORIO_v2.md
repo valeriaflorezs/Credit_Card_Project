@@ -26,9 +26,6 @@ interno). Mismas 45 variables, mismos 7 benchmarks con los mismos hiperparámetr
   anticonservadoras); la mediana entre repeticiones y Cliff + Wilcoxon por pliegue acotan ese riesgo, pero no lo eliminan. Nemenyi por pares probablemente
   no rechace frente a XGBoost y RF (diferencia de rangos < CD ≈ 2.1); no es requisito de este protocolo.
 
-## Conjuntos adicionales
-Se mantienen los resultados de la corrida 1 (semillas 5000-5004, Adenda 1) como evidencia de la condición 4; no se repiten con semillas nuevas.
-
 ## Reglas
 Una sola corrida de esta v2. Nada se ajusta tras ver resultados (ni modelo, ni pruebas, ni semillas). Se reportan todos los resultados. Script de análisis:
 analyze_conf2.py (se congela por hash antes de que termine la generación de datos).
