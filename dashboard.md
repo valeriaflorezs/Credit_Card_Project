@@ -26,7 +26,7 @@ Conclusiones). Además incluye Enlaces, Equipo y un asistente conversacional (Ky
   - curvas anytime;
   - SHAP global en los 5 pliegues;
   - comparación entre LIME y SHAP.
-- **Modelo original (CS-FOF):** página propia con cuatro pestañas.
+- **Modelo original (CS-FOF y HIB):** página propia con cinco pestañas.
   - **Teoría:** ejemplo visual del corte oblicuo frente a los cortes por ejes.
   - **Metodología:** formulación, pseudocódigo y propiedades.
   - **Código:** la clase real, con colores de sintaxis.
@@ -36,6 +36,15 @@ Conclusiones). Además incluye Enlaces, Equipo y un asistente conversacional (Ky
     - tabla de pruebas de hipótesis con p-valores ajustados y tamaños del efecto;
     - conjuntos adicionales, robustez y calibración;
     - veredicto de superioridad.
+  - **Del CS-FOF al HIB:** el ensamble (*stacking*) hecho a partir de CS-FOF para mejorar el F1.
+    - ecuaciones de HIB y su código;
+    - candidatos congelados y Wilcoxon con Holm frente a XGBoost;
+    - confirmación con semillas nuevas, meseta de F1 y de dónde sale la ventaja;
+    - lo que no se puede afirmar.
+- **Símbolos de las ecuaciones:** al pasar el cursor por un símbolo de las ecuaciones de CS-FOF o de HIB aparece su significado y se
+  iluminan todos los lugares donde se usa (otras ecuaciones, textos y código).
+- **Botón Pipeline:** abre una ventana con el código real del pipeline del proyecto (preprocesamiento dentro de cada pliegue,
+  `build_pipeline`, validación anidada, CS-FOF, pruebas estadísticas, HIB y serialización) y resalta la sección de la página donde está.
 
 ## Predicción en vivo
 

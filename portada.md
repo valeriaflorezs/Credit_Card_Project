@@ -80,6 +80,7 @@ problema y se reporta con un veredicto honesto sobre su superioridad.
 | Regresión logística (línea base) | cerca de 0.38 | Partición 80/20 |
 | Mejor modelo de referencia (XGBoost, pesos de clase, Optuna) | 0.5466 ± 0.0091 | Anidada 5 × 5 |
 | **CS-FOF** (modelo original, pesos de clase, búsqueda aleatoria) | **0.5479 ± 0.0054** | Anidada 5 × 5 |
+| **HIB** (ensamble de 8 modelos a partir de CS-FOF; XGBoost en la misma corrida: 0.5468) | **0.5505** | 5 × 5 con semillas nuevas |
 
 :::{admonition} Qué se concluye
 :class: cc-limites
@@ -87,6 +88,7 @@ problema y se reporta con un veredicto honesto sobre su superioridad.
 - CS-FOF obtiene el mayor F1 medio, pero la diferencia no es significativa: Friedman detecta diferencias entre los 8 modelos ($\chi^2 = 32.9$), pero Nadeau–Bengio, Wilcoxon y DeLong no separan a CS-FOF de XGBoost ni de Random Forest. La condición R3 de superioridad **no se cumple**.
 - CS-FOF sí supera con significancia y efecto grande a SVM, KNN, árbol de decisión, regresión logística y Naive Bayes.
 - En la evaluación ampliada tiene el mayor F1 con ruido en las etiquetas y con muestras moderadas, pero falla más que XGBoost con los clientes al día en septiembre y con desbalance extremo (Polish).
+- Para mejorar el F1 se hizo un ensamble (*stacking*) a partir de CS-FOF con XGBoost, CatBoost, LightGBM, Random Forest, Extra Trees, HistGradientBoosting y regresión logística: HIB gana a los 7 modelos base con Wilcoxon con Holm, DeLong y McNemar (+0.0037 de F1 sobre XGBoost), pero Nadeau–Bengio no rechaza frente a XGBoost.
 - Los mejores modelos rondan F1 ≈ 0.55 y AUC ≈ 0.78 y quedan muy cerca entre sí; eso no prueba un techo del problema, pero hace difícil separarlos estadísticamente.
 :::
 
@@ -140,7 +142,7 @@ Matriz de búsqueda en tres bases de datos y declaración de novedad.
 :link-type: doc
 :class-card: cc-step sd-card-hover
 
-CS-FOF: formulación, pseudocódigo, propiedades, código, pruebas, ablación y SHAP.
+CS-FOF: formulación, pseudocódigo, propiedades, código, pruebas, ablación y SHAP, y su mejora con el ensamble HIB.
 :::
 
 :::{grid-item-card} 6. Validación estadística

@@ -36,6 +36,10 @@
   - `python -m src.train_cs_fof_artifact` → `artifacts/cs_fof.joblib` y `artifacts/metadata.json`
 * - Corridas
   - `python -u -m src.run_cs_fof_5x5 class_weight` y `python -u -m src.run_boosting_recientes_5x5 --tecnicas class_weight --metodos grid_search random_search bayesian_optuna`
+* - Mejora HIB (ensamble a partir de CS-FOF)
+  - `experiments/hib/`: regla (`hib.py`), generación de logits (`python gen_taiwan.py members|extra|svm <carpeta> <semillas> <procesos>`), análisis
+    (`python analyze_conf2.py tw2 7100,7101,7102,7103,7104`), protocolos v1 y v2 con SHA-256 y resultados. Los scripts usan auxiliares locales
+    (`common2`, `combos`) que no están en el repositorio. El *tag* de Git del pre-registro solo existe en local (error 403 al subirlo).
 * - Conjuntos adicionales
   - `python -u -m src.run_additional_datasets` (descarga German, Australian y Polish con `ucimlrepo`)
 * - Tabla maestra y pruebas
