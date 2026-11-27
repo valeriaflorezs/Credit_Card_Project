@@ -7,6 +7,9 @@
   function guardar(m) { try { localStorage.setItem(KEY, JSON.stringify(m)); } catch (e) { /* sin almacenamiento */ } }
 
   function iniciar() {
+    // El primer enlace del menú es la portada y repetía el título del libro, que ya aparece arriba del menú.
+    var inicio = document.querySelector('.bd-sidenav__home-link a');
+    if (inicio) inicio.textContent = 'Portada';
     var nav = document.querySelector('.bd-docs-nav');
     if (!nav || nav.getAttribute('data-plegable')) return;
     nav.setAttribute('data-plegable', '1');
