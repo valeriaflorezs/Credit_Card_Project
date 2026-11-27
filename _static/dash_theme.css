@@ -247,5 +247,5 @@ a.cc-btn:hover { background: #1A233D; }
 .bd-docs-nav p.caption.cc-parte:hover { opacity: .85; }
 .cc-menu-barra { display: flex; gap: .4rem; margin: 0 0 .6rem; padding: 0 .2rem; }
 .cc-menu-barra button { flex: 1; font-size: .72rem; padding: .25rem .4rem; border-radius: 6px; cursor: pointer;
-  border: 1px solid var(--pst-color-border, rgba(128,128,128,.4)); background: transparent; color: inherit; }
+  border: 1px solid rgba(211,216,229,.35); background: transparent; color: #D3D8E5; }
 .cc-menu-barra button:hover { border-color: var(--gold, #B88F3D); }
