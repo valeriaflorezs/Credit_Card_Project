@@ -29,6 +29,7 @@ parts:
     chapters:
       - file: modelo_original
       - file: notebooks/10_modelo_original_cs_fof
+      - file: mejora_hib
   - caption: "6. Protocolo y validación estadística"
     chapters:
       - file: validacion

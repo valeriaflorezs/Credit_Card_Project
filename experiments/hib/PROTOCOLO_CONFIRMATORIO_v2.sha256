@@ -1,0 +1,11 @@
+b11a946a498d43442a0f845970cec8f872ddb291f83c9167437259ce056f5e0d  PROTOCOLO_CONFIRMATORIO_v2.md
+dc9d520d87e678f51703da6faffc4fef86b358cf89c9d32468cc94394da5daf8  hib.py
+e438f31b92ee4a3af5fcac949ff98dde393f6207cff80e0bb9db6ea16e517045  gen_taiwan.py
+eed97b74f10e9fe45193e67866a73d24b166be8d44f180b119717ad3e54e57a4  conf_lib.py
+591f78896f3e15ddcf82b1c16e3e91b0fa4917ace313e4880bcba1aeb94c9c7e  analyze_conf2.py
+analyze_conf2.py congelado: 2026-11-25 14:12:45 UTC (antes de terminar la generación de datos 7100-7104)
+
+EDICIÓN POSTERIOR (decisión del equipo: el trabajo es únicamente con Taiwán): se eliminaron de los protocolos v1 y v2 las secciones sobre conjuntos adicionales.
+El resto del texto (modelo, datos, pruebas, semillas) NO cambió. Hash original v1: 5b3320dec5e645788ad471d43343c5b8d277ed91c4f308fd6e781fddb7922a4c; v1 editado: a05039f1d076ca75acf57b92821f9fcb52db245382f324e528cf381656b29bf4.
+Hash original v2: b11a946a498d43442a0f845970cec8f872ddb291f83c9167437259ce056f5e0d (el del commit 448419c); v2 editado: 8ac3dd75f3cf226caab33d1730627196ed951aba57cd62f24a98d9bb86ad5988.
+Ajuste final de dos frases (solo Taiwán). v1 final: 951dd25fbacef947678338902d77c606474bce0adcac761de469820c9cdf8c28; v2 final: 48ae4dfe7c0ae775014358698d29e5dfa481362e2b4c33f2ab77c17cd22b406c

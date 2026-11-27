@@ -37,7 +37,10 @@ siguientes.
    Random Forest.
 4. Una evaluación ampliada: robustez al ruido y al tamaño de muestra, 10 semillas, escalabilidad, cambio de
    distribución, calibración, predicción conforme, análisis de errores por subgrupo y SHAP del modelo original.
-5. Un tablero interactivo desplegado en https://dash-credit-kv.onrender.com, con predicción en vivo, explicación
+5. Un ensamble (*stacking*) a partir de CS-FOF con XGBoost, CatBoost, LightGBM, Random Forest, Extra Trees, HistGradientBoosting y regresión
+   logística para mejorar el F1, HIB, confirmado con un protocolo pre-registrado y semillas nuevas: supera a los 7 modelos base con Wilcoxon con
+   Holm, DeLong y McNemar, con una ventaja pequeña sobre XGBoost que se reporta con sus salvedades.
+6. Un tablero interactivo desplegado en https://dash-credit-kv.onrender.com, con predicción en vivo, explicación
    local SHAP, conjunto de predicción conforme y umbral de decisión ajustable, y un paquete de reproducibilidad
    completo (artefactos con prueba de ida y vuelta, integración continua y archivo con DOI).
 
@@ -428,7 +431,7 @@ El libro sigue la estructura mínima del Entregable 3.
 | 2 | Datos: ETL y EDA | Análisis exploratorio, construcción del conjunto final y declaración de los datos |
 | 3 | Modelos benchmark | Modelo base, protocolo, pipeline, corrida de las 112 combinaciones, resultados, interpretabilidad, tabla maestra, curvas anytime y validación del algoritmo genético con las funciones de De Jong |
 | 4 | Revisión de literatura y novedad | Matriz de búsqueda, declaración de novedad y trabajos cercanos |
-| 5 | Modelo original | CS-FOF: formulación, pseudocódigo, propiedades, complejidad, código, pruebas y ablación |
+| 5 | Modelo original | CS-FOF: formulación, pseudocódigo, propiedades, complejidad, código, pruebas, ablación y su mejora con el ensamble HIB |
 | 6 | Protocolo y validación estadística | Protocolo pre-registrado, pruebas de hipótesis, tamaños del efecto y veredicto |
 | 7 | Evaluación ampliada y robustez | Conjuntos adicionales, semillas, ruido, tamaño, escalabilidad, cambio de distribución, calibración, incertidumbre y análisis de errores |
 | 8 | Dashboard y despliegue | Arquitectura del dashboard, URL pública y ficha del modelo |
