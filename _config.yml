@@ -19,6 +19,7 @@ sphinx:
   config:
     html_static_path: ["_static"]
     html_css_files: ["dash_theme.css"]
+    html_js_files: ["menu_plegable.js"]
     nb_output_stderr: "remove"
 
 parse:
