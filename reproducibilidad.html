@@ -36,8 +36,8 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="_static/dash_theme.css?v=16a22a96" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
+    <link rel="stylesheet" type="text/css" href="_static/dash_theme.css?v=58dcaac5" />
   
   <!-- So that users can add custom icons -->
   <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
@@ -56,13 +56,14 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="_static/design-tabs.js?v=fcb327ea"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'reproducibilidad';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="_static/menu_plegable.js?v=928bdb52"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Conclusiones y limitaciones" href="conclusiones.html" />
@@ -247,6 +248,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="modelo_original.html">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mejora_hib.html">Del CS-FOF al HIB: mejorar el F1 con un ensamble</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
 <ul class="nav bd-sidenav">
@@ -463,7 +465,7 @@
 <td><p>Malla ≤ 200 combinaciones, 25 aleatorias, 30 de Optuna, genético 16 × 10 (<code class="docutils literal notranslate"><span class="pre">src/config.py</span></code>)</p></td>
 </tr>
 <tr class="row-even"><td><p>Software</p></td>
-<td><p>Python 3.12 y 3.13 según el equipo, numpy 2.5.3, pandas 3.0.6, scikit-learn 1.9.1, xgboost 3.4.1, optuna 5.0.0, deap 1.4.3 (<code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>)</p></td>
+<td><p>Python 3.13, numpy 2.5.3, pandas 3.0.5 (la versión con la que se serializaron los artefactos), scikit-learn 1.9.1, xgboost 3.4.1, optuna 5.0.0, deap 1.4.3 (<code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>)</p></td>
 </tr>
 <tr class="row-odd"><td><p>Hardware</p></td>
 <td><p>Windows 11, AMD Ryzen AI 7 445, 16 GB de RAM (modelos de árboles, regresión logística y Naive Bayes); Google Colab con GPU T4 (SVM y KNN); Windows 11, Intel Core i5-1235U, 8 GB de RAM (validación anidada de CS-FOF); máquina virtual con Linux, Intel Xeon a 2.30 GHz con 4 núcleos y 15 GB de RAM (ablación, robustez, conjuntos adicionales, SHAP y medición de tiempos). Los tiempos de búsqueda de modelos distintos no son comparables entre equipos</p></td>
@@ -480,22 +482,27 @@
 <tr class="row-odd"><td><p>Corridas</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-u</span> <span class="pre">-m</span> <span class="pre">src.run_cs_fof_5x5</span> <span class="pre">class_weight</span></code> y <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-u</span> <span class="pre">-m</span> <span class="pre">src.run_boosting_recientes_5x5</span> <span class="pre">--tecnicas</span> <span class="pre">class_weight</span> <span class="pre">--metodos</span> <span class="pre">grid_search</span> <span class="pre">random_search</span> <span class="pre">bayesian_optuna</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Conjuntos adicionales</p></td>
+<tr class="row-even"><td><p>Mejora HIB (ensamble a partir de CS-FOF)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">experiments/hib/</span></code>: regla (<code class="docutils literal notranslate"><span class="pre">hib.py</span></code>), generación de logits (<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">gen_taiwan.py</span> <span class="pre">members|extra|svm</span> <span class="pre">&lt;carpeta&gt;</span> <span class="pre">&lt;semillas&gt;</span> <span class="pre">&lt;procesos&gt;</span></code>), análisis
+(<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">analyze_conf2.py</span> <span class="pre">tw2</span> <span class="pre">7100,7101,7102,7103,7104</span></code>), protocolos v1 y v2 con SHA-256 y resultados. Los scripts usan auxiliares locales
+(<code class="docutils literal notranslate"><span class="pre">common2</span></code>, <code class="docutils literal notranslate"><span class="pre">combos</span></code>) que no están en el repositorio. El <em>tag</em> de Git del pre-registro solo existe en local (error 403 al subirlo).</p></td>
+</tr>
+<tr class="row-odd"><td><p>Conjuntos adicionales</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-u</span> <span class="pre">-m</span> <span class="pre">src.run_additional_datasets</span></code> (descarga German, Australian y Polish con <code class="docutils literal notranslate"><span class="pre">ucimlrepo</span></code>)</p></td>
 </tr>
-<tr class="row-odd"><td><p>Tabla maestra y pruebas</p></td>
+<tr class="row-even"><td><p>Tabla maestra y pruebas</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.build_master_table_e3</span></code>, luego <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">experiments/comparacion_final/pruebas.py</span></code>, <code class="docutils literal notranslate"><span class="pre">delong.py</span></code> y <code class="docutils literal notranslate"><span class="pre">entre_conjuntos.py</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Robustez (exploratoria)</p></td>
+<tr class="row-odd"><td><p>Robustez (exploratoria)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">experiments/robustez/robustez.py</span></code> (calibración, ruido y tamaño de muestra; ~1 h en 4 núcleos)</p></td>
 </tr>
-<tr class="row-odd"><td><p>Evaluación ampliada (exploratoria)</p></td>
+<tr class="row-even"><td><p>Evaluación ampliada (exploratoria)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">experiments/robustez/ampliada.py</span></code> (diagrama de diferencia crítica, predicción conforme, recalibración, análisis de errores, cambio de distribución, escalabilidad y 10 semillas; ~35 min en 4 núcleos)</p></td>
 </tr>
-<tr class="row-even"><td><p>Validación del genético (De Jong)</p></td>
+<tr class="row-odd"><td><p>Validación del genético (De Jong)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">src.dejong</span></code> (5 funciones, 10 semillas, presupuesto del proyecto y 50 × 50; unos 2 min)</p></td>
 </tr>
-<tr class="row-odd"><td><p>Protocolo</p></td>
+<tr class="row-even"><td><p>Protocolo</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">experiments/protocolo.md</span></code>, registrado el 8 de noviembre de 2026 en el commit <code class="docutils literal notranslate"><span class="pre">62ddeb7</span></code> (etiqueta <code class="docutils literal notranslate"><span class="pre">protocolo-2026-11-08</span></code>)</p></td>
 </tr>
 </tbody>
@@ -555,6 +562,14 @@ el contenido, los análisis y las conclusiones de este informe. La herramienta n
 <span class="label"><span class="fn-bracket">[</span>Bre01<span class="fn-bracket">]</span></span>
 <p>L. Breiman. Random forests. <em>Machine Learning</em>, 45(1):5–32, 2001. <a class="reference external" href="https://doi.org/10.1023/A:1010933404324">doi:10.1023/A:1010933404324</a>.</p>
 </div>
+<div class="citation" id="id30" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BenedictKOdR21<span class="fn-bracket">]</span></span>
+<p>Gabriel Bénédict, Vincent Koops, Daan Odijk, and Maarten de Rijke. sigmoidF1: a smooth F1 score surrogate loss for multilabel classification. <em>Transactions on Machine Learning Research</em>, 2021. arXiv:2108.10566.</p>
+</div>
+<div class="citation" id="id29" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CNMCK04<span class="fn-bracket">]</span></span>
+<p>Rich Caruana, Alexandru Niculescu-Mizil, Geoff Crew, and Alex Ksikes. Ensemble selection from libraries of models. In <em>Proceedings of the 21st International Conference on Machine Learning (ICML)</em>. 2004. <a class="reference external" href="https://doi.org/10.1145/1015330.1015432">doi:10.1145/1015330.1015432</a>.</p>
+</div>
 <div class="citation" id="id15" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>CJ26<span class="fn-bracket">]</span></span>
 <p>T. Chab and J. Jeon. Csa-net: a type-aware dual-tower neural model for imbalanced tabular credit default prediction. <em>IEEE Access</em>, 14:118490–118509, 2026. <a class="reference external" href="https://doi.org/10.1109/ACCESS.2026.3717318">doi:10.1109/ACCESS.2026.3717318</a>.</p>
@@ -582,6 +597,14 @@ el contenido, los análisis y las conclusiones de este informe. La herramienta n
 <div class="citation" id="id16" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>JLL+19<span class="fn-bracket">]</span></span>
 <p>B. C. Jaeger, D. L. Long, D. M. Long, M. Sims, J. M. Szychowski, Y.-I. Min, L. A. McClure, G. Howard, and N. Simon. Oblique random survival forests. <em>The Annals of Applied Statistics</em>, 13(3):1847–1883, 2019. <a class="reference external" href="https://doi.org/10.1214/19-AOAS1261">doi:10.1214/19-AOAS1261</a>.</p>
+</div>
+<div class="citation" id="id31" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LYY21<span class="fn-bracket">]</span></span>
+<p>Namgil Lee, Heejung Yang, and Hojin Yoo. A surrogate loss function for optimization of F$_\beta $ score in binary classification with imbalanced data. 2021. arXiv:2104.01459.</p>
+</div>
+<div class="citation" id="id32" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LEN14<span class="fn-bracket">]</span></span>
+<p>Zachary C. Lipton, Charles Elkan, and Balakrishnan Narayanaswamy. Thresholding classifiers to maximize F1 score. 2014. arXiv:1402.1892.</p>
 </div>
 <div class="citation" id="id28" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>LV13<span class="fn-bracket">]</span></span>

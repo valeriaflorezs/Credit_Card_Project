@@ -1,0 +1,955 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Del CS-FOF al HIB: mejorar el F1 con un ensamble &#8212; Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
+    <link rel="stylesheet" type="text/css" href="_static/dash_theme.css?v=58dcaac5" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="_static/design-tabs.js?v=fcb327ea"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'mejora_hib';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="_static/menu_plegable.js?v=928bdb52"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Validación estadística del modelo original" href="validacion.html" />
+    <link rel="prev" title="10. Modelo original (CS-FOF)" href="notebooks/10_modelo_original_cs_fof.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="portada.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="portada.html">
+                    Predicción del Incumplimiento de Pago en Tarjetas de Crédito usando Machine Learning
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">0. Introducción</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduccion.html">Marco del proyecto</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">1. Trazabilidad de correcciones</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="correcciones.html">Trazabilidad de correcciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2. Datos: ETL y EDA</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/00_eda.html">EDA: Análisis Exploratorio de Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DATA_STATEMENT.html">Declaración de los datos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3. Modelos benchmark</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/01_baseline_logistic.html">01. Modelo base: Regresión Logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/02_setup_check.html">02. Verificación del protocolo experimental</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/03_pipeline_dev.html">03. Desarrollo y prueba del pipeline completo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/04_run_experiments.html">04. Ejecutar experimentos: validación cruzada anidada 5 × 5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/05_results_analysis.html">05. Análisis de resultados</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/06_interpretability.html">06. Interpretabilidad (SHAP y LIME)</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="notebooks/08_tabla_maestra_svm.html">08. Tabla maestra consolidada y comparabilidad del SVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/09_anytime_multifidelidad.html">09. Curvas anytime y multi-fidelidad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizacion_dejong.html">Validación del algoritmo genético con las funciones de De Jong</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4. Revisión de literatura y novedad</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="literatura.html">Revisión de literatura y evidencia de novedad</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5. Modelo original</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="modelo_original.html">Modelo original: Cost-Sensitive Fisher Oblique Forest (CS-FOF)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/10_modelo_original_cs_fof.html">10. Modelo original (CS-FOF)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Del CS-FOF al HIB: mejorar el F1 con un ensamble</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6. Protocolo y validación estadística</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="validacion.html">Validación estadística del modelo original</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">7. Evaluación ampliada y robustez</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="evaluacion_ampliada.html">Evaluación ampliada: ablación, robustez y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">8. Dashboard y despliegue</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dashboard.html">Dashboard y despliegue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MODEL_CARD.html">Ficha del modelo: CS-FOF</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">9. Conclusiones y limitaciones</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="conclusiones.html">Conclusiones y limitaciones</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">10. Reproducibilidad y bibliografía</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="reproducibilidad.html">Reproducibilidad, archivo del repositorio y declaración de autoría</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/mejora_hib.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Del CS-FOF al HIB: mejorar el F1 con un ensamble</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-se-hizo">Qué se hizo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-regla-de-hib">La regla de HIB</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#los-candidatos-congelados">Los candidatos congelados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#protocolo-y-confirmacion">Protocolo y confirmación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#de-donde-sale-la-ventaja">De dónde sale la ventaja</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-no-mejora-mas">Por qué no mejora más</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lo-que-no-se-puede-afirmar">Lo que no se puede afirmar</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#archivos">Archivos</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="del-cs-fof-al-hib-mejorar-el-f1-con-un-ensamble">
+<h1>Del CS-FOF al HIB: mejorar el F1 con un ensamble<a class="headerlink" href="#del-cs-fof-al-hib-mejorar-el-f1-con-un-ensamble" title="Link to this heading">#</a></h1>
+<p>CS-FOF obtuvo el mayor F1 medio de los 8 modelos (0.5479), pero empató con XGBoost (0.5466). Para mejorar el F1
+se partió del modelo original y se hizo un ensamble (<em>stacking</em>) con XGBoost, CatBoost, LightGBM, Random Forest,
+Extra Trees, HistGradientBoosting y regresión logística. Este capítulo cuenta cómo se llegó al ensamble final,
+<strong>HIB</strong> (<em>Hybrid ensemble with soft-F1 weights</em>), qué se encontró y qué no se puede afirmar.</p>
+<div class="cc-limites admonition">
+<p class="admonition-title">Resumen</p>
+<ul class="simple">
+<li><p><strong>HIB</strong> combina 8 modelos (CS-FOF y los 7 de arriba) con pesos que se aprenden para maximizar un F1 suave.</p></li>
+<li><p>Con semillas nuevas (7100 a 7104, 25 pliegues) obtiene F1 <strong>0.5505</strong> frente a 0.5468 de XGBoost (<strong>+0.0037</strong>, gana en 21 de 25 pliegues) y
+supera a los 7 modelos base con Wilcoxon con Holm, DeLong y McNemar; Friedman global p ≈ <span class="math notranslate nohighlight">\(10^{-30}\)</span>.</p></li>
+<li><p>La ventaja es pequeña: la t corregida de Nadeau–Bengio, que tiene en cuenta que los pliegues comparten datos, no rechaza
+frente a XGBoost (<span class="math notranslate nohighlight">\(p = 0.049\)</span> sin ajustar, no sobrevive a Holm).</p></li>
+<li><p>La ventaja viene de combinar 8 modelos, no de la regla de pesos: un promedio simple de los mismos modelos logra +0.0004
+menos (<span class="math notranslate nohighlight">\(p = 0.33\)</span>).</p></li>
+</ul>
+</div>
+<section id="que-se-hizo">
+<h2>Qué se hizo<a class="headerlink" href="#que-se-hizo" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Punto de partida.</strong> CS-FOF y XGBoost empatan; todos los modelos fuertes tienen AUC ≈ 0.785, así que el techo de
+información de los datos es bajo (<a class="reference internal" href="#tab-hib-meseta"><span class="std std-numref">Table 7</span></a>).</p></li>
+<li><p><strong>Exploración.</strong> Se probaron promedios de probabilidades, promedios en logit con pesos, pesos por <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> (<em>feature-weighted
+linear stacking</em>) y selección de Caruana <span class="bibtex-citation" id="id1">[<a class="reference internal" href="reproducibilidad.html#id29" title="Rich Caruana, Alexandru Niculescu-Mizil, Geoff Crew, and Alex Ksikes. Ensemble selection from libraries of models. In Proceedings of the 21st International Conference on Machine Learning (ICML). 2004. doi:10.1145/1015330.1015432.">CNMCK04</a>]</span> sobre combinaciones de los modelos base: <strong>2 582 combinaciones</strong> en
+10 pliegues de desarrollo.</p></li>
+<li><p><strong>Congelación.</strong> Se congelaron los 13 mejores candidatos y se validaron con semillas nuevas y 25 pliegues. Todos quedaron entre
++0.003 y +0.004 de F1 sobre XGBoost: significativo con Wilcoxon con Holm, no con Nadeau–Bengio.</p></li>
+<li><p><strong>HIB.</strong> Se diseñó una regla propia de pesos y se evaluó en dos corridas pre-registradas (v1: semillas 5000 a 5004; v2:
+semillas 7100 a 7104), cada una de 5 repeticiones × 5 pliegues.</p></li>
+</ol>
+<p>Los datos son los mismos 29 965 clientes de Taiwán, con 45 variables: las 20 del conjunto final y 25 derivadas de facturas y
+pagos (utilización del cupo, razón pago/factura, meses con pago mínimo, racha de atraso, entre otras;
+<code class="docutils literal notranslate"><span class="pre">experiments/hib/gen_taiwan.py</span></code> y <code class="docutils literal notranslate"><span class="pre">conf_lib.py</span></code>). Los 7 modelos base de comparación son XGBoost, Random Forest, SVM, KNN, regresión
+logística, árbol de decisión y Naive Bayes, con los hiperparámetros del repositorio y el mismo umbral elegido en el bucle interno.</p>
+</section>
+<section id="la-regla-de-hib">
+<h2>La regla de HIB<a class="headerlink" href="#la-regla-de-hib" title="Link to this heading">#</a></h2>
+<p>HIB toma los logits fuera de muestra <span class="math notranslate nohighlight">\(Z\)</span> de sus <span class="math notranslate nohighlight">\(M = 8\)</span> miembros (CS-FOF, XGBoost, CatBoost, LightGBM, Random Forest, Extra Trees,
+HistGradientBoosting y regresión logística), calculados con 3 pliegues internos dentro del entrenamiento de cada pliegue externo, y aprende
+cuánto pesa cada uno:</p>
+<div class="math notranslate nohighlight" id="equation-eq-hib-pesos">
+<span class="eqno">(6)<a class="headerlink" href="#equation-eq-hib-pesos" title="Link to this equation">#</a></span>\[
+w=\operatorname{softmax}(\theta),\qquad s=Zw
+\]</div>
+<div class="math notranslate nohighlight" id="equation-eq-hib-q">
+<span class="eqno">(7)<a class="headerlink" href="#equation-eq-hib-q" title="Link to this equation">#</a></span>\[
+q_i=\sigma\!\left(\frac{s_i-t}{\tau}\right)
+\]</div>
+<div class="math notranslate nohighlight" id="equation-eq-hib-objetivo">
+<span class="eqno">(8)<a class="headerlink" href="#equation-eq-hib-objetivo" title="Link to this equation">#</a></span>\[
+\max_{\theta,\,t}\ \frac{2\sum_i q_i y_i}{\sum_i q_i+\sum_i y_i}\;-\;\lambda M\,\lVert w-\mathbf{1}/M\rVert^{2}
+\]</div>
+<ul class="simple">
+<li><p><a class="reference internal" href="#equation-eq-hib-pesos">(6)</a>: el <em>softmax</em> mantiene los pesos positivos y con suma 1; <span class="math notranslate nohighlight">\(s\)</span> es el promedio ponderado de los logits.</p></li>
+<li><p><a class="reference internal" href="#equation-eq-hib-q">(7)</a>: marcar o no a un cliente como incumplido es un escalón y no se puede derivar; <span class="math notranslate nohighlight">\(q_i\)</span> es su versión suave, cerca de 1 si
+<span class="math notranslate nohighlight">\(s_i\)</span> supera el umbral <span class="math notranslate nohighlight">\(t\)</span> y cerca de 0 si no. Con <span class="math notranslate nohighlight">\(\tau = 0.3\)</span> la curva se parece a un escalón pero sigue siendo derivable.</p></li>
+<li><p><a class="reference internal" href="#equation-eq-hib-objetivo">(8)</a>: el primer término es el F1 suave, como en <span class="bibtex-citation" id="id2">Bénédict <em>et al.</em> [<a class="reference internal" href="reproducibilidad.html#id30" title="Gabriel Bénédict, Vincent Koops, Daan Odijk, and Maarten de Rijke. sigmoidF1: a smooth F1 score surrogate loss for multilabel classification. Transactions on Machine Learning Research, 2021. arXiv:2108.10566.">BenedictKOdR21</a>]</span> y <span class="bibtex-citation" id="id3">Lee <em>et al.</em> [<a class="reference internal" href="reproducibilidad.html#id31" title="Namgil Lee, Heejung Yang, and Hojin Yoo. A surrogate loss function for optimization of F$_\beta $ score in binary classification with imbalanced data. 2021. arXiv:2104.01459.">LYY21</a>]</span>, y se maximiza con
+L-BFGS-B (60 iteraciones). El segundo, con <span class="math notranslate nohighlight">\(\lambda = 0.05\)</span>, empuja los pesos hacia el promedio uniforme <span class="math notranslate nohighlight">\(1/M\)</span>; por eso los pesos
+aprendidos quedan casi iguales (entre 0.10 y 0.14).</p></li>
+<li><p><strong>Umbral final.</strong> No es el <span class="math notranslate nohighlight">\(t\)</span> aprendido: se elige el que maximiza el F1 duro sobre las puntuaciones fuera de muestra (entre 5 % y
+60 % de positivos predichos), como en <span class="bibtex-citation" id="id4">Lipton <em>et al.</em> [<a class="reference internal" href="reproducibilidad.html#id32" title="Zachary C. Lipton, Charles Elkan, and Balakrishnan Narayanaswamy. Thresholding classifiers to maximize F1 score. 2014. arXiv:1402.1892.">LEN14</a>]</span> y como para todos los modelos.</p></li>
+</ul>
+<p>El código es la función <code class="docutils literal notranslate"><span class="pre">hib_scores</span></code> (<code class="docutils literal notranslate"><span class="pre">experiments/hib/hib.py</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">combos</span><span class="w"> </span><span class="kn">import</span> <span class="n">logit</span><span class="p">,</span> <span class="n">thr_fast</span><span class="p">,</span> <span class="n">f1_at</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hib_scores</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mf">0.3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""HIB: pesos softmax sobre logits que maximizan un F1 suave (regla propia, protocolo congelado)."""</span>
+    <span class="n">Z</span><span class="p">,</span> <span class="n">Zt</span> <span class="o">=</span> <span class="n">logit</span><span class="p">(</span><span class="n">O</span><span class="p">),</span> <span class="n">logit</span><span class="p">(</span><span class="n">T</span><span class="p">);</span> <span class="n">m</span> <span class="o">=</span> <span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span> <span class="n">t0</span> <span class="o">=</span> <span class="n">thr_fast</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">Z</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">p</span><span class="p">[:</span><span class="n">m</span><span class="p">]</span><span class="o">-</span><span class="n">p</span><span class="p">[:</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">());</span> <span class="n">w</span> <span class="o">/=</span> <span class="n">w</span><span class="o">.</span><span class="n">sum</span><span class="p">();</span> <span class="n">q</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">Z</span> <span class="o">@</span> <span class="n">w</span><span class="o">-</span><span class="n">p</span><span class="p">[</span><span class="n">m</span><span class="p">])</span><span class="o">/</span><span class="n">tau</span><span class="p">))</span>
+        <span class="k">return</span> <span class="o">-</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">q</span><span class="o">*</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">+</span><span class="n">y</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span> <span class="o">+</span> <span class="n">lam</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="p">((</span><span class="n">w</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">t0</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">"L-BFGS-B"</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">maxiter</span><span class="o">=</span><span class="mi">60</span><span class="p">));</span> <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">x</span><span class="p">[:</span><span class="n">m</span><span class="p">]</span><span class="o">-</span><span class="n">r</span><span class="o">.</span><span class="n">x</span><span class="p">[:</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">());</span> <span class="n">w</span> <span class="o">/=</span> <span class="n">w</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">Z</span> <span class="o">@</span> <span class="n">w</span><span class="p">,</span> <span class="n">Zt</span> <span class="o">@</span> <span class="n">w</span><span class="p">,</span> <span class="n">w</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">logit</span></code>, <code class="docutils literal notranslate"><span class="pre">thr_fast</span></code> y <code class="docutils literal notranslate"><span class="pre">f1_at</span></code> son auxiliares del entorno de las corridas (<code class="docutils literal notranslate"><span class="pre">combos</span></code>, <code class="docutils literal notranslate"><span class="pre">common2</span></code>) y no están en el repositorio; los miembros vienen de
+librería y solo CS-FOF es propio.</p>
+</section>
+<section id="los-candidatos-congelados">
+<h2>Los candidatos congelados<a class="headerlink" href="#los-candidatos-congelados" title="Link to this heading">#</a></h2>
+<p><a class="reference internal" href="#tab-hib-candidatos"><span class="std std-numref">Table 4</span></a> muestra los candidatos congelados que no usan <em>stacking</em> con regresión logística como combinador. Diferencia =
+candidato − XGBoost, con 25 pliegues y semillas nuevas. El valor de Wilcoxon es el ajustado por Holm.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-hib-candidatos">
+<caption><span class="caption-number">Table 4 </span><span class="caption-text">Candidatos congelados frente a XGBoost (fase B, 25 pliegues).</span><a class="headerlink" href="#tab-hib-candidatos" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Candidato</p></th>
+<th class="head"><p>F1</p></th>
+<th class="head"><p>Dif. F1 [IC 95 %]</p></th>
+<th class="head"><p>Gana en</p></th>
+<th class="head"><p>p Nadeau–Bengio</p></th>
+<th class="head"><p>p Wilcoxon (Holm)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Promedio: CS-FOF + XGBoost (prof. 4) + CatBoost + CatBoost (prof. 8) + HistGradientBoosting</p></td>
+<td><p>0.5499</p></td>
+<td><p>+0.0038 [−0.0020, +0.0096]</p></td>
+<td><p>19/25</p></td>
+<td><p>0.19</p></td>
+<td><p>0.0127</p></td>
+</tr>
+<tr class="row-odd"><td><p>Logit ponderado: CatBoost + HistGradientBoosting</p></td>
+<td><p>0.5495</p></td>
+<td><p>+0.0034 [−0.0032, +0.0100]</p></td>
+<td><p>18/25</p></td>
+<td><p>0.29</p></td>
+<td><p>0.0295</p></td>
+</tr>
+<tr class="row-even"><td><p>Promedio: XGBoost (prof. 4) + CatBoost + CatBoost (prof. 8) + LightGBM + HistGradientBoosting</p></td>
+<td><p>0.5494</p></td>
+<td><p>+0.0032 [−0.0028, +0.0092]</p></td>
+<td><p>19/25</p></td>
+<td><p>0.28</p></td>
+<td><p>0.0295</p></td>
+</tr>
+<tr class="row-odd"><td><p>Logit ponderado: XGBoost (prof. 4) + CatBoost + HistGradientBoosting</p></td>
+<td><p>0.5492</p></td>
+<td><p>+0.0031 [−0.0029, +0.0091]</p></td>
+<td><p>17/25</p></td>
+<td><p>0.30</p></td>
+<td><p>0.0295</p></td>
+</tr>
+<tr class="row-even"><td><p>FWLS por <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code>: XGBoost (prof. 4) + CatBoost</p></td>
+<td><p>0.5491</p></td>
+<td><p>+0.0030 [−0.0030, +0.0090]</p></td>
+<td><p>16/25</p></td>
+<td><p>0.31</p></td>
+<td><p>0.0295</p></td>
+</tr>
+<tr class="row-odd"><td><p>Logit ponderado: CatBoost + CatBoost (prof. 8) + LightGBM + HistGradientBoosting</p></td>
+<td><p>0.5491</p></td>
+<td><p>+0.0030 [−0.0022, +0.0082]</p></td>
+<td><p>19/25</p></td>
+<td><p>0.25</p></td>
+<td><p>0.0135</p></td>
+</tr>
+<tr class="row-even"><td><p>Selección de Caruana, 10 modelos (con CS-FOF)</p></td>
+<td><p>0.5491</p></td>
+<td><p>+0.0030 [−0.0014, +0.0074]</p></td>
+<td><p>20/25</p></td>
+<td><p>0.17</p></td>
+<td><p>0.0117</p></td>
+</tr>
+<tr class="row-odd"><td><p>FWLS por <code class="docutils literal notranslate"><span class="pre">PAY_0</span></code>, 10 modelos (con CS-FOF)</p></td>
+<td><p>0.5491</p></td>
+<td><p>+0.0030 [−0.0017, +0.0078]</p></td>
+<td><p>15/25</p></td>
+<td><p>0.20</p></td>
+<td><p>0.0209</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Los 8 pasan Wilcoxon con Holm, pero ninguno pasa Nadeau–Bengio. Por eso se diseñó HIB y se confirmó con un protocolo pre-registrado. El
+resto de la exploración (codificación WoE de <code class="docutils literal notranslate"><span class="pre">PAY_x</span></code>, variables derivadas de <code class="docutils literal notranslate"><span class="pre">PAY</span></code>, LightGBM con árboles lineales, Rotation Forest propio y un piloto
+de 6 componentes complementarios) tampoco superó a XGBoost con significancia. La tabla completa está en <code class="docutils literal notranslate"><span class="pre">experiments/hib/Tabla_combinaciones.xlsx</span></code>.</p>
+</section>
+<section id="protocolo-y-confirmacion">
+<h2>Protocolo y confirmación<a class="headerlink" href="#protocolo-y-confirmacion" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>v1</strong> (semillas 5000 a 5004). Pruebas fijadas: t de Nadeau–Bengio, Wilcoxon y Nemenyi, con Holm sobre 7 contrastes
+(<code class="docutils literal notranslate"><span class="pre">experiments/hib/PROTOCOLO_CONFIRMATORIO.md</span></code>, con su hash SHA-256).</p></li>
+<li><p><strong>v2</strong> (semillas 7100 a 7104). Tras ver v1 se exploraron McNemar y DeLong sobre las mismas predicciones, así que esa elección de pruebas se hizo
+mirando datos. Por eso v2 es una confirmación independiente, con las pruebas fijadas antes de generar los datos: Wilcoxon de rangos con signo
+(aceptada por el docente) sobre las 25 diferencias de F1 por pliegue, DeLong pareado sobre el AUC y McNemar, cada una con Holm sobre 7
+contrastes, más Friedman global; Nadeau–Bengio y Nemenyi se reportan sin que decidan
+(<code class="docutils literal notranslate"><span class="pre">experiments/hib/PROTOCOLO_CONFIRMATORIO_v2.md</span></code>; resultados en <code class="docutils literal notranslate"><span class="pre">conf2_tw2_*</span></code>).</p></li>
+<li><p><strong>Criterio de superioridad frente a un modelo base:</strong> F1 medio de HIB mayor; Wilcoxon, DeLong y McNemar con p ajustado &lt; 0.05;
+<span class="math notranslate nohighlight">\(|\delta_{\text{Cliff}}| \ge 0.147\)</span>; y Friedman global significativo.</p></li>
+</ul>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-hib-v2">
+<caption><span class="caption-number">Table 5 </span><span class="caption-text">Confirmación v2 (semillas 7100 a 7104, 25 pliegues). Diferencia = HIB − modelo; p ajustados por Holm sobre 7 contrastes.</span><a class="headerlink" href="#tab-hib-v2" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelo</p></th>
+<th class="head"><p>F1 medio</p></th>
+<th class="head"><p>Dif. F1</p></th>
+<th class="head"><p>Pliegues ganados por HIB</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\delta\)</span> de Cliff</p></th>
+<th class="head"><p>Wilcoxon</p></th>
+<th class="head"><p>DeLong (AUC)</p></th>
+<th class="head"><p>McNemar</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>HIB</strong></p></td>
+<td><p><strong>0.5505</strong></p></td>
+<td><p>—</p></td>
+<td><p>—</p></td>
+<td><p>—</p></td>
+<td><p>—</p></td>
+<td><p>—</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Random Forest</p></td>
+<td><p>0.5477</p></td>
+<td><p>+0.0028</p></td>
+<td><p>17/25</p></td>
+<td><p>0.24</p></td>
+<td><p>0.0147</p></td>
+<td><p>&lt; 0.0001</p></td>
+<td><p>0.001</p></td>
+</tr>
+<tr class="row-even"><td><p>XGBoost</p></td>
+<td><p>0.5468</p></td>
+<td><p>+0.0037</p></td>
+<td><p>21/25</p></td>
+<td><p>0.29</p></td>
+<td><p>0.0001</p></td>
+<td><p>0.0003</p></td>
+<td><p>&lt; 0.0001</p></td>
+</tr>
+<tr class="row-odd"><td><p>SVM</p></td>
+<td><p>0.5411</p></td>
+<td><p>+0.0094</p></td>
+<td><p>25/25</p></td>
+<td><p>0.62</p></td>
+<td><p>&lt; 0.0001</p></td>
+<td><p>&lt; 0.0001</p></td>
+<td><p>&lt; 0.0001</p></td>
+</tr>
+<tr class="row-even"><td><p>Árbol de decisión</p></td>
+<td><p>0.5326</p></td>
+<td><p>+0.0179</p></td>
+<td><p>25/25</p></td>
+<td><p>0.84</p></td>
+<td><p>&lt; 0.0001</p></td>
+<td><p>&lt; 0.0001</p></td>
+<td><p>0.001</p></td>
+</tr>
+<tr class="row-odd"><td><p>Regresión logística</p></td>
+<td><p>0.5266</p></td>
+<td><p>+0.0239</p></td>
+<td><p>25/25</p></td>
+<td><p>0.97</p></td>
+<td><p>&lt; 0.0001</p></td>
+<td><p>&lt; 0.0001</p></td>
+<td><p>&lt; 0.0001</p></td>
+</tr>
+<tr class="row-even"><td><p>KNN</p></td>
+<td><p>0.5233</p></td>
+<td><p>+0.0271</p></td>
+<td><p>25/25</p></td>
+<td><p>0.98</p></td>
+<td><p>&lt; 0.0001</p></td>
+<td><p>&lt; 0.0001</p></td>
+<td><p>&lt; 0.0001</p></td>
+</tr>
+<tr class="row-odd"><td><p>Naive Bayes</p></td>
+<td><p>0.5106</p></td>
+<td><p>+0.0399</p></td>
+<td><p>25/25</p></td>
+<td><p>1.00</p></td>
+<td><p>&lt; 0.0001</p></td>
+<td><p>&lt; 0.0001</p></td>
+<td><p>&lt; 0.0001</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Friedman global: <span class="math notranslate nohighlight">\(p \approx 10^{-30}\)</span>; rango medio de HIB 1.48 frente a 2.28 de Random Forest y 2.52 de XGBoost. Las pruebas que <strong>no</strong> rechazan frente
+a XGBoost y Random Forest son Nadeau–Bengio (<span class="math notranslate nohighlight">\(p\)</span> sin ajustar 0.049 y 0.31) y Nemenyi (0.81 y 0.94); en v2 eran informativas, no decisivas.</p>
+<p>La <strong>primera corrida (v1)</strong> es consistente: HIB 0.5502, XGBoost 0.5463 y Random Forest 0.5471; diferencias +0.0039 y +0.0031; Wilcoxon con Holm 0.0016
+en ambos casos; Nadeau–Bengio 0.17 y 0.16 sin ajustar; 19 de 25 pliegues ganados.</p>
+</section>
+<section id="de-donde-sale-la-ventaja">
+<h2>De dónde sale la ventaja<a class="headerlink" href="#de-donde-sale-la-ventaja" title="Link to this heading">#</a></h2>
+<p>Comparación exploratoria (no pre-registrada, hecha después de ver v2) de la regla de HIB contra reglas estándar sobre las mismas predicciones de v2:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-hib-reglas">
+<caption><span class="caption-number">Table 6 </span><span class="caption-text">HIB frente a reglas estándar con los mismos 8 modelos.</span><a class="headerlink" href="#tab-hib-reglas" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Regla con los mismos 8 modelos</p></th>
+<th class="head"><p>F1 medio</p></th>
+<th class="head"><p>HIB − regla</p></th>
+<th class="head"><p>Pliegues ganados por HIB</p></th>
+<th class="head"><p>Wilcoxon</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>HIB (F1 suave)</strong></p></td>
+<td><p><strong>0.5505</strong></p></td>
+<td><p>—</p></td>
+<td><p>—</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>Promedio uniforme de logits</p></td>
+<td><p>0.5501</p></td>
+<td><p>+0.0004</p></td>
+<td><p>15/25</p></td>
+<td><p>0.33</p></td>
+</tr>
+<tr class="row-even"><td><p>Promedio de probabilidades</p></td>
+<td><p>0.5501</p></td>
+<td><p>+0.0004</p></td>
+<td><p>16/25</p></td>
+<td><p>0.30</p></td>
+</tr>
+<tr class="row-odd"><td><p>Selección de Caruana</p></td>
+<td><p>0.5494</p></td>
+<td><p>+0.0011</p></td>
+<td><p>14/25</p></td>
+<td><p>0.12</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Un promedio simple de los mismos 8 modelos también supera a XGBoost y a Random Forest; la regla de pesos de HIB no lo mejora de forma medible. Quitar CS-FOF
+tampoco cambia nada (0.5505 sin él frente a 0.5502 con él en v1). Los miembros que mueven el resultado son los de <em>boosting</em>.</p>
+</section>
+<section id="por-que-no-mejora-mas">
+<h2>Por qué no mejora más<a class="headerlink" href="#por-que-no-mejora-mas" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table" id="tab-hib-meseta">
+<caption><span class="caption-number">Table 7 </span><span class="caption-text">F1 medio de cada modelo en las corridas (meseta).</span><a class="headerlink" href="#tab-hib-meseta" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Modelo</p></th>
+<th class="head"><p>F1 medio</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Regresión logística</p></td>
+<td><p>0.5230</p></td>
+</tr>
+<tr class="row-odd"><td><p>Rotation Forest propio</p></td>
+<td><p>0.5421</p></td>
+</tr>
+<tr class="row-even"><td><p>XGBoost</p></td>
+<td><p>0.5457</p></td>
+</tr>
+<tr class="row-odd"><td><p>Random Forest</p></td>
+<td><p>0.5461</p></td>
+</tr>
+<tr class="row-even"><td><p>LightGBM</p></td>
+<td><p>0.5467</p></td>
+</tr>
+<tr class="row-odd"><td><p>CS-FOF</p></td>
+<td><p>0.5473</p></td>
+</tr>
+<tr class="row-even"><td><p>CatBoost</p></td>
+<td><p>0.5494</p></td>
+</tr>
+<tr class="row-odd"><td><p>Promedio de CS-FOF y 4 modelos de <em>boosting</em></p></td>
+<td><p>0.5499</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>HIB (v2)</strong></p></td>
+<td><p><strong>0.5505</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul class="simple">
+<li><p><strong>Las diferencias son del tamaño del ruido.</strong> El F1 de un mismo modelo varía alrededor de 0.01 de un pliegue a otro (desviación estándar de 0.009 a 0.012),
+mientras que las diferencias entre los mejores modelos son de 0.002 a 0.004. La t corregida de Nadeau–Bengio multiplica la varianza por
+<span class="math notranslate nohighlight">\(1/J + n_{\text{prueba}}/n_{\text{entrenamiento}} = 1/J + 0.25\)</span>; el segundo término no baja al agregar repeticiones, porque los pliegues comparten la
+mayor parte del entrenamiento. Pasar de 25 a 50 pliegues casi no cambia el umbral de significancia.</p></li>
+<li><p><strong>El límite está en los datos.</strong> Árboles por ejes, cortes oblicuos de Fisher, <em>boosting</em>, ensambles y HIB convergen al mismo F1 ≈ 0.54 a 0.55 y AUC ≈ 0.78 a 0.79,
+lo mismo que reporta la literatura sobre este conjunto. La señal dominante es el atraso reciente (<code class="docutils literal notranslate"><span class="pre">PAY_0</span></code> y <code class="docutils literal notranslate"><span class="pre">PAY_2</span></code>); en los clientes al día en septiembre
+(77 % de la cartera, 13.8 % de incumplimiento) ningún modelo pasa de F1 0.29.</p></li>
+<li><p><strong>Los modelos se equivocan en los mismos clientes.</strong> Por eso sumar 8 modelos da una ganancia pequeña y la forma de ponderarlos casi no importa.</p></li>
+<li><p><strong>Ordenar mejor no es clasificar mejor.</strong> Una mejora del AUC reordena pocos clientes cerca del umbral y el F1 casi no cambia.</p></li>
+</ul>
+<p>Con estos datos, una mejora sustancial del score es muy improbable: la única vía realista sería agregar información nueva (otras variables u otros periodos).</p>
+</section>
+<section id="lo-que-no-se-puede-afirmar">
+<h2>Lo que no se puede afirmar<a class="headerlink" href="#lo-que-no-se-puede-afirmar" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Tamaño del efecto.</strong> +0.0037 de F1 (≈ 0.7 % relativo) puede considerarse marginal en un conjunto con techo de AUC ≈ 0.785.</p></li>
+<li><p><strong>Dependencia entre pliegues.</strong> Wilcoxon trata los 25 pliegues como independientes, y DeLong y McNemar se aplican sobre predicciones agrupadas; las tres ignoran que
+los pliegues comparten datos y dan p optimistas. La prueba que sí lo controla (Nadeau–Bengio) no rechaza frente a XGBoost ni Random Forest. Incluso CatBoost solo supera a
+XGBoost con Wilcoxon con Holm en la exploración (p = 0.0093).</p></li>
+<li><p><strong>Exploración previa.</strong> Se evaluaron más de 2 600 diseños antes de HIB; las semillas nuevas en cada etapa lo mitigan, pero la ventaja observada del mejor de muchos tiende a estar inflada.</p></li>
+<li><p><strong>La regla y CS-FOF no aportan de forma medible</strong> frente al promedio uniforme y frente a HIB sin CS-FOF; la novedad defendible es la combinación aplicada a este problema, con precedentes en
+la optimización del ensamble para una métrica <span class="bibtex-citation" id="id5">[<a class="reference internal" href="reproducibilidad.html#id29" title="Rich Caruana, Alexandru Niculescu-Mizil, Geoff Crew, and Alex Ksikes. Ensemble selection from libraries of models. In Proceedings of the 21st International Conference on Machine Learning (ICML). 2004. doi:10.1145/1015330.1015432.">CNMCK04</a>]</span> y en la sustitución suave del F1 <span class="bibtex-citation" id="id6">[<a class="reference internal" href="reproducibilidad.html#id30" title="Gabriel Bénédict, Vincent Koops, Daan Odijk, and Maarten de Rijke. sigmoidF1: a smooth F1 score surrogate loss for multilabel classification. Transactions on Machine Learning Research, 2021. arXiv:2108.10566.">BenedictKOdR21</a>, <a class="reference internal" href="reproducibilidad.html#id31" title="Namgil Lee, Heejung Yang, and Hojin Yoo. A surrogate loss function for optimization of F$_\beta $ score in binary classification with imbalanced data. 2021. arXiv:2104.01459.">LYY21</a>]</span>.</p></li>
+<li><p><strong>Un solo conjunto de datos y particiones distintas por corrida.</strong> Solo se evaluó en Taiwán (2005); cada corrida se compara con el XGBoost de su propia partición.</p></li>
+<li><p><strong>Trazabilidad.</strong> Los protocolos v1 y v2 llevan su hash SHA-256 y se registraron antes de generar los datos de cada corrida. El <em>tag</em> de Git no se pudo subir a GitHub (error 403) y existe
+solo en local, y después los protocolos se editaron para quitar los conjuntos adicionales, con los hashes antes y después registrados.</p></li>
+<li><p><strong>Presupuesto.</strong> Los modelos base y los miembros usan los hiperparámetros del repositorio, sin búsqueda nueva, y no se reportó el cómputo; HIB entrena 4 veces cada miembro (3 pliegues internos y el ajuste final).</p></li>
+</ul>
+</section>
+<section id="archivos">
+<h2>Archivos<a class="headerlink" href="#archivos" title="Link to this heading">#</a></h2>
+<p>Todo está en <code class="docutils literal notranslate"><span class="pre">experiments/hib/</span></code>: la regla (<code class="docutils literal notranslate"><span class="pre">hib.py</span></code>), la generación de logits (<code class="docutils literal notranslate"><span class="pre">gen_taiwan.py</span></code>, <code class="docutils literal notranslate"><span class="pre">conf_lib.py</span></code>), el análisis (<code class="docutils literal notranslate"><span class="pre">analyze_conf2.py</span></code>), los protocolos con sus hashes,
+los resultados de la confirmación v2 (<code class="docutils literal notranslate"><span class="pre">conf2_tw2_result.txt</span></code>, <code class="docutils literal notranslate"><span class="pre">conf2_tw2_contrastes.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">conf2_tw2_f1.csv</span></code>) y la tabla de combinaciones (<code class="docutils literal notranslate"><span class="pre">Tabla_combinaciones.xlsx</span></code>). El tablero lo cuenta en
+la pestaña «Del CS-FOF al HIB» de la página Modelo original.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="notebooks/10_modelo_original_cs_fof.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">10. Modelo original (CS-FOF)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="validacion.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Validación estadística del modelo original</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-se-hizo">Qué se hizo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#la-regla-de-hib">La regla de HIB</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#los-candidatos-congelados">Los candidatos congelados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#protocolo-y-confirmacion">Protocolo y confirmación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#de-donde-sale-la-ventaja">De dónde sale la ventaja</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-no-mejora-mas">Por qué no mejora más</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lo-que-no-se-puede-afirmar">Lo que no se puede afirmar</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#archivos">Archivos</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Katherin Barrera López y Valeria Florez Sarmiento
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

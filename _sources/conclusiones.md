@@ -26,6 +26,12 @@
    F1 ≈ 0.55 y AUC ≈ 0.78 con estas variables. Esto no prueba que exista un techo; solo indica que, con la
    información disponible, las diferencias entre buenos modelos son pequeñas y cuesta separarlas
    estadísticamente.
+8. **Un ensamble a partir de CS-FOF sube el F1, poco.** Para mejorar el F1 se hizo un ensamble (*stacking*) con CS-FOF, XGBoost,
+   CatBoost, LightGBM, Random Forest, Extra Trees, HistGradientBoosting y regresión logística: HIB (capítulo «Del CS-FOF al HIB»).
+   Con semillas nuevas (25 pliegues) obtiene F1 0.5505 frente a 0.5468 de XGBoost (+0.0037) y supera a los 7 modelos base con
+   Wilcoxon con Holm, DeLong y McNemar. La ventaja es pequeña: Nadeau–Bengio no rechaza frente a XGBoost (p = 0.049 sin ajustar) y un promedio
+   simple de los mismos 8 modelos logra casi lo mismo (+0.0004, p = 0.33), así que la ventaja viene de combinar modelos y no de la regla de pesos.
+   Solo se evaluó en Taiwán.
 
 Según la sección 6.4 del Entregable 3, la condición R3 (superioridad estadística y consistencia) **no se
 cumple**. Se reporta así, sin ajustar el modelo después de ver los resultados de prueba.
@@ -34,8 +40,10 @@ cumple**. Se reporta así, sin ajustar el modelo después de ver los resultados 
 - El protocolo se documentó después de los experimentos (desviación declarada en
   `experiments/protocolo.md`).
 - CS-FOF solo se evaluó con pesos de clase.
-- La comparación se limita a los siete modelos de referencia exigidos por el curso. Variantes recientes de
-  *boosting*, como CatBoost y LightGBM, quedan fuera de su alcance.
+- Las 112 combinaciones comparan los siete modelos de referencia exigidos por el curso. CatBoost y LightGBM entran solo como
+  referencias y como miembros del ensamble HIB, sin el mismo presupuesto de ajuste.
+- HIB se evaluó solo en Taiwán, con particiones distintas en cada corrida, y su ventaja sobre XGBoost no sobrevive a la t corregida de
+  Nadeau–Bengio; el protocolo se editó después para quitar los conjuntos adicionales y el *tag* de Git solo existe en local.
 - Con 5 pliegues externos y 4 conjuntos, las pruebas pareadas tienen poca potencia; no se ejecutó la
   validación externa repetida.
 - Los estudios de robustez son exploratorios: usan los hiperparámetros elegidos con los datos completos y
